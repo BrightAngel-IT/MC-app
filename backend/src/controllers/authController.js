@@ -19,10 +19,14 @@ exports.register = async(req, res) => {
             if (existingUser.verificationStatus === 'REJECTED')
              { return res.status(400).json({message: 'Your previous application was rejected. Please contact the admin via admin@medicalcare.com for support.'}); }
               return res.status(400).json({message : 'User already exists'}); 
-        } const OR_conditions = [{ email }]; 
-        if (phone) OR_conditions.push({ phone }); if (idCardNumber || nicNumber) OR_conditions.push({ idCardNumber: idCardNumber || nicNumber }); 
+        } const OR_conditions = [{ email }];    
+
+        if (phone) OR_conditions.push({ phone }); 
+        if (idCardNumber || nicNumber) OR_conditions.push({ idCardNumber: idCardNumber || nicNumber }); 
+
         const rejectedRecord = await prisma.rejectedRecord.findFirst({ where: { OR: OR_conditions } }); 
-        if (rejectedRecord) { return res.status(400).json({message: 'Your previous application was rejected. Please contact the admin via admin@medicalcare.com for support.'}); }
+        if (rejectedRecord) { 
+            return res.status(400).json({message: 'Your previous application was rejected. Please contact the admin via admin@medicalcare.com for support.'}); }
 
         const passwordHash = await bcrypt.hash(password, 10);
         let verificationStatus = 'PENDING';
