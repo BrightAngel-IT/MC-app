@@ -1,0 +1,64 @@
+2026-09-21T08:10:43.795Z [LOGIN] Error: data and hash arguments required
+    at Object.compare (D:\Bright Angle\healthcare App\backend\node_modules\bcrypt\bcrypt.js:204:17)
+    at D:\Bright Angle\healthcare App\backend\node_modules\bcrypt\promises.js:26:12
+    at new Promise (<anonymous>)
+    at Object.promise (D:\Bright Angle\healthcare App\backend\node_modules\bcrypt\promises.js:17:12)
+    at Object.compare (D:\Bright Angle\healthcare App\backend\node_modules\bcrypt\bcrypt.js:200:25)
+    at exports.login (D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:133:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-09-21T08:40:36.467Z [LOGIN] PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:127:40
+
+  124 let {email, password} = req.body;
+  125 email = email.trim().toLowerCase();
+  126 
+→ 127 const user = await prisma.user.findUnique(
+Server has closed the connection.
+    at vn.handleRequestError (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:8643)
+    at vn.handleAndLogRequestError (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:7932)
+    at vn.request (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:7639)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async a (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:99:6935)
+    at async exports.login (D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:127:22)
+2026-09-21T11:59:42.623Z [LOGIN] PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:127:40
+
+  124 let {email, password} = req.body;
+  125 email = email.trim().toLowerCase();
+  126 
+→ 127 const user = await prisma.user.findUnique(
+Server has closed the connection.
+    at vn.handleRequestError (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:8643)
+    at vn.handleAndLogRequestError (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:7932)
+    at vn.request (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:7639)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async a (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:99:6935)
+    at async exports.login (D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:127:22)
+2026-09-24T11:03:37.601Z [LOGIN] TypeError: Cannot read properties of undefined (reading 'trim')
+    at exports.login (D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:125:23)
+    at Layer.handleRequest (D:\Bright Angle\healthcare App\backend\node_modules\router\lib\layer.js:152:17)
+    at next (D:\Bright Angle\healthcare App\backend\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (D:\Bright Angle\healthcare App\backend\node_modules\router\lib\route.js:117:3)
+    at handle (D:\Bright Angle\healthcare App\backend\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (D:\Bright Angle\healthcare App\backend\node_modules\router\lib\layer.js:152:17)
+    at D:\Bright Angle\healthcare App\backend\node_modules\router\index.js:295:15
+    at processParams (D:\Bright Angle\healthcare App\backend\node_modules\router\index.js:582:12)
+    at next (D:\Bright Angle\healthcare App\backend\node_modules\router\index.js:291:5)
+    at Function.handle (D:\Bright Angle\healthcare App\backend\node_modules\router\index.js:186:3)
+2026-09-25T05:14:17.200Z [LOGIN] PrismaClientKnownRequestError: 
+Invalid `prisma.user.findUnique()` invocation in
+D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:127:40
+
+  124 let {email, password} = req.body;
+  125 email = email.trim().toLowerCase();
+  126 
+→ 127 const user = await prisma.user.findUnique(
+Can't reach database server at ep-snowy-bonus-b3sncf7o-pooler.c-4.ap-southeast-1.aws.neon.tech
+    at vn.handleRequestError (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:8643)
+    at vn.handleAndLogRequestError (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:7932)
+    at vn.request (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:65:7639)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async a (D:\Bright Angle\healthcare App\backend\node_modules\@prisma\client\runtime\client.js:99:6935)
+    at async exports.login (D:\Bright Angle\healthcare App\backend\src\controllers\authController.js:127:22)
