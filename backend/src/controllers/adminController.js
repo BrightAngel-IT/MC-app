@@ -81,6 +81,33 @@ exports.deleteUser = async(req,res)=>{
     try{
         const {userId} = req.params;
         
+        // Find user to check if they are rejected
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            include: {
+                professionalProfile: true,
+                pharmacistProfile: true,
+                adminProfile: true
+            }
+        });
+
+        if (user && user.verificationStatus === 'REJECTED') {
+            // Find idCardNumber if any
+            let idCardNum = null;
+            if (user.professionalProfile) idCardNum = user.professionalProfile.idCardNumber;
+            else if (user.pharmacistProfile) idCardNum = user.pharmacistProfile.idCardNumber;
+            else if (user.adminProfile) idCardNum = user.adminProfile.idCardNumber;
+
+            // Add to blacklist
+            await prisma.rejectedRecord.create({
+                data: {
+                    email: user.email,
+                    phone: user.phone || null,
+                    idCardNumber: idCardNum || null
+                }
+            });
+        }
+
         // Delete related profiles first to avoid foreign key constraint errors
         await prisma.professionalProfile.deleteMany({ where: { userId } });
         await prisma.pharmacistProfile.deleteMany({ where: { userId } });

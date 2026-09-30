@@ -10,19 +10,19 @@ const JWT_SECRET = process.env.JWT_SECRET_KEY;
 exports.register = async(req, res) => {
     console.log("Register request received!");
     try {
-        let { 
-            email, password, fullName, phone, role, 
-            licenseFrontImageBase64, licenseBackImageBase64,
-            specialization, qualifications, address, idCardNumber, workingHospital, isCurrentlyWorking,
-            nicNumber, ambulanceVehicleNumber, attachedHospital, businessName, licenseNumber, licenseIssuedYear
-        } = req.body;
+        let { idFrontImageBase64, idBackImageBase64} = req.body;
         
         email = email.trim().toLowerCase();
 
         const existingUser = await prisma.user.findUnique({where: {email}});
-        if(existingUser) {
-            return res.status(400).json({message : "User already exists"});
-        }
+        if(existingUser) { 
+            if (existingUser.verificationStatus === 'REJECTED')
+             { return res.status(400).json({message: 'Your previous application was rejected. Please contact the admin via admin@medicalcare.com for support.'}); }
+              return res.status(400).json({message : 'User already exists'}); 
+        } const OR_conditions = [{ email }]; 
+        if (phone) OR_conditions.push({ phone }); if (idCardNumber || nicNumber) OR_conditions.push({ idCardNumber: idCardNumber || nicNumber }); 
+        const rejectedRecord = await prisma.rejectedRecord.findFirst({ where: { OR: OR_conditions } }); 
+        if (rejectedRecord) { return res.status(400).json({message: 'Your previous application was rejected. Please contact the admin via admin@medicalcare.com for support.'}); }
 
         const passwordHash = await bcrypt.hash(password, 10);
         let verificationStatus = 'PENDING';
@@ -31,7 +31,7 @@ exports.register = async(req, res) => {
             verificationStatus = 'APPROVED';
         }
 
-        const newUser = await prisma.user.create({
+        const newUser = await prisma.user.create({      
             data : {
                 email,
                 passwordHash,
@@ -54,6 +54,19 @@ exports.register = async(req, res) => {
         if (licenseBackImageBase64 && licenseBackImageBase64.startsWith('data:image')) {
             const savedPath = saveBase64Image(licenseBackImageBase64, 'licenses');
             if (savedPath) backImageUrl = baseUrl + savedPath;
+        }
+
+        let idFrontUrl = null;
+        let idBackUrl = null;
+
+        if (idFrontImageBase64 && idFrontImageBase64.startsWith('data:image')) {
+            const savedPath = saveBase64Image(idFrontImageBase64, 'ids');
+            if (savedPath) idFrontUrl = baseUrl + savedPath;
+        }
+
+        if (idBackImageBase64 && idBackImageBase64.startsWith('data:image')) {
+            const savedPath = saveBase64Image(idBackImageBase64, 'ids');
+            if (savedPath) idBackUrl = baseUrl + savedPath;
         }
 
         if(role === 'PATIENT' || role === 'OVERSEAS_GUARDIAN') {

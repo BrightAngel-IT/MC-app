@@ -92,6 +92,8 @@ model ProfessionalProfile {
   rating                 Float   @default(0.0)
   licenseIssuedYear      Int?
   licenseNumber          String?
+  idFrontImage           String? @db.Text
+  idBackImage            String? @db.Text
 
   user User @relation(fields: [userId], references: [id])
 
@@ -108,7 +110,10 @@ model PharmacistProfile {
   licenseIssuedYear Int?
   licenseFrontImage String? @db.Text
   licenseBackImage  String? @db.Text
+  idFrontImage      String? @db.Text
+  idBackImage       String? @db.Text
   address           String?
+  idCardNumber      String?
 
   user User @relation(fields: [userId], references: [id])
 
@@ -117,10 +122,13 @@ model PharmacistProfile {
 }
 
 model AdminProfile {
-  id         String @id @default(uuid())
-  userId     String @unique
-  fullName   String
-  adminLevel String @default("MANAGER")
+  id           String  @id @default(uuid())
+  userId       String  @unique
+  fullName     String
+  adminLevel   String  @default("MANAGER")
+  idFrontImage String? @db.Text
+  idBackImage  String? @db.Text
+  idCardNumber String?
 
   user User @relation(fields: [userId], references: [id])
 }
@@ -260,4 +268,12 @@ model ActivityLog {
   createdAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+model RejectedRecord {
+  id           String   @id @default(uuid())
+  email        String?  @unique
+  phone        String?  @unique
+  idCardNumber String?  @unique
+  rejectedAt   DateTime @default(now())
 }
