@@ -15,4 +15,6 @@ router.post('/sos/:id/accept', protect, professionalController.acceptSOS);
 const reportController = require('../controllers/reportController');
 router.get('/report', protect, reportController.getProfessionalReport);
 
+router.delete('/appointment/:id', protect, professionalController.deleteAppointment);
+
 module.exports = router;

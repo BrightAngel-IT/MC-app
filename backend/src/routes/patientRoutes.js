@@ -41,4 +41,6 @@ router.put('/prescription/:id/status', protect, patientController.updatePrescrip
 const reportController = require('../controllers/reportController');
 router.get('/report', protect, reportController.getPatientReport);
 
+router.delete('/appointment/:id', protect, patientController.deleteAppointment);
+
 module.exports = router;

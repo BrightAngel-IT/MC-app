@@ -37,7 +37,7 @@ exports.getDashboard = async (req, res) => {
                 ...(dateFilter && { scheduledDate: dateFilter })
             },
             include: { professional: { include: { user: true } } },
-            orderBy: { scheduledDate: 'desc' }
+            orderBy: { createdAt: 'desc' }
         });
 
         const activeAppointments = appointments.filter(a => a.status === 'PENDING' || a.status === 'CONFIRMED' || a.status === 'IN_PROGRESS');
@@ -108,7 +108,7 @@ exports.getAppointments = async(req, res) => {
                 },
                 messages: { orderBy: { createdAt: 'asc' } }
             },
-            orderBy: { scheduledDate: 'desc' }
+            orderBy: { createdAt: 'desc' }
         });
 
         return res.status(200).json({ message: 'Appointments fetched successfully', appointments });
@@ -630,3 +630,23 @@ exports.deleteUser = async (req, res) => {
         return res.status(500).json({message: "Internal server error"});
     }
 }
+
+exports.deleteAppointment = async(req, res) => {
+    try {
+        const { id } = req.params;
+        await prisma.appointmentMessage.deleteMany({ where: { appointmentId: id } });
+        const prescriptions = await prisma.prescription.findMany({ where: { appointmentId: id } });
+        for (const rx of prescriptions) {
+            await prisma.prescriptionItem.deleteMany({ where: { prescriptionId: rx.id } });
+            await prisma.prescription.delete({ where: { id: rx.id } });
+        }
+        await prisma.appointment.delete({ where: { id } });
+        res.status(200).json({ success: true, message: 'Appointment deleted' });
+    } catch(err) {
+        if (err.code === 'P2025') {
+            return res.status(200).json({ success: true, message: 'Appointment already deleted' });
+        }
+        console.error('Delete error:', err);
+        res.status(500).json({ success: false, message: 'Failed to delete appointment' });
+    }
+};
