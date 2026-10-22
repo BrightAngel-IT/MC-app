@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET_KEY;
 exports.register = async(req, res) => {
     console.log("Register request received!");
     try {
-        let { idFrontImageBase64, idBackImageBase64} = req.body;
+        let { email, password, fullName, phone, role, specialization, qualifications, address, idCardNumber, nicNumber, workingHospital, isCurrentlyWorking, ambulanceVehicleNumber, attachedHospital, licenseIssuedYear, licenseNumber, businessName, licenseFrontImageBase64, licenseBackImageBase64, idFrontImageBase64, idBackImageBase64, locationLat, locationLng } = req.body;
         
         email = email.trim().toLowerCase();
 
@@ -82,7 +82,7 @@ exports.register = async(req, res) => {
                     nicNumber: nicNumber || idCardNumber || null
                 }
             });
-        }else if(role === 'DOCTOR' || role === 'NURSE' || role === 'CAREGIVER' || role === 'LAB_TECH' || role === 'PARAMEDIC') {
+        }else if(role === 'DOCTOR' || role === 'NURSE' || role === 'CAREGIVER' || role === 'LAB_TECH' || role === 'PARAMEDIC' || role === 'ELDER_HOME') {
             await prisma.professionalProfile.create({
                 data : {
                     userId : newUser.id,
@@ -98,7 +98,11 @@ exports.register = async(req, res) => {
                     ambulanceVehicleNumber: ambulanceVehicleNumber || null,
                     attachedHospital: attachedHospital || null,
                     licenseIssuedYear: licenseIssuedYear ? parseInt(licenseIssuedYear) : null,
-                    licenseNumber: licenseNumber || null
+                    licenseNumber: licenseNumber || null,
+                    idFrontImage: idFrontUrl || null,
+                    idBackImage: idBackUrl || null,
+                    locationLat: locationLat ? parseFloat(locationLat) : null,
+                    locationLng: locationLng ? parseFloat(locationLng) : null
                 }
             });
         }else if(role === 'PHARMACIST') {
@@ -110,14 +114,22 @@ exports.register = async(req, res) => {
                     licenseIssuedYear: licenseIssuedYear ? parseInt(licenseIssuedYear) : null,
                     address: address || null,
                     licenseFrontImage: frontImageUrl,
-                    licenseBackImage: backImageUrl
+                    licenseBackImage: backImageUrl,
+                    idFrontImage: idFrontUrl || null,
+                    idBackImage: idBackUrl || null,
+                    idCardNumber: idCardNumber || nicNumber || null,
+                    locationLat: locationLat ? parseFloat(locationLat) : null,
+                    locationLng: locationLng ? parseFloat(locationLng) : null
                 }
             });
         }else if(role === 'ADMIN') {
             await prisma.adminProfile.create({
                 data : {
                     userId : newUser.id,
-                    fullName
+                    fullName,
+                    idFrontImage: idFrontUrl || null,
+                    idBackImage: idBackUrl || null,
+                    idCardNumber: idCardNumber || nicNumber || null
                 }
             });
         }
@@ -126,7 +138,7 @@ exports.register = async(req, res) => {
            JWT_SECRET, {expiresIn : '1h'});
 
         // Notify all Admins if the user is a professional needing approval
-        if (['DOCTOR', 'NURSE', 'CAREGIVER', 'LAB_TECH', 'PARAMEDIC', 'PHARMACIST'].includes(role)) {
+        if (['DOCTOR', 'NURSE', 'CAREGIVER', 'LAB_TECH', 'PARAMEDIC', 'PHARMACIST', 'ELDER_HOME'].includes(role)) {
             try {
                 const admins = await prisma.user.findMany({ where: { role: 'ADMIN' } });
                 const notifPromises = admins.map(admin => 

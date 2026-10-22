@@ -13,6 +13,7 @@ router.get('/labtechs', protect, patientController.getVerifiedLabTechs);
 router.get('/lab-techs', protect, patientController.getVerifiedLabTechs);
 router.get('/paramedics', protect, patientController.getVerifiedParamedics);
 router.get('/caregivers', protect, patientController.getVerifiedCaregivers);
+router.get('/elder-homes', protect, patientController.getVerifiedElderHomes);
 
 // Dashboard
 router.get('/dashboard', protect, patientController.getDashboard);
@@ -23,6 +24,7 @@ router.get('/appointments', protect, patientController.getAppointments);
 router.post('/appointment/:id/message', protect, patientController.addAppointmentMessage);
 router.put('/appointment/:id/reschedule', protect, patientController.rescheduleAppointment);
 router.put('/appointment/:id/cancel', protect, patientController.cancelAppointment);
+router.post('/review', protect, patientController.submitReview);
 
 // Emergency
 router.post('/sos', protect, patientController.triggerSOS);
@@ -42,5 +44,7 @@ const reportController = require('../controllers/reportController');
 router.get('/report', protect, reportController.getPatientReport);
 
 router.delete('/appointment/:id', protect, patientController.deleteAppointment);
+
+router.get('/nearby-professionals', protect, patientController.getNearbyProfessionals);
 
 module.exports = router;

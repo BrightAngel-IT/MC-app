@@ -183,3 +183,65 @@ exports.getProducts = async (req, res) => {
         return res.status(500).json({message: "Internal server error"});
     }
 };
+
+exports.deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const profile = await prisma.pharmacistProfile.findUnique({
+            where: {userId: req.user.id},
+        });
+        if(!profile) return res.status(404).json({message: 'Profile not found'});
+
+        const product = await prisma.product.findUnique({
+            where: { id },
+            include: { orderItems: true } // check if it has orders
+        });
+
+        if (!product || product.pharmacistId !== profile.id) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        if (product.orderItems && product.orderItems.length > 0) {
+            return res.status(400).json({ message: 'Cannot delete product because it has been ordered by patients. You can mark it as Out of Stock instead.' });
+        }
+
+        await prisma.product.delete({
+            where: { id }
+        });
+
+        return res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        console.log(error);
+        if (error.code === 'P2003') {
+            return res.status(400).json({ message: 'Cannot delete product because it is linked to patient orders.' });
+        }
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+exports.updateProfile = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { locationLat, locationLng, serviceRadius, availabilityStatus } = req.body;
+        
+        let profile = await prisma.pharmacistProfile.findUnique({
+            where: { userId }
+        });
+        
+        if (!profile) return res.status(404).json({ error: 'Profile not found' });
+        
+        const updated = await prisma.pharmacistProfile.update({
+            where: { userId },
+            data: {
+                locationLat: locationLat !== undefined ? parseFloat(locationLat) : profile.locationLat,
+                locationLng: locationLng !== undefined ? parseFloat(locationLng) : profile.locationLng,
+                serviceRadius: serviceRadius !== undefined ? parseInt(serviceRadius) : profile.serviceRadius,
+                availabilityStatus: availabilityStatus !== undefined ? availabilityStatus : profile.availabilityStatus
+            }
+        });
+        res.json({ message: 'Profile updated', profile: updated });
+    } catch (error) {
+        console.error('Update Profile Error:', error);
+        res.status(500).json({ error: 'Server Error' });
+    }
+};

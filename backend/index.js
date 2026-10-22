@@ -9,6 +9,8 @@ const patientRoutes = require('./src/routes/patientRoutes')
 const professionalRoutes = require('./src/routes/professionalRoutes');
 const vendorRoutes = require('./src/routes/vendorRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
+const settingsRoutes = require('./src/routes/settingsRoutes');
+const elderHomeRoutes = require('./src/routes/elderHomeRoutes');
 
 const app = express();
 
@@ -16,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 const path = require("path");
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:8081', credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
@@ -26,6 +28,8 @@ app.use('/api/patient', patientRoutes)
 app.use('/api/professional', professionalRoutes);
 app.use('/api/vendor', vendorRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/elder-home', elderHomeRoutes);
 
 const notificationRoutes = require('./src/routes/notificationRoutes');
 app.use('/api/notifications', notificationRoutes);

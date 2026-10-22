@@ -98,6 +98,26 @@ export type ActivityLog = $Result.DefaultSelection<Prisma.$ActivityLogPayload>
  * 
  */
 export type RejectedRecord = $Result.DefaultSelection<Prisma.$RejectedRecordPayload>
+/**
+ * Model Review
+ * 
+ */
+export type Review = $Result.DefaultSelection<Prisma.$ReviewPayload>
+/**
+ * Model SystemSetting
+ * 
+ */
+export type SystemSetting = $Result.DefaultSelection<Prisma.$SystemSettingPayload>
+/**
+ * Model ElderHomePost
+ * 
+ */
+export type ElderHomePost = $Result.DefaultSelection<Prisma.$ElderHomePostPayload>
+/**
+ * Model ElderHomeService
+ * 
+ */
+export type ElderHomeService = $Result.DefaultSelection<Prisma.$ElderHomeServicePayload>
 
 /**
  * Enums
@@ -112,7 +132,8 @@ export namespace $Enums {
   LAB_TECH: 'LAB_TECH',
   PARAMEDIC: 'PARAMEDIC',
   PHARMACIST: 'PHARMACIST',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  ELDER_HOME: 'ELDER_HOME'
 };
 
 export type Role = (typeof Role)[keyof typeof Role]
@@ -423,6 +444,46 @@ export class PrismaClient<
     * ```
     */
   get rejectedRecord(): Prisma.RejectedRecordDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.review`: Exposes CRUD operations for the **Review** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Reviews
+    * const reviews = await prisma.review.findMany()
+    * ```
+    */
+  get review(): Prisma.ReviewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.systemSetting`: Exposes CRUD operations for the **SystemSetting** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SystemSettings
+    * const systemSettings = await prisma.systemSetting.findMany()
+    * ```
+    */
+  get systemSetting(): Prisma.SystemSettingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.elderHomePost`: Exposes CRUD operations for the **ElderHomePost** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ElderHomePosts
+    * const elderHomePosts = await prisma.elderHomePost.findMany()
+    * ```
+    */
+  get elderHomePost(): Prisma.ElderHomePostDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.elderHomeService`: Exposes CRUD operations for the **ElderHomeService** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ElderHomeServices
+    * const elderHomeServices = await prisma.elderHomeService.findMany()
+    * ```
+    */
+  get elderHomeService(): Prisma.ElderHomeServiceDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -880,7 +941,11 @@ export namespace Prisma {
     OrderItem: 'OrderItem',
     EmergencySOS: 'EmergencySOS',
     ActivityLog: 'ActivityLog',
-    RejectedRecord: 'RejectedRecord'
+    RejectedRecord: 'RejectedRecord',
+    Review: 'Review',
+    SystemSetting: 'SystemSetting',
+    ElderHomePost: 'ElderHomePost',
+    ElderHomeService: 'ElderHomeService'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -899,7 +964,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "notification" | "patientProfile" | "professionalProfile" | "pharmacistProfile" | "adminProfile" | "appointment" | "appointmentMessage" | "prescription" | "prescriptionItem" | "product" | "order" | "orderMessage" | "orderItem" | "emergencySOS" | "activityLog" | "rejectedRecord"
+      modelProps: "user" | "notification" | "patientProfile" | "professionalProfile" | "pharmacistProfile" | "adminProfile" | "appointment" | "appointmentMessage" | "prescription" | "prescriptionItem" | "product" | "order" | "orderMessage" | "orderItem" | "emergencySOS" | "activityLog" | "rejectedRecord" | "review" | "systemSetting" | "elderHomePost" | "elderHomeService"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2161,6 +2226,302 @@ export namespace Prisma {
           }
         }
       }
+      Review: {
+        payload: Prisma.$ReviewPayload<ExtArgs>
+        fields: Prisma.ReviewFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReviewFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReviewFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>
+          }
+          findFirst: {
+            args: Prisma.ReviewFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReviewFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>
+          }
+          findMany: {
+            args: Prisma.ReviewFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>[]
+          }
+          create: {
+            args: Prisma.ReviewCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>
+          }
+          createMany: {
+            args: Prisma.ReviewCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReviewCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>[]
+          }
+          delete: {
+            args: Prisma.ReviewDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>
+          }
+          update: {
+            args: Prisma.ReviewUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReviewDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReviewUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReviewUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>[]
+          }
+          upsert: {
+            args: Prisma.ReviewUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReviewPayload>
+          }
+          aggregate: {
+            args: Prisma.ReviewAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReview>
+          }
+          groupBy: {
+            args: Prisma.ReviewGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReviewGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReviewCountArgs<ExtArgs>
+            result: $Utils.Optional<ReviewCountAggregateOutputType> | number
+          }
+        }
+      }
+      SystemSetting: {
+        payload: Prisma.$SystemSettingPayload<ExtArgs>
+        fields: Prisma.SystemSettingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SystemSettingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SystemSettingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+          }
+          findFirst: {
+            args: Prisma.SystemSettingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SystemSettingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+          }
+          findMany: {
+            args: Prisma.SystemSettingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>[]
+          }
+          create: {
+            args: Prisma.SystemSettingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+          }
+          createMany: {
+            args: Prisma.SystemSettingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SystemSettingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>[]
+          }
+          delete: {
+            args: Prisma.SystemSettingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+          }
+          update: {
+            args: Prisma.SystemSettingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+          }
+          deleteMany: {
+            args: Prisma.SystemSettingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SystemSettingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SystemSettingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>[]
+          }
+          upsert: {
+            args: Prisma.SystemSettingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SystemSettingPayload>
+          }
+          aggregate: {
+            args: Prisma.SystemSettingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSystemSetting>
+          }
+          groupBy: {
+            args: Prisma.SystemSettingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SystemSettingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SystemSettingCountArgs<ExtArgs>
+            result: $Utils.Optional<SystemSettingCountAggregateOutputType> | number
+          }
+        }
+      }
+      ElderHomePost: {
+        payload: Prisma.$ElderHomePostPayload<ExtArgs>
+        fields: Prisma.ElderHomePostFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ElderHomePostFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ElderHomePostFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>
+          }
+          findFirst: {
+            args: Prisma.ElderHomePostFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ElderHomePostFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>
+          }
+          findMany: {
+            args: Prisma.ElderHomePostFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>[]
+          }
+          create: {
+            args: Prisma.ElderHomePostCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>
+          }
+          createMany: {
+            args: Prisma.ElderHomePostCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ElderHomePostCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>[]
+          }
+          delete: {
+            args: Prisma.ElderHomePostDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>
+          }
+          update: {
+            args: Prisma.ElderHomePostUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>
+          }
+          deleteMany: {
+            args: Prisma.ElderHomePostDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ElderHomePostUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ElderHomePostUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>[]
+          }
+          upsert: {
+            args: Prisma.ElderHomePostUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomePostPayload>
+          }
+          aggregate: {
+            args: Prisma.ElderHomePostAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateElderHomePost>
+          }
+          groupBy: {
+            args: Prisma.ElderHomePostGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ElderHomePostGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ElderHomePostCountArgs<ExtArgs>
+            result: $Utils.Optional<ElderHomePostCountAggregateOutputType> | number
+          }
+        }
+      }
+      ElderHomeService: {
+        payload: Prisma.$ElderHomeServicePayload<ExtArgs>
+        fields: Prisma.ElderHomeServiceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ElderHomeServiceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ElderHomeServiceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>
+          }
+          findFirst: {
+            args: Prisma.ElderHomeServiceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ElderHomeServiceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>
+          }
+          findMany: {
+            args: Prisma.ElderHomeServiceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>[]
+          }
+          create: {
+            args: Prisma.ElderHomeServiceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>
+          }
+          createMany: {
+            args: Prisma.ElderHomeServiceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ElderHomeServiceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>[]
+          }
+          delete: {
+            args: Prisma.ElderHomeServiceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>
+          }
+          update: {
+            args: Prisma.ElderHomeServiceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>
+          }
+          deleteMany: {
+            args: Prisma.ElderHomeServiceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ElderHomeServiceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ElderHomeServiceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>[]
+          }
+          upsert: {
+            args: Prisma.ElderHomeServiceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ElderHomeServicePayload>
+          }
+          aggregate: {
+            args: Prisma.ElderHomeServiceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateElderHomeService>
+          }
+          groupBy: {
+            args: Prisma.ElderHomeServiceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ElderHomeServiceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ElderHomeServiceCountArgs<ExtArgs>
+            result: $Utils.Optional<ElderHomeServiceCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2274,6 +2635,10 @@ export namespace Prisma {
     emergencySOS?: EmergencySOSOmit
     activityLog?: ActivityLogOmit
     rejectedRecord?: RejectedRecordOmit
+    review?: ReviewOmit
+    systemSetting?: SystemSettingOmit
+    elderHomePost?: ElderHomePostOmit
+    elderHomeService?: ElderHomeServiceOmit
   }
 
   /* Types for Logging */
@@ -2398,6 +2763,7 @@ export namespace Prisma {
     prescriptions: number
     orders: number
     emergencySOSs: number
+    reviews: number
   }
 
   export type PatientProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2405,6 +2771,7 @@ export namespace Prisma {
     prescriptions?: boolean | PatientProfileCountOutputTypeCountPrescriptionsArgs
     orders?: boolean | PatientProfileCountOutputTypeCountOrdersArgs
     emergencySOSs?: boolean | PatientProfileCountOutputTypeCountEmergencySOSsArgs
+    reviews?: boolean | PatientProfileCountOutputTypeCountReviewsArgs
   }
 
   // Custom InputTypes
@@ -2446,6 +2813,13 @@ export namespace Prisma {
     where?: EmergencySOSWhereInput
   }
 
+  /**
+   * PatientProfileCountOutputType without action
+   */
+  export type PatientProfileCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
+  }
+
 
   /**
    * Count Type ProfessionalProfileCountOutputType
@@ -2455,12 +2829,18 @@ export namespace Prisma {
     appointments: number
     prescriptions: number
     emergencySOSs: number
+    reviews: number
+    elderHomePosts: number
+    elderHomeServices: number
   }
 
   export type ProfessionalProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     appointments?: boolean | ProfessionalProfileCountOutputTypeCountAppointmentsArgs
     prescriptions?: boolean | ProfessionalProfileCountOutputTypeCountPrescriptionsArgs
     emergencySOSs?: boolean | ProfessionalProfileCountOutputTypeCountEmergencySOSsArgs
+    reviews?: boolean | ProfessionalProfileCountOutputTypeCountReviewsArgs
+    elderHomePosts?: boolean | ProfessionalProfileCountOutputTypeCountElderHomePostsArgs
+    elderHomeServices?: boolean | ProfessionalProfileCountOutputTypeCountElderHomeServicesArgs
   }
 
   // Custom InputTypes
@@ -2493,6 +2873,27 @@ export namespace Prisma {
    */
   export type ProfessionalProfileCountOutputTypeCountEmergencySOSsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmergencySOSWhereInput
+  }
+
+  /**
+   * ProfessionalProfileCountOutputType without action
+   */
+  export type ProfessionalProfileCountOutputTypeCountReviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
+  }
+
+  /**
+   * ProfessionalProfileCountOutputType without action
+   */
+  export type ProfessionalProfileCountOutputTypeCountElderHomePostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ElderHomePostWhereInput
+  }
+
+  /**
+   * ProfessionalProfileCountOutputType without action
+   */
+  export type ProfessionalProfileCountOutputTypeCountElderHomeServicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ElderHomeServiceWhereInput
   }
 
 
@@ -5215,6 +5616,7 @@ export namespace Prisma {
     prescriptions?: boolean | PatientProfile$prescriptionsArgs<ExtArgs>
     orders?: boolean | PatientProfile$ordersArgs<ExtArgs>
     emergencySOSs?: boolean | PatientProfile$emergencySOSsArgs<ExtArgs>
+    reviews?: boolean | PatientProfile$reviewsArgs<ExtArgs>
     _count?: boolean | PatientProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["patientProfile"]>
 
@@ -5257,6 +5659,7 @@ export namespace Prisma {
     prescriptions?: boolean | PatientProfile$prescriptionsArgs<ExtArgs>
     orders?: boolean | PatientProfile$ordersArgs<ExtArgs>
     emergencySOSs?: boolean | PatientProfile$emergencySOSsArgs<ExtArgs>
+    reviews?: boolean | PatientProfile$reviewsArgs<ExtArgs>
     _count?: boolean | PatientProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PatientProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5274,6 +5677,7 @@ export namespace Prisma {
       prescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
       orders: Prisma.$OrderPayload<ExtArgs>[]
       emergencySOSs: Prisma.$EmergencySOSPayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5682,6 +6086,7 @@ export namespace Prisma {
     prescriptions<T extends PatientProfile$prescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, PatientProfile$prescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     orders<T extends PatientProfile$ordersArgs<ExtArgs> = {}>(args?: Subset<T, PatientProfile$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     emergencySOSs<T extends PatientProfile$emergencySOSsArgs<ExtArgs> = {}>(args?: Subset<T, PatientProfile$emergencySOSsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmergencySOSPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends PatientProfile$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, PatientProfile$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6210,6 +6615,30 @@ export namespace Prisma {
   }
 
   /**
+   * PatientProfile.reviews
+   */
+  export type PatientProfile$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
    * PatientProfile without action
    */
   export type PatientProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6242,11 +6671,21 @@ export namespace Prisma {
 
   export type ProfessionalProfileAvgAggregateOutputType = {
     rating: number | null
+    locationLat: number | null
+    locationLng: number | null
+    bookingFee: number | null
+    serviceRadius: number | null
+    walletBalance: number | null
     licenseIssuedYear: number | null
   }
 
   export type ProfessionalProfileSumAggregateOutputType = {
     rating: number | null
+    locationLat: number | null
+    locationLng: number | null
+    bookingFee: number | null
+    serviceRadius: number | null
+    walletBalance: number | null
     licenseIssuedYear: number | null
   }
 
@@ -6266,10 +6705,25 @@ export namespace Prisma {
     attachedHospital: string | null
     availabilityStatus: string | null
     rating: number | null
+    locationLat: number | null
+    locationLng: number | null
+    bookingFee: number | null
+    serviceRadius: number | null
+    serveEverywhere: boolean | null
+    walletBalance: number | null
     licenseIssuedYear: number | null
     licenseNumber: string | null
     idFrontImage: string | null
     idBackImage: string | null
+    policies: string | null
+    facilities: string | null
+    coverImage: string | null
+    profileImage: string | null
+    socialFacebook: string | null
+    socialInstagram: string | null
+    socialWhatsapp: string | null
+    socialWebsite: string | null
+    contactPhone: string | null
   }
 
   export type ProfessionalProfileMaxAggregateOutputType = {
@@ -6288,10 +6742,25 @@ export namespace Prisma {
     attachedHospital: string | null
     availabilityStatus: string | null
     rating: number | null
+    locationLat: number | null
+    locationLng: number | null
+    bookingFee: number | null
+    serviceRadius: number | null
+    serveEverywhere: boolean | null
+    walletBalance: number | null
     licenseIssuedYear: number | null
     licenseNumber: string | null
     idFrontImage: string | null
     idBackImage: string | null
+    policies: string | null
+    facilities: string | null
+    coverImage: string | null
+    profileImage: string | null
+    socialFacebook: string | null
+    socialInstagram: string | null
+    socialWhatsapp: string | null
+    socialWebsite: string | null
+    contactPhone: string | null
   }
 
   export type ProfessionalProfileCountAggregateOutputType = {
@@ -6310,21 +6779,46 @@ export namespace Prisma {
     attachedHospital: number
     availabilityStatus: number
     rating: number
+    locationLat: number
+    locationLng: number
+    bookingFee: number
+    serviceRadius: number
+    serveEverywhere: number
+    walletBalance: number
     licenseIssuedYear: number
     licenseNumber: number
     idFrontImage: number
     idBackImage: number
+    policies: number
+    facilities: number
+    coverImage: number
+    profileImage: number
+    socialFacebook: number
+    socialInstagram: number
+    socialWhatsapp: number
+    socialWebsite: number
+    contactPhone: number
     _all: number
   }
 
 
   export type ProfessionalProfileAvgAggregateInputType = {
     rating?: true
+    locationLat?: true
+    locationLng?: true
+    bookingFee?: true
+    serviceRadius?: true
+    walletBalance?: true
     licenseIssuedYear?: true
   }
 
   export type ProfessionalProfileSumAggregateInputType = {
     rating?: true
+    locationLat?: true
+    locationLng?: true
+    bookingFee?: true
+    serviceRadius?: true
+    walletBalance?: true
     licenseIssuedYear?: true
   }
 
@@ -6344,10 +6838,25 @@ export namespace Prisma {
     attachedHospital?: true
     availabilityStatus?: true
     rating?: true
+    locationLat?: true
+    locationLng?: true
+    bookingFee?: true
+    serviceRadius?: true
+    serveEverywhere?: true
+    walletBalance?: true
     licenseIssuedYear?: true
     licenseNumber?: true
     idFrontImage?: true
     idBackImage?: true
+    policies?: true
+    facilities?: true
+    coverImage?: true
+    profileImage?: true
+    socialFacebook?: true
+    socialInstagram?: true
+    socialWhatsapp?: true
+    socialWebsite?: true
+    contactPhone?: true
   }
 
   export type ProfessionalProfileMaxAggregateInputType = {
@@ -6366,10 +6875,25 @@ export namespace Prisma {
     attachedHospital?: true
     availabilityStatus?: true
     rating?: true
+    locationLat?: true
+    locationLng?: true
+    bookingFee?: true
+    serviceRadius?: true
+    serveEverywhere?: true
+    walletBalance?: true
     licenseIssuedYear?: true
     licenseNumber?: true
     idFrontImage?: true
     idBackImage?: true
+    policies?: true
+    facilities?: true
+    coverImage?: true
+    profileImage?: true
+    socialFacebook?: true
+    socialInstagram?: true
+    socialWhatsapp?: true
+    socialWebsite?: true
+    contactPhone?: true
   }
 
   export type ProfessionalProfileCountAggregateInputType = {
@@ -6388,10 +6912,25 @@ export namespace Prisma {
     attachedHospital?: true
     availabilityStatus?: true
     rating?: true
+    locationLat?: true
+    locationLng?: true
+    bookingFee?: true
+    serviceRadius?: true
+    serveEverywhere?: true
+    walletBalance?: true
     licenseIssuedYear?: true
     licenseNumber?: true
     idFrontImage?: true
     idBackImage?: true
+    policies?: true
+    facilities?: true
+    coverImage?: true
+    profileImage?: true
+    socialFacebook?: true
+    socialInstagram?: true
+    socialWhatsapp?: true
+    socialWebsite?: true
+    contactPhone?: true
     _all?: true
   }
 
@@ -6497,10 +7036,25 @@ export namespace Prisma {
     attachedHospital: string | null
     availabilityStatus: string
     rating: number
+    locationLat: number | null
+    locationLng: number | null
+    bookingFee: number
+    serviceRadius: number
+    serveEverywhere: boolean
+    walletBalance: number
     licenseIssuedYear: number | null
     licenseNumber: string | null
     idFrontImage: string | null
     idBackImage: string | null
+    policies: string | null
+    facilities: string | null
+    coverImage: string | null
+    profileImage: string | null
+    socialFacebook: string | null
+    socialInstagram: string | null
+    socialWhatsapp: string | null
+    socialWebsite: string | null
+    contactPhone: string | null
     _count: ProfessionalProfileCountAggregateOutputType | null
     _avg: ProfessionalProfileAvgAggregateOutputType | null
     _sum: ProfessionalProfileSumAggregateOutputType | null
@@ -6538,14 +7092,32 @@ export namespace Prisma {
     attachedHospital?: boolean
     availabilityStatus?: boolean
     rating?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    bookingFee?: boolean
+    serviceRadius?: boolean
+    serveEverywhere?: boolean
+    walletBalance?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
     idBackImage?: boolean
+    policies?: boolean
+    facilities?: boolean
+    coverImage?: boolean
+    profileImage?: boolean
+    socialFacebook?: boolean
+    socialInstagram?: boolean
+    socialWhatsapp?: boolean
+    socialWebsite?: boolean
+    contactPhone?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     appointments?: boolean | ProfessionalProfile$appointmentsArgs<ExtArgs>
     prescriptions?: boolean | ProfessionalProfile$prescriptionsArgs<ExtArgs>
     emergencySOSs?: boolean | ProfessionalProfile$emergencySOSsArgs<ExtArgs>
+    reviews?: boolean | ProfessionalProfile$reviewsArgs<ExtArgs>
+    elderHomePosts?: boolean | ProfessionalProfile$elderHomePostsArgs<ExtArgs>
+    elderHomeServices?: boolean | ProfessionalProfile$elderHomeServicesArgs<ExtArgs>
     _count?: boolean | ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalProfile"]>
 
@@ -6565,10 +7137,25 @@ export namespace Prisma {
     attachedHospital?: boolean
     availabilityStatus?: boolean
     rating?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    bookingFee?: boolean
+    serviceRadius?: boolean
+    serveEverywhere?: boolean
+    walletBalance?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
     idBackImage?: boolean
+    policies?: boolean
+    facilities?: boolean
+    coverImage?: boolean
+    profileImage?: boolean
+    socialFacebook?: boolean
+    socialInstagram?: boolean
+    socialWhatsapp?: boolean
+    socialWebsite?: boolean
+    contactPhone?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalProfile"]>
 
@@ -6588,10 +7175,25 @@ export namespace Prisma {
     attachedHospital?: boolean
     availabilityStatus?: boolean
     rating?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    bookingFee?: boolean
+    serviceRadius?: boolean
+    serveEverywhere?: boolean
+    walletBalance?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
     idBackImage?: boolean
+    policies?: boolean
+    facilities?: boolean
+    coverImage?: boolean
+    profileImage?: boolean
+    socialFacebook?: boolean
+    socialInstagram?: boolean
+    socialWhatsapp?: boolean
+    socialWebsite?: boolean
+    contactPhone?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalProfile"]>
 
@@ -6611,18 +7213,36 @@ export namespace Prisma {
     attachedHospital?: boolean
     availabilityStatus?: boolean
     rating?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    bookingFee?: boolean
+    serviceRadius?: boolean
+    serveEverywhere?: boolean
+    walletBalance?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
     idBackImage?: boolean
+    policies?: boolean
+    facilities?: boolean
+    coverImage?: boolean
+    profileImage?: boolean
+    socialFacebook?: boolean
+    socialInstagram?: boolean
+    socialWhatsapp?: boolean
+    socialWebsite?: boolean
+    contactPhone?: boolean
   }
 
-  export type ProfessionalProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "specialization" | "qualifications" | "licenseFrontImage" | "licenseBackImage" | "address" | "idCardNumber" | "workingHospital" | "isCurrentlyWorking" | "ambulanceVehicleNumber" | "attachedHospital" | "availabilityStatus" | "rating" | "licenseIssuedYear" | "licenseNumber" | "idFrontImage" | "idBackImage", ExtArgs["result"]["professionalProfile"]>
+  export type ProfessionalProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "specialization" | "qualifications" | "licenseFrontImage" | "licenseBackImage" | "address" | "idCardNumber" | "workingHospital" | "isCurrentlyWorking" | "ambulanceVehicleNumber" | "attachedHospital" | "availabilityStatus" | "rating" | "locationLat" | "locationLng" | "bookingFee" | "serviceRadius" | "serveEverywhere" | "walletBalance" | "licenseIssuedYear" | "licenseNumber" | "idFrontImage" | "idBackImage" | "policies" | "facilities" | "coverImage" | "profileImage" | "socialFacebook" | "socialInstagram" | "socialWhatsapp" | "socialWebsite" | "contactPhone", ExtArgs["result"]["professionalProfile"]>
   export type ProfessionalProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     appointments?: boolean | ProfessionalProfile$appointmentsArgs<ExtArgs>
     prescriptions?: boolean | ProfessionalProfile$prescriptionsArgs<ExtArgs>
     emergencySOSs?: boolean | ProfessionalProfile$emergencySOSsArgs<ExtArgs>
+    reviews?: boolean | ProfessionalProfile$reviewsArgs<ExtArgs>
+    elderHomePosts?: boolean | ProfessionalProfile$elderHomePostsArgs<ExtArgs>
+    elderHomeServices?: boolean | ProfessionalProfile$elderHomeServicesArgs<ExtArgs>
     _count?: boolean | ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfessionalProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6639,6 +7259,9 @@ export namespace Prisma {
       appointments: Prisma.$AppointmentPayload<ExtArgs>[]
       prescriptions: Prisma.$PrescriptionPayload<ExtArgs>[]
       emergencySOSs: Prisma.$EmergencySOSPayload<ExtArgs>[]
+      reviews: Prisma.$ReviewPayload<ExtArgs>[]
+      elderHomePosts: Prisma.$ElderHomePostPayload<ExtArgs>[]
+      elderHomeServices: Prisma.$ElderHomeServicePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6656,10 +7279,25 @@ export namespace Prisma {
       attachedHospital: string | null
       availabilityStatus: string
       rating: number
+      locationLat: number | null
+      locationLng: number | null
+      bookingFee: number
+      serviceRadius: number
+      serveEverywhere: boolean
+      walletBalance: number
       licenseIssuedYear: number | null
       licenseNumber: string | null
       idFrontImage: string | null
       idBackImage: string | null
+      policies: string | null
+      facilities: string | null
+      coverImage: string | null
+      profileImage: string | null
+      socialFacebook: string | null
+      socialInstagram: string | null
+      socialWhatsapp: string | null
+      socialWebsite: string | null
+      contactPhone: string | null
     }, ExtArgs["result"]["professionalProfile"]>
     composites: {}
   }
@@ -7058,6 +7696,9 @@ export namespace Prisma {
     appointments<T extends ProfessionalProfile$appointmentsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     prescriptions<T extends ProfessionalProfile$prescriptionsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$prescriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     emergencySOSs<T extends ProfessionalProfile$emergencySOSsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$emergencySOSsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmergencySOSPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviews<T extends ProfessionalProfile$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    elderHomePosts<T extends ProfessionalProfile$elderHomePostsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$elderHomePostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    elderHomeServices<T extends ProfessionalProfile$elderHomeServicesArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$elderHomeServicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7102,10 +7743,25 @@ export namespace Prisma {
     readonly attachedHospital: FieldRef<"ProfessionalProfile", 'String'>
     readonly availabilityStatus: FieldRef<"ProfessionalProfile", 'String'>
     readonly rating: FieldRef<"ProfessionalProfile", 'Float'>
+    readonly locationLat: FieldRef<"ProfessionalProfile", 'Float'>
+    readonly locationLng: FieldRef<"ProfessionalProfile", 'Float'>
+    readonly bookingFee: FieldRef<"ProfessionalProfile", 'Float'>
+    readonly serviceRadius: FieldRef<"ProfessionalProfile", 'Int'>
+    readonly serveEverywhere: FieldRef<"ProfessionalProfile", 'Boolean'>
+    readonly walletBalance: FieldRef<"ProfessionalProfile", 'Float'>
     readonly licenseIssuedYear: FieldRef<"ProfessionalProfile", 'Int'>
     readonly licenseNumber: FieldRef<"ProfessionalProfile", 'String'>
     readonly idFrontImage: FieldRef<"ProfessionalProfile", 'String'>
     readonly idBackImage: FieldRef<"ProfessionalProfile", 'String'>
+    readonly policies: FieldRef<"ProfessionalProfile", 'String'>
+    readonly facilities: FieldRef<"ProfessionalProfile", 'String'>
+    readonly coverImage: FieldRef<"ProfessionalProfile", 'String'>
+    readonly profileImage: FieldRef<"ProfessionalProfile", 'String'>
+    readonly socialFacebook: FieldRef<"ProfessionalProfile", 'String'>
+    readonly socialInstagram: FieldRef<"ProfessionalProfile", 'String'>
+    readonly socialWhatsapp: FieldRef<"ProfessionalProfile", 'String'>
+    readonly socialWebsite: FieldRef<"ProfessionalProfile", 'String'>
+    readonly contactPhone: FieldRef<"ProfessionalProfile", 'String'>
   }
     
 
@@ -7574,6 +8230,78 @@ export namespace Prisma {
   }
 
   /**
+   * ProfessionalProfile.reviews
+   */
+  export type ProfessionalProfile$reviewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    cursor?: ReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalProfile.elderHomePosts
+   */
+  export type ProfessionalProfile$elderHomePostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    where?: ElderHomePostWhereInput
+    orderBy?: ElderHomePostOrderByWithRelationInput | ElderHomePostOrderByWithRelationInput[]
+    cursor?: ElderHomePostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ElderHomePostScalarFieldEnum | ElderHomePostScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalProfile.elderHomeServices
+   */
+  export type ProfessionalProfile$elderHomeServicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    where?: ElderHomeServiceWhereInput
+    orderBy?: ElderHomeServiceOrderByWithRelationInput | ElderHomeServiceOrderByWithRelationInput[]
+    cursor?: ElderHomeServiceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ElderHomeServiceScalarFieldEnum | ElderHomeServiceScalarFieldEnum[]
+  }
+
+  /**
    * ProfessionalProfile without action
    */
   export type ProfessionalProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7606,10 +8334,18 @@ export namespace Prisma {
 
   export type PharmacistProfileAvgAggregateOutputType = {
     licenseIssuedYear: number | null
+    locationLat: number | null
+    locationLng: number | null
+    walletBalance: number | null
+    serviceRadius: number | null
   }
 
   export type PharmacistProfileSumAggregateOutputType = {
     licenseIssuedYear: number | null
+    locationLat: number | null
+    locationLng: number | null
+    walletBalance: number | null
+    serviceRadius: number | null
   }
 
   export type PharmacistProfileMinAggregateOutputType = {
@@ -7624,6 +8360,11 @@ export namespace Prisma {
     idBackImage: string | null
     address: string | null
     idCardNumber: string | null
+    locationLat: number | null
+    locationLng: number | null
+    walletBalance: number | null
+    serviceRadius: number | null
+    availabilityStatus: string | null
   }
 
   export type PharmacistProfileMaxAggregateOutputType = {
@@ -7638,6 +8379,11 @@ export namespace Prisma {
     idBackImage: string | null
     address: string | null
     idCardNumber: string | null
+    locationLat: number | null
+    locationLng: number | null
+    walletBalance: number | null
+    serviceRadius: number | null
+    availabilityStatus: string | null
   }
 
   export type PharmacistProfileCountAggregateOutputType = {
@@ -7652,16 +8398,29 @@ export namespace Prisma {
     idBackImage: number
     address: number
     idCardNumber: number
+    locationLat: number
+    locationLng: number
+    walletBalance: number
+    serviceRadius: number
+    availabilityStatus: number
     _all: number
   }
 
 
   export type PharmacistProfileAvgAggregateInputType = {
     licenseIssuedYear?: true
+    locationLat?: true
+    locationLng?: true
+    walletBalance?: true
+    serviceRadius?: true
   }
 
   export type PharmacistProfileSumAggregateInputType = {
     licenseIssuedYear?: true
+    locationLat?: true
+    locationLng?: true
+    walletBalance?: true
+    serviceRadius?: true
   }
 
   export type PharmacistProfileMinAggregateInputType = {
@@ -7676,6 +8435,11 @@ export namespace Prisma {
     idBackImage?: true
     address?: true
     idCardNumber?: true
+    locationLat?: true
+    locationLng?: true
+    walletBalance?: true
+    serviceRadius?: true
+    availabilityStatus?: true
   }
 
   export type PharmacistProfileMaxAggregateInputType = {
@@ -7690,6 +8454,11 @@ export namespace Prisma {
     idBackImage?: true
     address?: true
     idCardNumber?: true
+    locationLat?: true
+    locationLng?: true
+    walletBalance?: true
+    serviceRadius?: true
+    availabilityStatus?: true
   }
 
   export type PharmacistProfileCountAggregateInputType = {
@@ -7704,6 +8473,11 @@ export namespace Prisma {
     idBackImage?: true
     address?: true
     idCardNumber?: true
+    locationLat?: true
+    locationLng?: true
+    walletBalance?: true
+    serviceRadius?: true
+    availabilityStatus?: true
     _all?: true
   }
 
@@ -7805,6 +8579,11 @@ export namespace Prisma {
     idBackImage: string | null
     address: string | null
     idCardNumber: string | null
+    locationLat: number | null
+    locationLng: number | null
+    walletBalance: number
+    serviceRadius: number
+    availabilityStatus: string
     _count: PharmacistProfileCountAggregateOutputType | null
     _avg: PharmacistProfileAvgAggregateOutputType | null
     _sum: PharmacistProfileSumAggregateOutputType | null
@@ -7838,6 +8617,11 @@ export namespace Prisma {
     idBackImage?: boolean
     address?: boolean
     idCardNumber?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    walletBalance?: boolean
+    serviceRadius?: boolean
+    availabilityStatus?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     products?: boolean | PharmacistProfile$productsArgs<ExtArgs>
     orders?: boolean | PharmacistProfile$ordersArgs<ExtArgs>
@@ -7856,6 +8640,11 @@ export namespace Prisma {
     idBackImage?: boolean
     address?: boolean
     idCardNumber?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    walletBalance?: boolean
+    serviceRadius?: boolean
+    availabilityStatus?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pharmacistProfile"]>
 
@@ -7871,6 +8660,11 @@ export namespace Prisma {
     idBackImage?: boolean
     address?: boolean
     idCardNumber?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    walletBalance?: boolean
+    serviceRadius?: boolean
+    availabilityStatus?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pharmacistProfile"]>
 
@@ -7886,9 +8680,14 @@ export namespace Prisma {
     idBackImage?: boolean
     address?: boolean
     idCardNumber?: boolean
+    locationLat?: boolean
+    locationLng?: boolean
+    walletBalance?: boolean
+    serviceRadius?: boolean
+    availabilityStatus?: boolean
   }
 
-  export type PharmacistProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "businessName" | "licenseNumber" | "licenseIssuedYear" | "licenseFrontImage" | "licenseBackImage" | "idFrontImage" | "idBackImage" | "address" | "idCardNumber", ExtArgs["result"]["pharmacistProfile"]>
+  export type PharmacistProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "businessName" | "licenseNumber" | "licenseIssuedYear" | "licenseFrontImage" | "licenseBackImage" | "idFrontImage" | "idBackImage" | "address" | "idCardNumber" | "locationLat" | "locationLng" | "walletBalance" | "serviceRadius" | "availabilityStatus", ExtArgs["result"]["pharmacistProfile"]>
   export type PharmacistProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     products?: boolean | PharmacistProfile$productsArgs<ExtArgs>
@@ -7921,6 +8720,11 @@ export namespace Prisma {
       idBackImage: string | null
       address: string | null
       idCardNumber: string | null
+      locationLat: number | null
+      locationLng: number | null
+      walletBalance: number
+      serviceRadius: number
+      availabilityStatus: string
     }, ExtArgs["result"]["pharmacistProfile"]>
     composites: {}
   }
@@ -8358,6 +9162,11 @@ export namespace Prisma {
     readonly idBackImage: FieldRef<"PharmacistProfile", 'String'>
     readonly address: FieldRef<"PharmacistProfile", 'String'>
     readonly idCardNumber: FieldRef<"PharmacistProfile", 'String'>
+    readonly locationLat: FieldRef<"PharmacistProfile", 'Float'>
+    readonly locationLng: FieldRef<"PharmacistProfile", 'Float'>
+    readonly walletBalance: FieldRef<"PharmacistProfile", 'Float'>
+    readonly serviceRadius: FieldRef<"PharmacistProfile", 'Int'>
+    readonly availabilityStatus: FieldRef<"PharmacistProfile", 'String'>
   }
     
 
@@ -9919,11 +10728,13 @@ export namespace Prisma {
   export type AppointmentAvgAggregateOutputType = {
     locationLat: number | null
     locationLng: number | null
+    totalAmount: number | null
   }
 
   export type AppointmentSumAggregateOutputType = {
     locationLat: number | null
     locationLng: number | null
+    totalAmount: number | null
   }
 
   export type AppointmentMinAggregateOutputType = {
@@ -9937,6 +10748,9 @@ export namespace Prisma {
     locationLng: number | null
     symptoms: string | null
     vitalsSummary: string | null
+    paymentMethod: string | null
+    paymentStatus: string | null
+    totalAmount: number | null
     completedAt: Date | null
     createdAt: Date | null
   }
@@ -9952,6 +10766,9 @@ export namespace Prisma {
     locationLng: number | null
     symptoms: string | null
     vitalsSummary: string | null
+    paymentMethod: string | null
+    paymentStatus: string | null
+    totalAmount: number | null
     completedAt: Date | null
     createdAt: Date | null
   }
@@ -9967,6 +10784,9 @@ export namespace Prisma {
     locationLng: number
     symptoms: number
     vitalsSummary: number
+    paymentMethod: number
+    paymentStatus: number
+    totalAmount: number
     completedAt: number
     createdAt: number
     _all: number
@@ -9976,11 +10796,13 @@ export namespace Prisma {
   export type AppointmentAvgAggregateInputType = {
     locationLat?: true
     locationLng?: true
+    totalAmount?: true
   }
 
   export type AppointmentSumAggregateInputType = {
     locationLat?: true
     locationLng?: true
+    totalAmount?: true
   }
 
   export type AppointmentMinAggregateInputType = {
@@ -9994,6 +10816,9 @@ export namespace Prisma {
     locationLng?: true
     symptoms?: true
     vitalsSummary?: true
+    paymentMethod?: true
+    paymentStatus?: true
+    totalAmount?: true
     completedAt?: true
     createdAt?: true
   }
@@ -10009,6 +10834,9 @@ export namespace Prisma {
     locationLng?: true
     symptoms?: true
     vitalsSummary?: true
+    paymentMethod?: true
+    paymentStatus?: true
+    totalAmount?: true
     completedAt?: true
     createdAt?: true
   }
@@ -10024,6 +10852,9 @@ export namespace Prisma {
     locationLng?: true
     symptoms?: true
     vitalsSummary?: true
+    paymentMethod?: true
+    paymentStatus?: true
+    totalAmount?: true
     completedAt?: true
     createdAt?: true
     _all?: true
@@ -10126,6 +10957,9 @@ export namespace Prisma {
     locationLng: number | null
     symptoms: string | null
     vitalsSummary: string | null
+    paymentMethod: string | null
+    paymentStatus: string
+    totalAmount: number
     completedAt: Date | null
     createdAt: Date
     _count: AppointmentCountAggregateOutputType | null
@@ -10160,6 +10994,9 @@ export namespace Prisma {
     locationLng?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    totalAmount?: boolean
     completedAt?: boolean
     createdAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
@@ -10180,6 +11017,9 @@ export namespace Prisma {
     locationLng?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    totalAmount?: boolean
     completedAt?: boolean
     createdAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
@@ -10197,6 +11037,9 @@ export namespace Prisma {
     locationLng?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    totalAmount?: boolean
     completedAt?: boolean
     createdAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
@@ -10214,11 +11057,14 @@ export namespace Prisma {
     locationLng?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    totalAmount?: boolean
     completedAt?: boolean
     createdAt?: boolean
   }
 
-  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "professionalId" | "serviceType" | "scheduledDate" | "status" | "locationLat" | "locationLng" | "symptoms" | "vitalsSummary" | "completedAt" | "createdAt", ExtArgs["result"]["appointment"]>
+  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "professionalId" | "serviceType" | "scheduledDate" | "status" | "locationLat" | "locationLng" | "symptoms" | "vitalsSummary" | "paymentMethod" | "paymentStatus" | "totalAmount" | "completedAt" | "createdAt", ExtArgs["result"]["appointment"]>
   export type AppointmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
@@ -10254,6 +11100,9 @@ export namespace Prisma {
       locationLng: number | null
       symptoms: string | null
       vitalsSummary: string | null
+      paymentMethod: string | null
+      paymentStatus: string
+      totalAmount: number
       completedAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["appointment"]>
@@ -10693,6 +11542,9 @@ export namespace Prisma {
     readonly locationLng: FieldRef<"Appointment", 'Float'>
     readonly symptoms: FieldRef<"Appointment", 'String'>
     readonly vitalsSummary: FieldRef<"Appointment", 'String'>
+    readonly paymentMethod: FieldRef<"Appointment", 'String'>
+    readonly paymentStatus: FieldRef<"Appointment", 'String'>
+    readonly totalAmount: FieldRef<"Appointment", 'Float'>
     readonly completedAt: FieldRef<"Appointment", 'DateTime'>
     readonly createdAt: FieldRef<"Appointment", 'DateTime'>
   }
@@ -22250,6 +23102,4303 @@ export namespace Prisma {
 
 
   /**
+   * Model Review
+   */
+
+  export type AggregateReview = {
+    _count: ReviewCountAggregateOutputType | null
+    _avg: ReviewAvgAggregateOutputType | null
+    _sum: ReviewSumAggregateOutputType | null
+    _min: ReviewMinAggregateOutputType | null
+    _max: ReviewMaxAggregateOutputType | null
+  }
+
+  export type ReviewAvgAggregateOutputType = {
+    rating: number | null
+  }
+
+  export type ReviewSumAggregateOutputType = {
+    rating: number | null
+  }
+
+  export type ReviewMinAggregateOutputType = {
+    id: string | null
+    patientId: string | null
+    professionalId: string | null
+    rating: number | null
+    comment: string | null
+    createdAt: Date | null
+  }
+
+  export type ReviewMaxAggregateOutputType = {
+    id: string | null
+    patientId: string | null
+    professionalId: string | null
+    rating: number | null
+    comment: string | null
+    createdAt: Date | null
+  }
+
+  export type ReviewCountAggregateOutputType = {
+    id: number
+    patientId: number
+    professionalId: number
+    rating: number
+    comment: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ReviewAvgAggregateInputType = {
+    rating?: true
+  }
+
+  export type ReviewSumAggregateInputType = {
+    rating?: true
+  }
+
+  export type ReviewMinAggregateInputType = {
+    id?: true
+    patientId?: true
+    professionalId?: true
+    rating?: true
+    comment?: true
+    createdAt?: true
+  }
+
+  export type ReviewMaxAggregateInputType = {
+    id?: true
+    patientId?: true
+    professionalId?: true
+    rating?: true
+    comment?: true
+    createdAt?: true
+  }
+
+  export type ReviewCountAggregateInputType = {
+    id?: true
+    patientId?: true
+    professionalId?: true
+    rating?: true
+    comment?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ReviewAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Review to aggregate.
+     */
+    where?: ReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reviews to fetch.
+     */
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Reviews
+    **/
+    _count?: true | ReviewCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReviewAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReviewSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReviewMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReviewMaxAggregateInputType
+  }
+
+  export type GetReviewAggregateType<T extends ReviewAggregateArgs> = {
+        [P in keyof T & keyof AggregateReview]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReview[P]>
+      : GetScalarType<T[P], AggregateReview[P]>
+  }
+
+
+
+
+  export type ReviewGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReviewWhereInput
+    orderBy?: ReviewOrderByWithAggregationInput | ReviewOrderByWithAggregationInput[]
+    by: ReviewScalarFieldEnum[] | ReviewScalarFieldEnum
+    having?: ReviewScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReviewCountAggregateInputType | true
+    _avg?: ReviewAvgAggregateInputType
+    _sum?: ReviewSumAggregateInputType
+    _min?: ReviewMinAggregateInputType
+    _max?: ReviewMaxAggregateInputType
+  }
+
+  export type ReviewGroupByOutputType = {
+    id: string
+    patientId: string
+    professionalId: string
+    rating: number
+    comment: string | null
+    createdAt: Date
+    _count: ReviewCountAggregateOutputType | null
+    _avg: ReviewAvgAggregateOutputType | null
+    _sum: ReviewSumAggregateOutputType | null
+    _min: ReviewMinAggregateOutputType | null
+    _max: ReviewMaxAggregateOutputType | null
+  }
+
+  type GetReviewGroupByPayload<T extends ReviewGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReviewGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReviewGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReviewGroupByOutputType[P]>
+            : GetScalarType<T[P], ReviewGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReviewSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    patientId?: boolean
+    professionalId?: boolean
+    rating?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["review"]>
+
+  export type ReviewSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    patientId?: boolean
+    professionalId?: boolean
+    rating?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["review"]>
+
+  export type ReviewSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    patientId?: boolean
+    professionalId?: boolean
+    rating?: boolean
+    comment?: boolean
+    createdAt?: boolean
+    patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["review"]>
+
+  export type ReviewSelectScalar = {
+    id?: boolean
+    patientId?: boolean
+    professionalId?: boolean
+    rating?: boolean
+    comment?: boolean
+    createdAt?: boolean
+  }
+
+  export type ReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "professionalId" | "rating" | "comment" | "createdAt", ExtArgs["result"]["review"]>
+  export type ReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type ReviewIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type ReviewIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $ReviewPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Review"
+    objects: {
+      patient: Prisma.$PatientProfilePayload<ExtArgs>
+      professional: Prisma.$ProfessionalProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      patientId: string
+      professionalId: string
+      rating: number
+      comment: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["review"]>
+    composites: {}
+  }
+
+  type ReviewGetPayload<S extends boolean | null | undefined | ReviewDefaultArgs> = $Result.GetResult<Prisma.$ReviewPayload, S>
+
+  type ReviewCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReviewFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReviewCountAggregateInputType | true
+    }
+
+  export interface ReviewDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Review'], meta: { name: 'Review' } }
+    /**
+     * Find zero or one Review that matches the filter.
+     * @param {ReviewFindUniqueArgs} args - Arguments to find a Review
+     * @example
+     * // Get one Review
+     * const review = await prisma.review.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReviewFindUniqueArgs>(args: SelectSubset<T, ReviewFindUniqueArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Review that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReviewFindUniqueOrThrowArgs} args - Arguments to find a Review
+     * @example
+     * // Get one Review
+     * const review = await prisma.review.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReviewFindUniqueOrThrowArgs>(args: SelectSubset<T, ReviewFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Review that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReviewFindFirstArgs} args - Arguments to find a Review
+     * @example
+     * // Get one Review
+     * const review = await prisma.review.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReviewFindFirstArgs>(args?: SelectSubset<T, ReviewFindFirstArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Review that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReviewFindFirstOrThrowArgs} args - Arguments to find a Review
+     * @example
+     * // Get one Review
+     * const review = await prisma.review.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReviewFindFirstOrThrowArgs>(args?: SelectSubset<T, ReviewFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Reviews that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReviewFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Reviews
+     * const reviews = await prisma.review.findMany()
+     * 
+     * // Get first 10 Reviews
+     * const reviews = await prisma.review.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const reviewWithIdOnly = await prisma.review.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReviewFindManyArgs>(args?: SelectSubset<T, ReviewFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Review.
+     * @param {ReviewCreateArgs} args - Arguments to create a Review.
+     * @example
+     * // Create one Review
+     * const Review = await prisma.review.create({
+     *   data: {
+     *     // ... data to create a Review
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReviewCreateArgs>(args: SelectSubset<T, ReviewCreateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Reviews.
+     * @param {ReviewCreateManyArgs} args - Arguments to create many Reviews.
+     * @example
+     * // Create many Reviews
+     * const review = await prisma.review.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReviewCreateManyArgs>(args?: SelectSubset<T, ReviewCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Reviews and returns the data saved in the database.
+     * @param {ReviewCreateManyAndReturnArgs} args - Arguments to create many Reviews.
+     * @example
+     * // Create many Reviews
+     * const review = await prisma.review.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Reviews and only return the `id`
+     * const reviewWithIdOnly = await prisma.review.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReviewCreateManyAndReturnArgs>(args?: SelectSubset<T, ReviewCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Review.
+     * @param {ReviewDeleteArgs} args - Arguments to delete one Review.
+     * @example
+     * // Delete one Review
+     * const Review = await prisma.review.delete({
+     *   where: {
+     *     // ... filter to delete one Review
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReviewDeleteArgs>(args: SelectSubset<T, ReviewDeleteArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Review.
+     * @param {ReviewUpdateArgs} args - Arguments to update one Review.
+     * @example
+     * // Update one Review
+     * const review = await prisma.review.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReviewUpdateArgs>(args: SelectSubset<T, ReviewUpdateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Reviews.
+     * @param {ReviewDeleteManyArgs} args - Arguments to filter Reviews to delete.
+     * @example
+     * // Delete a few Reviews
+     * const { count } = await prisma.review.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReviewDeleteManyArgs>(args?: SelectSubset<T, ReviewDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Reviews.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReviewUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Reviews
+     * const review = await prisma.review.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReviewUpdateManyArgs>(args: SelectSubset<T, ReviewUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Reviews and returns the data updated in the database.
+     * @param {ReviewUpdateManyAndReturnArgs} args - Arguments to update many Reviews.
+     * @example
+     * // Update many Reviews
+     * const review = await prisma.review.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Reviews and only return the `id`
+     * const reviewWithIdOnly = await prisma.review.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReviewUpdateManyAndReturnArgs>(args: SelectSubset<T, ReviewUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Review.
+     * @param {ReviewUpsertArgs} args - Arguments to update or create a Review.
+     * @example
+     * // Update or create a Review
+     * const review = await prisma.review.upsert({
+     *   create: {
+     *     // ... data to create a Review
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Review we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReviewUpsertArgs>(args: SelectSubset<T, ReviewUpsertArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Reviews.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReviewCountArgs} args - Arguments to filter Reviews to count.
+     * @example
+     * // Count the number of Reviews
+     * const count = await prisma.review.count({
+     *   where: {
+     *     // ... the filter for the Reviews we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReviewCountArgs>(
+      args?: Subset<T, ReviewCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReviewCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Review.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReviewAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReviewAggregateArgs>(args: Subset<T, ReviewAggregateArgs>): Prisma.PrismaPromise<GetReviewAggregateType<T>>
+
+    /**
+     * Group by Review.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReviewGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReviewGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReviewGroupByArgs['orderBy'] }
+        : { orderBy?: ReviewGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReviewGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReviewGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Review model
+   */
+  readonly fields: ReviewFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Review.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    patient<T extends PatientProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PatientProfileDefaultArgs<ExtArgs>>): Prisma__PatientProfileClient<$Result.GetResult<Prisma.$PatientProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    professional<T extends ProfessionalProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfileDefaultArgs<ExtArgs>>): Prisma__ProfessionalProfileClient<$Result.GetResult<Prisma.$ProfessionalProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Review model
+   */
+  interface ReviewFieldRefs {
+    readonly id: FieldRef<"Review", 'String'>
+    readonly patientId: FieldRef<"Review", 'String'>
+    readonly professionalId: FieldRef<"Review", 'String'>
+    readonly rating: FieldRef<"Review", 'Float'>
+    readonly comment: FieldRef<"Review", 'String'>
+    readonly createdAt: FieldRef<"Review", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Review findUnique
+   */
+  export type ReviewFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which Review to fetch.
+     */
+    where: ReviewWhereUniqueInput
+  }
+
+  /**
+   * Review findUniqueOrThrow
+   */
+  export type ReviewFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which Review to fetch.
+     */
+    where: ReviewWhereUniqueInput
+  }
+
+  /**
+   * Review findFirst
+   */
+  export type ReviewFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which Review to fetch.
+     */
+    where?: ReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reviews to fetch.
+     */
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Reviews.
+     */
+    cursor?: ReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Reviews.
+     */
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
+   * Review findFirstOrThrow
+   */
+  export type ReviewFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which Review to fetch.
+     */
+    where?: ReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reviews to fetch.
+     */
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Reviews.
+     */
+    cursor?: ReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reviews.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Reviews.
+     */
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
+   * Review findMany
+   */
+  export type ReviewFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * Filter, which Reviews to fetch.
+     */
+    where?: ReviewWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reviews to fetch.
+     */
+    orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Reviews.
+     */
+    cursor?: ReviewWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reviews from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reviews.
+     */
+    skip?: number
+    distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
+  }
+
+  /**
+   * Review create
+   */
+  export type ReviewCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Review.
+     */
+    data: XOR<ReviewCreateInput, ReviewUncheckedCreateInput>
+  }
+
+  /**
+   * Review createMany
+   */
+  export type ReviewCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Reviews.
+     */
+    data: ReviewCreateManyInput | ReviewCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Review createManyAndReturn
+   */
+  export type ReviewCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * The data used to create many Reviews.
+     */
+    data: ReviewCreateManyInput | ReviewCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Review update
+   */
+  export type ReviewUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Review.
+     */
+    data: XOR<ReviewUpdateInput, ReviewUncheckedUpdateInput>
+    /**
+     * Choose, which Review to update.
+     */
+    where: ReviewWhereUniqueInput
+  }
+
+  /**
+   * Review updateMany
+   */
+  export type ReviewUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Reviews.
+     */
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyInput>
+    /**
+     * Filter which Reviews to update
+     */
+    where?: ReviewWhereInput
+    /**
+     * Limit how many Reviews to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Review updateManyAndReturn
+   */
+  export type ReviewUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * The data used to update Reviews.
+     */
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyInput>
+    /**
+     * Filter which Reviews to update
+     */
+    where?: ReviewWhereInput
+    /**
+     * Limit how many Reviews to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Review upsert
+   */
+  export type ReviewUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Review to update in case it exists.
+     */
+    where: ReviewWhereUniqueInput
+    /**
+     * In case the Review found by the `where` argument doesn't exist, create a new Review with this data.
+     */
+    create: XOR<ReviewCreateInput, ReviewUncheckedCreateInput>
+    /**
+     * In case the Review was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReviewUpdateInput, ReviewUncheckedUpdateInput>
+  }
+
+  /**
+   * Review delete
+   */
+  export type ReviewDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+    /**
+     * Filter which Review to delete.
+     */
+    where: ReviewWhereUniqueInput
+  }
+
+  /**
+   * Review deleteMany
+   */
+  export type ReviewDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Reviews to delete
+     */
+    where?: ReviewWhereInput
+    /**
+     * Limit how many Reviews to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Review without action
+   */
+  export type ReviewDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: ReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: ReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReviewInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SystemSetting
+   */
+
+  export type AggregateSystemSetting = {
+    _count: SystemSettingCountAggregateOutputType | null
+    _min: SystemSettingMinAggregateOutputType | null
+    _max: SystemSettingMaxAggregateOutputType | null
+  }
+
+  export type SystemSettingMinAggregateOutputType = {
+    key: string | null
+    value: string | null
+  }
+
+  export type SystemSettingMaxAggregateOutputType = {
+    key: string | null
+    value: string | null
+  }
+
+  export type SystemSettingCountAggregateOutputType = {
+    key: number
+    value: number
+    _all: number
+  }
+
+
+  export type SystemSettingMinAggregateInputType = {
+    key?: true
+    value?: true
+  }
+
+  export type SystemSettingMaxAggregateInputType = {
+    key?: true
+    value?: true
+  }
+
+  export type SystemSettingCountAggregateInputType = {
+    key?: true
+    value?: true
+    _all?: true
+  }
+
+  export type SystemSettingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SystemSetting to aggregate.
+     */
+    where?: SystemSettingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SystemSettings to fetch.
+     */
+    orderBy?: SystemSettingOrderByWithRelationInput | SystemSettingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SystemSettingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SystemSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SystemSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SystemSettings
+    **/
+    _count?: true | SystemSettingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SystemSettingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SystemSettingMaxAggregateInputType
+  }
+
+  export type GetSystemSettingAggregateType<T extends SystemSettingAggregateArgs> = {
+        [P in keyof T & keyof AggregateSystemSetting]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSystemSetting[P]>
+      : GetScalarType<T[P], AggregateSystemSetting[P]>
+  }
+
+
+
+
+  export type SystemSettingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SystemSettingWhereInput
+    orderBy?: SystemSettingOrderByWithAggregationInput | SystemSettingOrderByWithAggregationInput[]
+    by: SystemSettingScalarFieldEnum[] | SystemSettingScalarFieldEnum
+    having?: SystemSettingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SystemSettingCountAggregateInputType | true
+    _min?: SystemSettingMinAggregateInputType
+    _max?: SystemSettingMaxAggregateInputType
+  }
+
+  export type SystemSettingGroupByOutputType = {
+    key: string
+    value: string
+    _count: SystemSettingCountAggregateOutputType | null
+    _min: SystemSettingMinAggregateOutputType | null
+    _max: SystemSettingMaxAggregateOutputType | null
+  }
+
+  type GetSystemSettingGroupByPayload<T extends SystemSettingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SystemSettingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SystemSettingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SystemSettingGroupByOutputType[P]>
+            : GetScalarType<T[P], SystemSettingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SystemSettingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    key?: boolean
+    value?: boolean
+  }, ExtArgs["result"]["systemSetting"]>
+
+  export type SystemSettingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    key?: boolean
+    value?: boolean
+  }, ExtArgs["result"]["systemSetting"]>
+
+  export type SystemSettingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    key?: boolean
+    value?: boolean
+  }, ExtArgs["result"]["systemSetting"]>
+
+  export type SystemSettingSelectScalar = {
+    key?: boolean
+    value?: boolean
+  }
+
+  export type SystemSettingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"key" | "value", ExtArgs["result"]["systemSetting"]>
+
+  export type $SystemSettingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SystemSetting"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      key: string
+      value: string
+    }, ExtArgs["result"]["systemSetting"]>
+    composites: {}
+  }
+
+  type SystemSettingGetPayload<S extends boolean | null | undefined | SystemSettingDefaultArgs> = $Result.GetResult<Prisma.$SystemSettingPayload, S>
+
+  type SystemSettingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SystemSettingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SystemSettingCountAggregateInputType | true
+    }
+
+  export interface SystemSettingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SystemSetting'], meta: { name: 'SystemSetting' } }
+    /**
+     * Find zero or one SystemSetting that matches the filter.
+     * @param {SystemSettingFindUniqueArgs} args - Arguments to find a SystemSetting
+     * @example
+     * // Get one SystemSetting
+     * const systemSetting = await prisma.systemSetting.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SystemSettingFindUniqueArgs>(args: SelectSubset<T, SystemSettingFindUniqueArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SystemSetting that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SystemSettingFindUniqueOrThrowArgs} args - Arguments to find a SystemSetting
+     * @example
+     * // Get one SystemSetting
+     * const systemSetting = await prisma.systemSetting.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SystemSettingFindUniqueOrThrowArgs>(args: SelectSubset<T, SystemSettingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SystemSetting that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SystemSettingFindFirstArgs} args - Arguments to find a SystemSetting
+     * @example
+     * // Get one SystemSetting
+     * const systemSetting = await prisma.systemSetting.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SystemSettingFindFirstArgs>(args?: SelectSubset<T, SystemSettingFindFirstArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SystemSetting that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SystemSettingFindFirstOrThrowArgs} args - Arguments to find a SystemSetting
+     * @example
+     * // Get one SystemSetting
+     * const systemSetting = await prisma.systemSetting.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SystemSettingFindFirstOrThrowArgs>(args?: SelectSubset<T, SystemSettingFindFirstOrThrowArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SystemSettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SystemSettingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SystemSettings
+     * const systemSettings = await prisma.systemSetting.findMany()
+     * 
+     * // Get first 10 SystemSettings
+     * const systemSettings = await prisma.systemSetting.findMany({ take: 10 })
+     * 
+     * // Only select the `key`
+     * const systemSettingWithKeyOnly = await prisma.systemSetting.findMany({ select: { key: true } })
+     * 
+     */
+    findMany<T extends SystemSettingFindManyArgs>(args?: SelectSubset<T, SystemSettingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SystemSetting.
+     * @param {SystemSettingCreateArgs} args - Arguments to create a SystemSetting.
+     * @example
+     * // Create one SystemSetting
+     * const SystemSetting = await prisma.systemSetting.create({
+     *   data: {
+     *     // ... data to create a SystemSetting
+     *   }
+     * })
+     * 
+     */
+    create<T extends SystemSettingCreateArgs>(args: SelectSubset<T, SystemSettingCreateArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SystemSettings.
+     * @param {SystemSettingCreateManyArgs} args - Arguments to create many SystemSettings.
+     * @example
+     * // Create many SystemSettings
+     * const systemSetting = await prisma.systemSetting.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SystemSettingCreateManyArgs>(args?: SelectSubset<T, SystemSettingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SystemSettings and returns the data saved in the database.
+     * @param {SystemSettingCreateManyAndReturnArgs} args - Arguments to create many SystemSettings.
+     * @example
+     * // Create many SystemSettings
+     * const systemSetting = await prisma.systemSetting.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SystemSettings and only return the `key`
+     * const systemSettingWithKeyOnly = await prisma.systemSetting.createManyAndReturn({
+     *   select: { key: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SystemSettingCreateManyAndReturnArgs>(args?: SelectSubset<T, SystemSettingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SystemSetting.
+     * @param {SystemSettingDeleteArgs} args - Arguments to delete one SystemSetting.
+     * @example
+     * // Delete one SystemSetting
+     * const SystemSetting = await prisma.systemSetting.delete({
+     *   where: {
+     *     // ... filter to delete one SystemSetting
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SystemSettingDeleteArgs>(args: SelectSubset<T, SystemSettingDeleteArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SystemSetting.
+     * @param {SystemSettingUpdateArgs} args - Arguments to update one SystemSetting.
+     * @example
+     * // Update one SystemSetting
+     * const systemSetting = await prisma.systemSetting.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SystemSettingUpdateArgs>(args: SelectSubset<T, SystemSettingUpdateArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SystemSettings.
+     * @param {SystemSettingDeleteManyArgs} args - Arguments to filter SystemSettings to delete.
+     * @example
+     * // Delete a few SystemSettings
+     * const { count } = await prisma.systemSetting.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SystemSettingDeleteManyArgs>(args?: SelectSubset<T, SystemSettingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SystemSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SystemSettingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SystemSettings
+     * const systemSetting = await prisma.systemSetting.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SystemSettingUpdateManyArgs>(args: SelectSubset<T, SystemSettingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SystemSettings and returns the data updated in the database.
+     * @param {SystemSettingUpdateManyAndReturnArgs} args - Arguments to update many SystemSettings.
+     * @example
+     * // Update many SystemSettings
+     * const systemSetting = await prisma.systemSetting.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SystemSettings and only return the `key`
+     * const systemSettingWithKeyOnly = await prisma.systemSetting.updateManyAndReturn({
+     *   select: { key: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SystemSettingUpdateManyAndReturnArgs>(args: SelectSubset<T, SystemSettingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SystemSetting.
+     * @param {SystemSettingUpsertArgs} args - Arguments to update or create a SystemSetting.
+     * @example
+     * // Update or create a SystemSetting
+     * const systemSetting = await prisma.systemSetting.upsert({
+     *   create: {
+     *     // ... data to create a SystemSetting
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SystemSetting we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SystemSettingUpsertArgs>(args: SelectSubset<T, SystemSettingUpsertArgs<ExtArgs>>): Prisma__SystemSettingClient<$Result.GetResult<Prisma.$SystemSettingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SystemSettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SystemSettingCountArgs} args - Arguments to filter SystemSettings to count.
+     * @example
+     * // Count the number of SystemSettings
+     * const count = await prisma.systemSetting.count({
+     *   where: {
+     *     // ... the filter for the SystemSettings we want to count
+     *   }
+     * })
+    **/
+    count<T extends SystemSettingCountArgs>(
+      args?: Subset<T, SystemSettingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SystemSettingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SystemSetting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SystemSettingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SystemSettingAggregateArgs>(args: Subset<T, SystemSettingAggregateArgs>): Prisma.PrismaPromise<GetSystemSettingAggregateType<T>>
+
+    /**
+     * Group by SystemSetting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SystemSettingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SystemSettingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SystemSettingGroupByArgs['orderBy'] }
+        : { orderBy?: SystemSettingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SystemSettingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSystemSettingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SystemSetting model
+   */
+  readonly fields: SystemSettingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SystemSetting.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SystemSettingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SystemSetting model
+   */
+  interface SystemSettingFieldRefs {
+    readonly key: FieldRef<"SystemSetting", 'String'>
+    readonly value: FieldRef<"SystemSetting", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SystemSetting findUnique
+   */
+  export type SystemSettingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * Filter, which SystemSetting to fetch.
+     */
+    where: SystemSettingWhereUniqueInput
+  }
+
+  /**
+   * SystemSetting findUniqueOrThrow
+   */
+  export type SystemSettingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * Filter, which SystemSetting to fetch.
+     */
+    where: SystemSettingWhereUniqueInput
+  }
+
+  /**
+   * SystemSetting findFirst
+   */
+  export type SystemSettingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * Filter, which SystemSetting to fetch.
+     */
+    where?: SystemSettingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SystemSettings to fetch.
+     */
+    orderBy?: SystemSettingOrderByWithRelationInput | SystemSettingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SystemSettings.
+     */
+    cursor?: SystemSettingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SystemSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SystemSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SystemSettings.
+     */
+    distinct?: SystemSettingScalarFieldEnum | SystemSettingScalarFieldEnum[]
+  }
+
+  /**
+   * SystemSetting findFirstOrThrow
+   */
+  export type SystemSettingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * Filter, which SystemSetting to fetch.
+     */
+    where?: SystemSettingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SystemSettings to fetch.
+     */
+    orderBy?: SystemSettingOrderByWithRelationInput | SystemSettingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SystemSettings.
+     */
+    cursor?: SystemSettingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SystemSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SystemSettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SystemSettings.
+     */
+    distinct?: SystemSettingScalarFieldEnum | SystemSettingScalarFieldEnum[]
+  }
+
+  /**
+   * SystemSetting findMany
+   */
+  export type SystemSettingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * Filter, which SystemSettings to fetch.
+     */
+    where?: SystemSettingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SystemSettings to fetch.
+     */
+    orderBy?: SystemSettingOrderByWithRelationInput | SystemSettingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SystemSettings.
+     */
+    cursor?: SystemSettingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SystemSettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SystemSettings.
+     */
+    skip?: number
+    distinct?: SystemSettingScalarFieldEnum | SystemSettingScalarFieldEnum[]
+  }
+
+  /**
+   * SystemSetting create
+   */
+  export type SystemSettingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SystemSetting.
+     */
+    data: XOR<SystemSettingCreateInput, SystemSettingUncheckedCreateInput>
+  }
+
+  /**
+   * SystemSetting createMany
+   */
+  export type SystemSettingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SystemSettings.
+     */
+    data: SystemSettingCreateManyInput | SystemSettingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SystemSetting createManyAndReturn
+   */
+  export type SystemSettingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * The data used to create many SystemSettings.
+     */
+    data: SystemSettingCreateManyInput | SystemSettingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SystemSetting update
+   */
+  export type SystemSettingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SystemSetting.
+     */
+    data: XOR<SystemSettingUpdateInput, SystemSettingUncheckedUpdateInput>
+    /**
+     * Choose, which SystemSetting to update.
+     */
+    where: SystemSettingWhereUniqueInput
+  }
+
+  /**
+   * SystemSetting updateMany
+   */
+  export type SystemSettingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SystemSettings.
+     */
+    data: XOR<SystemSettingUpdateManyMutationInput, SystemSettingUncheckedUpdateManyInput>
+    /**
+     * Filter which SystemSettings to update
+     */
+    where?: SystemSettingWhereInput
+    /**
+     * Limit how many SystemSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SystemSetting updateManyAndReturn
+   */
+  export type SystemSettingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * The data used to update SystemSettings.
+     */
+    data: XOR<SystemSettingUpdateManyMutationInput, SystemSettingUncheckedUpdateManyInput>
+    /**
+     * Filter which SystemSettings to update
+     */
+    where?: SystemSettingWhereInput
+    /**
+     * Limit how many SystemSettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SystemSetting upsert
+   */
+  export type SystemSettingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SystemSetting to update in case it exists.
+     */
+    where: SystemSettingWhereUniqueInput
+    /**
+     * In case the SystemSetting found by the `where` argument doesn't exist, create a new SystemSetting with this data.
+     */
+    create: XOR<SystemSettingCreateInput, SystemSettingUncheckedCreateInput>
+    /**
+     * In case the SystemSetting was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SystemSettingUpdateInput, SystemSettingUncheckedUpdateInput>
+  }
+
+  /**
+   * SystemSetting delete
+   */
+  export type SystemSettingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+    /**
+     * Filter which SystemSetting to delete.
+     */
+    where: SystemSettingWhereUniqueInput
+  }
+
+  /**
+   * SystemSetting deleteMany
+   */
+  export type SystemSettingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SystemSettings to delete
+     */
+    where?: SystemSettingWhereInput
+    /**
+     * Limit how many SystemSettings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SystemSetting without action
+   */
+  export type SystemSettingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SystemSetting
+     */
+    select?: SystemSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SystemSetting
+     */
+    omit?: SystemSettingOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ElderHomePost
+   */
+
+  export type AggregateElderHomePost = {
+    _count: ElderHomePostCountAggregateOutputType | null
+    _min: ElderHomePostMinAggregateOutputType | null
+    _max: ElderHomePostMaxAggregateOutputType | null
+  }
+
+  export type ElderHomePostMinAggregateOutputType = {
+    id: string | null
+    elderHomeId: string | null
+    title: string | null
+    content: string | null
+    imageUrl: string | null
+    category: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ElderHomePostMaxAggregateOutputType = {
+    id: string | null
+    elderHomeId: string | null
+    title: string | null
+    content: string | null
+    imageUrl: string | null
+    category: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ElderHomePostCountAggregateOutputType = {
+    id: number
+    elderHomeId: number
+    title: number
+    content: number
+    imageUrl: number
+    category: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ElderHomePostMinAggregateInputType = {
+    id?: true
+    elderHomeId?: true
+    title?: true
+    content?: true
+    imageUrl?: true
+    category?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ElderHomePostMaxAggregateInputType = {
+    id?: true
+    elderHomeId?: true
+    title?: true
+    content?: true
+    imageUrl?: true
+    category?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ElderHomePostCountAggregateInputType = {
+    id?: true
+    elderHomeId?: true
+    title?: true
+    content?: true
+    imageUrl?: true
+    category?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ElderHomePostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ElderHomePost to aggregate.
+     */
+    where?: ElderHomePostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomePosts to fetch.
+     */
+    orderBy?: ElderHomePostOrderByWithRelationInput | ElderHomePostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ElderHomePostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomePosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomePosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ElderHomePosts
+    **/
+    _count?: true | ElderHomePostCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ElderHomePostMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ElderHomePostMaxAggregateInputType
+  }
+
+  export type GetElderHomePostAggregateType<T extends ElderHomePostAggregateArgs> = {
+        [P in keyof T & keyof AggregateElderHomePost]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateElderHomePost[P]>
+      : GetScalarType<T[P], AggregateElderHomePost[P]>
+  }
+
+
+
+
+  export type ElderHomePostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ElderHomePostWhereInput
+    orderBy?: ElderHomePostOrderByWithAggregationInput | ElderHomePostOrderByWithAggregationInput[]
+    by: ElderHomePostScalarFieldEnum[] | ElderHomePostScalarFieldEnum
+    having?: ElderHomePostScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ElderHomePostCountAggregateInputType | true
+    _min?: ElderHomePostMinAggregateInputType
+    _max?: ElderHomePostMaxAggregateInputType
+  }
+
+  export type ElderHomePostGroupByOutputType = {
+    id: string
+    elderHomeId: string
+    title: string | null
+    content: string
+    imageUrl: string | null
+    category: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ElderHomePostCountAggregateOutputType | null
+    _min: ElderHomePostMinAggregateOutputType | null
+    _max: ElderHomePostMaxAggregateOutputType | null
+  }
+
+  type GetElderHomePostGroupByPayload<T extends ElderHomePostGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ElderHomePostGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ElderHomePostGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ElderHomePostGroupByOutputType[P]>
+            : GetScalarType<T[P], ElderHomePostGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ElderHomePostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    elderHomeId?: boolean
+    title?: boolean
+    content?: boolean
+    imageUrl?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["elderHomePost"]>
+
+  export type ElderHomePostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    elderHomeId?: boolean
+    title?: boolean
+    content?: boolean
+    imageUrl?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["elderHomePost"]>
+
+  export type ElderHomePostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    elderHomeId?: boolean
+    title?: boolean
+    content?: boolean
+    imageUrl?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["elderHomePost"]>
+
+  export type ElderHomePostSelectScalar = {
+    id?: boolean
+    elderHomeId?: boolean
+    title?: boolean
+    content?: boolean
+    imageUrl?: boolean
+    category?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ElderHomePostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "elderHomeId" | "title" | "content" | "imageUrl" | "category" | "createdAt" | "updatedAt", ExtArgs["result"]["elderHomePost"]>
+  export type ElderHomePostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type ElderHomePostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type ElderHomePostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $ElderHomePostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ElderHomePost"
+    objects: {
+      elderHome: Prisma.$ProfessionalProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      elderHomeId: string
+      title: string | null
+      content: string
+      imageUrl: string | null
+      category: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["elderHomePost"]>
+    composites: {}
+  }
+
+  type ElderHomePostGetPayload<S extends boolean | null | undefined | ElderHomePostDefaultArgs> = $Result.GetResult<Prisma.$ElderHomePostPayload, S>
+
+  type ElderHomePostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ElderHomePostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ElderHomePostCountAggregateInputType | true
+    }
+
+  export interface ElderHomePostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ElderHomePost'], meta: { name: 'ElderHomePost' } }
+    /**
+     * Find zero or one ElderHomePost that matches the filter.
+     * @param {ElderHomePostFindUniqueArgs} args - Arguments to find a ElderHomePost
+     * @example
+     * // Get one ElderHomePost
+     * const elderHomePost = await prisma.elderHomePost.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ElderHomePostFindUniqueArgs>(args: SelectSubset<T, ElderHomePostFindUniqueArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ElderHomePost that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ElderHomePostFindUniqueOrThrowArgs} args - Arguments to find a ElderHomePost
+     * @example
+     * // Get one ElderHomePost
+     * const elderHomePost = await prisma.elderHomePost.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ElderHomePostFindUniqueOrThrowArgs>(args: SelectSubset<T, ElderHomePostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ElderHomePost that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomePostFindFirstArgs} args - Arguments to find a ElderHomePost
+     * @example
+     * // Get one ElderHomePost
+     * const elderHomePost = await prisma.elderHomePost.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ElderHomePostFindFirstArgs>(args?: SelectSubset<T, ElderHomePostFindFirstArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ElderHomePost that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomePostFindFirstOrThrowArgs} args - Arguments to find a ElderHomePost
+     * @example
+     * // Get one ElderHomePost
+     * const elderHomePost = await prisma.elderHomePost.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ElderHomePostFindFirstOrThrowArgs>(args?: SelectSubset<T, ElderHomePostFindFirstOrThrowArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ElderHomePosts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomePostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ElderHomePosts
+     * const elderHomePosts = await prisma.elderHomePost.findMany()
+     * 
+     * // Get first 10 ElderHomePosts
+     * const elderHomePosts = await prisma.elderHomePost.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const elderHomePostWithIdOnly = await prisma.elderHomePost.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ElderHomePostFindManyArgs>(args?: SelectSubset<T, ElderHomePostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ElderHomePost.
+     * @param {ElderHomePostCreateArgs} args - Arguments to create a ElderHomePost.
+     * @example
+     * // Create one ElderHomePost
+     * const ElderHomePost = await prisma.elderHomePost.create({
+     *   data: {
+     *     // ... data to create a ElderHomePost
+     *   }
+     * })
+     * 
+     */
+    create<T extends ElderHomePostCreateArgs>(args: SelectSubset<T, ElderHomePostCreateArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ElderHomePosts.
+     * @param {ElderHomePostCreateManyArgs} args - Arguments to create many ElderHomePosts.
+     * @example
+     * // Create many ElderHomePosts
+     * const elderHomePost = await prisma.elderHomePost.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ElderHomePostCreateManyArgs>(args?: SelectSubset<T, ElderHomePostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ElderHomePosts and returns the data saved in the database.
+     * @param {ElderHomePostCreateManyAndReturnArgs} args - Arguments to create many ElderHomePosts.
+     * @example
+     * // Create many ElderHomePosts
+     * const elderHomePost = await prisma.elderHomePost.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ElderHomePosts and only return the `id`
+     * const elderHomePostWithIdOnly = await prisma.elderHomePost.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ElderHomePostCreateManyAndReturnArgs>(args?: SelectSubset<T, ElderHomePostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ElderHomePost.
+     * @param {ElderHomePostDeleteArgs} args - Arguments to delete one ElderHomePost.
+     * @example
+     * // Delete one ElderHomePost
+     * const ElderHomePost = await prisma.elderHomePost.delete({
+     *   where: {
+     *     // ... filter to delete one ElderHomePost
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ElderHomePostDeleteArgs>(args: SelectSubset<T, ElderHomePostDeleteArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ElderHomePost.
+     * @param {ElderHomePostUpdateArgs} args - Arguments to update one ElderHomePost.
+     * @example
+     * // Update one ElderHomePost
+     * const elderHomePost = await prisma.elderHomePost.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ElderHomePostUpdateArgs>(args: SelectSubset<T, ElderHomePostUpdateArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ElderHomePosts.
+     * @param {ElderHomePostDeleteManyArgs} args - Arguments to filter ElderHomePosts to delete.
+     * @example
+     * // Delete a few ElderHomePosts
+     * const { count } = await prisma.elderHomePost.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ElderHomePostDeleteManyArgs>(args?: SelectSubset<T, ElderHomePostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ElderHomePosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomePostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ElderHomePosts
+     * const elderHomePost = await prisma.elderHomePost.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ElderHomePostUpdateManyArgs>(args: SelectSubset<T, ElderHomePostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ElderHomePosts and returns the data updated in the database.
+     * @param {ElderHomePostUpdateManyAndReturnArgs} args - Arguments to update many ElderHomePosts.
+     * @example
+     * // Update many ElderHomePosts
+     * const elderHomePost = await prisma.elderHomePost.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ElderHomePosts and only return the `id`
+     * const elderHomePostWithIdOnly = await prisma.elderHomePost.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ElderHomePostUpdateManyAndReturnArgs>(args: SelectSubset<T, ElderHomePostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ElderHomePost.
+     * @param {ElderHomePostUpsertArgs} args - Arguments to update or create a ElderHomePost.
+     * @example
+     * // Update or create a ElderHomePost
+     * const elderHomePost = await prisma.elderHomePost.upsert({
+     *   create: {
+     *     // ... data to create a ElderHomePost
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ElderHomePost we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ElderHomePostUpsertArgs>(args: SelectSubset<T, ElderHomePostUpsertArgs<ExtArgs>>): Prisma__ElderHomePostClient<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ElderHomePosts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomePostCountArgs} args - Arguments to filter ElderHomePosts to count.
+     * @example
+     * // Count the number of ElderHomePosts
+     * const count = await prisma.elderHomePost.count({
+     *   where: {
+     *     // ... the filter for the ElderHomePosts we want to count
+     *   }
+     * })
+    **/
+    count<T extends ElderHomePostCountArgs>(
+      args?: Subset<T, ElderHomePostCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ElderHomePostCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ElderHomePost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomePostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ElderHomePostAggregateArgs>(args: Subset<T, ElderHomePostAggregateArgs>): Prisma.PrismaPromise<GetElderHomePostAggregateType<T>>
+
+    /**
+     * Group by ElderHomePost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomePostGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ElderHomePostGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ElderHomePostGroupByArgs['orderBy'] }
+        : { orderBy?: ElderHomePostGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ElderHomePostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetElderHomePostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ElderHomePost model
+   */
+  readonly fields: ElderHomePostFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ElderHomePost.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ElderHomePostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    elderHome<T extends ProfessionalProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfileDefaultArgs<ExtArgs>>): Prisma__ProfessionalProfileClient<$Result.GetResult<Prisma.$ProfessionalProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ElderHomePost model
+   */
+  interface ElderHomePostFieldRefs {
+    readonly id: FieldRef<"ElderHomePost", 'String'>
+    readonly elderHomeId: FieldRef<"ElderHomePost", 'String'>
+    readonly title: FieldRef<"ElderHomePost", 'String'>
+    readonly content: FieldRef<"ElderHomePost", 'String'>
+    readonly imageUrl: FieldRef<"ElderHomePost", 'String'>
+    readonly category: FieldRef<"ElderHomePost", 'String'>
+    readonly createdAt: FieldRef<"ElderHomePost", 'DateTime'>
+    readonly updatedAt: FieldRef<"ElderHomePost", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ElderHomePost findUnique
+   */
+  export type ElderHomePostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomePost to fetch.
+     */
+    where: ElderHomePostWhereUniqueInput
+  }
+
+  /**
+   * ElderHomePost findUniqueOrThrow
+   */
+  export type ElderHomePostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomePost to fetch.
+     */
+    where: ElderHomePostWhereUniqueInput
+  }
+
+  /**
+   * ElderHomePost findFirst
+   */
+  export type ElderHomePostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomePost to fetch.
+     */
+    where?: ElderHomePostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomePosts to fetch.
+     */
+    orderBy?: ElderHomePostOrderByWithRelationInput | ElderHomePostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ElderHomePosts.
+     */
+    cursor?: ElderHomePostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomePosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomePosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ElderHomePosts.
+     */
+    distinct?: ElderHomePostScalarFieldEnum | ElderHomePostScalarFieldEnum[]
+  }
+
+  /**
+   * ElderHomePost findFirstOrThrow
+   */
+  export type ElderHomePostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomePost to fetch.
+     */
+    where?: ElderHomePostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomePosts to fetch.
+     */
+    orderBy?: ElderHomePostOrderByWithRelationInput | ElderHomePostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ElderHomePosts.
+     */
+    cursor?: ElderHomePostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomePosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomePosts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ElderHomePosts.
+     */
+    distinct?: ElderHomePostScalarFieldEnum | ElderHomePostScalarFieldEnum[]
+  }
+
+  /**
+   * ElderHomePost findMany
+   */
+  export type ElderHomePostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomePosts to fetch.
+     */
+    where?: ElderHomePostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomePosts to fetch.
+     */
+    orderBy?: ElderHomePostOrderByWithRelationInput | ElderHomePostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ElderHomePosts.
+     */
+    cursor?: ElderHomePostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomePosts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomePosts.
+     */
+    skip?: number
+    distinct?: ElderHomePostScalarFieldEnum | ElderHomePostScalarFieldEnum[]
+  }
+
+  /**
+   * ElderHomePost create
+   */
+  export type ElderHomePostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ElderHomePost.
+     */
+    data: XOR<ElderHomePostCreateInput, ElderHomePostUncheckedCreateInput>
+  }
+
+  /**
+   * ElderHomePost createMany
+   */
+  export type ElderHomePostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ElderHomePosts.
+     */
+    data: ElderHomePostCreateManyInput | ElderHomePostCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ElderHomePost createManyAndReturn
+   */
+  export type ElderHomePostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * The data used to create many ElderHomePosts.
+     */
+    data: ElderHomePostCreateManyInput | ElderHomePostCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ElderHomePost update
+   */
+  export type ElderHomePostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ElderHomePost.
+     */
+    data: XOR<ElderHomePostUpdateInput, ElderHomePostUncheckedUpdateInput>
+    /**
+     * Choose, which ElderHomePost to update.
+     */
+    where: ElderHomePostWhereUniqueInput
+  }
+
+  /**
+   * ElderHomePost updateMany
+   */
+  export type ElderHomePostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ElderHomePosts.
+     */
+    data: XOR<ElderHomePostUpdateManyMutationInput, ElderHomePostUncheckedUpdateManyInput>
+    /**
+     * Filter which ElderHomePosts to update
+     */
+    where?: ElderHomePostWhereInput
+    /**
+     * Limit how many ElderHomePosts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ElderHomePost updateManyAndReturn
+   */
+  export type ElderHomePostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * The data used to update ElderHomePosts.
+     */
+    data: XOR<ElderHomePostUpdateManyMutationInput, ElderHomePostUncheckedUpdateManyInput>
+    /**
+     * Filter which ElderHomePosts to update
+     */
+    where?: ElderHomePostWhereInput
+    /**
+     * Limit how many ElderHomePosts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ElderHomePost upsert
+   */
+  export type ElderHomePostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ElderHomePost to update in case it exists.
+     */
+    where: ElderHomePostWhereUniqueInput
+    /**
+     * In case the ElderHomePost found by the `where` argument doesn't exist, create a new ElderHomePost with this data.
+     */
+    create: XOR<ElderHomePostCreateInput, ElderHomePostUncheckedCreateInput>
+    /**
+     * In case the ElderHomePost was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ElderHomePostUpdateInput, ElderHomePostUncheckedUpdateInput>
+  }
+
+  /**
+   * ElderHomePost delete
+   */
+  export type ElderHomePostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+    /**
+     * Filter which ElderHomePost to delete.
+     */
+    where: ElderHomePostWhereUniqueInput
+  }
+
+  /**
+   * ElderHomePost deleteMany
+   */
+  export type ElderHomePostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ElderHomePosts to delete
+     */
+    where?: ElderHomePostWhereInput
+    /**
+     * Limit how many ElderHomePosts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ElderHomePost without action
+   */
+  export type ElderHomePostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomePost
+     */
+    select?: ElderHomePostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomePost
+     */
+    omit?: ElderHomePostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomePostInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ElderHomeService
+   */
+
+  export type AggregateElderHomeService = {
+    _count: ElderHomeServiceCountAggregateOutputType | null
+    _avg: ElderHomeServiceAvgAggregateOutputType | null
+    _sum: ElderHomeServiceSumAggregateOutputType | null
+    _min: ElderHomeServiceMinAggregateOutputType | null
+    _max: ElderHomeServiceMaxAggregateOutputType | null
+  }
+
+  export type ElderHomeServiceAvgAggregateOutputType = {
+    price: number | null
+  }
+
+  export type ElderHomeServiceSumAggregateOutputType = {
+    price: number | null
+  }
+
+  export type ElderHomeServiceMinAggregateOutputType = {
+    id: string | null
+    elderHomeId: string | null
+    name: string | null
+    description: string | null
+    price: number | null
+    priceUnit: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ElderHomeServiceMaxAggregateOutputType = {
+    id: string | null
+    elderHomeId: string | null
+    name: string | null
+    description: string | null
+    price: number | null
+    priceUnit: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ElderHomeServiceCountAggregateOutputType = {
+    id: number
+    elderHomeId: number
+    name: number
+    description: number
+    price: number
+    priceUnit: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ElderHomeServiceAvgAggregateInputType = {
+    price?: true
+  }
+
+  export type ElderHomeServiceSumAggregateInputType = {
+    price?: true
+  }
+
+  export type ElderHomeServiceMinAggregateInputType = {
+    id?: true
+    elderHomeId?: true
+    name?: true
+    description?: true
+    price?: true
+    priceUnit?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ElderHomeServiceMaxAggregateInputType = {
+    id?: true
+    elderHomeId?: true
+    name?: true
+    description?: true
+    price?: true
+    priceUnit?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ElderHomeServiceCountAggregateInputType = {
+    id?: true
+    elderHomeId?: true
+    name?: true
+    description?: true
+    price?: true
+    priceUnit?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ElderHomeServiceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ElderHomeService to aggregate.
+     */
+    where?: ElderHomeServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomeServices to fetch.
+     */
+    orderBy?: ElderHomeServiceOrderByWithRelationInput | ElderHomeServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ElderHomeServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomeServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomeServices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ElderHomeServices
+    **/
+    _count?: true | ElderHomeServiceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ElderHomeServiceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ElderHomeServiceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ElderHomeServiceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ElderHomeServiceMaxAggregateInputType
+  }
+
+  export type GetElderHomeServiceAggregateType<T extends ElderHomeServiceAggregateArgs> = {
+        [P in keyof T & keyof AggregateElderHomeService]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateElderHomeService[P]>
+      : GetScalarType<T[P], AggregateElderHomeService[P]>
+  }
+
+
+
+
+  export type ElderHomeServiceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ElderHomeServiceWhereInput
+    orderBy?: ElderHomeServiceOrderByWithAggregationInput | ElderHomeServiceOrderByWithAggregationInput[]
+    by: ElderHomeServiceScalarFieldEnum[] | ElderHomeServiceScalarFieldEnum
+    having?: ElderHomeServiceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ElderHomeServiceCountAggregateInputType | true
+    _avg?: ElderHomeServiceAvgAggregateInputType
+    _sum?: ElderHomeServiceSumAggregateInputType
+    _min?: ElderHomeServiceMinAggregateInputType
+    _max?: ElderHomeServiceMaxAggregateInputType
+  }
+
+  export type ElderHomeServiceGroupByOutputType = {
+    id: string
+    elderHomeId: string
+    name: string
+    description: string | null
+    price: number
+    priceUnit: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ElderHomeServiceCountAggregateOutputType | null
+    _avg: ElderHomeServiceAvgAggregateOutputType | null
+    _sum: ElderHomeServiceSumAggregateOutputType | null
+    _min: ElderHomeServiceMinAggregateOutputType | null
+    _max: ElderHomeServiceMaxAggregateOutputType | null
+  }
+
+  type GetElderHomeServiceGroupByPayload<T extends ElderHomeServiceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ElderHomeServiceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ElderHomeServiceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ElderHomeServiceGroupByOutputType[P]>
+            : GetScalarType<T[P], ElderHomeServiceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ElderHomeServiceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    elderHomeId?: boolean
+    name?: boolean
+    description?: boolean
+    price?: boolean
+    priceUnit?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["elderHomeService"]>
+
+  export type ElderHomeServiceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    elderHomeId?: boolean
+    name?: boolean
+    description?: boolean
+    price?: boolean
+    priceUnit?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["elderHomeService"]>
+
+  export type ElderHomeServiceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    elderHomeId?: boolean
+    name?: boolean
+    description?: boolean
+    price?: boolean
+    priceUnit?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["elderHomeService"]>
+
+  export type ElderHomeServiceSelectScalar = {
+    id?: boolean
+    elderHomeId?: boolean
+    name?: boolean
+    description?: boolean
+    price?: boolean
+    priceUnit?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ElderHomeServiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "elderHomeId" | "name" | "description" | "price" | "priceUnit" | "createdAt" | "updatedAt", ExtArgs["result"]["elderHomeService"]>
+  export type ElderHomeServiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type ElderHomeServiceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type ElderHomeServiceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    elderHome?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $ElderHomeServicePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ElderHomeService"
+    objects: {
+      elderHome: Prisma.$ProfessionalProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      elderHomeId: string
+      name: string
+      description: string | null
+      price: number
+      priceUnit: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["elderHomeService"]>
+    composites: {}
+  }
+
+  type ElderHomeServiceGetPayload<S extends boolean | null | undefined | ElderHomeServiceDefaultArgs> = $Result.GetResult<Prisma.$ElderHomeServicePayload, S>
+
+  type ElderHomeServiceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ElderHomeServiceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ElderHomeServiceCountAggregateInputType | true
+    }
+
+  export interface ElderHomeServiceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ElderHomeService'], meta: { name: 'ElderHomeService' } }
+    /**
+     * Find zero or one ElderHomeService that matches the filter.
+     * @param {ElderHomeServiceFindUniqueArgs} args - Arguments to find a ElderHomeService
+     * @example
+     * // Get one ElderHomeService
+     * const elderHomeService = await prisma.elderHomeService.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ElderHomeServiceFindUniqueArgs>(args: SelectSubset<T, ElderHomeServiceFindUniqueArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ElderHomeService that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ElderHomeServiceFindUniqueOrThrowArgs} args - Arguments to find a ElderHomeService
+     * @example
+     * // Get one ElderHomeService
+     * const elderHomeService = await prisma.elderHomeService.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ElderHomeServiceFindUniqueOrThrowArgs>(args: SelectSubset<T, ElderHomeServiceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ElderHomeService that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomeServiceFindFirstArgs} args - Arguments to find a ElderHomeService
+     * @example
+     * // Get one ElderHomeService
+     * const elderHomeService = await prisma.elderHomeService.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ElderHomeServiceFindFirstArgs>(args?: SelectSubset<T, ElderHomeServiceFindFirstArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ElderHomeService that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomeServiceFindFirstOrThrowArgs} args - Arguments to find a ElderHomeService
+     * @example
+     * // Get one ElderHomeService
+     * const elderHomeService = await prisma.elderHomeService.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ElderHomeServiceFindFirstOrThrowArgs>(args?: SelectSubset<T, ElderHomeServiceFindFirstOrThrowArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ElderHomeServices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomeServiceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ElderHomeServices
+     * const elderHomeServices = await prisma.elderHomeService.findMany()
+     * 
+     * // Get first 10 ElderHomeServices
+     * const elderHomeServices = await prisma.elderHomeService.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const elderHomeServiceWithIdOnly = await prisma.elderHomeService.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ElderHomeServiceFindManyArgs>(args?: SelectSubset<T, ElderHomeServiceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ElderHomeService.
+     * @param {ElderHomeServiceCreateArgs} args - Arguments to create a ElderHomeService.
+     * @example
+     * // Create one ElderHomeService
+     * const ElderHomeService = await prisma.elderHomeService.create({
+     *   data: {
+     *     // ... data to create a ElderHomeService
+     *   }
+     * })
+     * 
+     */
+    create<T extends ElderHomeServiceCreateArgs>(args: SelectSubset<T, ElderHomeServiceCreateArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ElderHomeServices.
+     * @param {ElderHomeServiceCreateManyArgs} args - Arguments to create many ElderHomeServices.
+     * @example
+     * // Create many ElderHomeServices
+     * const elderHomeService = await prisma.elderHomeService.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ElderHomeServiceCreateManyArgs>(args?: SelectSubset<T, ElderHomeServiceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ElderHomeServices and returns the data saved in the database.
+     * @param {ElderHomeServiceCreateManyAndReturnArgs} args - Arguments to create many ElderHomeServices.
+     * @example
+     * // Create many ElderHomeServices
+     * const elderHomeService = await prisma.elderHomeService.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ElderHomeServices and only return the `id`
+     * const elderHomeServiceWithIdOnly = await prisma.elderHomeService.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ElderHomeServiceCreateManyAndReturnArgs>(args?: SelectSubset<T, ElderHomeServiceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ElderHomeService.
+     * @param {ElderHomeServiceDeleteArgs} args - Arguments to delete one ElderHomeService.
+     * @example
+     * // Delete one ElderHomeService
+     * const ElderHomeService = await prisma.elderHomeService.delete({
+     *   where: {
+     *     // ... filter to delete one ElderHomeService
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ElderHomeServiceDeleteArgs>(args: SelectSubset<T, ElderHomeServiceDeleteArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ElderHomeService.
+     * @param {ElderHomeServiceUpdateArgs} args - Arguments to update one ElderHomeService.
+     * @example
+     * // Update one ElderHomeService
+     * const elderHomeService = await prisma.elderHomeService.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ElderHomeServiceUpdateArgs>(args: SelectSubset<T, ElderHomeServiceUpdateArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ElderHomeServices.
+     * @param {ElderHomeServiceDeleteManyArgs} args - Arguments to filter ElderHomeServices to delete.
+     * @example
+     * // Delete a few ElderHomeServices
+     * const { count } = await prisma.elderHomeService.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ElderHomeServiceDeleteManyArgs>(args?: SelectSubset<T, ElderHomeServiceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ElderHomeServices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomeServiceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ElderHomeServices
+     * const elderHomeService = await prisma.elderHomeService.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ElderHomeServiceUpdateManyArgs>(args: SelectSubset<T, ElderHomeServiceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ElderHomeServices and returns the data updated in the database.
+     * @param {ElderHomeServiceUpdateManyAndReturnArgs} args - Arguments to update many ElderHomeServices.
+     * @example
+     * // Update many ElderHomeServices
+     * const elderHomeService = await prisma.elderHomeService.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ElderHomeServices and only return the `id`
+     * const elderHomeServiceWithIdOnly = await prisma.elderHomeService.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ElderHomeServiceUpdateManyAndReturnArgs>(args: SelectSubset<T, ElderHomeServiceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ElderHomeService.
+     * @param {ElderHomeServiceUpsertArgs} args - Arguments to update or create a ElderHomeService.
+     * @example
+     * // Update or create a ElderHomeService
+     * const elderHomeService = await prisma.elderHomeService.upsert({
+     *   create: {
+     *     // ... data to create a ElderHomeService
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ElderHomeService we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ElderHomeServiceUpsertArgs>(args: SelectSubset<T, ElderHomeServiceUpsertArgs<ExtArgs>>): Prisma__ElderHomeServiceClient<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ElderHomeServices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomeServiceCountArgs} args - Arguments to filter ElderHomeServices to count.
+     * @example
+     * // Count the number of ElderHomeServices
+     * const count = await prisma.elderHomeService.count({
+     *   where: {
+     *     // ... the filter for the ElderHomeServices we want to count
+     *   }
+     * })
+    **/
+    count<T extends ElderHomeServiceCountArgs>(
+      args?: Subset<T, ElderHomeServiceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ElderHomeServiceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ElderHomeService.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomeServiceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ElderHomeServiceAggregateArgs>(args: Subset<T, ElderHomeServiceAggregateArgs>): Prisma.PrismaPromise<GetElderHomeServiceAggregateType<T>>
+
+    /**
+     * Group by ElderHomeService.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ElderHomeServiceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ElderHomeServiceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ElderHomeServiceGroupByArgs['orderBy'] }
+        : { orderBy?: ElderHomeServiceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ElderHomeServiceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetElderHomeServiceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ElderHomeService model
+   */
+  readonly fields: ElderHomeServiceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ElderHomeService.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ElderHomeServiceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    elderHome<T extends ProfessionalProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfileDefaultArgs<ExtArgs>>): Prisma__ProfessionalProfileClient<$Result.GetResult<Prisma.$ProfessionalProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ElderHomeService model
+   */
+  interface ElderHomeServiceFieldRefs {
+    readonly id: FieldRef<"ElderHomeService", 'String'>
+    readonly elderHomeId: FieldRef<"ElderHomeService", 'String'>
+    readonly name: FieldRef<"ElderHomeService", 'String'>
+    readonly description: FieldRef<"ElderHomeService", 'String'>
+    readonly price: FieldRef<"ElderHomeService", 'Float'>
+    readonly priceUnit: FieldRef<"ElderHomeService", 'String'>
+    readonly createdAt: FieldRef<"ElderHomeService", 'DateTime'>
+    readonly updatedAt: FieldRef<"ElderHomeService", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ElderHomeService findUnique
+   */
+  export type ElderHomeServiceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomeService to fetch.
+     */
+    where: ElderHomeServiceWhereUniqueInput
+  }
+
+  /**
+   * ElderHomeService findUniqueOrThrow
+   */
+  export type ElderHomeServiceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomeService to fetch.
+     */
+    where: ElderHomeServiceWhereUniqueInput
+  }
+
+  /**
+   * ElderHomeService findFirst
+   */
+  export type ElderHomeServiceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomeService to fetch.
+     */
+    where?: ElderHomeServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomeServices to fetch.
+     */
+    orderBy?: ElderHomeServiceOrderByWithRelationInput | ElderHomeServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ElderHomeServices.
+     */
+    cursor?: ElderHomeServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomeServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomeServices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ElderHomeServices.
+     */
+    distinct?: ElderHomeServiceScalarFieldEnum | ElderHomeServiceScalarFieldEnum[]
+  }
+
+  /**
+   * ElderHomeService findFirstOrThrow
+   */
+  export type ElderHomeServiceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomeService to fetch.
+     */
+    where?: ElderHomeServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomeServices to fetch.
+     */
+    orderBy?: ElderHomeServiceOrderByWithRelationInput | ElderHomeServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ElderHomeServices.
+     */
+    cursor?: ElderHomeServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomeServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomeServices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ElderHomeServices.
+     */
+    distinct?: ElderHomeServiceScalarFieldEnum | ElderHomeServiceScalarFieldEnum[]
+  }
+
+  /**
+   * ElderHomeService findMany
+   */
+  export type ElderHomeServiceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * Filter, which ElderHomeServices to fetch.
+     */
+    where?: ElderHomeServiceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ElderHomeServices to fetch.
+     */
+    orderBy?: ElderHomeServiceOrderByWithRelationInput | ElderHomeServiceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ElderHomeServices.
+     */
+    cursor?: ElderHomeServiceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ElderHomeServices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ElderHomeServices.
+     */
+    skip?: number
+    distinct?: ElderHomeServiceScalarFieldEnum | ElderHomeServiceScalarFieldEnum[]
+  }
+
+  /**
+   * ElderHomeService create
+   */
+  export type ElderHomeServiceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ElderHomeService.
+     */
+    data: XOR<ElderHomeServiceCreateInput, ElderHomeServiceUncheckedCreateInput>
+  }
+
+  /**
+   * ElderHomeService createMany
+   */
+  export type ElderHomeServiceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ElderHomeServices.
+     */
+    data: ElderHomeServiceCreateManyInput | ElderHomeServiceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ElderHomeService createManyAndReturn
+   */
+  export type ElderHomeServiceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * The data used to create many ElderHomeServices.
+     */
+    data: ElderHomeServiceCreateManyInput | ElderHomeServiceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ElderHomeService update
+   */
+  export type ElderHomeServiceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ElderHomeService.
+     */
+    data: XOR<ElderHomeServiceUpdateInput, ElderHomeServiceUncheckedUpdateInput>
+    /**
+     * Choose, which ElderHomeService to update.
+     */
+    where: ElderHomeServiceWhereUniqueInput
+  }
+
+  /**
+   * ElderHomeService updateMany
+   */
+  export type ElderHomeServiceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ElderHomeServices.
+     */
+    data: XOR<ElderHomeServiceUpdateManyMutationInput, ElderHomeServiceUncheckedUpdateManyInput>
+    /**
+     * Filter which ElderHomeServices to update
+     */
+    where?: ElderHomeServiceWhereInput
+    /**
+     * Limit how many ElderHomeServices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ElderHomeService updateManyAndReturn
+   */
+  export type ElderHomeServiceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * The data used to update ElderHomeServices.
+     */
+    data: XOR<ElderHomeServiceUpdateManyMutationInput, ElderHomeServiceUncheckedUpdateManyInput>
+    /**
+     * Filter which ElderHomeServices to update
+     */
+    where?: ElderHomeServiceWhereInput
+    /**
+     * Limit how many ElderHomeServices to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ElderHomeService upsert
+   */
+  export type ElderHomeServiceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ElderHomeService to update in case it exists.
+     */
+    where: ElderHomeServiceWhereUniqueInput
+    /**
+     * In case the ElderHomeService found by the `where` argument doesn't exist, create a new ElderHomeService with this data.
+     */
+    create: XOR<ElderHomeServiceCreateInput, ElderHomeServiceUncheckedCreateInput>
+    /**
+     * In case the ElderHomeService was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ElderHomeServiceUpdateInput, ElderHomeServiceUncheckedUpdateInput>
+  }
+
+  /**
+   * ElderHomeService delete
+   */
+  export type ElderHomeServiceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+    /**
+     * Filter which ElderHomeService to delete.
+     */
+    where: ElderHomeServiceWhereUniqueInput
+  }
+
+  /**
+   * ElderHomeService deleteMany
+   */
+  export type ElderHomeServiceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ElderHomeServices to delete
+     */
+    where?: ElderHomeServiceWhereInput
+    /**
+     * Limit how many ElderHomeServices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ElderHomeService without action
+   */
+  export type ElderHomeServiceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ElderHomeService
+     */
+    select?: ElderHomeServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ElderHomeService
+     */
+    omit?: ElderHomeServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ElderHomeServiceInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -22321,10 +27470,25 @@ export namespace Prisma {
     attachedHospital: 'attachedHospital',
     availabilityStatus: 'availabilityStatus',
     rating: 'rating',
+    locationLat: 'locationLat',
+    locationLng: 'locationLng',
+    bookingFee: 'bookingFee',
+    serviceRadius: 'serviceRadius',
+    serveEverywhere: 'serveEverywhere',
+    walletBalance: 'walletBalance',
     licenseIssuedYear: 'licenseIssuedYear',
     licenseNumber: 'licenseNumber',
     idFrontImage: 'idFrontImage',
-    idBackImage: 'idBackImage'
+    idBackImage: 'idBackImage',
+    policies: 'policies',
+    facilities: 'facilities',
+    coverImage: 'coverImage',
+    profileImage: 'profileImage',
+    socialFacebook: 'socialFacebook',
+    socialInstagram: 'socialInstagram',
+    socialWhatsapp: 'socialWhatsapp',
+    socialWebsite: 'socialWebsite',
+    contactPhone: 'contactPhone'
   };
 
   export type ProfessionalProfileScalarFieldEnum = (typeof ProfessionalProfileScalarFieldEnum)[keyof typeof ProfessionalProfileScalarFieldEnum]
@@ -22341,7 +27505,12 @@ export namespace Prisma {
     idFrontImage: 'idFrontImage',
     idBackImage: 'idBackImage',
     address: 'address',
-    idCardNumber: 'idCardNumber'
+    idCardNumber: 'idCardNumber',
+    locationLat: 'locationLat',
+    locationLng: 'locationLng',
+    walletBalance: 'walletBalance',
+    serviceRadius: 'serviceRadius',
+    availabilityStatus: 'availabilityStatus'
   };
 
   export type PharmacistProfileScalarFieldEnum = (typeof PharmacistProfileScalarFieldEnum)[keyof typeof PharmacistProfileScalarFieldEnum]
@@ -22371,6 +27540,9 @@ export namespace Prisma {
     locationLng: 'locationLng',
     symptoms: 'symptoms',
     vitalsSummary: 'vitalsSummary',
+    paymentMethod: 'paymentMethod',
+    paymentStatus: 'paymentStatus',
+    totalAmount: 'totalAmount',
     completedAt: 'completedAt',
     createdAt: 'createdAt'
   };
@@ -22501,6 +27673,54 @@ export namespace Prisma {
   };
 
   export type RejectedRecordScalarFieldEnum = (typeof RejectedRecordScalarFieldEnum)[keyof typeof RejectedRecordScalarFieldEnum]
+
+
+  export const ReviewScalarFieldEnum: {
+    id: 'id',
+    patientId: 'patientId',
+    professionalId: 'professionalId',
+    rating: 'rating',
+    comment: 'comment',
+    createdAt: 'createdAt'
+  };
+
+  export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+  export const SystemSettingScalarFieldEnum: {
+    key: 'key',
+    value: 'value'
+  };
+
+  export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
+
+
+  export const ElderHomePostScalarFieldEnum: {
+    id: 'id',
+    elderHomeId: 'elderHomeId',
+    title: 'title',
+    content: 'content',
+    imageUrl: 'imageUrl',
+    category: 'category',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ElderHomePostScalarFieldEnum = (typeof ElderHomePostScalarFieldEnum)[keyof typeof ElderHomePostScalarFieldEnum]
+
+
+  export const ElderHomeServiceScalarFieldEnum: {
+    id: 'id',
+    elderHomeId: 'elderHomeId',
+    name: 'name',
+    description: 'description',
+    price: 'price',
+    priceUnit: 'priceUnit',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ElderHomeServiceScalarFieldEnum = (typeof ElderHomeServiceScalarFieldEnum)[keyof typeof ElderHomeServiceScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -22802,6 +28022,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionListRelationFilter
     orders?: OrderListRelationFilter
     emergencySOSs?: EmergencySOSListRelationFilter
+    reviews?: ReviewListRelationFilter
   }
 
   export type PatientProfileOrderByWithRelationInput = {
@@ -22817,6 +28038,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionOrderByRelationAggregateInput
     orders?: OrderOrderByRelationAggregateInput
     emergencySOSs?: EmergencySOSOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
   }
 
   export type PatientProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -22835,6 +28057,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionListRelationFilter
     orders?: OrderListRelationFilter
     emergencySOSs?: EmergencySOSListRelationFilter
+    reviews?: ReviewListRelationFilter
   }, "id" | "userId">
 
   export type PatientProfileOrderByWithAggregationInput = {
@@ -22882,14 +28105,32 @@ export namespace Prisma {
     attachedHospital?: StringNullableFilter<"ProfessionalProfile"> | string | null
     availabilityStatus?: StringFilter<"ProfessionalProfile"> | string
     rating?: FloatFilter<"ProfessionalProfile"> | number
+    locationLat?: FloatNullableFilter<"ProfessionalProfile"> | number | null
+    locationLng?: FloatNullableFilter<"ProfessionalProfile"> | number | null
+    bookingFee?: FloatFilter<"ProfessionalProfile"> | number
+    serviceRadius?: IntFilter<"ProfessionalProfile"> | number
+    serveEverywhere?: BoolFilter<"ProfessionalProfile"> | boolean
+    walletBalance?: FloatFilter<"ProfessionalProfile"> | number
     licenseIssuedYear?: IntNullableFilter<"ProfessionalProfile"> | number | null
     licenseNumber?: StringNullableFilter<"ProfessionalProfile"> | string | null
     idFrontImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
     idBackImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    policies?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    facilities?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    coverImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    profileImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialFacebook?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialInstagram?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialWhatsapp?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialWebsite?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    contactPhone?: StringNullableFilter<"ProfessionalProfile"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     appointments?: AppointmentListRelationFilter
     prescriptions?: PrescriptionListRelationFilter
     emergencySOSs?: EmergencySOSListRelationFilter
+    reviews?: ReviewListRelationFilter
+    elderHomePosts?: ElderHomePostListRelationFilter
+    elderHomeServices?: ElderHomeServiceListRelationFilter
   }
 
   export type ProfessionalProfileOrderByWithRelationInput = {
@@ -22908,14 +28149,32 @@ export namespace Prisma {
     attachedHospital?: SortOrderInput | SortOrder
     availabilityStatus?: SortOrder
     rating?: SortOrder
+    locationLat?: SortOrderInput | SortOrder
+    locationLng?: SortOrderInput | SortOrder
+    bookingFee?: SortOrder
+    serviceRadius?: SortOrder
+    serveEverywhere?: SortOrder
+    walletBalance?: SortOrder
     licenseIssuedYear?: SortOrderInput | SortOrder
     licenseNumber?: SortOrderInput | SortOrder
     idFrontImage?: SortOrderInput | SortOrder
     idBackImage?: SortOrderInput | SortOrder
+    policies?: SortOrderInput | SortOrder
+    facilities?: SortOrderInput | SortOrder
+    coverImage?: SortOrderInput | SortOrder
+    profileImage?: SortOrderInput | SortOrder
+    socialFacebook?: SortOrderInput | SortOrder
+    socialInstagram?: SortOrderInput | SortOrder
+    socialWhatsapp?: SortOrderInput | SortOrder
+    socialWebsite?: SortOrderInput | SortOrder
+    contactPhone?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     appointments?: AppointmentOrderByRelationAggregateInput
     prescriptions?: PrescriptionOrderByRelationAggregateInput
     emergencySOSs?: EmergencySOSOrderByRelationAggregateInput
+    reviews?: ReviewOrderByRelationAggregateInput
+    elderHomePosts?: ElderHomePostOrderByRelationAggregateInput
+    elderHomeServices?: ElderHomeServiceOrderByRelationAggregateInput
   }
 
   export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -22937,14 +28196,32 @@ export namespace Prisma {
     attachedHospital?: StringNullableFilter<"ProfessionalProfile"> | string | null
     availabilityStatus?: StringFilter<"ProfessionalProfile"> | string
     rating?: FloatFilter<"ProfessionalProfile"> | number
+    locationLat?: FloatNullableFilter<"ProfessionalProfile"> | number | null
+    locationLng?: FloatNullableFilter<"ProfessionalProfile"> | number | null
+    bookingFee?: FloatFilter<"ProfessionalProfile"> | number
+    serviceRadius?: IntFilter<"ProfessionalProfile"> | number
+    serveEverywhere?: BoolFilter<"ProfessionalProfile"> | boolean
+    walletBalance?: FloatFilter<"ProfessionalProfile"> | number
     licenseIssuedYear?: IntNullableFilter<"ProfessionalProfile"> | number | null
     licenseNumber?: StringNullableFilter<"ProfessionalProfile"> | string | null
     idFrontImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
     idBackImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    policies?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    facilities?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    coverImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    profileImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialFacebook?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialInstagram?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialWhatsapp?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    socialWebsite?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    contactPhone?: StringNullableFilter<"ProfessionalProfile"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     appointments?: AppointmentListRelationFilter
     prescriptions?: PrescriptionListRelationFilter
     emergencySOSs?: EmergencySOSListRelationFilter
+    reviews?: ReviewListRelationFilter
+    elderHomePosts?: ElderHomePostListRelationFilter
+    elderHomeServices?: ElderHomeServiceListRelationFilter
   }, "id" | "userId">
 
   export type ProfessionalProfileOrderByWithAggregationInput = {
@@ -22963,10 +28240,25 @@ export namespace Prisma {
     attachedHospital?: SortOrderInput | SortOrder
     availabilityStatus?: SortOrder
     rating?: SortOrder
+    locationLat?: SortOrderInput | SortOrder
+    locationLng?: SortOrderInput | SortOrder
+    bookingFee?: SortOrder
+    serviceRadius?: SortOrder
+    serveEverywhere?: SortOrder
+    walletBalance?: SortOrder
     licenseIssuedYear?: SortOrderInput | SortOrder
     licenseNumber?: SortOrderInput | SortOrder
     idFrontImage?: SortOrderInput | SortOrder
     idBackImage?: SortOrderInput | SortOrder
+    policies?: SortOrderInput | SortOrder
+    facilities?: SortOrderInput | SortOrder
+    coverImage?: SortOrderInput | SortOrder
+    profileImage?: SortOrderInput | SortOrder
+    socialFacebook?: SortOrderInput | SortOrder
+    socialInstagram?: SortOrderInput | SortOrder
+    socialWhatsapp?: SortOrderInput | SortOrder
+    socialWebsite?: SortOrderInput | SortOrder
+    contactPhone?: SortOrderInput | SortOrder
     _count?: ProfessionalProfileCountOrderByAggregateInput
     _avg?: ProfessionalProfileAvgOrderByAggregateInput
     _max?: ProfessionalProfileMaxOrderByAggregateInput
@@ -22993,10 +28285,25 @@ export namespace Prisma {
     attachedHospital?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
     availabilityStatus?: StringWithAggregatesFilter<"ProfessionalProfile"> | string
     rating?: FloatWithAggregatesFilter<"ProfessionalProfile"> | number
+    locationLat?: FloatNullableWithAggregatesFilter<"ProfessionalProfile"> | number | null
+    locationLng?: FloatNullableWithAggregatesFilter<"ProfessionalProfile"> | number | null
+    bookingFee?: FloatWithAggregatesFilter<"ProfessionalProfile"> | number
+    serviceRadius?: IntWithAggregatesFilter<"ProfessionalProfile"> | number
+    serveEverywhere?: BoolWithAggregatesFilter<"ProfessionalProfile"> | boolean
+    walletBalance?: FloatWithAggregatesFilter<"ProfessionalProfile"> | number
     licenseIssuedYear?: IntNullableWithAggregatesFilter<"ProfessionalProfile"> | number | null
     licenseNumber?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
     idFrontImage?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
     idBackImage?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    policies?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    facilities?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    coverImage?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    profileImage?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    socialFacebook?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    socialInstagram?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    socialWhatsapp?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    socialWebsite?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    contactPhone?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
   }
 
   export type PharmacistProfileWhereInput = {
@@ -23014,6 +28321,11 @@ export namespace Prisma {
     idBackImage?: StringNullableFilter<"PharmacistProfile"> | string | null
     address?: StringNullableFilter<"PharmacistProfile"> | string | null
     idCardNumber?: StringNullableFilter<"PharmacistProfile"> | string | null
+    locationLat?: FloatNullableFilter<"PharmacistProfile"> | number | null
+    locationLng?: FloatNullableFilter<"PharmacistProfile"> | number | null
+    walletBalance?: FloatFilter<"PharmacistProfile"> | number
+    serviceRadius?: IntFilter<"PharmacistProfile"> | number
+    availabilityStatus?: StringFilter<"PharmacistProfile"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     products?: ProductListRelationFilter
     orders?: OrderListRelationFilter
@@ -23031,6 +28343,11 @@ export namespace Prisma {
     idBackImage?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     idCardNumber?: SortOrderInput | SortOrder
+    locationLat?: SortOrderInput | SortOrder
+    locationLng?: SortOrderInput | SortOrder
+    walletBalance?: SortOrder
+    serviceRadius?: SortOrder
+    availabilityStatus?: SortOrder
     user?: UserOrderByWithRelationInput
     products?: ProductOrderByRelationAggregateInput
     orders?: OrderOrderByRelationAggregateInput
@@ -23051,6 +28368,11 @@ export namespace Prisma {
     idBackImage?: StringNullableFilter<"PharmacistProfile"> | string | null
     address?: StringNullableFilter<"PharmacistProfile"> | string | null
     idCardNumber?: StringNullableFilter<"PharmacistProfile"> | string | null
+    locationLat?: FloatNullableFilter<"PharmacistProfile"> | number | null
+    locationLng?: FloatNullableFilter<"PharmacistProfile"> | number | null
+    walletBalance?: FloatFilter<"PharmacistProfile"> | number
+    serviceRadius?: IntFilter<"PharmacistProfile"> | number
+    availabilityStatus?: StringFilter<"PharmacistProfile"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     products?: ProductListRelationFilter
     orders?: OrderListRelationFilter
@@ -23068,6 +28390,11 @@ export namespace Prisma {
     idBackImage?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     idCardNumber?: SortOrderInput | SortOrder
+    locationLat?: SortOrderInput | SortOrder
+    locationLng?: SortOrderInput | SortOrder
+    walletBalance?: SortOrder
+    serviceRadius?: SortOrder
+    availabilityStatus?: SortOrder
     _count?: PharmacistProfileCountOrderByAggregateInput
     _avg?: PharmacistProfileAvgOrderByAggregateInput
     _max?: PharmacistProfileMaxOrderByAggregateInput
@@ -23090,6 +28417,11 @@ export namespace Prisma {
     idBackImage?: StringNullableWithAggregatesFilter<"PharmacistProfile"> | string | null
     address?: StringNullableWithAggregatesFilter<"PharmacistProfile"> | string | null
     idCardNumber?: StringNullableWithAggregatesFilter<"PharmacistProfile"> | string | null
+    locationLat?: FloatNullableWithAggregatesFilter<"PharmacistProfile"> | number | null
+    locationLng?: FloatNullableWithAggregatesFilter<"PharmacistProfile"> | number | null
+    walletBalance?: FloatWithAggregatesFilter<"PharmacistProfile"> | number
+    serviceRadius?: IntWithAggregatesFilter<"PharmacistProfile"> | number
+    availabilityStatus?: StringWithAggregatesFilter<"PharmacistProfile"> | string
   }
 
   export type AdminProfileWhereInput = {
@@ -23171,6 +28503,9 @@ export namespace Prisma {
     locationLng?: FloatNullableFilter<"Appointment"> | number | null
     symptoms?: StringNullableFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableFilter<"Appointment"> | string | null
+    paymentMethod?: StringNullableFilter<"Appointment"> | string | null
+    paymentStatus?: StringFilter<"Appointment"> | string
+    totalAmount?: FloatFilter<"Appointment"> | number
     completedAt?: DateTimeNullableFilter<"Appointment"> | Date | string | null
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
     patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
@@ -23190,6 +28525,9 @@ export namespace Prisma {
     locationLng?: SortOrderInput | SortOrder
     symptoms?: SortOrderInput | SortOrder
     vitalsSummary?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    totalAmount?: SortOrder
     completedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     patient?: PatientProfileOrderByWithRelationInput
@@ -23212,6 +28550,9 @@ export namespace Prisma {
     locationLng?: FloatNullableFilter<"Appointment"> | number | null
     symptoms?: StringNullableFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableFilter<"Appointment"> | string | null
+    paymentMethod?: StringNullableFilter<"Appointment"> | string | null
+    paymentStatus?: StringFilter<"Appointment"> | string
+    totalAmount?: FloatFilter<"Appointment"> | number
     completedAt?: DateTimeNullableFilter<"Appointment"> | Date | string | null
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
     patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
@@ -23231,6 +28572,9 @@ export namespace Prisma {
     locationLng?: SortOrderInput | SortOrder
     symptoms?: SortOrderInput | SortOrder
     vitalsSummary?: SortOrderInput | SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    totalAmount?: SortOrder
     completedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: AppointmentCountOrderByAggregateInput
@@ -23254,6 +28598,9 @@ export namespace Prisma {
     locationLng?: FloatNullableWithAggregatesFilter<"Appointment"> | number | null
     symptoms?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
+    paymentMethod?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
+    paymentStatus?: StringWithAggregatesFilter<"Appointment"> | string
+    totalAmount?: FloatWithAggregatesFilter<"Appointment"> | number
     completedAt?: DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
   }
@@ -23921,6 +29268,250 @@ export namespace Prisma {
     rejectedAt?: DateTimeWithAggregatesFilter<"RejectedRecord"> | Date | string
   }
 
+  export type ReviewWhereInput = {
+    AND?: ReviewWhereInput | ReviewWhereInput[]
+    OR?: ReviewWhereInput[]
+    NOT?: ReviewWhereInput | ReviewWhereInput[]
+    id?: StringFilter<"Review"> | string
+    patientId?: StringFilter<"Review"> | string
+    professionalId?: StringFilter<"Review"> | string
+    rating?: FloatFilter<"Review"> | number
+    comment?: StringNullableFilter<"Review"> | string | null
+    createdAt?: DateTimeFilter<"Review"> | Date | string
+    patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
+    professional?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }
+
+  export type ReviewOrderByWithRelationInput = {
+    id?: SortOrder
+    patientId?: SortOrder
+    professionalId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    patient?: PatientProfileOrderByWithRelationInput
+    professional?: ProfessionalProfileOrderByWithRelationInput
+  }
+
+  export type ReviewWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ReviewWhereInput | ReviewWhereInput[]
+    OR?: ReviewWhereInput[]
+    NOT?: ReviewWhereInput | ReviewWhereInput[]
+    patientId?: StringFilter<"Review"> | string
+    professionalId?: StringFilter<"Review"> | string
+    rating?: FloatFilter<"Review"> | number
+    comment?: StringNullableFilter<"Review"> | string | null
+    createdAt?: DateTimeFilter<"Review"> | Date | string
+    patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
+    professional?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }, "id">
+
+  export type ReviewOrderByWithAggregationInput = {
+    id?: SortOrder
+    patientId?: SortOrder
+    professionalId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ReviewCountOrderByAggregateInput
+    _avg?: ReviewAvgOrderByAggregateInput
+    _max?: ReviewMaxOrderByAggregateInput
+    _min?: ReviewMinOrderByAggregateInput
+    _sum?: ReviewSumOrderByAggregateInput
+  }
+
+  export type ReviewScalarWhereWithAggregatesInput = {
+    AND?: ReviewScalarWhereWithAggregatesInput | ReviewScalarWhereWithAggregatesInput[]
+    OR?: ReviewScalarWhereWithAggregatesInput[]
+    NOT?: ReviewScalarWhereWithAggregatesInput | ReviewScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Review"> | string
+    patientId?: StringWithAggregatesFilter<"Review"> | string
+    professionalId?: StringWithAggregatesFilter<"Review"> | string
+    rating?: FloatWithAggregatesFilter<"Review"> | number
+    comment?: StringNullableWithAggregatesFilter<"Review"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Review"> | Date | string
+  }
+
+  export type SystemSettingWhereInput = {
+    AND?: SystemSettingWhereInput | SystemSettingWhereInput[]
+    OR?: SystemSettingWhereInput[]
+    NOT?: SystemSettingWhereInput | SystemSettingWhereInput[]
+    key?: StringFilter<"SystemSetting"> | string
+    value?: StringFilter<"SystemSetting"> | string
+  }
+
+  export type SystemSettingOrderByWithRelationInput = {
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type SystemSettingWhereUniqueInput = Prisma.AtLeast<{
+    key?: string
+    AND?: SystemSettingWhereInput | SystemSettingWhereInput[]
+    OR?: SystemSettingWhereInput[]
+    NOT?: SystemSettingWhereInput | SystemSettingWhereInput[]
+    value?: StringFilter<"SystemSetting"> | string
+  }, "key">
+
+  export type SystemSettingOrderByWithAggregationInput = {
+    key?: SortOrder
+    value?: SortOrder
+    _count?: SystemSettingCountOrderByAggregateInput
+    _max?: SystemSettingMaxOrderByAggregateInput
+    _min?: SystemSettingMinOrderByAggregateInput
+  }
+
+  export type SystemSettingScalarWhereWithAggregatesInput = {
+    AND?: SystemSettingScalarWhereWithAggregatesInput | SystemSettingScalarWhereWithAggregatesInput[]
+    OR?: SystemSettingScalarWhereWithAggregatesInput[]
+    NOT?: SystemSettingScalarWhereWithAggregatesInput | SystemSettingScalarWhereWithAggregatesInput[]
+    key?: StringWithAggregatesFilter<"SystemSetting"> | string
+    value?: StringWithAggregatesFilter<"SystemSetting"> | string
+  }
+
+  export type ElderHomePostWhereInput = {
+    AND?: ElderHomePostWhereInput | ElderHomePostWhereInput[]
+    OR?: ElderHomePostWhereInput[]
+    NOT?: ElderHomePostWhereInput | ElderHomePostWhereInput[]
+    id?: StringFilter<"ElderHomePost"> | string
+    elderHomeId?: StringFilter<"ElderHomePost"> | string
+    title?: StringNullableFilter<"ElderHomePost"> | string | null
+    content?: StringFilter<"ElderHomePost"> | string
+    imageUrl?: StringNullableFilter<"ElderHomePost"> | string | null
+    category?: StringFilter<"ElderHomePost"> | string
+    createdAt?: DateTimeFilter<"ElderHomePost"> | Date | string
+    updatedAt?: DateTimeFilter<"ElderHomePost"> | Date | string
+    elderHome?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }
+
+  export type ElderHomePostOrderByWithRelationInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    title?: SortOrderInput | SortOrder
+    content?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    elderHome?: ProfessionalProfileOrderByWithRelationInput
+  }
+
+  export type ElderHomePostWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ElderHomePostWhereInput | ElderHomePostWhereInput[]
+    OR?: ElderHomePostWhereInput[]
+    NOT?: ElderHomePostWhereInput | ElderHomePostWhereInput[]
+    elderHomeId?: StringFilter<"ElderHomePost"> | string
+    title?: StringNullableFilter<"ElderHomePost"> | string | null
+    content?: StringFilter<"ElderHomePost"> | string
+    imageUrl?: StringNullableFilter<"ElderHomePost"> | string | null
+    category?: StringFilter<"ElderHomePost"> | string
+    createdAt?: DateTimeFilter<"ElderHomePost"> | Date | string
+    updatedAt?: DateTimeFilter<"ElderHomePost"> | Date | string
+    elderHome?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }, "id">
+
+  export type ElderHomePostOrderByWithAggregationInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    title?: SortOrderInput | SortOrder
+    content?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ElderHomePostCountOrderByAggregateInput
+    _max?: ElderHomePostMaxOrderByAggregateInput
+    _min?: ElderHomePostMinOrderByAggregateInput
+  }
+
+  export type ElderHomePostScalarWhereWithAggregatesInput = {
+    AND?: ElderHomePostScalarWhereWithAggregatesInput | ElderHomePostScalarWhereWithAggregatesInput[]
+    OR?: ElderHomePostScalarWhereWithAggregatesInput[]
+    NOT?: ElderHomePostScalarWhereWithAggregatesInput | ElderHomePostScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ElderHomePost"> | string
+    elderHomeId?: StringWithAggregatesFilter<"ElderHomePost"> | string
+    title?: StringNullableWithAggregatesFilter<"ElderHomePost"> | string | null
+    content?: StringWithAggregatesFilter<"ElderHomePost"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"ElderHomePost"> | string | null
+    category?: StringWithAggregatesFilter<"ElderHomePost"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ElderHomePost"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ElderHomePost"> | Date | string
+  }
+
+  export type ElderHomeServiceWhereInput = {
+    AND?: ElderHomeServiceWhereInput | ElderHomeServiceWhereInput[]
+    OR?: ElderHomeServiceWhereInput[]
+    NOT?: ElderHomeServiceWhereInput | ElderHomeServiceWhereInput[]
+    id?: StringFilter<"ElderHomeService"> | string
+    elderHomeId?: StringFilter<"ElderHomeService"> | string
+    name?: StringFilter<"ElderHomeService"> | string
+    description?: StringNullableFilter<"ElderHomeService"> | string | null
+    price?: FloatFilter<"ElderHomeService"> | number
+    priceUnit?: StringFilter<"ElderHomeService"> | string
+    createdAt?: DateTimeFilter<"ElderHomeService"> | Date | string
+    updatedAt?: DateTimeFilter<"ElderHomeService"> | Date | string
+    elderHome?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }
+
+  export type ElderHomeServiceOrderByWithRelationInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    price?: SortOrder
+    priceUnit?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    elderHome?: ProfessionalProfileOrderByWithRelationInput
+  }
+
+  export type ElderHomeServiceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ElderHomeServiceWhereInput | ElderHomeServiceWhereInput[]
+    OR?: ElderHomeServiceWhereInput[]
+    NOT?: ElderHomeServiceWhereInput | ElderHomeServiceWhereInput[]
+    elderHomeId?: StringFilter<"ElderHomeService"> | string
+    name?: StringFilter<"ElderHomeService"> | string
+    description?: StringNullableFilter<"ElderHomeService"> | string | null
+    price?: FloatFilter<"ElderHomeService"> | number
+    priceUnit?: StringFilter<"ElderHomeService"> | string
+    createdAt?: DateTimeFilter<"ElderHomeService"> | Date | string
+    updatedAt?: DateTimeFilter<"ElderHomeService"> | Date | string
+    elderHome?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }, "id">
+
+  export type ElderHomeServiceOrderByWithAggregationInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    price?: SortOrder
+    priceUnit?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ElderHomeServiceCountOrderByAggregateInput
+    _avg?: ElderHomeServiceAvgOrderByAggregateInput
+    _max?: ElderHomeServiceMaxOrderByAggregateInput
+    _min?: ElderHomeServiceMinOrderByAggregateInput
+    _sum?: ElderHomeServiceSumOrderByAggregateInput
+  }
+
+  export type ElderHomeServiceScalarWhereWithAggregatesInput = {
+    AND?: ElderHomeServiceScalarWhereWithAggregatesInput | ElderHomeServiceScalarWhereWithAggregatesInput[]
+    OR?: ElderHomeServiceScalarWhereWithAggregatesInput[]
+    NOT?: ElderHomeServiceScalarWhereWithAggregatesInput | ElderHomeServiceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ElderHomeService"> | string
+    elderHomeId?: StringWithAggregatesFilter<"ElderHomeService"> | string
+    name?: StringWithAggregatesFilter<"ElderHomeService"> | string
+    description?: StringNullableWithAggregatesFilter<"ElderHomeService"> | string | null
+    price?: FloatWithAggregatesFilter<"ElderHomeService"> | number
+    priceUnit?: StringWithAggregatesFilter<"ElderHomeService"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ElderHomeService"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ElderHomeService"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -24117,6 +29708,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionCreateNestedManyWithoutPatientInput
     orders?: OrderCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutPatientInput
+    reviews?: ReviewCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileUncheckedCreateInput = {
@@ -24131,6 +29723,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPatientInput
     orders?: OrderUncheckedCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutPatientInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileUpdateInput = {
@@ -24145,6 +29738,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUpdateManyWithoutPatientNestedInput
     orders?: OrderUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUpdateManyWithoutPatientNestedInput
   }
 
   export type PatientProfileUncheckedUpdateInput = {
@@ -24159,6 +29753,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutPatientNestedInput
     orders?: OrderUncheckedUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutPatientNestedInput
   }
 
   export type PatientProfileCreateManyInput = {
@@ -24205,14 +29800,32 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     user: UserCreateNestedOneWithoutProfessionalProfileInput
     appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
     prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileUncheckedCreateInput = {
@@ -24231,13 +29844,31 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileUpdateInput = {
@@ -24255,14 +29886,32 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
     appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
     prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateInput = {
@@ -24281,13 +29930,31 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
   }
 
   export type ProfessionalProfileCreateManyInput = {
@@ -24306,10 +29973,25 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
   }
 
   export type ProfessionalProfileUpdateManyMutationInput = {
@@ -24327,10 +30009,25 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalProfileUncheckedUpdateManyInput = {
@@ -24349,10 +30046,25 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PharmacistProfileCreateInput = {
@@ -24366,6 +30078,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     user: UserCreateNestedOneWithoutPharmacistProfileInput
     products?: ProductCreateNestedManyWithoutPharmacistInput
     orders?: OrderCreateNestedManyWithoutPharmacistInput
@@ -24383,6 +30100,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     products?: ProductUncheckedCreateNestedManyWithoutPharmacistInput
     orders?: OrderUncheckedCreateNestedManyWithoutPharmacistInput
   }
@@ -24398,6 +30120,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutPharmacistProfileNestedInput
     products?: ProductUpdateManyWithoutPharmacistNestedInput
     orders?: OrderUpdateManyWithoutPharmacistNestedInput
@@ -24415,6 +30142,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     products?: ProductUncheckedUpdateManyWithoutPharmacistNestedInput
     orders?: OrderUncheckedUpdateManyWithoutPharmacistNestedInput
   }
@@ -24431,6 +30163,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
   }
 
   export type PharmacistProfileUpdateManyMutationInput = {
@@ -24444,6 +30181,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type PharmacistProfileUncheckedUpdateManyInput = {
@@ -24458,6 +30200,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type AdminProfileCreateInput = {
@@ -24538,6 +30285,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutAppointmentsInput
@@ -24557,6 +30307,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutAppointmentInput
@@ -24572,6 +30325,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutAppointmentsNestedInput
@@ -24591,6 +30347,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutAppointmentNestedInput
@@ -24608,6 +30367,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
   }
@@ -24621,6 +30383,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24636,6 +30401,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25310,6 +31078,254 @@ export namespace Prisma {
     rejectedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReviewCreateInput = {
+    id?: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    patient: PatientProfileCreateNestedOneWithoutReviewsInput
+    professional: ProfessionalProfileCreateNestedOneWithoutReviewsInput
+  }
+
+  export type ReviewUncheckedCreateInput = {
+    id?: string
+    patientId: string
+    professionalId: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ReviewUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    patient?: PatientProfileUpdateOneRequiredWithoutReviewsNestedInput
+    professional?: ProfessionalProfileUpdateOneRequiredWithoutReviewsNestedInput
+  }
+
+  export type ReviewUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientId?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReviewCreateManyInput = {
+    id?: string
+    patientId: string
+    professionalId: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ReviewUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReviewUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientId?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SystemSettingCreateInput = {
+    key: string
+    value: string
+  }
+
+  export type SystemSettingUncheckedCreateInput = {
+    key: string
+    value: string
+  }
+
+  export type SystemSettingUpdateInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SystemSettingUncheckedUpdateInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SystemSettingCreateManyInput = {
+    key: string
+    value: string
+  }
+
+  export type SystemSettingUpdateManyMutationInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SystemSettingUncheckedUpdateManyInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ElderHomePostCreateInput = {
+    id?: string
+    title?: string | null
+    content: string
+    imageUrl?: string | null
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    elderHome: ProfessionalProfileCreateNestedOneWithoutElderHomePostsInput
+  }
+
+  export type ElderHomePostUncheckedCreateInput = {
+    id?: string
+    elderHomeId: string
+    title?: string | null
+    content: string
+    imageUrl?: string | null
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomePostUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    elderHome?: ProfessionalProfileUpdateOneRequiredWithoutElderHomePostsNestedInput
+  }
+
+  export type ElderHomePostUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    elderHomeId?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomePostCreateManyInput = {
+    id?: string
+    elderHomeId: string
+    title?: string | null
+    content: string
+    imageUrl?: string | null
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomePostUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomePostUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    elderHomeId?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomeServiceCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price?: number
+    priceUnit?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    elderHome: ProfessionalProfileCreateNestedOneWithoutElderHomeServicesInput
+  }
+
+  export type ElderHomeServiceUncheckedCreateInput = {
+    id?: string
+    elderHomeId: string
+    name: string
+    description?: string | null
+    price?: number
+    priceUnit?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomeServiceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    priceUnit?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    elderHome?: ProfessionalProfileUpdateOneRequiredWithoutElderHomeServicesNestedInput
+  }
+
+  export type ElderHomeServiceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    elderHomeId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    priceUnit?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomeServiceCreateManyInput = {
+    id?: string
+    elderHomeId: string
+    name: string
+    description?: string | null
+    price?: number
+    priceUnit?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomeServiceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    priceUnit?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomeServiceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    elderHomeId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    priceUnit?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -25602,6 +31618,12 @@ export namespace Prisma {
     none?: EmergencySOSWhereInput
   }
 
+  export type ReviewListRelationFilter = {
+    every?: ReviewWhereInput
+    some?: ReviewWhereInput
+    none?: ReviewWhereInput
+  }
+
   export type AppointmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -25615,6 +31637,10 @@ export namespace Prisma {
   }
 
   export type EmergencySOSOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReviewOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25673,6 +31699,28 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -25682,6 +31730,26 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type ElderHomePostListRelationFilter = {
+    every?: ElderHomePostWhereInput
+    some?: ElderHomePostWhereInput
+    none?: ElderHomePostWhereInput
+  }
+
+  export type ElderHomeServiceListRelationFilter = {
+    every?: ElderHomeServiceWhereInput
+    some?: ElderHomeServiceWhereInput
+    none?: ElderHomeServiceWhereInput
+  }
+
+  export type ElderHomePostOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ElderHomeServiceOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ProfessionalProfileCountOrderByAggregateInput = {
@@ -25700,14 +31768,34 @@ export namespace Prisma {
     attachedHospital?: SortOrder
     availabilityStatus?: SortOrder
     rating?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    bookingFee?: SortOrder
+    serviceRadius?: SortOrder
+    serveEverywhere?: SortOrder
+    walletBalance?: SortOrder
     licenseIssuedYear?: SortOrder
     licenseNumber?: SortOrder
     idFrontImage?: SortOrder
     idBackImage?: SortOrder
+    policies?: SortOrder
+    facilities?: SortOrder
+    coverImage?: SortOrder
+    profileImage?: SortOrder
+    socialFacebook?: SortOrder
+    socialInstagram?: SortOrder
+    socialWhatsapp?: SortOrder
+    socialWebsite?: SortOrder
+    contactPhone?: SortOrder
   }
 
   export type ProfessionalProfileAvgOrderByAggregateInput = {
     rating?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    bookingFee?: SortOrder
+    serviceRadius?: SortOrder
+    walletBalance?: SortOrder
     licenseIssuedYear?: SortOrder
   }
 
@@ -25727,10 +31815,25 @@ export namespace Prisma {
     attachedHospital?: SortOrder
     availabilityStatus?: SortOrder
     rating?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    bookingFee?: SortOrder
+    serviceRadius?: SortOrder
+    serveEverywhere?: SortOrder
+    walletBalance?: SortOrder
     licenseIssuedYear?: SortOrder
     licenseNumber?: SortOrder
     idFrontImage?: SortOrder
     idBackImage?: SortOrder
+    policies?: SortOrder
+    facilities?: SortOrder
+    coverImage?: SortOrder
+    profileImage?: SortOrder
+    socialFacebook?: SortOrder
+    socialInstagram?: SortOrder
+    socialWhatsapp?: SortOrder
+    socialWebsite?: SortOrder
+    contactPhone?: SortOrder
   }
 
   export type ProfessionalProfileMinOrderByAggregateInput = {
@@ -25749,14 +31852,34 @@ export namespace Prisma {
     attachedHospital?: SortOrder
     availabilityStatus?: SortOrder
     rating?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    bookingFee?: SortOrder
+    serviceRadius?: SortOrder
+    serveEverywhere?: SortOrder
+    walletBalance?: SortOrder
     licenseIssuedYear?: SortOrder
     licenseNumber?: SortOrder
     idFrontImage?: SortOrder
     idBackImage?: SortOrder
+    policies?: SortOrder
+    facilities?: SortOrder
+    coverImage?: SortOrder
+    profileImage?: SortOrder
+    socialFacebook?: SortOrder
+    socialInstagram?: SortOrder
+    socialWhatsapp?: SortOrder
+    socialWebsite?: SortOrder
+    contactPhone?: SortOrder
   }
 
   export type ProfessionalProfileSumOrderByAggregateInput = {
     rating?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    bookingFee?: SortOrder
+    serviceRadius?: SortOrder
+    walletBalance?: SortOrder
     licenseIssuedYear?: SortOrder
   }
 
@@ -25774,6 +31897,38 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -25814,10 +31969,19 @@ export namespace Prisma {
     idBackImage?: SortOrder
     address?: SortOrder
     idCardNumber?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    walletBalance?: SortOrder
+    serviceRadius?: SortOrder
+    availabilityStatus?: SortOrder
   }
 
   export type PharmacistProfileAvgOrderByAggregateInput = {
     licenseIssuedYear?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    walletBalance?: SortOrder
+    serviceRadius?: SortOrder
   }
 
   export type PharmacistProfileMaxOrderByAggregateInput = {
@@ -25832,6 +31996,11 @@ export namespace Prisma {
     idBackImage?: SortOrder
     address?: SortOrder
     idCardNumber?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    walletBalance?: SortOrder
+    serviceRadius?: SortOrder
+    availabilityStatus?: SortOrder
   }
 
   export type PharmacistProfileMinOrderByAggregateInput = {
@@ -25846,10 +32015,19 @@ export namespace Prisma {
     idBackImage?: SortOrder
     address?: SortOrder
     idCardNumber?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    walletBalance?: SortOrder
+    serviceRadius?: SortOrder
+    availabilityStatus?: SortOrder
   }
 
   export type PharmacistProfileSumOrderByAggregateInput = {
     licenseIssuedYear?: SortOrder
+    locationLat?: SortOrder
+    locationLng?: SortOrder
+    walletBalance?: SortOrder
+    serviceRadius?: SortOrder
   }
 
   export type AdminProfileCountOrderByAggregateInput = {
@@ -25880,17 +32058,6 @@ export namespace Prisma {
     idFrontImage?: SortOrder
     idBackImage?: SortOrder
     idCardNumber?: SortOrder
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type PatientProfileScalarRelationFilter = {
@@ -25924,6 +32091,9 @@ export namespace Prisma {
     locationLng?: SortOrder
     symptoms?: SortOrder
     vitalsSummary?: SortOrder
+    paymentMethod?: SortOrder
+    paymentStatus?: SortOrder
+    totalAmount?: SortOrder
     completedAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -25931,6 +32101,7 @@ export namespace Prisma {
   export type AppointmentAvgOrderByAggregateInput = {
     locationLat?: SortOrder
     locationLng?: SortOrder
+    totalAmount?: SortOrder
   }
 
   export type AppointmentMaxOrderByAggregateInput = {
@@ -25944,6 +32115,9 @@ export namespace Prisma {
     locationLng?: SortOrder
     symptoms?: SortOrder
     vitalsSummary?: SortOrder
+    paymentMethod?: SortOrder
+    paymentStatus?: SortOrder
+    totalAmount?: SortOrder
     completedAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -25959,6 +32133,9 @@ export namespace Prisma {
     locationLng?: SortOrder
     symptoms?: SortOrder
     vitalsSummary?: SortOrder
+    paymentMethod?: SortOrder
+    paymentStatus?: SortOrder
+    totalAmount?: SortOrder
     completedAt?: SortOrder
     createdAt?: SortOrder
   }
@@ -25966,22 +32143,7 @@ export namespace Prisma {
   export type AppointmentSumOrderByAggregateInput = {
     locationLat?: SortOrder
     locationLng?: SortOrder
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
+    totalAmount?: SortOrder
   }
 
   export type AppointmentScalarRelationFilter = {
@@ -26082,17 +32244,6 @@ export namespace Prisma {
     duration?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type PharmacistProfileScalarRelationFilter = {
     is?: PharmacistProfileWhereInput
     isNot?: PharmacistProfileWhereInput
@@ -26158,22 +32309,6 @@ export namespace Prisma {
   export type ProductSumOrderByAggregateInput = {
     price?: SortOrder
     stock?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type PrescriptionNullableScalarRelationFilter = {
@@ -26392,6 +32527,130 @@ export namespace Prisma {
     phone?: SortOrder
     idCardNumber?: SortOrder
     rejectedAt?: SortOrder
+  }
+
+  export type ReviewCountOrderByAggregateInput = {
+    id?: SortOrder
+    patientId?: SortOrder
+    professionalId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReviewAvgOrderByAggregateInput = {
+    rating?: SortOrder
+  }
+
+  export type ReviewMaxOrderByAggregateInput = {
+    id?: SortOrder
+    patientId?: SortOrder
+    professionalId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReviewMinOrderByAggregateInput = {
+    id?: SortOrder
+    patientId?: SortOrder
+    professionalId?: SortOrder
+    rating?: SortOrder
+    comment?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReviewSumOrderByAggregateInput = {
+    rating?: SortOrder
+  }
+
+  export type SystemSettingCountOrderByAggregateInput = {
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type SystemSettingMaxOrderByAggregateInput = {
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type SystemSettingMinOrderByAggregateInput = {
+    key?: SortOrder
+    value?: SortOrder
+  }
+
+  export type ElderHomePostCountOrderByAggregateInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    imageUrl?: SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ElderHomePostMaxOrderByAggregateInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    imageUrl?: SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ElderHomePostMinOrderByAggregateInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    imageUrl?: SortOrder
+    category?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ElderHomeServiceCountOrderByAggregateInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    price?: SortOrder
+    priceUnit?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ElderHomeServiceAvgOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type ElderHomeServiceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    price?: SortOrder
+    priceUnit?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ElderHomeServiceMinOrderByAggregateInput = {
+    id?: SortOrder
+    elderHomeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    price?: SortOrder
+    priceUnit?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ElderHomeServiceSumOrderByAggregateInput = {
+    price?: SortOrder
   }
 
   export type PatientProfileCreateNestedOneWithoutUserInput = {
@@ -26678,6 +32937,13 @@ export namespace Prisma {
     connect?: EmergencySOSWhereUniqueInput | EmergencySOSWhereUniqueInput[]
   }
 
+  export type ReviewCreateNestedManyWithoutPatientInput = {
+    create?: XOR<ReviewCreateWithoutPatientInput, ReviewUncheckedCreateWithoutPatientInput> | ReviewCreateWithoutPatientInput[] | ReviewUncheckedCreateWithoutPatientInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutPatientInput | ReviewCreateOrConnectWithoutPatientInput[]
+    createMany?: ReviewCreateManyPatientInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
   export type AppointmentUncheckedCreateNestedManyWithoutPatientInput = {
     create?: XOR<AppointmentCreateWithoutPatientInput, AppointmentUncheckedCreateWithoutPatientInput> | AppointmentCreateWithoutPatientInput[] | AppointmentUncheckedCreateWithoutPatientInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutPatientInput | AppointmentCreateOrConnectWithoutPatientInput[]
@@ -26704,6 +32970,13 @@ export namespace Prisma {
     connectOrCreate?: EmergencySOSCreateOrConnectWithoutPatientInput | EmergencySOSCreateOrConnectWithoutPatientInput[]
     createMany?: EmergencySOSCreateManyPatientInputEnvelope
     connect?: EmergencySOSWhereUniqueInput | EmergencySOSWhereUniqueInput[]
+  }
+
+  export type ReviewUncheckedCreateNestedManyWithoutPatientInput = {
+    create?: XOR<ReviewCreateWithoutPatientInput, ReviewUncheckedCreateWithoutPatientInput> | ReviewCreateWithoutPatientInput[] | ReviewUncheckedCreateWithoutPatientInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutPatientInput | ReviewCreateOrConnectWithoutPatientInput[]
+    createMany?: ReviewCreateManyPatientInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -26774,6 +33047,20 @@ export namespace Prisma {
     deleteMany?: EmergencySOSScalarWhereInput | EmergencySOSScalarWhereInput[]
   }
 
+  export type ReviewUpdateManyWithoutPatientNestedInput = {
+    create?: XOR<ReviewCreateWithoutPatientInput, ReviewUncheckedCreateWithoutPatientInput> | ReviewCreateWithoutPatientInput[] | ReviewUncheckedCreateWithoutPatientInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutPatientInput | ReviewCreateOrConnectWithoutPatientInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutPatientInput | ReviewUpsertWithWhereUniqueWithoutPatientInput[]
+    createMany?: ReviewCreateManyPatientInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutPatientInput | ReviewUpdateWithWhereUniqueWithoutPatientInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutPatientInput | ReviewUpdateManyWithWhereWithoutPatientInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
   export type AppointmentUncheckedUpdateManyWithoutPatientNestedInput = {
     create?: XOR<AppointmentCreateWithoutPatientInput, AppointmentUncheckedCreateWithoutPatientInput> | AppointmentCreateWithoutPatientInput[] | AppointmentUncheckedCreateWithoutPatientInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutPatientInput | AppointmentCreateOrConnectWithoutPatientInput[]
@@ -26830,6 +33117,20 @@ export namespace Prisma {
     deleteMany?: EmergencySOSScalarWhereInput | EmergencySOSScalarWhereInput[]
   }
 
+  export type ReviewUncheckedUpdateManyWithoutPatientNestedInput = {
+    create?: XOR<ReviewCreateWithoutPatientInput, ReviewUncheckedCreateWithoutPatientInput> | ReviewCreateWithoutPatientInput[] | ReviewUncheckedCreateWithoutPatientInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutPatientInput | ReviewCreateOrConnectWithoutPatientInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutPatientInput | ReviewUpsertWithWhereUniqueWithoutPatientInput[]
+    createMany?: ReviewCreateManyPatientInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutPatientInput | ReviewUpdateWithWhereUniqueWithoutPatientInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutPatientInput | ReviewUpdateManyWithWhereWithoutPatientInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutProfessionalProfileInput = {
     create?: XOR<UserCreateWithoutProfessionalProfileInput, UserUncheckedCreateWithoutProfessionalProfileInput>
     connectOrCreate?: UserCreateOrConnectWithoutProfessionalProfileInput
@@ -26857,6 +33158,27 @@ export namespace Prisma {
     connect?: EmergencySOSWhereUniqueInput | EmergencySOSWhereUniqueInput[]
   }
 
+  export type ReviewCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<ReviewCreateWithoutProfessionalInput, ReviewUncheckedCreateWithoutProfessionalInput> | ReviewCreateWithoutProfessionalInput[] | ReviewUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutProfessionalInput | ReviewCreateOrConnectWithoutProfessionalInput[]
+    createMany?: ReviewCreateManyProfessionalInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
+  export type ElderHomePostCreateNestedManyWithoutElderHomeInput = {
+    create?: XOR<ElderHomePostCreateWithoutElderHomeInput, ElderHomePostUncheckedCreateWithoutElderHomeInput> | ElderHomePostCreateWithoutElderHomeInput[] | ElderHomePostUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomePostCreateOrConnectWithoutElderHomeInput | ElderHomePostCreateOrConnectWithoutElderHomeInput[]
+    createMany?: ElderHomePostCreateManyElderHomeInputEnvelope
+    connect?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+  }
+
+  export type ElderHomeServiceCreateNestedManyWithoutElderHomeInput = {
+    create?: XOR<ElderHomeServiceCreateWithoutElderHomeInput, ElderHomeServiceUncheckedCreateWithoutElderHomeInput> | ElderHomeServiceCreateWithoutElderHomeInput[] | ElderHomeServiceUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomeServiceCreateOrConnectWithoutElderHomeInput | ElderHomeServiceCreateOrConnectWithoutElderHomeInput[]
+    createMany?: ElderHomeServiceCreateManyElderHomeInputEnvelope
+    connect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+  }
+
   export type AppointmentUncheckedCreateNestedManyWithoutProfessionalInput = {
     create?: XOR<AppointmentCreateWithoutProfessionalInput, AppointmentUncheckedCreateWithoutProfessionalInput> | AppointmentCreateWithoutProfessionalInput[] | AppointmentUncheckedCreateWithoutProfessionalInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutProfessionalInput | AppointmentCreateOrConnectWithoutProfessionalInput[]
@@ -26878,7 +33200,44 @@ export namespace Prisma {
     connect?: EmergencySOSWhereUniqueInput | EmergencySOSWhereUniqueInput[]
   }
 
+  export type ReviewUncheckedCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<ReviewCreateWithoutProfessionalInput, ReviewUncheckedCreateWithoutProfessionalInput> | ReviewCreateWithoutProfessionalInput[] | ReviewUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutProfessionalInput | ReviewCreateOrConnectWithoutProfessionalInput[]
+    createMany?: ReviewCreateManyProfessionalInputEnvelope
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+  }
+
+  export type ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput = {
+    create?: XOR<ElderHomePostCreateWithoutElderHomeInput, ElderHomePostUncheckedCreateWithoutElderHomeInput> | ElderHomePostCreateWithoutElderHomeInput[] | ElderHomePostUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomePostCreateOrConnectWithoutElderHomeInput | ElderHomePostCreateOrConnectWithoutElderHomeInput[]
+    createMany?: ElderHomePostCreateManyElderHomeInputEnvelope
+    connect?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+  }
+
+  export type ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput = {
+    create?: XOR<ElderHomeServiceCreateWithoutElderHomeInput, ElderHomeServiceUncheckedCreateWithoutElderHomeInput> | ElderHomeServiceCreateWithoutElderHomeInput[] | ElderHomeServiceUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomeServiceCreateOrConnectWithoutElderHomeInput | ElderHomeServiceCreateOrConnectWithoutElderHomeInput[]
+    createMany?: ElderHomeServiceCreateManyElderHomeInputEnvelope
+    connect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+  }
+
   export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
@@ -26944,6 +33303,48 @@ export namespace Prisma {
     deleteMany?: EmergencySOSScalarWhereInput | EmergencySOSScalarWhereInput[]
   }
 
+  export type ReviewUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<ReviewCreateWithoutProfessionalInput, ReviewUncheckedCreateWithoutProfessionalInput> | ReviewCreateWithoutProfessionalInput[] | ReviewUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutProfessionalInput | ReviewCreateOrConnectWithoutProfessionalInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutProfessionalInput | ReviewUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: ReviewCreateManyProfessionalInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutProfessionalInput | ReviewUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutProfessionalInput | ReviewUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
+  export type ElderHomePostUpdateManyWithoutElderHomeNestedInput = {
+    create?: XOR<ElderHomePostCreateWithoutElderHomeInput, ElderHomePostUncheckedCreateWithoutElderHomeInput> | ElderHomePostCreateWithoutElderHomeInput[] | ElderHomePostUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomePostCreateOrConnectWithoutElderHomeInput | ElderHomePostCreateOrConnectWithoutElderHomeInput[]
+    upsert?: ElderHomePostUpsertWithWhereUniqueWithoutElderHomeInput | ElderHomePostUpsertWithWhereUniqueWithoutElderHomeInput[]
+    createMany?: ElderHomePostCreateManyElderHomeInputEnvelope
+    set?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    disconnect?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    delete?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    connect?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    update?: ElderHomePostUpdateWithWhereUniqueWithoutElderHomeInput | ElderHomePostUpdateWithWhereUniqueWithoutElderHomeInput[]
+    updateMany?: ElderHomePostUpdateManyWithWhereWithoutElderHomeInput | ElderHomePostUpdateManyWithWhereWithoutElderHomeInput[]
+    deleteMany?: ElderHomePostScalarWhereInput | ElderHomePostScalarWhereInput[]
+  }
+
+  export type ElderHomeServiceUpdateManyWithoutElderHomeNestedInput = {
+    create?: XOR<ElderHomeServiceCreateWithoutElderHomeInput, ElderHomeServiceUncheckedCreateWithoutElderHomeInput> | ElderHomeServiceCreateWithoutElderHomeInput[] | ElderHomeServiceUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomeServiceCreateOrConnectWithoutElderHomeInput | ElderHomeServiceCreateOrConnectWithoutElderHomeInput[]
+    upsert?: ElderHomeServiceUpsertWithWhereUniqueWithoutElderHomeInput | ElderHomeServiceUpsertWithWhereUniqueWithoutElderHomeInput[]
+    createMany?: ElderHomeServiceCreateManyElderHomeInputEnvelope
+    set?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    disconnect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    delete?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    connect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    update?: ElderHomeServiceUpdateWithWhereUniqueWithoutElderHomeInput | ElderHomeServiceUpdateWithWhereUniqueWithoutElderHomeInput[]
+    updateMany?: ElderHomeServiceUpdateManyWithWhereWithoutElderHomeInput | ElderHomeServiceUpdateManyWithWhereWithoutElderHomeInput[]
+    deleteMany?: ElderHomeServiceScalarWhereInput | ElderHomeServiceScalarWhereInput[]
+  }
+
   export type AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput = {
     create?: XOR<AppointmentCreateWithoutProfessionalInput, AppointmentUncheckedCreateWithoutProfessionalInput> | AppointmentCreateWithoutProfessionalInput[] | AppointmentUncheckedCreateWithoutProfessionalInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutProfessionalInput | AppointmentCreateOrConnectWithoutProfessionalInput[]
@@ -26984,6 +33385,48 @@ export namespace Prisma {
     update?: EmergencySOSUpdateWithWhereUniqueWithoutParamedicInput | EmergencySOSUpdateWithWhereUniqueWithoutParamedicInput[]
     updateMany?: EmergencySOSUpdateManyWithWhereWithoutParamedicInput | EmergencySOSUpdateManyWithWhereWithoutParamedicInput[]
     deleteMany?: EmergencySOSScalarWhereInput | EmergencySOSScalarWhereInput[]
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<ReviewCreateWithoutProfessionalInput, ReviewUncheckedCreateWithoutProfessionalInput> | ReviewCreateWithoutProfessionalInput[] | ReviewUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ReviewCreateOrConnectWithoutProfessionalInput | ReviewCreateOrConnectWithoutProfessionalInput[]
+    upsert?: ReviewUpsertWithWhereUniqueWithoutProfessionalInput | ReviewUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: ReviewCreateManyProfessionalInputEnvelope
+    set?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    disconnect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    delete?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    connect?: ReviewWhereUniqueInput | ReviewWhereUniqueInput[]
+    update?: ReviewUpdateWithWhereUniqueWithoutProfessionalInput | ReviewUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: ReviewUpdateManyWithWhereWithoutProfessionalInput | ReviewUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+  }
+
+  export type ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput = {
+    create?: XOR<ElderHomePostCreateWithoutElderHomeInput, ElderHomePostUncheckedCreateWithoutElderHomeInput> | ElderHomePostCreateWithoutElderHomeInput[] | ElderHomePostUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomePostCreateOrConnectWithoutElderHomeInput | ElderHomePostCreateOrConnectWithoutElderHomeInput[]
+    upsert?: ElderHomePostUpsertWithWhereUniqueWithoutElderHomeInput | ElderHomePostUpsertWithWhereUniqueWithoutElderHomeInput[]
+    createMany?: ElderHomePostCreateManyElderHomeInputEnvelope
+    set?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    disconnect?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    delete?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    connect?: ElderHomePostWhereUniqueInput | ElderHomePostWhereUniqueInput[]
+    update?: ElderHomePostUpdateWithWhereUniqueWithoutElderHomeInput | ElderHomePostUpdateWithWhereUniqueWithoutElderHomeInput[]
+    updateMany?: ElderHomePostUpdateManyWithWhereWithoutElderHomeInput | ElderHomePostUpdateManyWithWhereWithoutElderHomeInput[]
+    deleteMany?: ElderHomePostScalarWhereInput | ElderHomePostScalarWhereInput[]
+  }
+
+  export type ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput = {
+    create?: XOR<ElderHomeServiceCreateWithoutElderHomeInput, ElderHomeServiceUncheckedCreateWithoutElderHomeInput> | ElderHomeServiceCreateWithoutElderHomeInput[] | ElderHomeServiceUncheckedCreateWithoutElderHomeInput[]
+    connectOrCreate?: ElderHomeServiceCreateOrConnectWithoutElderHomeInput | ElderHomeServiceCreateOrConnectWithoutElderHomeInput[]
+    upsert?: ElderHomeServiceUpsertWithWhereUniqueWithoutElderHomeInput | ElderHomeServiceUpsertWithWhereUniqueWithoutElderHomeInput[]
+    createMany?: ElderHomeServiceCreateManyElderHomeInputEnvelope
+    set?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    disconnect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    delete?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    connect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+    update?: ElderHomeServiceUpdateWithWhereUniqueWithoutElderHomeInput | ElderHomeServiceUpdateWithWhereUniqueWithoutElderHomeInput[]
+    updateMany?: ElderHomeServiceUpdateManyWithWhereWithoutElderHomeInput | ElderHomeServiceUpdateManyWithWhereWithoutElderHomeInput[]
+    deleteMany?: ElderHomeServiceScalarWhereInput | ElderHomeServiceScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPharmacistProfileInput = {
@@ -27136,14 +33579,6 @@ export namespace Prisma {
     connectOrCreate?: AppointmentMessageCreateOrConnectWithoutAppointmentInput | AppointmentMessageCreateOrConnectWithoutAppointmentInput[]
     createMany?: AppointmentMessageCreateManyAppointmentInputEnvelope
     connect?: AppointmentMessageWhereUniqueInput | AppointmentMessageWhereUniqueInput[]
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type PatientProfileUpdateOneRequiredWithoutAppointmentsNestedInput = {
@@ -27390,14 +33825,6 @@ export namespace Prisma {
     connectOrCreate?: OrderItemCreateOrConnectWithoutProductInput | OrderItemCreateOrConnectWithoutProductInput[]
     createMany?: OrderItemCreateManyProductInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type PharmacistProfileUpdateOneRequiredWithoutProductsNestedInput = {
@@ -27650,6 +34077,62 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActivityLogsInput, UserUpdateWithoutActivityLogsInput>, UserUncheckedUpdateWithoutActivityLogsInput>
   }
 
+  export type PatientProfileCreateNestedOneWithoutReviewsInput = {
+    create?: XOR<PatientProfileCreateWithoutReviewsInput, PatientProfileUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: PatientProfileCreateOrConnectWithoutReviewsInput
+    connect?: PatientProfileWhereUniqueInput
+  }
+
+  export type ProfessionalProfileCreateNestedOneWithoutReviewsInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutReviewsInput, ProfessionalProfileUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutReviewsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+  }
+
+  export type PatientProfileUpdateOneRequiredWithoutReviewsNestedInput = {
+    create?: XOR<PatientProfileCreateWithoutReviewsInput, PatientProfileUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: PatientProfileCreateOrConnectWithoutReviewsInput
+    upsert?: PatientProfileUpsertWithoutReviewsInput
+    connect?: PatientProfileWhereUniqueInput
+    update?: XOR<XOR<PatientProfileUpdateToOneWithWhereWithoutReviewsInput, PatientProfileUpdateWithoutReviewsInput>, PatientProfileUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type ProfessionalProfileUpdateOneRequiredWithoutReviewsNestedInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutReviewsInput, ProfessionalProfileUncheckedCreateWithoutReviewsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutReviewsInput
+    upsert?: ProfessionalProfileUpsertWithoutReviewsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+    update?: XOR<XOR<ProfessionalProfileUpdateToOneWithWhereWithoutReviewsInput, ProfessionalProfileUpdateWithoutReviewsInput>, ProfessionalProfileUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type ProfessionalProfileCreateNestedOneWithoutElderHomePostsInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutElderHomePostsInput, ProfessionalProfileUncheckedCreateWithoutElderHomePostsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutElderHomePostsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+  }
+
+  export type ProfessionalProfileUpdateOneRequiredWithoutElderHomePostsNestedInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutElderHomePostsInput, ProfessionalProfileUncheckedCreateWithoutElderHomePostsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutElderHomePostsInput
+    upsert?: ProfessionalProfileUpsertWithoutElderHomePostsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+    update?: XOR<XOR<ProfessionalProfileUpdateToOneWithWhereWithoutElderHomePostsInput, ProfessionalProfileUpdateWithoutElderHomePostsInput>, ProfessionalProfileUncheckedUpdateWithoutElderHomePostsInput>
+  }
+
+  export type ProfessionalProfileCreateNestedOneWithoutElderHomeServicesInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutElderHomeServicesInput, ProfessionalProfileUncheckedCreateWithoutElderHomeServicesInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutElderHomeServicesInput
+    connect?: ProfessionalProfileWhereUniqueInput
+  }
+
+  export type ProfessionalProfileUpdateOneRequiredWithoutElderHomeServicesNestedInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutElderHomeServicesInput, ProfessionalProfileUncheckedCreateWithoutElderHomeServicesInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutElderHomeServicesInput
+    upsert?: ProfessionalProfileUpsertWithoutElderHomeServicesInput
+    connect?: ProfessionalProfileWhereUniqueInput
+    update?: XOR<XOR<ProfessionalProfileUpdateToOneWithWhereWithoutElderHomeServicesInput, ProfessionalProfileUpdateWithoutElderHomeServicesInput>, ProfessionalProfileUncheckedUpdateWithoutElderHomeServicesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -27842,6 +34325,17 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -27856,33 +34350,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -27917,6 +34384,22 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type PatientProfileCreateWithoutUserInput = {
     id?: string
     fullName: string
@@ -27928,6 +34411,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionCreateNestedManyWithoutPatientInput
     orders?: OrderCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutPatientInput
+    reviews?: ReviewCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileUncheckedCreateWithoutUserInput = {
@@ -27941,6 +34425,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPatientInput
     orders?: OrderUncheckedCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutPatientInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileCreateOrConnectWithoutUserInput = {
@@ -27963,13 +34448,31 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
     prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
@@ -27987,13 +34490,31 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutUserInput = {
@@ -28012,6 +34533,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     products?: ProductCreateNestedManyWithoutPharmacistInput
     orders?: OrderCreateNestedManyWithoutPharmacistInput
   }
@@ -28027,6 +34553,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     products?: ProductUncheckedCreateNestedManyWithoutPharmacistInput
     orders?: OrderUncheckedCreateNestedManyWithoutPharmacistInput
   }
@@ -28135,6 +34666,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUpdateManyWithoutPatientNestedInput
     orders?: OrderUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUpdateManyWithoutPatientNestedInput
   }
 
   export type PatientProfileUncheckedUpdateWithoutUserInput = {
@@ -28148,6 +34680,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutPatientNestedInput
     orders?: OrderUncheckedUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutPatientNestedInput
   }
 
   export type ProfessionalProfileUpsertWithoutUserInput = {
@@ -28176,13 +34709,31 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
     prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
@@ -28200,13 +34751,31 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
   }
 
   export type PharmacistProfileUpsertWithoutUserInput = {
@@ -28231,6 +34800,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     products?: ProductUpdateManyWithoutPharmacistNestedInput
     orders?: OrderUpdateManyWithoutPharmacistNestedInput
   }
@@ -28246,6 +34820,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     products?: ProductUncheckedUpdateManyWithoutPharmacistNestedInput
     orders?: OrderUncheckedUpdateManyWithoutPharmacistNestedInput
   }
@@ -28468,6 +35047,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     professional: ProfessionalProfileCreateNestedOneWithoutAppointmentsInput
@@ -28485,6 +35067,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutAppointmentInput
@@ -28599,6 +35184,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ReviewCreateWithoutPatientInput = {
+    id?: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    professional: ProfessionalProfileCreateNestedOneWithoutReviewsInput
+  }
+
+  export type ReviewUncheckedCreateWithoutPatientInput = {
+    id?: string
+    professionalId: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ReviewCreateOrConnectWithoutPatientInput = {
+    where: ReviewWhereUniqueInput
+    create: XOR<ReviewCreateWithoutPatientInput, ReviewUncheckedCreateWithoutPatientInput>
+  }
+
+  export type ReviewCreateManyPatientInputEnvelope = {
+    data: ReviewCreateManyPatientInput | ReviewCreateManyPatientInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutPatientProfileInput = {
     update: XOR<UserUpdateWithoutPatientProfileInput, UserUncheckedUpdateWithoutPatientProfileInput>
     create: XOR<UserCreateWithoutPatientProfileInput, UserUncheckedCreateWithoutPatientProfileInput>
@@ -28674,6 +35285,9 @@ export namespace Prisma {
     locationLng?: FloatNullableFilter<"Appointment"> | number | null
     symptoms?: StringNullableFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableFilter<"Appointment"> | string | null
+    paymentMethod?: StringNullableFilter<"Appointment"> | string | null
+    paymentStatus?: StringFilter<"Appointment"> | string
+    totalAmount?: FloatFilter<"Appointment"> | number
     completedAt?: DateTimeNullableFilter<"Appointment"> | Date | string | null
     createdAt?: DateTimeFilter<"Appointment"> | Date | string
   }
@@ -28768,6 +35382,34 @@ export namespace Prisma {
     triggeredAt?: DateTimeFilter<"EmergencySOS"> | Date | string
   }
 
+  export type ReviewUpsertWithWhereUniqueWithoutPatientInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutPatientInput, ReviewUncheckedUpdateWithoutPatientInput>
+    create: XOR<ReviewCreateWithoutPatientInput, ReviewUncheckedCreateWithoutPatientInput>
+  }
+
+  export type ReviewUpdateWithWhereUniqueWithoutPatientInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutPatientInput, ReviewUncheckedUpdateWithoutPatientInput>
+  }
+
+  export type ReviewUpdateManyWithWhereWithoutPatientInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutPatientInput>
+  }
+
+  export type ReviewScalarWhereInput = {
+    AND?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+    OR?: ReviewScalarWhereInput[]
+    NOT?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
+    id?: StringFilter<"Review"> | string
+    patientId?: StringFilter<"Review"> | string
+    professionalId?: StringFilter<"Review"> | string
+    rating?: FloatFilter<"Review"> | number
+    comment?: StringNullableFilter<"Review"> | string | null
+    createdAt?: DateTimeFilter<"Review"> | Date | string
+  }
+
   export type UserCreateWithoutProfessionalProfileInput = {
     id?: string
     email: string
@@ -28816,6 +35458,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutAppointmentsInput
@@ -28833,6 +35478,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutAppointmentInput
@@ -28906,6 +35554,92 @@ export namespace Prisma {
 
   export type EmergencySOSCreateManyParamedicInputEnvelope = {
     data: EmergencySOSCreateManyParamedicInput | EmergencySOSCreateManyParamedicInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReviewCreateWithoutProfessionalInput = {
+    id?: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    patient: PatientProfileCreateNestedOneWithoutReviewsInput
+  }
+
+  export type ReviewUncheckedCreateWithoutProfessionalInput = {
+    id?: string
+    patientId: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ReviewCreateOrConnectWithoutProfessionalInput = {
+    where: ReviewWhereUniqueInput
+    create: XOR<ReviewCreateWithoutProfessionalInput, ReviewUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type ReviewCreateManyProfessionalInputEnvelope = {
+    data: ReviewCreateManyProfessionalInput | ReviewCreateManyProfessionalInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ElderHomePostCreateWithoutElderHomeInput = {
+    id?: string
+    title?: string | null
+    content: string
+    imageUrl?: string | null
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomePostUncheckedCreateWithoutElderHomeInput = {
+    id?: string
+    title?: string | null
+    content: string
+    imageUrl?: string | null
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomePostCreateOrConnectWithoutElderHomeInput = {
+    where: ElderHomePostWhereUniqueInput
+    create: XOR<ElderHomePostCreateWithoutElderHomeInput, ElderHomePostUncheckedCreateWithoutElderHomeInput>
+  }
+
+  export type ElderHomePostCreateManyElderHomeInputEnvelope = {
+    data: ElderHomePostCreateManyElderHomeInput | ElderHomePostCreateManyElderHomeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ElderHomeServiceCreateWithoutElderHomeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price?: number
+    priceUnit?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomeServiceUncheckedCreateWithoutElderHomeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price?: number
+    priceUnit?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomeServiceCreateOrConnectWithoutElderHomeInput = {
+    where: ElderHomeServiceWhereUniqueInput
+    create: XOR<ElderHomeServiceCreateWithoutElderHomeInput, ElderHomeServiceUncheckedCreateWithoutElderHomeInput>
+  }
+
+  export type ElderHomeServiceCreateManyElderHomeInputEnvelope = {
+    data: ElderHomeServiceCreateManyElderHomeInput | ElderHomeServiceCreateManyElderHomeInput[]
     skipDuplicates?: boolean
   }
 
@@ -29000,6 +35734,82 @@ export namespace Prisma {
   export type EmergencySOSUpdateManyWithWhereWithoutParamedicInput = {
     where: EmergencySOSScalarWhereInput
     data: XOR<EmergencySOSUpdateManyMutationInput, EmergencySOSUncheckedUpdateManyWithoutParamedicInput>
+  }
+
+  export type ReviewUpsertWithWhereUniqueWithoutProfessionalInput = {
+    where: ReviewWhereUniqueInput
+    update: XOR<ReviewUpdateWithoutProfessionalInput, ReviewUncheckedUpdateWithoutProfessionalInput>
+    create: XOR<ReviewCreateWithoutProfessionalInput, ReviewUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type ReviewUpdateWithWhereUniqueWithoutProfessionalInput = {
+    where: ReviewWhereUniqueInput
+    data: XOR<ReviewUpdateWithoutProfessionalInput, ReviewUncheckedUpdateWithoutProfessionalInput>
+  }
+
+  export type ReviewUpdateManyWithWhereWithoutProfessionalInput = {
+    where: ReviewScalarWhereInput
+    data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutProfessionalInput>
+  }
+
+  export type ElderHomePostUpsertWithWhereUniqueWithoutElderHomeInput = {
+    where: ElderHomePostWhereUniqueInput
+    update: XOR<ElderHomePostUpdateWithoutElderHomeInput, ElderHomePostUncheckedUpdateWithoutElderHomeInput>
+    create: XOR<ElderHomePostCreateWithoutElderHomeInput, ElderHomePostUncheckedCreateWithoutElderHomeInput>
+  }
+
+  export type ElderHomePostUpdateWithWhereUniqueWithoutElderHomeInput = {
+    where: ElderHomePostWhereUniqueInput
+    data: XOR<ElderHomePostUpdateWithoutElderHomeInput, ElderHomePostUncheckedUpdateWithoutElderHomeInput>
+  }
+
+  export type ElderHomePostUpdateManyWithWhereWithoutElderHomeInput = {
+    where: ElderHomePostScalarWhereInput
+    data: XOR<ElderHomePostUpdateManyMutationInput, ElderHomePostUncheckedUpdateManyWithoutElderHomeInput>
+  }
+
+  export type ElderHomePostScalarWhereInput = {
+    AND?: ElderHomePostScalarWhereInput | ElderHomePostScalarWhereInput[]
+    OR?: ElderHomePostScalarWhereInput[]
+    NOT?: ElderHomePostScalarWhereInput | ElderHomePostScalarWhereInput[]
+    id?: StringFilter<"ElderHomePost"> | string
+    elderHomeId?: StringFilter<"ElderHomePost"> | string
+    title?: StringNullableFilter<"ElderHomePost"> | string | null
+    content?: StringFilter<"ElderHomePost"> | string
+    imageUrl?: StringNullableFilter<"ElderHomePost"> | string | null
+    category?: StringFilter<"ElderHomePost"> | string
+    createdAt?: DateTimeFilter<"ElderHomePost"> | Date | string
+    updatedAt?: DateTimeFilter<"ElderHomePost"> | Date | string
+  }
+
+  export type ElderHomeServiceUpsertWithWhereUniqueWithoutElderHomeInput = {
+    where: ElderHomeServiceWhereUniqueInput
+    update: XOR<ElderHomeServiceUpdateWithoutElderHomeInput, ElderHomeServiceUncheckedUpdateWithoutElderHomeInput>
+    create: XOR<ElderHomeServiceCreateWithoutElderHomeInput, ElderHomeServiceUncheckedCreateWithoutElderHomeInput>
+  }
+
+  export type ElderHomeServiceUpdateWithWhereUniqueWithoutElderHomeInput = {
+    where: ElderHomeServiceWhereUniqueInput
+    data: XOR<ElderHomeServiceUpdateWithoutElderHomeInput, ElderHomeServiceUncheckedUpdateWithoutElderHomeInput>
+  }
+
+  export type ElderHomeServiceUpdateManyWithWhereWithoutElderHomeInput = {
+    where: ElderHomeServiceScalarWhereInput
+    data: XOR<ElderHomeServiceUpdateManyMutationInput, ElderHomeServiceUncheckedUpdateManyWithoutElderHomeInput>
+  }
+
+  export type ElderHomeServiceScalarWhereInput = {
+    AND?: ElderHomeServiceScalarWhereInput | ElderHomeServiceScalarWhereInput[]
+    OR?: ElderHomeServiceScalarWhereInput[]
+    NOT?: ElderHomeServiceScalarWhereInput | ElderHomeServiceScalarWhereInput[]
+    id?: StringFilter<"ElderHomeService"> | string
+    elderHomeId?: StringFilter<"ElderHomeService"> | string
+    name?: StringFilter<"ElderHomeService"> | string
+    description?: StringNullableFilter<"ElderHomeService"> | string | null
+    price?: FloatFilter<"ElderHomeService"> | number
+    priceUnit?: StringFilter<"ElderHomeService"> | string
+    createdAt?: DateTimeFilter<"ElderHomeService"> | Date | string
+    updatedAt?: DateTimeFilter<"ElderHomeService"> | Date | string
   }
 
   export type UserCreateWithoutPharmacistProfileInput = {
@@ -29306,6 +36116,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionCreateNestedManyWithoutPatientInput
     orders?: OrderCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutPatientInput
+    reviews?: ReviewCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileUncheckedCreateWithoutAppointmentsInput = {
@@ -29319,6 +36130,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPatientInput
     orders?: OrderUncheckedCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutPatientInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileCreateOrConnectWithoutAppointmentsInput = {
@@ -29341,13 +36153,31 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     user: UserCreateNestedOneWithoutProfessionalProfileInput
     prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutAppointmentsInput = {
@@ -29366,12 +36196,30 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutAppointmentsInput = {
@@ -29457,6 +36305,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUpdateManyWithoutPatientNestedInput
     orders?: OrderUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUpdateManyWithoutPatientNestedInput
   }
 
   export type PatientProfileUncheckedUpdateWithoutAppointmentsInput = {
@@ -29470,6 +36319,7 @@ export namespace Prisma {
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutPatientNestedInput
     orders?: OrderUncheckedUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutPatientNestedInput
   }
 
   export type ProfessionalProfileUpsertWithoutAppointmentsInput = {
@@ -29498,13 +36348,31 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
     prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutAppointmentsInput = {
@@ -29523,12 +36391,30 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
   }
 
   export type PrescriptionUpsertWithWhereUniqueWithoutAppointmentInput = {
@@ -29583,6 +36469,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutAppointmentsInput
@@ -29601,6 +36490,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutAppointmentInput
@@ -29631,6 +36523,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutAppointmentsNestedInput
@@ -29649,6 +36544,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutAppointmentNestedInput
@@ -29663,6 +36561,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutAppointmentsInput
@@ -29681,6 +36582,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
     messages?: AppointmentMessageUncheckedCreateNestedManyWithoutAppointmentInput
@@ -29706,13 +36610,31 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     user: UserCreateNestedOneWithoutProfessionalProfileInput
     appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutPrescriptionsInput = {
@@ -29731,12 +36653,30 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutPrescriptionsInput = {
@@ -29755,6 +36695,7 @@ export namespace Prisma {
     appointments?: AppointmentCreateNestedManyWithoutPatientInput
     orders?: OrderCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutPatientInput
+    reviews?: ReviewCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileUncheckedCreateWithoutPrescriptionsInput = {
@@ -29768,6 +36709,7 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
     orders?: OrderUncheckedCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutPatientInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileCreateOrConnectWithoutPrescriptionsInput = {
@@ -29857,6 +36799,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutAppointmentsNestedInput
@@ -29875,6 +36820,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: AppointmentMessageUncheckedUpdateManyWithoutAppointmentNestedInput
@@ -29906,13 +36854,31 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
     appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutPrescriptionsInput = {
@@ -29931,12 +36897,30 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
   }
 
   export type PatientProfileUpsertWithoutPrescriptionsInput = {
@@ -29961,6 +36945,7 @@ export namespace Prisma {
     appointments?: AppointmentUpdateManyWithoutPatientNestedInput
     orders?: OrderUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUpdateManyWithoutPatientNestedInput
   }
 
   export type PatientProfileUncheckedUpdateWithoutPrescriptionsInput = {
@@ -29974,6 +36959,7 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
     orders?: OrderUncheckedUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutPatientNestedInput
   }
 
   export type PrescriptionItemUpsertWithWhereUniqueWithoutPrescriptionInput = {
@@ -30090,6 +37076,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     user: UserCreateNestedOneWithoutPharmacistProfileInput
     orders?: OrderCreateNestedManyWithoutPharmacistInput
   }
@@ -30106,6 +37097,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     orders?: OrderUncheckedCreateNestedManyWithoutPharmacistInput
   }
 
@@ -30160,6 +37156,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutPharmacistProfileNestedInput
     orders?: OrderUpdateManyWithoutPharmacistNestedInput
   }
@@ -30176,6 +37177,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     orders?: OrderUncheckedUpdateManyWithoutPharmacistNestedInput
   }
 
@@ -30217,6 +37223,7 @@ export namespace Prisma {
     appointments?: AppointmentCreateNestedManyWithoutPatientInput
     prescriptions?: PrescriptionCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutPatientInput
+    reviews?: ReviewCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileUncheckedCreateWithoutOrdersInput = {
@@ -30230,6 +37237,7 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPatientInput
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutPatientInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileCreateOrConnectWithoutOrdersInput = {
@@ -30248,6 +37256,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     user: UserCreateNestedOneWithoutPharmacistProfileInput
     products?: ProductCreateNestedManyWithoutPharmacistInput
   }
@@ -30264,6 +37277,11 @@ export namespace Prisma {
     idBackImage?: string | null
     address?: string | null
     idCardNumber?: string | null
+    locationLat?: number | null
+    locationLng?: number | null
+    walletBalance?: number
+    serviceRadius?: number
+    availabilityStatus?: string
     products?: ProductUncheckedCreateNestedManyWithoutPharmacistInput
   }
 
@@ -30369,6 +37387,7 @@ export namespace Prisma {
     appointments?: AppointmentUpdateManyWithoutPatientNestedInput
     prescriptions?: PrescriptionUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUpdateManyWithoutPatientNestedInput
   }
 
   export type PatientProfileUncheckedUpdateWithoutOrdersInput = {
@@ -30382,6 +37401,7 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutPatientNestedInput
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutPatientNestedInput
   }
 
   export type PharmacistProfileUpsertWithoutOrdersInput = {
@@ -30406,6 +37426,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutPharmacistProfileNestedInput
     products?: ProductUpdateManyWithoutPharmacistNestedInput
   }
@@ -30422,6 +37447,11 @@ export namespace Prisma {
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
     products?: ProductUncheckedUpdateManyWithoutPharmacistNestedInput
   }
 
@@ -30728,6 +37758,7 @@ export namespace Prisma {
     appointments?: AppointmentCreateNestedManyWithoutPatientInput
     prescriptions?: PrescriptionCreateNestedManyWithoutPatientInput
     orders?: OrderCreateNestedManyWithoutPatientInput
+    reviews?: ReviewCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileUncheckedCreateWithoutEmergencySOSsInput = {
@@ -30741,6 +37772,7 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPatientInput
     orders?: OrderUncheckedCreateNestedManyWithoutPatientInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutPatientInput
   }
 
   export type PatientProfileCreateOrConnectWithoutEmergencySOSsInput = {
@@ -30763,13 +37795,31 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     user: UserCreateNestedOneWithoutProfessionalProfileInput
     appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
     prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutEmergencySOSsInput = {
@@ -30788,12 +37838,30 @@ export namespace Prisma {
     attachedHospital?: string | null
     availabilityStatus?: string
     rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
     idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
     appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
     prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutEmergencySOSsInput = {
@@ -30823,6 +37891,7 @@ export namespace Prisma {
     appointments?: AppointmentUpdateManyWithoutPatientNestedInput
     prescriptions?: PrescriptionUpdateManyWithoutPatientNestedInput
     orders?: OrderUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUpdateManyWithoutPatientNestedInput
   }
 
   export type PatientProfileUncheckedUpdateWithoutEmergencySOSsInput = {
@@ -30836,6 +37905,7 @@ export namespace Prisma {
     appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutPatientNestedInput
     orders?: OrderUncheckedUpdateManyWithoutPatientNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutPatientNestedInput
   }
 
   export type ProfessionalProfileUpsertWithoutEmergencySOSsInput = {
@@ -30864,13 +37934,31 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
     appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
     prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutEmergencySOSsInput = {
@@ -30889,12 +37977,30 @@ export namespace Prisma {
     attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
     availabilityStatus?: StringFieldUpdateOperationsInput | string
     rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
     idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
     appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
   }
 
   export type UserCreateWithoutActivityLogsInput = {
@@ -30981,6 +38087,630 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type PatientProfileCreateWithoutReviewsInput = {
+    id?: string
+    fullName: string
+    dob?: Date | string | null
+    address?: string | null
+    emergencyContact?: string | null
+    nicNumber?: string | null
+    user: UserCreateNestedOneWithoutPatientProfileInput
+    appointments?: AppointmentCreateNestedManyWithoutPatientInput
+    prescriptions?: PrescriptionCreateNestedManyWithoutPatientInput
+    orders?: OrderCreateNestedManyWithoutPatientInput
+    emergencySOSs?: EmergencySOSCreateNestedManyWithoutPatientInput
+  }
+
+  export type PatientProfileUncheckedCreateWithoutReviewsInput = {
+    id?: string
+    userId: string
+    fullName: string
+    dob?: Date | string | null
+    address?: string | null
+    emergencyContact?: string | null
+    nicNumber?: string | null
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutPatientInput
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutPatientInput
+    orders?: OrderUncheckedCreateNestedManyWithoutPatientInput
+    emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutPatientInput
+  }
+
+  export type PatientProfileCreateOrConnectWithoutReviewsInput = {
+    where: PatientProfileWhereUniqueInput
+    create: XOR<PatientProfileCreateWithoutReviewsInput, PatientProfileUncheckedCreateWithoutReviewsInput>
+  }
+
+  export type ProfessionalProfileCreateWithoutReviewsInput = {
+    id?: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    user: UserCreateNestedOneWithoutProfessionalProfileInput
+    appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileUncheckedCreateWithoutReviewsInput = {
+    id?: string
+    userId: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileCreateOrConnectWithoutReviewsInput = {
+    where: ProfessionalProfileWhereUniqueInput
+    create: XOR<ProfessionalProfileCreateWithoutReviewsInput, ProfessionalProfileUncheckedCreateWithoutReviewsInput>
+  }
+
+  export type PatientProfileUpsertWithoutReviewsInput = {
+    update: XOR<PatientProfileUpdateWithoutReviewsInput, PatientProfileUncheckedUpdateWithoutReviewsInput>
+    create: XOR<PatientProfileCreateWithoutReviewsInput, PatientProfileUncheckedCreateWithoutReviewsInput>
+    where?: PatientProfileWhereInput
+  }
+
+  export type PatientProfileUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: PatientProfileWhereInput
+    data: XOR<PatientProfileUpdateWithoutReviewsInput, PatientProfileUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type PatientProfileUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyContact?: NullableStringFieldUpdateOperationsInput | string | null
+    nicNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutPatientProfileNestedInput
+    appointments?: AppointmentUpdateManyWithoutPatientNestedInput
+    prescriptions?: PrescriptionUpdateManyWithoutPatientNestedInput
+    orders?: OrderUpdateManyWithoutPatientNestedInput
+    emergencySOSs?: EmergencySOSUpdateManyWithoutPatientNestedInput
+  }
+
+  export type PatientProfileUncheckedUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    dob?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    emergencyContact?: NullableStringFieldUpdateOperationsInput | string | null
+    nicNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    appointments?: AppointmentUncheckedUpdateManyWithoutPatientNestedInput
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutPatientNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutPatientNestedInput
+    emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutPatientNestedInput
+  }
+
+  export type ProfessionalProfileUpsertWithoutReviewsInput = {
+    update: XOR<ProfessionalProfileUpdateWithoutReviewsInput, ProfessionalProfileUncheckedUpdateWithoutReviewsInput>
+    create: XOR<ProfessionalProfileCreateWithoutReviewsInput, ProfessionalProfileUncheckedCreateWithoutReviewsInput>
+    where?: ProfessionalProfileWhereInput
+  }
+
+  export type ProfessionalProfileUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: ProfessionalProfileWhereInput
+    data: XOR<ProfessionalProfileUpdateWithoutReviewsInput, ProfessionalProfileUncheckedUpdateWithoutReviewsInput>
+  }
+
+  export type ProfessionalProfileUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+    appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+  }
+
+  export type ProfessionalProfileUncheckedUpdateWithoutReviewsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+  }
+
+  export type ProfessionalProfileCreateWithoutElderHomePostsInput = {
+    id?: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    user: UserCreateNestedOneWithoutProfessionalProfileInput
+    appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileUncheckedCreateWithoutElderHomePostsInput = {
+    id?: string
+    userId: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileCreateOrConnectWithoutElderHomePostsInput = {
+    where: ProfessionalProfileWhereUniqueInput
+    create: XOR<ProfessionalProfileCreateWithoutElderHomePostsInput, ProfessionalProfileUncheckedCreateWithoutElderHomePostsInput>
+  }
+
+  export type ProfessionalProfileUpsertWithoutElderHomePostsInput = {
+    update: XOR<ProfessionalProfileUpdateWithoutElderHomePostsInput, ProfessionalProfileUncheckedUpdateWithoutElderHomePostsInput>
+    create: XOR<ProfessionalProfileCreateWithoutElderHomePostsInput, ProfessionalProfileUncheckedCreateWithoutElderHomePostsInput>
+    where?: ProfessionalProfileWhereInput
+  }
+
+  export type ProfessionalProfileUpdateToOneWithWhereWithoutElderHomePostsInput = {
+    where?: ProfessionalProfileWhereInput
+    data: XOR<ProfessionalProfileUpdateWithoutElderHomePostsInput, ProfessionalProfileUncheckedUpdateWithoutElderHomePostsInput>
+  }
+
+  export type ProfessionalProfileUpdateWithoutElderHomePostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+    appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+  }
+
+  export type ProfessionalProfileUncheckedUpdateWithoutElderHomePostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+  }
+
+  export type ProfessionalProfileCreateWithoutElderHomeServicesInput = {
+    id?: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    user: UserCreateNestedOneWithoutProfessionalProfileInput
+    appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileUncheckedCreateWithoutElderHomeServicesInput = {
+    id?: string
+    userId: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileCreateOrConnectWithoutElderHomeServicesInput = {
+    where: ProfessionalProfileWhereUniqueInput
+    create: XOR<ProfessionalProfileCreateWithoutElderHomeServicesInput, ProfessionalProfileUncheckedCreateWithoutElderHomeServicesInput>
+  }
+
+  export type ProfessionalProfileUpsertWithoutElderHomeServicesInput = {
+    update: XOR<ProfessionalProfileUpdateWithoutElderHomeServicesInput, ProfessionalProfileUncheckedUpdateWithoutElderHomeServicesInput>
+    create: XOR<ProfessionalProfileCreateWithoutElderHomeServicesInput, ProfessionalProfileUncheckedCreateWithoutElderHomeServicesInput>
+    where?: ProfessionalProfileWhereInput
+  }
+
+  export type ProfessionalProfileUpdateToOneWithWhereWithoutElderHomeServicesInput = {
+    where?: ProfessionalProfileWhereInput
+    data: XOR<ProfessionalProfileUpdateWithoutElderHomeServicesInput, ProfessionalProfileUncheckedUpdateWithoutElderHomeServicesInput>
+  }
+
+  export type ProfessionalProfileUpdateWithoutElderHomeServicesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+    appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+  }
+
+  export type ProfessionalProfileUncheckedUpdateWithoutElderHomeServicesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+  }
+
   export type ActivityLogCreateManyUserInput = {
     id?: string
     actionType: string
@@ -31059,6 +38789,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
   }
@@ -31093,6 +38826,14 @@ export namespace Prisma {
     triggeredAt?: Date | string
   }
 
+  export type ReviewCreateManyPatientInput = {
+    id?: string
+    professionalId: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
   export type AppointmentUpdateWithoutPatientInput = {
     id?: StringFieldUpdateOperationsInput | string
     serviceType?: StringFieldUpdateOperationsInput | string
@@ -31102,6 +38843,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     professional?: ProfessionalProfileUpdateOneRequiredWithoutAppointmentsNestedInput
@@ -31119,6 +38863,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutAppointmentNestedInput
@@ -31135,6 +38882,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31237,6 +38987,30 @@ export namespace Prisma {
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReviewUpdateWithoutPatientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    professional?: ProfessionalProfileUpdateOneRequiredWithoutReviewsNestedInput
+  }
+
+  export type ReviewUncheckedUpdateWithoutPatientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutPatientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AppointmentCreateManyProfessionalInput = {
     id?: string
     patientId: string
@@ -31247,6 +39021,9 @@ export namespace Prisma {
     locationLng?: number | null
     symptoms?: string | null
     vitalsSummary?: string | null
+    paymentMethod?: string | null
+    paymentStatus?: string
+    totalAmount?: number
     completedAt?: Date | string | null
     createdAt?: Date | string
   }
@@ -31269,6 +39046,34 @@ export namespace Prisma {
     triggeredAt?: Date | string
   }
 
+  export type ReviewCreateManyProfessionalInput = {
+    id?: string
+    patientId: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ElderHomePostCreateManyElderHomeInput = {
+    id?: string
+    title?: string | null
+    content: string
+    imageUrl?: string | null
+    category?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ElderHomeServiceCreateManyElderHomeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price?: number
+    priceUnit?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type AppointmentUpdateWithoutProfessionalInput = {
     id?: StringFieldUpdateOperationsInput | string
     serviceType?: StringFieldUpdateOperationsInput | string
@@ -31278,6 +39083,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutAppointmentsNestedInput
@@ -31295,6 +39103,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prescriptions?: PrescriptionUncheckedUpdateManyWithoutAppointmentNestedInput
@@ -31311,6 +39122,9 @@ export namespace Prisma {
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31371,6 +39185,90 @@ export namespace Prisma {
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReviewUpdateWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    patient?: PatientProfileUpdateOneRequiredWithoutReviewsNestedInput
+  }
+
+  export type ReviewUncheckedUpdateWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientId?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReviewUncheckedUpdateManyWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    patientId?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomePostUpdateWithoutElderHomeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomePostUncheckedUpdateWithoutElderHomeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomePostUncheckedUpdateManyWithoutElderHomeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomeServiceUpdateWithoutElderHomeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    priceUnit?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomeServiceUncheckedUpdateWithoutElderHomeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    priceUnit?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ElderHomeServiceUncheckedUpdateManyWithoutElderHomeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    priceUnit?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProductCreateManyPharmacistInput = {

@@ -170,10 +170,25 @@ exports.Prisma.ProfessionalProfileScalarFieldEnum = {
   attachedHospital: 'attachedHospital',
   availabilityStatus: 'availabilityStatus',
   rating: 'rating',
+  locationLat: 'locationLat',
+  locationLng: 'locationLng',
+  bookingFee: 'bookingFee',
+  serviceRadius: 'serviceRadius',
+  serveEverywhere: 'serveEverywhere',
+  walletBalance: 'walletBalance',
   licenseIssuedYear: 'licenseIssuedYear',
   licenseNumber: 'licenseNumber',
   idFrontImage: 'idFrontImage',
-  idBackImage: 'idBackImage'
+  idBackImage: 'idBackImage',
+  policies: 'policies',
+  facilities: 'facilities',
+  coverImage: 'coverImage',
+  profileImage: 'profileImage',
+  socialFacebook: 'socialFacebook',
+  socialInstagram: 'socialInstagram',
+  socialWhatsapp: 'socialWhatsapp',
+  socialWebsite: 'socialWebsite',
+  contactPhone: 'contactPhone'
 };
 
 exports.Prisma.PharmacistProfileScalarFieldEnum = {
@@ -187,7 +202,12 @@ exports.Prisma.PharmacistProfileScalarFieldEnum = {
   idFrontImage: 'idFrontImage',
   idBackImage: 'idBackImage',
   address: 'address',
-  idCardNumber: 'idCardNumber'
+  idCardNumber: 'idCardNumber',
+  locationLat: 'locationLat',
+  locationLng: 'locationLng',
+  walletBalance: 'walletBalance',
+  serviceRadius: 'serviceRadius',
+  availabilityStatus: 'availabilityStatus'
 };
 
 exports.Prisma.AdminProfileScalarFieldEnum = {
@@ -211,6 +231,9 @@ exports.Prisma.AppointmentScalarFieldEnum = {
   locationLng: 'locationLng',
   symptoms: 'symptoms',
   vitalsSummary: 'vitalsSummary',
+  paymentMethod: 'paymentMethod',
+  paymentStatus: 'paymentStatus',
+  totalAmount: 'totalAmount',
   completedAt: 'completedAt',
   createdAt: 'createdAt'
 };
@@ -310,6 +333,42 @@ exports.Prisma.RejectedRecordScalarFieldEnum = {
   rejectedAt: 'rejectedAt'
 };
 
+exports.Prisma.ReviewScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  professionalId: 'professionalId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SystemSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+};
+
+exports.Prisma.ElderHomePostScalarFieldEnum = {
+  id: 'id',
+  elderHomeId: 'elderHomeId',
+  title: 'title',
+  content: 'content',
+  imageUrl: 'imageUrl',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ElderHomeServiceScalarFieldEnum = {
+  id: 'id',
+  elderHomeId: 'elderHomeId',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  priceUnit: 'priceUnit',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -333,7 +392,8 @@ exports.Role = exports.$Enums.Role = {
   LAB_TECH: 'LAB_TECH',
   PARAMEDIC: 'PARAMEDIC',
   PHARMACIST: 'PHARMACIST',
-  ADMIN: 'ADMIN'
+  ADMIN: 'ADMIN',
+  ELDER_HOME: 'ELDER_HOME'
 };
 
 exports.VerificationStatus = exports.$Enums.VerificationStatus = {
@@ -359,7 +419,11 @@ exports.Prisma.ModelName = {
   OrderItem: 'OrderItem',
   EmergencySOS: 'EmergencySOS',
   ActivityLog: 'ActivityLog',
-  RejectedRecord: 'RejectedRecord'
+  RejectedRecord: 'RejectedRecord',
+  Review: 'Review',
+  SystemSetting: 'SystemSetting',
+  ElderHomePost: 'ElderHomePost',
+  ElderHomeService: 'ElderHomeService'
 };
 
 /**

@@ -31,7 +31,7 @@ exports.getDashboard = async (req, res) => {
 
         const recents = appointments.slice(0, 7);
 
-        res.status(200).json({ appointments, stats, recents });
+        res.status(200).json({ appointments, stats, recents, profile: prof });
     } catch (error) {
         console.error("Dashboard error:", error);
         res.status(500).json({ message: "Error fetching dashboard", error: error.message });
@@ -86,6 +86,30 @@ exports.confirmAppointment = async (req, res) => {
     }
 };
 
+exports.completeAppointment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const appointment = await prisma.appointment.update({
+            where: { id },
+            data: { status: 'COMPLETED', completedAt: new Date() },
+            include: { patient: { include: { user: true } }, professional: { include: { user: true } } }
+        });
+
+        await notificationService.sendNotification(
+            appointment.patient.userId,
+            "Appointment Completed",
+            `Your appointment with Dr. ${appointment.professional.user.fullName} has been completed.`,
+            "APPOINTMENT",
+            appointment.id
+        );
+
+        res.status(200).json({ message: "Appointment completed" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error completing" });
+    }
+};  
+
 exports.issuePrescription = async (req, res) => {
     try {
         const { appointmentId, patientId, notes } = req.body;
@@ -125,7 +149,7 @@ exports.issuePrescription = async (req, res) => {
 exports.getActiveSOS = async (req, res) => {
     try {
         const activeSOS = await prisma.emergencySOS.findMany({
-            where: { status: "TRIGGERED" },
+            where: { status: { in: ["TRIGGERED", "TRIGGERED_EMERGENCY", "TRIGGERED_TRANSPORT"] } },
             include: {
                 patient: { include: { user: true } }
             }
@@ -140,7 +164,7 @@ exports.getActiveSOS = async (req, res) => {
 
 exports.acceptSOS = async (req, res) => {
     try {
-        const { sosId } = req.params;
+        const { id: sosId } = req.params;
         const profile = await prisma.professionalProfile.findUnique({
             where: { userId: req.user.id },
         });
@@ -223,5 +247,115 @@ exports.deleteAppointment = async(req, res) => {
         }
         console.error('Delete error:', err);
         res.status(500).json({ success: false, message: 'Failed to delete appointment' });
+    }
+};
+
+exports.completeAppointment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const appointment = await prisma.appointment.update({
+            where: { id },
+            data: { status: 'COMPLETED' },
+            include: { patient: { include: { user: true } }, professional: { include: { user: true } } }
+        });
+        
+        await notificationService.sendNotification(
+            appointment.patient.userId,
+            "Service Completed",
+            `${appointment.professional.user.fullName} has completed your request. Please rate your experience!`,
+            "APPOINTMENT_COMPLETED",
+            appointment.id
+        );
+        
+        res.status(200).json({ message: "Appointment completed" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error completing appointment" });
+    }
+};
+
+exports.completeSOS = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const sos = await prisma.emergencySOS.update({
+            where: { id },
+            data: { status: 'COMPLETED' },
+            include: { patient: { include: { user: true } }, paramedic: { include: { user: true } } }
+        });
+        
+        // Auto-rate the paramedic for SOS
+        if (sos.paramedicId && sos.patientId) {
+            await prisma.review.create({
+                data: {
+                    patientId: sos.patientId,
+                    professionalId: sos.paramedicId,
+                    rating: 5,
+                    comment: "Auto-generated 5-Star rating for SOS Emergency Transport."
+                }
+            });
+            
+            // Recalculate rating
+            const allReviews = await prisma.review.findMany({ where: { professionalId: sos.paramedicId }});
+            const avgRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
+            await prisma.professionalProfile.update({
+                where: { id: sos.paramedicId },
+                data: { rating: avgRating, availabilityStatus: 'AVAILABLE' }
+            });
+        }
+
+        await notificationService.sendNotification(
+            sos.patient.userId,
+            "SOS Emergency Completed",
+            "The emergency transport has been successfully completed. Hope you are well!",
+            "SOS_COMPLETED",
+            sos.id
+        );
+
+        res.status(200).json({ message: "SOS completed successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error completing SOS" });
+    }
+};
+
+exports.getProfile = async (req, res) => {
+    try {
+        const profile = await prisma.professionalProfile.findUnique({
+            where: { userId: req.user.id },
+            include: { user: true }
+        });
+        if (!profile) return res.status(404).json({ message: 'Profile not found' });
+        res.status(200).json(profile);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error fetching profile' });
+    }
+};
+
+exports.updateProfile = async (req, res) => {
+    try {
+        
+        const { bookingFee, workingHospital, locationLat, locationLng, serviceRadius, serveEverywhere, availabilityStatus } = req.body;
+        
+        const profile = await prisma.professionalProfile.findUnique({ where: { userId: req.user.id } });
+        if (!profile) return res.status(404).json({ message: 'Profile not found' });
+
+        const updated = await prisma.professionalProfile.update({
+            where: { id: profile.id },
+            data: {
+                bookingFee: bookingFee !== undefined ? parseFloat(bookingFee) : profile.bookingFee,
+                workingHospital: workingHospital !== undefined ? workingHospital : profile.workingHospital,
+                locationLat: locationLat !== undefined ? parseFloat(locationLat) : profile.locationLat,
+                locationLng: locationLng !== undefined ? parseFloat(locationLng) : profile.locationLng,
+                serviceRadius: serviceRadius !== undefined ? parseInt(serviceRadius) : profile.serviceRadius,
+                serveEverywhere: serveEverywhere !== undefined ? serveEverywhere : profile.serveEverywhere,
+                availabilityStatus: availabilityStatus !== undefined ? availabilityStatus : profile.availabilityStatus
+            }
+        });
+        
+        res.status(200).json({ message: 'Profile updated', profile: updated });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error updating profile' });
     }
 };

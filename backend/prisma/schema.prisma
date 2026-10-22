@@ -6,7 +6,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Role {
@@ -19,6 +20,7 @@ enum Role {
   PARAMEDIC
   PHARMACIST
   ADMIN
+    ELDER_HOME
 }
 
 enum VerificationStatus {
@@ -75,6 +77,7 @@ model PatientProfile {
   prescriptions Prescription[]
   orders        Order[]
   emergencySOSs EmergencySOS[]
+  reviews       Review[]
 }
 
 model ProfessionalProfile {
@@ -93,16 +96,36 @@ model ProfessionalProfile {
   attachedHospital       String?
   availabilityStatus     String  @default("AVAILABLE")
   rating                 Float   @default(0.0)
+  locationLat            Float?
+  locationLng            Float?
+  bookingFee             Float   @default(0.0)
+    serviceRadius          Int     @default(10)
+    serveEverywhere        Boolean @default(true)
+  walletBalance          Float   @default(0.0)
   licenseIssuedYear      Int?
   licenseNumber          String?
   idFrontImage           String? @db.Text
   idBackImage            String? @db.Text
 
+  // Elder Home specific fields
+  policies               String? @db.Text
+  facilities             String? @db.Text
+  coverImage             String? @db.Text
+  profileImage           String? @db.Text
+  socialFacebook         String?
+  socialInstagram        String?
+  socialWhatsapp         String?
+  socialWebsite          String?
+  contactPhone           String?
+
   user User @relation(fields: [userId], references: [id])
 
-  appointments  Appointment[]
-  prescriptions Prescription[]
-  emergencySOSs EmergencySOS[]
+  appointments      Appointment[]
+  prescriptions     Prescription[]
+  emergencySOSs     EmergencySOS[]
+  reviews           Review[]
+  elderHomePosts    ElderHomePost[]
+  elderHomeServices ElderHomeService[]
 }
 
 model PharmacistProfile {
@@ -117,6 +140,11 @@ model PharmacistProfile {
   idBackImage       String? @db.Text
   address           String?
   idCardNumber      String?
+  locationLat       Float?
+  locationLng       Float?
+  walletBalance     Float   @default(0.0)
+  serviceRadius     Int       @default(10)
+  availabilityStatus String   @default("AVAILABLE")
 
   user User @relation(fields: [userId], references: [id])
 
@@ -147,6 +175,9 @@ model Appointment {
   locationLng    Float?
   symptoms       String?   @db.Text
   vitalsSummary  String?   @db.Text
+  paymentMethod  String?
+  paymentStatus  String    @default("PENDING")
+  totalAmount    Float     @default(0.0)
   completedAt    DateTime?
   createdAt      DateTime  @default(now())
 
@@ -279,4 +310,48 @@ model RejectedRecord {
   phone        String?  @unique
   idCardNumber String?  @unique
   rejectedAt   DateTime @default(now())
+}
+
+model Review {
+  id              String               @id @default(uuid())
+  patientId       String
+  professionalId  String
+  rating          Float
+  comment         String?              @db.Text
+  createdAt       DateTime             @default(now())
+
+  patient         PatientProfile       @relation(fields: [patientId], references: [id])
+  professional    ProfessionalProfile  @relation(fields: [professionalId], references: [id])
+}
+
+
+model SystemSetting {
+  key   String @id
+  value String @db.Text
+}
+
+model ElderHomePost {
+  id             String   @id @default(uuid())
+  elderHomeId    String
+  title          String?
+  content        String   @db.Text
+  imageUrl       String?  @db.Text
+  category       String   @default("UPDATE")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  elderHome      ProfessionalProfile @relation(fields: [elderHomeId], references: [id], onDelete: Cascade)
+}
+
+model ElderHomeService {
+  id             String   @id @default(uuid())
+  elderHomeId    String
+  name           String
+  description    String?  @db.Text
+  price          Float    @default(0.0)
+  priceUnit      String   @default("per month")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  elderHome      ProfessionalProfile @relation(fields: [elderHomeId], references: [id], onDelete: Cascade)
 }

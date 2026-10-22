@@ -1,3 +1,16 @@
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return 9999;
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
 const prisma = require('../../db');
 const { getDateFilter } = require('../utils/dateFilter');
 const notificationService = require('../services/notificationService');
@@ -98,7 +111,7 @@ exports.getAppointments = async(req, res) => {
             include: {
                 professional: {
                     include: {
-                        user: { select: { fullName: true, phone: true } }
+                        user: { select: { fullName: true, phone: true, role: true } }
                     }
                 },
                 prescriptions: {
@@ -174,7 +187,12 @@ exports.getVerifiedDoctors = async (req, res) => {
             workingHospital: doc.workingHospital,
             address: doc.address,
             experienceYears: doc.licenseIssuedYear ? new Date().getFullYear() - doc.licenseIssuedYear : 0,
-            user: doc.user
+            user: doc.user,
+              locationLat: doc.locationLat,
+              locationLng: doc.locationLng,
+              serveEverywhere: doc.serveEverywhere,
+              serviceRadius: doc.serviceRadius,
+              bookingFee: doc.bookingFee
         }));
         
         return res.status(200).json({message: 'Doctors fetched successfully', verifiedDoctors: formattedDoctors})
@@ -204,7 +222,12 @@ exports.getVerifiedNurses = async (req, res) => {
             availabilityStatus: nurse.availabilityStatus,
             workingHospital: nurse.workingHospital,
             experienceYears: nurse.licenseIssuedYear ? new Date().getFullYear() - nurse.licenseIssuedYear : 0,
-            user: nurse.user
+            user: nurse.user,
+              locationLat: nurse.locationLat,
+              locationLng: nurse.locationLng,
+              serveEverywhere: nurse.serveEverywhere,
+              serviceRadius: nurse.serviceRadius,
+              bookingFee: nurse.bookingFee
         }));
         
         return res.status(200).json({message: 'Nurses fetched successfully', verifiedNurses: formattedNurses})
@@ -264,7 +287,7 @@ exports.getVerifiedCaregivers = async (req, res) => {
 
 exports.bookAppointment = async ( req, res) => {
     try {
-        const {professionalId,scheduledDate,symptoms,serviceType} = req.body;
+        const {professionalId,scheduledDate,symptoms,serviceType, locationLat, locationLng, totalAmount, paymentMethod} = req.body;
         const Patient = await prisma.patientProfile.findUnique({
             where: {userId:req.user.id},
             include: { user: true }
@@ -279,6 +302,10 @@ exports.bookAppointment = async ( req, res) => {
                 scheduledDate: new Date(scheduledDate),
                 symptoms,
                 serviceType,
+                locationLat,
+                locationLng,
+                totalAmount: totalAmount || 0.0,
+                paymentMethod: paymentMethod || 'CASH'
             }
         })
 
@@ -305,20 +332,37 @@ exports.bookAppointment = async ( req, res) => {
 
 exports.triggerSOS = async (req,res)=>{
     try {
-        const {locationLat, locationLng} = req.body;
+        const {locationLat, locationLng, type} = req.body;
         const patient = await prisma.patientProfile.findUnique({
             where: {userId: req.user.id}
         });
         if(!patient) return res.status(404).json({message: 'Patient not found'});
 
+        const sosType = type === 'TRANSPORT' ? 'TRANSPORT' : 'EMERGENCY';
         const newSOS = await prisma.emergencySOS.create({
             data: {
                 patientId: patient.id,
                 locationLat,
                 locationLng,
-                status:"TRIGGERED"
+                status: `TRIGGERED_${sosType}`
             }
         });
+        
+        const paramedics = await prisma.user.findMany({
+            where: { role: "PARAMEDIC", verificationStatus: "APPROVED" }
+        });
+        
+        if (paramedics.length > 0) {
+            await prisma.notification.createMany({
+                data: paramedics.map(p => ({
+                    userId: p.id,
+                    title: `🚨 EMERGENCY SOS!`,
+                    message: `A patient has triggered an emergency SOS. Location: Lat ${locationLat}, Lng ${locationLng}. Tap to view.`,
+                    type: 'EMERGENCY_SOS',
+                    relatedId: newSOS.id
+                }))
+            });
+        }
         
         return res.status(201).json({message: 'SOS triggered successfully', newSOS});
     } catch (error) {
@@ -422,7 +466,7 @@ exports.getPharmacists = async (req,res)=> {
 
 exports.createOrder = async (req, res) => {
     try {
-        const { prescriptionId, pharmacistId, items } = req.body;
+        const { prescriptionId, pharmacistId, items, patientNotes } = req.body;
         const patient = await prisma.patientProfile.findUnique({ where: { userId: req.user.id } });
         
         // Calculate total amount if items are provided
@@ -448,7 +492,7 @@ exports.createOrder = async (req, res) => {
                 patientId: patient.id,
                 pharmacistId: pharmacistId,
                 prescriptionId: prescriptionId || null,
-                totalAmount,
+                totalAmount, patientNotes: patientNotes || null,
                 items: {
                     create: orderItemsData
                 }
@@ -648,5 +692,121 @@ exports.deleteAppointment = async(req, res) => {
         }
         console.error('Delete error:', err);
         res.status(500).json({ success: false, message: 'Failed to delete appointment' });
+    }
+};
+
+exports.submitReview = async (req, res) => {
+    try {
+        const { professionalId, rating, comment } = req.body;
+        
+        const patient = await prisma.patientProfile.findUnique({ where: { userId: req.user.id } });
+        if (!patient) return res.status(404).json({ message: 'Patient not found' });
+        
+        await prisma.review.create({
+            data: {
+                patientId: patient.id,
+                professionalId,
+                rating: parseFloat(rating),
+                comment: comment || ''
+            }
+        });
+        
+        const allReviews = await prisma.review.findMany({ where: { professionalId } });
+        const avgRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
+        
+        await prisma.professionalProfile.update({
+            where: { id: professionalId },
+            data: { rating: avgRating }
+        });
+        
+        return res.status(201).json({ message: 'Review submitted successfully', newRating: avgRating });
+    } catch (error) {
+        console.error('Review error:', error);
+        res.status(500).json({ message: 'Failed to submit review' });
+    }
+};
+
+exports.getNearbyProfessionals = async (req, res) => {
+    try {
+        const { lat, lng, roleFilter } = req.query;
+        if (!lat || !lng) return res.status(400).json({ message: 'Location required' });
+
+        let results = [];
+
+        if (!roleFilter || roleFilter === 'ALL' || roleFilter !== 'PHARMACIST') {
+            let filter = {
+                locationLat: { not: null },
+                locationLng: { not: null },
+                availabilityStatus: 'AVAILABLE'
+            };
+            if (roleFilter && roleFilter !== 'ALL') {
+                filter = { ...filter, user: { role: roleFilter } };
+            }
+            const professionals = await prisma.professionalProfile.findMany({
+                where: filter,
+                include: { user: { select: { fullName: true, role: true, phone: true } } }
+            });
+            results = [...results, ...professionals];
+        }
+
+        if (!roleFilter || roleFilter === 'ALL' || roleFilter === 'PHARMACIST') {
+            let filter = {
+                locationLat: { not: null },
+                locationLng: { not: null },
+                availabilityStatus: 'AVAILABLE'
+            };
+            const pharmacists = await prisma.pharmacistProfile.findMany({
+                where: filter,
+                include: { user: { select: { fullName: true, role: true, phone: true } } }
+            });
+            results = [...results, ...pharmacists];
+        }
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error('Error fetching nearby professionals:', error);
+        res.status(500).json({ message: 'Error fetching nearby professionals' });
+    }
+};
+
+exports.getVerifiedElderHomes = async (req, res) => {
+    try {
+        const elderHomes = await prisma.professionalProfile.findMany({
+            where: { user: { role: "ELDER_HOME", verificationStatus: "APPROVED" } },
+            include: { 
+                user: true,
+                elderHomePosts: { take: 3, orderBy: { createdAt: "desc" } },
+                elderHomeServices: { take: 5, orderBy: { createdAt: "asc" } }
+            }
+        });
+        const formatted = elderHomes.map(p => ({
+            id: p.id,
+            fullName: p.fullName,
+            specialization: p.specialization,
+            rating: p.rating,
+            availabilityStatus: p.availabilityStatus,
+            workingHospital: p.workingHospital,
+            address: p.address,
+            locationLat: p.locationLat,
+            locationLng: p.locationLng,
+            coverImage: p.coverImage,
+            profileImage: p.profileImage,
+            policies: p.policies,
+            facilities: p.facilities,
+            contactPhone: p.contactPhone,
+            socialFacebook: p.socialFacebook,
+            socialInstagram: p.socialInstagram,
+            socialWhatsapp: p.socialWhatsapp,
+            socialWebsite: p.socialWebsite,
+            postsCount: p.elderHomePosts?.length || 0,
+            servicesCount: p.elderHomeServices?.length || 0,
+            latestPost: p.elderHomePosts?.[0] || null,
+            experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0,
+            user: p.user
+        }));
+        return res.status(200).json({ message: "ElderHomes fetched successfully", verifiedElderHomes: formatted });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error" });
     }
 };

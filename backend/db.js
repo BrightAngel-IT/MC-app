@@ -1,10 +1,13 @@
-const dotenv = require("dotenv");
+require("dotenv").config();
 const { PrismaClient } = require("./prisma/generated/client");
-const { neon } = require('@neondatabase/serverless');
-const { PrismaNeonHTTP } = require('@prisma/adapter-neon');
+const { PrismaPg } = require("@prisma/adapter-pg");
+const { Pool } = require("pg");
 
-dotenv.config();
-const adapter = new PrismaNeonHTTP(process.env.DATABASE_URL);
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+});
+
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 module.exports = prisma;

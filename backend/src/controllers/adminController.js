@@ -186,3 +186,27 @@ exports.getStats = async (req,res)=>{
         return res.status(500).json({message: "Internal server error"});
     }
 }
+exports.getSettings = async(req, res) => {
+    try {
+        const settings = await prisma.systemSetting.findMany();
+        let formatted = {};
+        settings.forEach(s => formatted[s.key] = s.value);
+        res.status(200).json(formatted);
+    } catch(err) {
+        res.status(500).json({message: 'Error fetching settings'});
+    }
+};
+
+exports.updateSetting = async(req, res) => {
+    try {
+        const { key, value } = req.body;
+        await prisma.systemSetting.upsert({
+            where: { key },
+            update: { value: String(value) },
+            create: { key, value: String(value) }
+        });
+        res.status(200).json({message: 'Setting updated'});
+    } catch(err) {
+        res.status(500).json({message: 'Error updating setting'});
+    }
+};
