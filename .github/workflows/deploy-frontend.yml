@@ -1,0 +1,61 @@
+name: Deploy Frontend to Hostinger via FTP
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 3. Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: 4. Export Web App Bundle
+        working-directory: ./frontend
+        run: |
+          npx expo export -p web
+          # Ensure index.html and SPA .htaccess are present
+          cp -f dist/index.html dist/200.html 2>/dev/null || true
+
+      - name: 5. Create .htaccess for Single Page App (SPA) Routing
+        working-directory: ./frontend/dist
+        run: |
+          cat << 'EOF' > .htaccess
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteRule ^index\.html$ - [L]
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteCond %{REQUEST_FILENAME} !-l
+            RewriteRule . /index.html [L]
+          </IfModule>
+          EOF
+
+      - name: 6. Sync Build Files to Hostinger Subdomain
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./frontend/dist/
+          server-dir: ./public_html/medical/
+          dangerous-clean-slate: false
