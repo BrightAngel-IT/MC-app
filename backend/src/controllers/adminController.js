@@ -210,3 +210,45 @@ exports.updateSetting = async(req, res) => {
         res.status(500).json({message: 'Error updating setting'});
     }
 };
+
+exports.getAllAppointments = async(req, res) => {
+    try {
+        const { status, search } = req.query;
+        let where = {};
+        if (status && status !== 'ALL') {
+            where.status = status;
+        }
+        if (search) {
+            where.OR = [
+                { patient: { fullName: { contains: search } } },
+                { professional: { fullName: { contains: search } } },
+                { serviceType: { contains: search } }
+            ];
+        }
+
+        const appointments = await prisma.appointment.findMany({
+            where,
+            include: {
+                patient: { include: { user: true } },
+                professional: { include: { user: true } },
+                prescriptions: {
+                    include: {
+                        items: true,
+                        orders: {
+                            include: {
+                                pharmacist: true
+                            }
+                        }
+                    }
+                },
+                messages: { orderBy: { createdAt: 'desc' }, take: 5 }
+            },
+            orderBy: { scheduledDate: 'desc' }
+        });
+
+        res.status(200).json({ success: true, appointments });
+    } catch(err) {
+        console.error('Error fetching admin appointments:', err);
+        res.status(500).json({ message: 'Error fetching appointments' });
+    }
+};

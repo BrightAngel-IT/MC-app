@@ -1,6 +1,8 @@
 const prisma = require('../../db');
+const bcrypt = require('bcrypt');
 const { getDateFilter } = require('../utils/dateFilter');
 const notificationService = require('../services/notificationService');
+const { saveBase64Image } = require('../utils/fileUpload');
 
 exports.getDashboard = async (req, res) => {
     try {
@@ -334,28 +336,93 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
+        const { 
+            bookingFee, 
+            workingHospital, 
+            locationLat, 
+            locationLng, 
+            serviceRadius, 
+            serveEverywhere, 
+            availabilityStatus,
+            phone,
+            address,
+            profileImage,
+            currentPassword,
+            newPassword
+        } = req.body;
         
-        const { bookingFee, workingHospital, locationLat, locationLng, serviceRadius, serveEverywhere, availabilityStatus } = req.body;
-        
-        const profile = await prisma.professionalProfile.findUnique({ where: { userId: req.user.id } });
+        const profile = await prisma.professionalProfile.findUnique({ 
+            where: { userId: req.user.id },
+            include: { user: true }
+        });
         if (!profile) return res.status(404).json({ message: 'Profile not found' });
+
+        // If user wants to update password
+        if (newPassword) {
+            if (!currentPassword) {
+                return res.status(400).json({ message: 'Current password is required to change password' });
+            }
+            const isMatch = await bcrypt.compare(currentPassword, profile.user.passwordHash);
+            if (!isMatch) {
+                const settings = await prisma.systemSetting.findMany({
+                    where: { key: { in: ['SUPPORT_PHONE', 'SUPPORT_EMAIL'] } }
+                });
+                const contact = {};
+                settings.forEach(s => contact[s.key] = s.value);
+                const helpPhone = contact.SUPPORT_PHONE || '0112345678';
+                const helpEmail = contact.SUPPORT_EMAIL || 'admin@medicalcare.com';
+
+                return res.status(400).json({ 
+                    message: `Current password is incorrect. If you forgot your password, please contact Admin at Phone: ${helpPhone} or Email: ${helpEmail} to reset your account.`,
+                    adminContact: { phone: helpPhone, email: helpEmail }
+                });
+            }
+            if (newPassword.length < 6) {
+                return res.status(400).json({ message: 'New password must be at least 6 characters long' });
+            }
+            const newHash = await bcrypt.hash(newPassword, 10);
+            await prisma.user.update({
+                where: { id: req.user.id },
+                data: { passwordHash: newHash }
+            });
+        }
+
+        // If phone or address changed on User/Profile
+        if (phone !== undefined) {
+            await prisma.user.update({
+                where: { id: req.user.id },
+                data: { phone }
+            });
+        }
+
+        let savedProfileImage = profile.profileImage;
+        if (profileImage !== undefined) {
+            if (profileImage && profileImage.startsWith('data:image')) {
+                savedProfileImage = saveBase64Image(profileImage, 'professionals');
+            } else {
+                savedProfileImage = profileImage;
+            }
+        }
 
         const updated = await prisma.professionalProfile.update({
             where: { id: profile.id },
             data: {
                 bookingFee: bookingFee !== undefined ? parseFloat(bookingFee) : profile.bookingFee,
                 workingHospital: workingHospital !== undefined ? workingHospital : profile.workingHospital,
+                address: address !== undefined ? address : profile.address,
+                profileImage: savedProfileImage,
                 locationLat: locationLat !== undefined ? parseFloat(locationLat) : profile.locationLat,
                 locationLng: locationLng !== undefined ? parseFloat(locationLng) : profile.locationLng,
                 serviceRadius: serviceRadius !== undefined ? parseInt(serviceRadius) : profile.serviceRadius,
                 serveEverywhere: serveEverywhere !== undefined ? serveEverywhere : profile.serveEverywhere,
                 availabilityStatus: availabilityStatus !== undefined ? availabilityStatus : profile.availabilityStatus
-            }
+            },
+            include: { user: true }
         });
         
-        res.status(200).json({ message: 'Profile updated', profile: updated });
+        res.status(200).json({ message: 'Profile updated successfully', profile: updated });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error updating profile' });
+        res.status(500).json({ message: 'Error updating profile', error: error.message });
     }
 };

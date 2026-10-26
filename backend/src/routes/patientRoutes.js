@@ -36,8 +36,11 @@ router.get('/pharmacists', protect, patientController.getPharmacists);
 router.get('/pharmacists/:id/products', protect, patientController.getPharmacistProducts);
 router.get('/products', protect, patientController.getProducts);
 router.post('/prescription/send', protect, patientController.createOrder);
+router.post('/order', protect, patientController.createOrder);
 router.put('/prescription/:id/cancel', protect, patientController.cancelOrder);
+router.put('/order/:id/cancel', protect, patientController.cancelOrder);
 router.post('/prescription/:id/message', protect, patientController.replyToOrder);
+router.put('/order/:id/reply', protect, patientController.replyToOrder);
 router.put('/prescription/:id/status', protect, patientController.updatePrescriptionStatus);
 
 const reportController = require('../controllers/reportController');

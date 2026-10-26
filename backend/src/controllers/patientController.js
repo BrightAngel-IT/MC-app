@@ -186,6 +186,7 @@ exports.getVerifiedDoctors = async (req, res) => {
             availabilityStatus: doc.availabilityStatus,
             workingHospital: doc.workingHospital,
             address: doc.address,
+            profileImage: doc.profileImage,
             experienceYears: doc.licenseIssuedYear ? new Date().getFullYear() - doc.licenseIssuedYear : 0,
             user: doc.user,
               locationLat: doc.locationLat,
@@ -221,6 +222,7 @@ exports.getVerifiedNurses = async (req, res) => {
             rating: nurse.rating,
             availabilityStatus: nurse.availabilityStatus,
             workingHospital: nurse.workingHospital,
+            profileImage: nurse.profileImage,
             experienceYears: nurse.licenseIssuedYear ? new Date().getFullYear() - nurse.licenseIssuedYear : 0,
             user: nurse.user,
               locationLat: nurse.locationLat,
@@ -244,7 +246,7 @@ exports.getVerifiedLabTechs = async (req, res) => {
             include: { user: true }
         });
         const formatted = labTechs.map(p => ({
-            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, workingHospital: p.workingHospital, address: p.address, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user
+            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, workingHospital: p.workingHospital, address: p.address, profileImage: p.profileImage, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user
         }));
         return res.status(200).json({message: 'Lab Techs fetched successfully', verifiedLabTechs: formatted})
     } catch (error) {
@@ -260,7 +262,7 @@ exports.getVerifiedParamedics = async (req, res) => {
             include: { user: true }
         });
         const formatted = paramedics.map(p => ({
-            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, attachedHospital: p.attachedHospital, ambulanceVehicleNumber: p.ambulanceVehicleNumber, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user
+            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, attachedHospital: p.attachedHospital, ambulanceVehicleNumber: p.ambulanceVehicleNumber, profileImage: p.profileImage, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user
         }));
         return res.status(200).json({message: 'Paramedics fetched successfully', verifiedParamedics: formatted})
     } catch (error) {
