@@ -57,5 +57,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./frontend/dist/
-          server-dir: ./public_html/medical/
+          server-dir: ./
           dangerous-clean-slate: false
