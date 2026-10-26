@@ -30,6 +30,8 @@ jobs:
 
       - name: 4. Export Web App Bundle
         working-directory: ./frontend
+        env:
+          EXPO_ROUTER_DISABLE_RN_NAVIGATION_CHECK: 1
         run: |
           npx expo export -p web
           # Ensure index.html and SPA .htaccess are present
