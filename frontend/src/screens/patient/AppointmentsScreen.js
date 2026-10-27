@@ -365,9 +365,11 @@ const AppointmentsScreen = ({ route }) => {
         {!item.status?.startsWith('CANCELED') && item.status !== 'COMPLETED' ? (
           <View style={styles.actions}>
             <TouchableOpacity style={[styles.btn, styles.btnChat]} onPress={() => openChatModal(item)}>
+              <Ionicons name="chatbubbles-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.btnChatText}>Chat</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.btn, styles.btnOutline]} onPress={() => openRescheduleModal(item)}>
+              <Ionicons name="calendar-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.btnOutlineText}>Reschedule</Text>
             </TouchableOpacity>
             <TouchableOpacity 
@@ -375,20 +377,24 @@ const AppointmentsScreen = ({ route }) => {
               onPress={() => handleCancel(item.id)}
               disabled={cancelingId === item.id}
             >
+              <Ionicons name="close-circle-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.btnDangerText}>{cancelingId === item.id ? 'Canceling...' : 'Cancel'}</Text>
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={{ marginTop: 10, gap: 8 }}>
+          <View style={styles.completedActions}>
             {item.prescriptions && item.prescriptions.length > 0 && (
-              <TouchableOpacity style={[styles.btn, styles.btnChat, {backgroundColor: colors.secondary}]} onPress={() => { setSelectedApt(item); setViewPrescriptionModalVisible(true); }}>
-                <Text style={[styles.btnChatText, {color: '#fff'}]}>View Issued Prescription</Text>
+              <TouchableOpacity style={[styles.btn, styles.btnActionSecondary]} onPress={() => { setSelectedApt(item); setViewPrescriptionModalVisible(true); }}>
+                <Ionicons name="document-text-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
+                <Text style={styles.btnTextWhite}>View Issued Prescription</Text>
               </TouchableOpacity>
             )}
-            <TouchableOpacity style={[styles.btn, styles.btnChat, {backgroundColor: colors.surfaceLight}]} onPress={() => openChatModal(item)}>
-              <Text style={[styles.btnChatText, {color: colors.primary}]}>View Chat History</Text>
+            <TouchableOpacity style={[styles.btn, styles.btnActionOutline]} onPress={() => openChatModal(item)}>
+              <Ionicons name="chatbubble-ellipses-outline" size={15} color={colors.primary} style={{ marginRight: 6 }} />
+              <Text style={[styles.btnTextPrimary, { color: colors.primary }]}>View Chat History</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.btn, styles.btnDanger, {marginTop: 4}]} onPress={() => handleDeleteRecord(item.id)}>
+            <TouchableOpacity style={[styles.btn, styles.btnDanger]} onPress={() => handleDeleteRecord(item.id)}>
+              <Ionicons name="trash-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.btnDangerText}>Delete Record</Text>
             </TouchableOpacity>
           </View>
@@ -572,9 +578,26 @@ const AppointmentsScreen = ({ route }) => {
 };
 
 const getStyles = (colors) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: SIZES.padding },
+  container: { 
+    flex: 1, 
+    backgroundColor: colors.background, 
+    padding: SIZES.padding,
+    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+  },
   title: { fontSize: 24, fontWeight: 'bold', color: colors.primary, marginTop: 40, marginBottom: 20 },
-  card: { backgroundColor: colors.surface, borderRadius: SIZES.radius, padding: 16, marginBottom: 16, elevation: 2, borderWidth: 1, borderColor: colors.border },
+  card: { 
+    backgroundColor: colors.surface, 
+    borderRadius: SIZES.radius, 
+    padding: 20, 
+    marginBottom: 16, 
+    elevation: 2, 
+    borderWidth: 1, 
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+  },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   doctorName: { fontSize: 18, fontWeight: 'bold', color: colors.text },
   dateText: { fontSize: 14, color: colors.primary, marginBottom: 4 },
@@ -587,14 +610,49 @@ const getStyles = (colors) => StyleSheet.create({
   bgDanger: { backgroundColor: colors.danger + '20' },
   badgeText: { fontSize: 12, fontWeight: 'bold', color: colors.text },
 
-  actions: { flexDirection: 'row', gap: 10, marginTop: 10 },
-  btn: { flex: 1, paddingVertical: 10, borderRadius: SIZES.radius, alignItems: 'center', justifyContent: 'center' },
+  actions: { 
+    flexDirection: 'row', 
+    gap: 12, 
+    marginTop: 14,
+    flexWrap: 'wrap',
+    justifyContent: Platform.OS === 'web' ? 'flex-end' : 'stretch',
+    alignItems: 'center',
+  },
+  completedActions: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 14,
+    flexWrap: 'wrap',
+    justifyContent: Platform.OS === 'web' ? 'flex-end' : 'stretch',
+    alignItems: 'center',
+  },
+  btn: { 
+    flexDirection: 'row',
+    alignItems: 'center', 
+    justifyContent: 'center',
+    paddingVertical: 10, 
+    paddingHorizontal: 20,
+    borderRadius: SIZES.radius,
+    minHeight: 40,
+    ...(Platform.OS === 'web' ? { 
+      flex: 0, 
+      flexGrow: 0, 
+      alignSelf: 'flex-start',
+      cursor: 'pointer' 
+    } : { 
+      flex: 1 
+    }),
+  },
   btnChat: { backgroundColor: colors.primary },
-  btnChatText: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
+  btnChatText: { color: '#fff', fontWeight: 'bold', fontSize: 13 },
   btnOutline: { backgroundColor: colors.secondary },
-  btnOutlineText: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
+  btnOutlineText: { color: '#fff', fontWeight: 'bold', fontSize: 13 },
   btnDanger: { backgroundColor: colors.danger },
-  btnDangerText: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
+  btnDangerText: { color: '#fff', fontWeight: 'bold', fontSize: 13 },
+  btnActionSecondary: { backgroundColor: colors.secondary },
+  btnActionOutline: { backgroundColor: colors.surfaceLight, borderWidth: 1, borderColor: colors.border },
+  btnTextWhite: { color: '#fff', fontWeight: 'bold', fontSize: 13 },
+  btnTextPrimary: { fontWeight: 'bold', fontSize: 13 },
 
   modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
   modalContent: { backgroundColor: colors.surface, borderRadius: SIZES.radiusLg, padding: 24 },

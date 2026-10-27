@@ -312,7 +312,12 @@ const DoctorSearch = ({ navigation, route }) => {
            </View>
          )}
       </View>
-      <View style={{flexDirection: 'row', gap: 10}}>
+      <View style={{
+        flexDirection: 'row', 
+        gap: 10,
+        marginTop: 6,
+        justifyContent: Platform.OS === 'web' ? 'flex-end' : 'stretch'
+      }}>
         <TouchableOpacity 
           style={styles.seeOnMapBtn} 
           onPress={() => handleSeeOnMap(item)}
@@ -322,7 +327,7 @@ const DoctorSearch = ({ navigation, route }) => {
         </TouchableOpacity>
 
         <TouchableOpacity 
-          style={[styles.bookButton, { flex: 1 }]} 
+          style={styles.bookButton} 
           onPress={() => handleOpenBook(item)}
         >
           <Text style={styles.bookButtonText}>Book Appointment</Text>
@@ -527,13 +532,30 @@ const DoctorSearch = ({ navigation, route }) => {
 };
 
 const getStyles = (colors) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: SIZES.padding },
+  container: { 
+    flex: 1, 
+    backgroundColor: colors.background, 
+    padding: SIZES.padding,
+    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+  },
   headerTitle: { fontSize: 24, fontWeight: 'bold', color: colors.text, marginBottom: 15 },
   searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderRadius: SIZES.radius, paddingHorizontal: 15, marginBottom: 20, height: 45, borderWidth: 1, borderColor: colors.border },
   searchIcon: { marginRight: 10 },
   searchInput: { flex: 1, color: colors.text, fontSize: 14 },
   noData: { color: colors.textLight, fontStyle: 'italic', textAlign: 'center', marginTop: 50 },
-  card: { backgroundColor: colors.surface, borderRadius: SIZES.radius, padding: 16, marginBottom: 16, elevation: 2 },
+  card: { 
+    backgroundColor: colors.surface, 
+    borderRadius: SIZES.radius, 
+    padding: 18, 
+    marginBottom: 16, 
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+  },
   doctorInfo: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
   avatar: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#DBEAFE', justifyContent: 'center', alignItems: 'center', marginRight: 16 },
   avatarText: { fontSize: 20, fontWeight: 'bold', color: colors.primary },
@@ -543,25 +565,42 @@ const getStyles = (colors) => StyleSheet.create({
   specBadgeText: { fontSize: 12, color: colors.primary, fontWeight: '500' },
   specialization: { fontSize: 14, color: colors.primary, marginTop: 2 },
   hospital: { fontSize: 12, color: colors.textLight, marginTop: 2 },
-  bookButton: { backgroundColor: colors.primary, padding: 12, borderRadius: 8, alignItems: 'center' },
-  bookButtonText: { color: colors.surface, fontWeight: 'bold' },
+  bookButton: { 
+    backgroundColor: colors.primary, 
+    paddingVertical: 10, 
+    paddingHorizontal: 18, 
+    borderRadius: 8, 
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 40,
+    ...(Platform.OS === 'web' ? { flexGrow: 0, minWidth: 160 } : { flex: 1 }),
+  },
+  bookButtonText: { color: colors.surface, fontWeight: 'bold', fontSize: 13 },
   seeOnMapBtn: { 
     flexDirection: 'row', 
     alignItems: 'center', 
     justifyContent: 'center',
     gap: 6,
     paddingHorizontal: 14, 
-    paddingVertical: 12, 
+    paddingVertical: 10, 
     borderRadius: 8, 
     borderWidth: 1, 
     borderColor: colors.primary,
-    backgroundColor: colors.surfaceLight || colors.surface
+    backgroundColor: colors.surfaceLight || colors.surface,
+    minHeight: 40,
+    ...(Platform.OS === 'web' ? { flexGrow: 0, minWidth: 140 } : {}),
   },
   seeOnMapText: { color: colors.primary, fontWeight: 'bold', fontSize: 13 },
   noData: { textAlign: 'center', marginTop: 50, color: colors.textLight },
 
-  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
-  modalContent: { backgroundColor: colors.surface, borderRadius: SIZES.radiusLg, padding: 24 },
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  modalContent: { 
+    backgroundColor: colors.surface, 
+    borderRadius: SIZES.radiusLg, 
+    padding: 24,
+    width: '100%',
+    maxWidth: 550,
+  },
   modalTitle: { fontSize: 20, fontWeight: 'bold', color: colors.text, marginBottom: 20 },
   label: { fontSize: 14, color: colors.textLight, marginBottom: 8, marginTop: 10 },
   input: { borderWidth: 1, borderColor: colors.border, borderRadius: SIZES.radius, padding: 12, color: colors.text, backgroundColor: colors.background },

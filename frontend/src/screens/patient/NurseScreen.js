@@ -212,10 +212,14 @@ const NurseScreen = ({ route }) => {
           )}
         </View>
       </View>
-      
-      <TouchableOpacity style={styles.bookBtn} onPress={() => handleOpenBook(item)}>
-        <Text style={styles.bookBtnText}>Request Home Visit</Text>
-      </TouchableOpacity>
+      <View style={{
+        marginTop: 10,
+        alignItems: Platform.OS === 'web' ? 'flex-end' : 'stretch'
+      }}>
+        <TouchableOpacity style={styles.bookBtn} onPress={() => handleOpenBook(item)}>
+          <Text style={styles.bookBtnText}>Request Home Visit</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
   const nearbyData = [];
@@ -409,7 +413,12 @@ const NurseScreen = ({ route }) => {
 };
 
 const getStyles = (colors) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: SIZES.padding },
+  container: { 
+    flex: 1, 
+    backgroundColor: colors.background, 
+    padding: SIZES.padding,
+    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+  },
   heroBanner: {
     backgroundColor: colors.roles.NURSE.bgTint,
     padding: 24,
@@ -437,11 +446,15 @@ const getStyles = (colors) => StyleSheet.create({
   card: { 
     backgroundColor: colors.surface, 
     borderRadius: SIZES.radius, 
-    padding: 16, 
+    padding: 18, 
     marginBottom: 16, 
     elevation: 1,
     borderWidth: 1,
     borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
   },
   headerRow: {
     flexDirection: 'row',
@@ -480,17 +493,27 @@ const getStyles = (colors) => StyleSheet.create({
   },
   bookBtn: {
     backgroundColor: colors.roles.NURSE.primary,
-    padding: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: SIZES.radius,
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 40,
+    ...(Platform.OS === 'web' ? { minWidth: 180 } : {}),
   },
   bookBtnText: {
     color: '#ffffff',
     fontWeight: 'bold',
     fontSize: 14,
   },
-  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
-  modalContent: { backgroundColor: colors.surface, borderRadius: SIZES.radiusLg, padding: 24 },
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  modalContent: { 
+    backgroundColor: colors.surface, 
+    borderRadius: SIZES.radiusLg, 
+    padding: 24,
+    width: '100%',
+    maxWidth: 550,
+  },
   modalTitle: { fontSize: 20, fontWeight: 'bold', color: colors.text, marginBottom: 20 },
   label: { fontSize: 14, color: colors.textLight, marginBottom: 8, marginTop: 10 },
   input: { borderWidth: 1, borderColor: colors.border, borderRadius: SIZES.radius, padding: 12, color: colors.text, backgroundColor: colors.background },

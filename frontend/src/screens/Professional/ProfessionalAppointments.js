@@ -766,9 +766,25 @@ const ProfessionalAppointments = ({ route }) => {
 
 const getStyles = (colors) => StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
-  header: { padding: SIZES.padding, paddingTop: 60, backgroundColor: colors.surface, borderBottomWidth: 1, borderBottomColor: colors.border, marginBottom: 15 },
-  headerTitle: { fontSize: 24, fontWeight: 'bold', color: colors.primary },
-  scrollContainer: { padding: SIZES.padding },
+  header: { 
+    padding: SIZES.padding, 
+    paddingTop: 60, 
+    backgroundColor: colors.surface, 
+    borderBottomWidth: 1, 
+    borderBottomColor: colors.border, 
+    marginBottom: 15,
+    ...(Platform.OS === 'web' ? { alignItems: 'center' } : {})
+  },
+  headerTitle: { 
+    fontSize: 24, 
+    fontWeight: 'bold', 
+    color: colors.primary,
+    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000 } : {})
+  },
+  scrollContainer: { 
+    padding: SIZES.padding,
+    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+  },
   
   filterTabsWrapper: { marginBottom: 15 },
   filterTabsContainer: { flexDirection: 'row', gap: 10, paddingVertical: 5 },
@@ -779,7 +795,19 @@ const getStyles = (colors) => StyleSheet.create({
 
   noData: { color: colors.textLight, fontStyle: 'italic', marginBottom: 20, textAlign: 'center', marginTop: 40 },
   
-  card: { backgroundColor: colors.surface, borderRadius: SIZES.radius, padding: 16, marginBottom: 16, elevation: 2, borderWidth: 1, borderColor: colors.border },
+  card: { 
+    backgroundColor: colors.surface, 
+    borderRadius: SIZES.radius, 
+    padding: 18, 
+    marginBottom: 16, 
+    elevation: 2, 
+    borderWidth: 1, 
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+  },
   aptHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   patientName: { fontSize: 16, fontWeight: 'bold', color: colors.text },
   aptTime: { fontSize: 14, color: colors.primary, marginBottom: 4, fontWeight: '600' },
@@ -790,8 +818,25 @@ const getStyles = (colors) => StyleSheet.create({
   distBadge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 7, paddingVertical: 2, borderRadius: 10, borderWidth: 1, gap: 3 },
   distText: { fontSize: 11, fontWeight: 'bold' },
   feeBreakdownRow: { flexDirection: 'row', alignItems: 'center', marginTop: 4, justifyContent: 'space-between' },
-  cardBtnRow: { flexDirection: 'row', gap: 8, marginTop: 12 },
-  smallMapBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 8, paddingHorizontal: 6, borderRadius: 8, borderWidth: 1, gap: 4 },
+  cardBtnRow: { 
+    flexDirection: 'row', 
+    gap: 10, 
+    marginTop: 14,
+    flexWrap: 'wrap',
+    justifyContent: Platform.OS === 'web' ? 'flex-end' : 'stretch'
+  },
+  smallMapBtn: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    paddingVertical: 9, 
+    paddingHorizontal: 16, 
+    borderRadius: 8, 
+    borderWidth: 1, 
+    gap: 6,
+    minHeight: 38,
+    ...(Platform.OS === 'web' ? { flexGrow: 0, minWidth: 140 } : { flex: 1 })
+  },
   smallMapBtnText: { fontSize: 12, fontWeight: 'bold' },
 
   modalInfoBox: { padding: 12, borderRadius: 12, borderWidth: 1, marginVertical: 12 },
@@ -804,16 +849,29 @@ const getStyles = (colors) => StyleSheet.create({
   bgDanger: { backgroundColor: colors.danger + '20' },
   statusText: { fontSize: 12, fontWeight: 'bold', color: colors.text },
 
-  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
-  modalContent: { backgroundColor: colors.surface, borderRadius: SIZES.radiusLg, padding: 24 },
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  modalContent: { 
+    backgroundColor: colors.surface, 
+    borderRadius: SIZES.radiusLg, 
+    padding: 24,
+    width: '100%',
+    maxWidth: 550,
+  },
   modalTitle: { fontSize: 22, fontWeight: 'bold', color: colors.text, marginBottom: 12 },
   modalSub: { fontSize: 15, color: colors.textLight, marginBottom: 4 },
   
   actionButtons: { marginTop: 14, gap: 10 },
-  actionBtn: { padding: 14, borderRadius: SIZES.radius, alignItems: 'center' },
-  actionBtnText: { color: '#fff', fontSize: 15, fontWeight: 'bold' },
+  actionBtn: { 
+    paddingVertical: 12, 
+    paddingHorizontal: 18, 
+    borderRadius: SIZES.radius, 
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
+  },
+  actionBtnText: { color: '#fff', fontSize: 14, fontWeight: 'bold' },
   closeBtn: { marginTop: 16, alignItems: 'center', padding: 10 },
-  closeBtnText: { color: colors.textLight, fontSize: 15, fontWeight: 'bold' },
+  closeBtnText: { color: colors.textLight, fontSize: 14, fontWeight: 'bold' },
 
   label: { fontSize: 14, color: colors.textLight, marginBottom: 8, marginTop: 15 },
   input: { borderWidth: 1, borderColor: colors.border, borderRadius: SIZES.radius, padding: 12, color: colors.text, backgroundColor: colors.background, textAlignVertical: 'top' },

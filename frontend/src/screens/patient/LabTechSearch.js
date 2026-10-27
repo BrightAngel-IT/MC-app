@@ -178,12 +178,17 @@ const LabTechSearch = ({ route }) => {
         Certified laboratory technician available for blood tests, sample collection, and analysis.
       </Text>
 
-      <TouchableOpacity 
-        style={styles.bookBtn}
-        onPress={() => handleOpenBook(item)}
-      >
-        <Text style={styles.bookBtnText}>Book Test</Text>
-      </TouchableOpacity>
+      <View style={{
+        marginTop: 6,
+        alignItems: Platform.OS === 'web' ? 'flex-end' : 'stretch'
+      }}>
+        <TouchableOpacity 
+          style={styles.bookBtn}
+          onPress={() => handleOpenBook(item)}
+        >
+          <Text style={styles.bookBtnText}>Book Test</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
   const nearbyData = [];
@@ -377,7 +382,12 @@ const LabTechSearch = ({ route }) => {
 };
 
 const getStyles = (colors) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: SIZES.padding },
+  container: { 
+    flex: 1, 
+    backgroundColor: colors.background, 
+    padding: SIZES.padding,
+    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+  },
   heroBanner: {
     backgroundColor: colors.roles.LAB_TECH.bgTint,
     padding: 20,
@@ -399,11 +409,15 @@ const getStyles = (colors) => StyleSheet.create({
   card: { 
     backgroundColor: colors.surface, 
     borderRadius: SIZES.radius, 
-    padding: 16, 
+    padding: 18, 
     marginBottom: 16, 
     elevation: 1,
     borderWidth: 1,
     borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
   },
   cardHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   avatar: { width: 50, height: 50, borderRadius: 25, backgroundColor: colors.roles.LAB_TECH.primary + '20', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
@@ -414,11 +428,26 @@ const getStyles = (colors) => StyleSheet.create({
   ratingBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fef3c7', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12 },
   ratingText: { marginLeft: 4, fontSize: 12, fontWeight: 'bold', color: '#92400e' },
   bio: { fontSize: 13, color: colors.textLight, lineHeight: 20, marginBottom: 16 },
-  bookBtn: { backgroundColor: colors.roles.LAB_TECH.primary, paddingVertical: 12, borderRadius: SIZES.radius, alignItems: 'center' },
+  bookBtn: { 
+    backgroundColor: colors.roles.LAB_TECH.primary, 
+    paddingVertical: 10, 
+    paddingHorizontal: 20, 
+    borderRadius: SIZES.radius, 
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 40,
+    ...(Platform.OS === 'web' ? { minWidth: 180 } : {}),
+  },
   bookBtnText: { color: '#fff', fontSize: 14, fontWeight: 'bold' },
   
   modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
-  modalContent: { backgroundColor: colors.surface, width: '100%', borderRadius: SIZES.radiusLg, padding: 20 },
+  modalContent: { 
+    backgroundColor: colors.surface, 
+    width: '100%', 
+    maxWidth: 550,
+    borderRadius: SIZES.radiusLg, 
+    padding: 24 
+  },
   modalTitle: { fontSize: 20, fontWeight: 'bold', color: colors.text, marginBottom: 20 },
   label: { fontSize: 13, color: colors.text, fontWeight: '600', marginBottom: 8, marginTop: 10 },
   input: { backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border, borderRadius: SIZES.radius, padding: 12, color: colors.text },
