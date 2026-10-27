@@ -42,8 +42,9 @@ jobs:
         working-directory: ./frontend/dist
         run: |
           cat << 'EOF' > .htaccess
+          Options -MultiViews
           <IfModule mod_headers.c>
-            <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js)$">
+            <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js|json|png|jpg|jpeg|gif|ico|svg)$">
               Header set Access-Control-Allow-Origin "*"
             </FilesMatch>
           </IfModule>
@@ -53,15 +54,22 @@ jobs:
             AddType font/woff2 .woff2
             AddType application/font-woff .woff
             AddType application/font-woff2 .woff2
+            AddType application/javascript .js
+            AddType text/css .css
           </IfModule>
           <IfModule mod_rewrite.c>
             RewriteEngine On
-            RewriteBase /
-            RewriteRule ^index\.html$ - [L]
-            RewriteCond %{REQUEST_FILENAME} !-f
-            RewriteCond %{REQUEST_FILENAME} !-d
-            RewriteCond %{REQUEST_FILENAME} !-l
-            RewriteRule . /index.html [L]
+            # Do not rewrite if request is for existing file or directory
+            RewriteCond %{REQUEST_FILENAME} -f [OR]
+            RewriteCond %{REQUEST_FILENAME} -d
+            RewriteRule ^ - [L]
+
+            # Do not rewrite assets or _expo paths
+            RewriteRule ^assets/ - [L]
+            RewriteRule ^_expo/ - [L]
+
+            # Everything else goes to index.html for Single Page Application
+            RewriteRule ^ index.html [L]
           </IfModule>
           EOF
 
