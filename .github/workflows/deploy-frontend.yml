@@ -38,6 +38,32 @@ jobs:
           # Ensure index.html and SPA .htaccess are present
           cp -f dist/index.html dist/200.html 2>/dev/null || true
 
+          # Create a dedicated fonts directory and copy all vector icon fonts
+          mkdir -p dist/fonts
+          cp -rf node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/* dist/fonts/ 2>/dev/null || true
+
+          # Inject CSS @font-face rules into index.html so browser loads icons universally
+          node -e '
+            const fs = require("fs");
+            const fontCss = `
+            <style id="expo-vector-icons">
+              @font-face { font-family: "Ionicons"; src: url("/fonts/Ionicons.ttf") format("truetype"); }
+              @font-face { font-family: "FontAwesome5Free-Regular"; src: url("/fonts/FontAwesome5_Regular.ttf") format("truetype"); }
+              @font-face { font-family: "FontAwesome5Free-Solid"; src: url("/fonts/FontAwesome5_Solid.ttf") format("truetype"); }
+              @font-face { font-family: "FontAwesome5Brands-Regular"; src: url("/fonts/FontAwesome5_Brands.ttf") format("truetype"); }
+              @font-face { font-family: "Material Icons"; src: url("/fonts/MaterialIcons.ttf") format("truetype"); }
+              @font-face { font-family: "Material Design Icons"; src: url("/fonts/MaterialCommunityIcons.ttf") format("truetype"); }
+              @font-face { font-family: "MaterialCommunityIcons"; src: url("/fonts/MaterialCommunityIcons.ttf") format("truetype"); }
+            </style>
+            `;
+            let html = fs.readFileSync("dist/index.html", "utf8");
+            html = html.replace("</head>", fontCss + "</head>");
+            fs.writeFileSync("dist/index.html", html);
+            if (fs.existsSync("dist/200.html")) {
+              fs.writeFileSync("dist/200.html", html);
+            }
+          '
+
       - name: 5. Create .htaccess for Single Page App (SPA) Routing & Fonts
         working-directory: ./frontend/dist
         run: |
@@ -64,8 +90,9 @@ jobs:
             RewriteCond %{REQUEST_FILENAME} -d
             RewriteRule ^ - [L]
 
-            # Do not rewrite assets or _expo paths
+            # Do not rewrite assets, fonts or _expo paths
             RewriteRule ^assets/ - [L]
+            RewriteRule ^fonts/ - [L]
             RewriteRule ^_expo/ - [L]
 
             # Everything else goes to index.html for Single Page Application
