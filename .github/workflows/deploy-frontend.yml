@@ -1,6 +1,7 @@
 name: Deploy Frontend to Hostinger via FTP
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
