@@ -324,13 +324,19 @@ const AdminAppointmentsScreen = () => {
                     )}
 
                     {selectedApt.locationLat && selectedApt.locationLng && (
-                      <TouchableOpacity
-                        onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${selectedApt.locationLat},${selectedApt.locationLng}`)}
-                        style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.primary + '18', padding: 8, borderRadius: 6, alignSelf: 'flex-start' }}
-                      >
-                        <Ionicons name="map" size={15} color={colors.primary} />
-                        <Text style={{ fontSize: 12, fontWeight: 'bold', color: colors.primary }}>View Patient Location on Map</Text>
-                      </TouchableOpacity>
+                      <View style={{ marginTop: 10 }}>
+                        <TouchableOpacity
+                          onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${selectedApt.locationLat},${selectedApt.locationLng}`)}
+                          style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.primary + '18', paddingVertical: 8, paddingHorizontal: 12, borderRadius: 6, alignSelf: 'flex-start' }}
+                        >
+                          <Ionicons name="location" size={15} color={colors.primary} />
+                          <Text style={{ fontSize: 12, fontWeight: 'bold', color: colors.primary }}>View Booked Patient Location on Map</Text>
+                          <Ionicons name="open-outline" size={13} color={colors.primary} />
+                        </TouchableOpacity>
+                        <Text style={{ fontSize: 11, color: colors.textMuted, marginTop: 4, fontStyle: 'italic' }}>
+                          Exact GPS location recorded at the time patient submitted this booking.
+                        </Text>
+                      </View>
                     )}
                   </View>
 
