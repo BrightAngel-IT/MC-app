@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Platform } from 'react-native';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 import { AuthContext } from '../context/authContext';
@@ -42,6 +42,29 @@ import AdminProfileScreen from '../screens/Admin/AdminProfileScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// Common responsive tab bar style helper
+const getCommonTabBarStyle = (colors) => ({
+  backgroundColor: colors.surface,
+  borderTopColor: colors.border,
+  borderTopWidth: 1,
+  elevation: 8,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: -2 },
+  shadowOpacity: 0.08,
+  shadowRadius: 6,
+  ...(Platform.OS === 'web'
+    ? {
+        height: 65,
+        paddingBottom: 10,
+        paddingTop: 8,
+      }
+    : {
+        height: 60,
+        paddingBottom: 8,
+        paddingTop: 6,
+      }),
+});
+
 // Patient Bottom Tabs
 const PatientTabs = () => {
   const { colors } = useTheme();
@@ -49,13 +72,14 @@ const PatientTabs = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: colors.surface,
-          borderTopColor: colors.border,
-          elevation: 5,
-        },
+        tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginTop: 2,
+        },
       }}
     >
       <Tab.Screen 
@@ -121,13 +145,14 @@ const ProfessionalTabs = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: colors.surface,
-          borderTopColor: colors.border,
-          elevation: 5,
-        },
+        tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginTop: 2,
+        },
       }}
     >
       <Tab.Screen 
@@ -194,9 +219,14 @@ const VendorTabs = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, elevation: 5 },
+        tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginTop: 2,
+        },
       }}
     >
       <Tab.Screen 
@@ -230,9 +260,14 @@ const AdminTabs = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, elevation: 5 },
+        tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginTop: 2,
+        },
       }}
     >
       <Tab.Screen 
@@ -258,9 +293,14 @@ const ElderHomeTabs = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border, elevation: 5 },
+        tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
+          marginTop: 2,
+        },
       }}
     >
       <Tab.Screen 

@@ -48,12 +48,28 @@ jobs:
             const fontCss = `
             <style id="expo-vector-icons">
               @font-face { font-family: "Ionicons"; src: url("/fonts/Ionicons.ttf") format("truetype"); }
+              @font-face { font-family: "ionicons"; src: url("/fonts/Ionicons.ttf") format("truetype"); }
+              @font-face { font-family: "MaterialIcons"; src: url("/fonts/MaterialIcons.ttf") format("truetype"); }
+              @font-face { font-family: "Material Icons"; src: url("/fonts/MaterialIcons.ttf") format("truetype"); }
+              @font-face { font-family: "material"; src: url("/fonts/MaterialIcons.ttf") format("truetype"); }
+              @font-face { font-family: "MaterialCommunityIcons"; src: url("/fonts/MaterialCommunityIcons.ttf") format("truetype"); }
+              @font-face { font-family: "Material Design Icons"; src: url("/fonts/MaterialCommunityIcons.ttf") format("truetype"); }
+              @font-face { font-family: "material-community"; src: url("/fonts/MaterialCommunityIcons.ttf") format("truetype"); }
+              @font-face { font-family: "FontAwesome"; src: url("/fonts/FontAwesome.ttf") format("truetype"); }
               @font-face { font-family: "FontAwesome5Free-Regular"; src: url("/fonts/FontAwesome5_Regular.ttf") format("truetype"); }
               @font-face { font-family: "FontAwesome5Free-Solid"; src: url("/fonts/FontAwesome5_Solid.ttf") format("truetype"); }
               @font-face { font-family: "FontAwesome5Brands-Regular"; src: url("/fonts/FontAwesome5_Brands.ttf") format("truetype"); }
-              @font-face { font-family: "Material Icons"; src: url("/fonts/MaterialIcons.ttf") format("truetype"); }
-              @font-face { font-family: "Material Design Icons"; src: url("/fonts/MaterialCommunityIcons.ttf") format("truetype"); }
-              @font-face { font-family: "MaterialCommunityIcons"; src: url("/fonts/MaterialCommunityIcons.ttf") format("truetype"); }
+              @font-face { font-family: "FontAwesome5_Regular"; src: url("/fonts/FontAwesome5_Regular.ttf") format("truetype"); }
+              @font-face { font-family: "FontAwesome5_Solid"; src: url("/fonts/FontAwesome5_Solid.ttf") format("truetype"); }
+              @font-face { font-family: "FontAwesome5_Brands"; src: url("/fonts/FontAwesome5_Brands.ttf") format("truetype"); }
+              @font-face { font-family: "Feather"; src: url("/fonts/Feather.ttf") format("truetype"); }
+              @font-face { font-family: "feather"; src: url("/fonts/Feather.ttf") format("truetype"); }
+              @font-face { font-family: "AntDesign"; src: url("/fonts/AntDesign.ttf") format("truetype"); }
+              @font-face { font-family: "anticon"; src: url("/fonts/AntDesign.ttf") format("truetype"); }
+              @font-face { font-family: "Entypo"; src: url("/fonts/Entypo.ttf") format("truetype"); }
+              @font-face { font-family: "entypo"; src: url("/fonts/Entypo.ttf") format("truetype"); }
+              @font-face { font-family: "Octicons"; src: url("/fonts/Octicons.ttf") format("truetype"); }
+              @font-face { font-family: "octicons"; src: url("/fonts/Octicons.ttf") format("truetype"); }
             </style>
             `;
             let html = fs.readFileSync("dist/index.html", "utf8");
