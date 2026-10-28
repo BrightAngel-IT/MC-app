@@ -20,8 +20,9 @@ import api from '../../api/axios';
 
 const ElderHomeDetailScreen = ({ route, navigation }) => {
   const { colors } = useTheme();
-  const elderHomeParam = route.params?.elderHome || {};
-  const elderHomeId = elderHomeParam.id || elderHomeParam.userId;
+  const rawParam = route.params?.elderHome;
+  const elderHomeParam = (rawParam && typeof rawParam === 'object') ? rawParam : {};
+  const elderHomeId = route.params?.id || route.params?.elderHomeId || elderHomeParam.id || elderHomeParam.userId;
 
   const [elderHome, setElderHome] = useState(elderHomeParam);
   const [loading, setLoading] = useState(true);
@@ -87,9 +88,13 @@ const ElderHomeDetailScreen = ({ route, navigation }) => {
 
   const resolveImage = (imgPath) => {
     if (!imgPath) return null;
-    if (imgPath.startsWith('http') || imgPath.startsWith('data:image')) return imgPath;
-    const cleanPath = imgPath.startsWith('/') ? imgPath : `/${imgPath}`;
-    const baseUrl = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'http://localhost:5000';
+    let url = imgPath;
+    if (url.includes('localhost:5000')) {
+      url = url.replace('http://localhost:5000', 'https://mcbackend.crescereluna.com');
+    }
+    if (url.startsWith('http') || url.startsWith('data:image')) return url;
+    const cleanPath = url.startsWith('/') ? url : `/${url}`;
+    const baseUrl = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'https://mcbackend.crescereluna.com';
     return `${baseUrl}${cleanPath}`;
   };
 

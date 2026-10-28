@@ -442,6 +442,7 @@ const linking = {
       ProfessionalApp: 'doctor',
       PatientApp: 'patient',
       EditProfessionalProfile: 'EditProfessionalProfile',
+      ElderHomeDetail: 'elder-home-detail/:id?',
       Notifications: 'notifications',
       Calendar: 'calendar',
     }

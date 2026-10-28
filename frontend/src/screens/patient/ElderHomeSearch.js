@@ -61,9 +61,14 @@ const ElderHomeSearch = ({ navigation }) => {
 
   const resolveImage = (imgPath) => {
     if (!imgPath) return null;
-    if (imgPath.startsWith('http') || imgPath.startsWith('data:image')) return imgPath;
-    const baseUrl = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'http://localhost:5000';
-    return `${baseUrl}${imgPath}`;
+    let url = imgPath;
+    if (url.includes('localhost:5000')) {
+      url = url.replace('http://localhost:5000', 'https://mcbackend.crescereluna.com');
+    }
+    if (url.startsWith('http') || url.startsWith('data:image')) return url;
+    const cleanPath = url.startsWith('/') ? url : `/${url}`;
+    const baseUrl = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'https://mcbackend.crescereluna.com';
+    return `${baseUrl}${cleanPath}`;
   };
 
   const handleOpenBook = (caregiver) => {
@@ -105,7 +110,11 @@ const ElderHomeSearch = ({ navigation }) => {
       <TouchableOpacity 
         style={styles.card} 
         activeOpacity={0.9}
-        onPress={() => navigation.navigate('ElderHomeDetail', { elderHome: item })}
+        onPress={() => navigation.navigate('ElderHomeDetail', { 
+          id: item.id || item.userId, 
+          elderHomeId: item.id || item.userId, 
+          elderHome: item 
+        })}
       >
         {coverUri ? (
           <Image source={{ uri: coverUri }} style={styles.cardCover} resizeMode="cover" />
@@ -215,7 +224,11 @@ const ElderHomeSearch = ({ navigation }) => {
 
           <TouchableOpacity 
             style={[styles.viewProfileBtn, { flex: 1 }]}
-            onPress={() => navigation.navigate('ElderHomeDetail', { elderHome: item })}
+            onPress={() => navigation.navigate('ElderHomeDetail', { 
+              id: item.id || item.userId, 
+              elderHomeId: item.id || item.userId, 
+              elderHome: item 
+            })}
           >
             <Ionicons name="eye-outline" size={16} color={colors.roles.CAREGIVER.primary} />
             <Text style={styles.viewProfileBtnText}>View Posts & Details</Text>

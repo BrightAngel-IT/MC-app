@@ -297,6 +297,8 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <TouchableOpacity
                       style={styles.viewProfileBtn}
                       onPress={() => navigation.navigate('ElderHomeDetail', {
+                        id: u.professionalProfile?.id || u.id,
+                        elderHomeId: u.professionalProfile?.id || u.id,
                         elderHome: {
                           ...u.professionalProfile,
                           userId: u.id,
