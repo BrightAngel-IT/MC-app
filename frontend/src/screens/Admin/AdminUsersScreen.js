@@ -272,26 +272,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                       </View>
                     )}
 
-                    {/* Cover / Profile Image Previews */}
-                    {(u.professionalProfile.coverImage || u.professionalProfile.profileImage) && (
-                      <View style={{ marginTop: 8 }}>
-                        <Text style={styles.detailLabel}>Elder Home Images (Cover & Profile):</Text>
-                        <View style={styles.imageRow}>
-                          {u.professionalProfile.coverImage && (
-                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.coverImage))}>
-                              <Text style={styles.imageLabel}>Cover Banner</Text>
-                              <Image source={{ uri: resolveImage(u.professionalProfile.coverImage) }} style={styles.licenseImg} />
-                            </TouchableOpacity>
-                          )}
-                          {u.professionalProfile.profileImage && (
-                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.profileImage))}>
-                              <Text style={styles.imageLabel}>Profile Picture</Text>
-                              <Image source={{ uri: resolveImage(u.professionalProfile.profileImage) }} style={styles.licenseImg} />
-                            </TouchableOpacity>
-                          )}
-                        </View>
-                      </View>
-                    )}
+
 
                     {/* Button to View Full Elder Home Profile */}
                     <TouchableOpacity
