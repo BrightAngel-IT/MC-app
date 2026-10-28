@@ -526,6 +526,16 @@ const AppNavigator = () => {
             headerTintColor: colors.text,
           }} 
         />
+        <Stack.Screen 
+          name="ElderHomeDetail" 
+          component={ElderHomeDetailScreen} 
+          options={({ route }) => ({ 
+            headerShown: true, 
+            title: route.params?.elderHome?.fullName || 'Elder Home Profile',
+            headerStyle: { backgroundColor: colors.surface },
+            headerTintColor: colors.text,
+          }} 
+        />
       </>
     );
   };

@@ -17,6 +17,20 @@ const AdminUsersScreen = ({ route, navigation }) => {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
+  const resolveImage = (imgPath) => {
+    if (!imgPath) return null;
+    let url = imgPath;
+    if (url.includes('localhost:5000')) {
+      url = url.replace('http://localhost:5000', 'https://mcbackend.crescereluna.com');
+    }
+    if (url.startsWith('http') || url.startsWith('data:image')) {
+      return url;
+    }
+    const cleanPath = url.startsWith('/') ? url : `/${url}`;
+    const baseUrl = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'https://mcbackend.crescereluna.com';
+    return `${baseUrl}${cleanPath}`;
+  };
+
   const fetchUsers = async () => {
     try {
       const response = await api.get('/admin/users');
@@ -170,6 +184,19 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     {u.professionalProfile.specialization}
                   </Text>
                 )}
+                {u.professionalProfile.licenseNumber && (
+                  <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>License Number: </Text>
+                    {u.professionalProfile.licenseNumber}
+                  </Text>
+                )}
+                {u.professionalProfile.licenseIssuedYear && (
+                  <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>License Issued Year: </Text>
+                    {u.professionalProfile.licenseIssuedYear}
+                    <Text style={[styles.detailLabel, {color: colors.primary, marginLeft: 10}]}>  (Exp: {new Date().getFullYear() - u.professionalProfile.licenseIssuedYear} Years)</Text>
+                  </Text>
+                )}
                 {u.professionalProfile.qualifications && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Qualifications: </Text>
@@ -251,15 +278,15 @@ const AdminUsersScreen = ({ route, navigation }) => {
                         <Text style={styles.detailLabel}>Elder Home Images (Cover & Profile):</Text>
                         <View style={styles.imageRow}>
                           {u.professionalProfile.coverImage && (
-                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(u.professionalProfile.coverImage)}>
+                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.coverImage))}>
                               <Text style={styles.imageLabel}>Cover Banner</Text>
-                              <Image source={{ uri: u.professionalProfile.coverImage }} style={styles.licenseImg} />
+                              <Image source={{ uri: resolveImage(u.professionalProfile.coverImage) }} style={styles.licenseImg} />
                             </TouchableOpacity>
                           )}
                           {u.professionalProfile.profileImage && (
-                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(u.professionalProfile.profileImage)}>
+                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.profileImage))}>
                               <Text style={styles.imageLabel}>Profile Picture</Text>
-                              <Image source={{ uri: u.professionalProfile.profileImage }} style={styles.licenseImg} />
+                              <Image source={{ uri: resolveImage(u.professionalProfile.profileImage) }} style={styles.licenseImg} />
                             </TouchableOpacity>
                           )}
                         </View>
@@ -290,15 +317,15 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={styles.detailLabel}>ID / Document Images:</Text>
                     <View style={styles.imageRow}>
                       {u.professionalProfile.idFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.professionalProfile.idFrontImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.idFrontImage))}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: u.professionalProfile.idFrontImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.professionalProfile.idFrontImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                       {u.professionalProfile.idBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.professionalProfile.idBackImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.idBackImage))}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: u.professionalProfile.idBackImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.professionalProfile.idBackImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                     </View>
@@ -309,15 +336,15 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={styles.detailLabel}>License / ID / Driving License Images:</Text>
                     <View style={styles.imageRow}>
                       {u.professionalProfile.licenseFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.professionalProfile.licenseFrontImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.licenseFrontImage))}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: u.professionalProfile.licenseFrontImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.professionalProfile.licenseFrontImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                       {u.professionalProfile.licenseBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.professionalProfile.licenseBackImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.licenseBackImage))}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: u.professionalProfile.licenseBackImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.professionalProfile.licenseBackImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                     </View>
@@ -340,6 +367,13 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     {u.pharmacistProfile.licenseNumber}
                   </Text>
                 )}
+                {u.pharmacistProfile.licenseIssuedYear && (
+                  <Text style={styles.detailText}>
+                    <Text style={styles.detailLabel}>License Issued Year: </Text>
+                    {u.pharmacistProfile.licenseIssuedYear}
+                    <Text style={[styles.detailLabel, {color: colors.primary, marginLeft: 10}]}>  (Exp: {new Date().getFullYear() - u.pharmacistProfile.licenseIssuedYear} Years)</Text>
+                  </Text>
+                )}
                 {u.pharmacistProfile.address && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Address: </Text>
@@ -352,15 +386,15 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={styles.detailLabel}>ID / Document Images:</Text>
                     <View style={styles.imageRow}>
                       {u.pharmacistProfile.idFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.pharmacistProfile.idFrontImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.idFrontImage))}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: u.pharmacistProfile.idFrontImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.pharmacistProfile.idFrontImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                       {u.pharmacistProfile.idBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.pharmacistProfile.idBackImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.idBackImage))}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: u.pharmacistProfile.idBackImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.pharmacistProfile.idBackImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                     </View>
@@ -371,15 +405,15 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={styles.detailLabel}>License Images:</Text>
                     <View style={styles.imageRow}>
                       {u.pharmacistProfile.licenseFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.pharmacistProfile.licenseFrontImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.licenseFrontImage))}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: u.pharmacistProfile.licenseFrontImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.pharmacistProfile.licenseFrontImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                       {u.pharmacistProfile.licenseBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(u.pharmacistProfile.licenseBackImage)}>
+                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.licenseBackImage))}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: u.pharmacistProfile.licenseBackImage}} style={styles.licenseImg} />
+                           <Image source={{uri: resolveImage(u.pharmacistProfile.licenseBackImage)}} style={styles.licenseImg} />
                          </TouchableOpacity>
                       )}
                     </View>
