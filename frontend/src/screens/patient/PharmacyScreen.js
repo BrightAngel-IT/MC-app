@@ -8,6 +8,7 @@ import api from '../../api/axios';
 import * as Location from 'expo-location';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
+import CustomAlertModal from '../../components/CustomAlertModal';
 
 const PharmacyScreen = ({ navigation, route }) => {
   const { colors } = useTheme();
@@ -29,6 +30,36 @@ const PharmacyScreen = ({ navigation, route }) => {
   const [replyModalVisible, setReplyModalVisible] = useState(false);
   const [replyText, setReplyText] = useState('');
   
+  // Custom Alert Modal State
+  const [alertConfig, setAlertConfig] = useState({
+    visible: false,
+    type: 'info',
+    title: '',
+    message: '',
+    showCancel: false,
+    cancelText: 'Cancel',
+    confirmText: 'OK',
+    onConfirm: null,
+    confirmDestructive: false
+  });
+
+  const showAlert = ({ type = 'info', title, message, showCancel = false, cancelText = 'Cancel', confirmText = 'OK', onConfirm = null, confirmDestructive = false }) => {
+    setAlertConfig({
+      visible: true,
+      type,
+      title,
+      message,
+      showCancel,
+      cancelText,
+      confirmText,
+      onConfirm: () => {
+        setAlertConfig(prev => ({ ...prev, visible: false }));
+        if (onConfirm) onConfirm();
+      },
+      confirmDestructive
+    });
+  };
+
   // View Bill Image Modal
   const [billModalVisible, setBillModalVisible] = useState(false);
   const [viewingBillUrl, setViewingBillUrl] = useState(null);
@@ -184,7 +215,7 @@ const PharmacyScreen = ({ navigation, route }) => {
 
   const handleSendToPharmacy = async () => {
     if (!selectedPharmacist) {
-      Alert.alert('Error', 'Please select a pharmacy');
+      showAlert({ type: 'warning', title: 'Select Pharmacy', message: 'Please select a pharmacy first.' });
       return;
     }
     try {
@@ -192,63 +223,92 @@ const PharmacyScreen = ({ navigation, route }) => {
         prescriptionId: selectedPrescription.id,
         pharmacistId: selectedPharmacist.id
       });
-      Alert.alert('Success', `Prescription sent to ${selectedPharmacist.businessName || 'Pharmacy'}! They will prepare your medicines and bill.`);
+      showAlert({ 
+        type: 'success', 
+        title: 'Prescription Sent!', 
+        message: `Prescription sent to ${selectedPharmacist.businessName || 'Pharmacy'}! They will prepare your medicines and bill.` 
+      });
       setSendModalVisible(false);
       setSelectedPharmacist(null);
       fetchPrescriptions();
     } catch (error) {
-      Alert.alert('Error', error.response?.data?.message || 'Failed to send prescription');
+      showAlert({ 
+        type: 'danger', 
+        title: 'Send Failed', 
+        message: error.response?.data?.message || 'Failed to send prescription' 
+      });
     }
   };
 
   const handleSendReply = async () => {
-    if (!replyText.trim()) return Alert.alert('Error', 'Please enter a reply');
+    if (!replyText.trim()) {
+      showAlert({ type: 'warning', title: 'Reply Required', message: 'Please enter a reply message.' });
+      return;
+    }
     try {
       await api.put(`/patient/order/${selectedPrescription.id}/reply`, {
         patientNotes: replyText
       });
-      Alert.alert('Success', 'Reply sent to pharmacist!');
+      showAlert({ type: 'success', title: 'Reply Sent', message: 'Reply sent to pharmacist successfully!' });
       setReplyModalVisible(false);
       setReplyText('');
       fetchPrescriptions();
     } catch (error) {
-      Alert.alert('Error', 'Failed to send reply');
+      showAlert({ type: 'danger', title: 'Reply Error', message: 'Failed to send reply' });
     }
   };
 
   const handleCancelOrder = async (prescriptionId) => {
-    Alert.alert('Cancel Order', 'Are you sure you want to cancel this order? You will be able to send it to another pharmacy.', [
-      { text: 'No', style: 'cancel' },
-      { text: 'Yes, Cancel', style: 'destructive', onPress: async () => {
-          try {
-            await api.put(`/patient/order/${prescriptionId}/cancel`);
-            Alert.alert('Success', 'Order cancelled successfully!');
-            fetchPrescriptions();
-          } catch (error) {
-            Alert.alert('Error', 'Failed to cancel order');
-          }
-      }}
-    ]);
+    showAlert({
+      type: 'warning',
+      title: 'Cancel Order?',
+      message: 'Are you sure you want to cancel this order? You will be able to send it to another pharmacy.',
+      showCancel: true,
+      cancelText: 'Keep Order',
+      confirmText: 'Yes, Cancel',
+      confirmDestructive: true,
+      onConfirm: async () => {
+        try {
+          await api.put(`/patient/order/${prescriptionId}/cancel`);
+          showAlert({ type: 'success', title: 'Order Cancelled', message: 'Order cancelled successfully!' });
+          fetchPrescriptions();
+        } catch (error) {
+          showAlert({ type: 'danger', title: 'Error', message: 'Failed to cancel order' });
+        }
+      }
+    });
   };
 
   const handleUpdatePrescriptionStatus = async (prescriptionId, status) => {
-    let title = status === 'BIN' ? 'Move to Bin' : (status === 'DELETED' ? 'Delete Permanently' : 'Restore');
-    let message = status === 'BIN' ? 'Are you sure you want to move this prescription to the bin?' : 
-                  (status === 'DELETED' ? 'Are you sure you want to PERMANENTLY delete this prescription? This cannot be undone.' : 
-                  'Are you sure you want to restore this prescription?');
+    const isBin = status === 'BIN';
+    const isDel = status === 'DELETED';
+    const title = isBin ? 'Move to Bin' : (isDel ? 'Delete Permanently' : 'Restore Prescription');
+    const message = isBin ? 'Are you sure you want to move this prescription to the bin?' : 
+                    (isDel ? 'Are you sure you want to PERMANENTLY delete this prescription? This cannot be undone.' : 
+                    'Are you sure you want to restore this prescription?');
 
-    Alert.alert(title, message, [
-      { text: 'Cancel', style: 'cancel' },
-      { text: title, style: status === 'DELETED' ? 'destructive' : 'default', onPress: async () => {
-          try {
-            await api.put(`/patient/prescription/${prescriptionId}/status`, { status });
-            Alert.alert('Success', `Prescription ${status === 'BIN' ? 'moved to bin' : status === 'DELETED' ? 'deleted' : 'restored'}`);
-            fetchPrescriptions();
-          } catch (error) {
-            Alert.alert('Error', 'Failed to update prescription');
-          }
-      }}
-    ]);
+    showAlert({
+      type: isDel ? 'danger' : (isBin ? 'warning' : 'info'),
+      title,
+      message,
+      showCancel: true,
+      cancelText: 'Cancel',
+      confirmText: isBin ? 'Move to Bin' : (isDel ? 'Delete Forever' : 'Restore'),
+      confirmDestructive: isDel || isBin,
+      onConfirm: async () => {
+        try {
+          await api.put(`/patient/prescription/${prescriptionId}/status`, { status });
+          showAlert({ 
+            type: 'success', 
+            title: 'Updated', 
+            message: `Prescription ${isBin ? 'moved to bin' : (isDel ? 'deleted' : 'restored')}` 
+          });
+          fetchPrescriptions();
+        } catch (error) {
+          showAlert({ type: 'danger', title: 'Error', message: 'Failed to update prescription' });
+        }
+      }
+    });
   };
 
   const renderPrescription = ({ item }) => {
@@ -756,6 +816,19 @@ const PharmacyScreen = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
+
+      <CustomAlertModal 
+        visible={alertConfig.visible}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        showCancel={alertConfig.showCancel}
+        cancelText={alertConfig.cancelText}
+        confirmText={alertConfig.confirmText}
+        confirmDestructive={alertConfig.confirmDestructive}
+        onConfirm={alertConfig.onConfirm}
+        onClose={() => setAlertConfig(prev => ({ ...prev, visible: false }))}
+      />
 
     </View>
   );
