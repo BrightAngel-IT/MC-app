@@ -29,3 +29,13 @@ jobs:
           **/node_modules/**
           **/.env*
           **/public/uploads/**
+          **/.agents/**
+          **/.claude/**
+          **/.windsurf/**
+          **/error.log
+          **/*.log
+          **/test*.js
+          **/deletePatients.js
+          **/fix_backend.js
+          **/migrate_order.js
+          **/patch_*.js
