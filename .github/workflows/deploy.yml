@@ -32,6 +32,7 @@ jobs:
           **/.agents/**
           **/.claude/**
           **/.windsurf/**
+          **/*.d.ts
           **/error.log
           **/*.log
           **/test*.js
