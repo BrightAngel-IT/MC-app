@@ -65,30 +65,48 @@ router.get('/deploy-fix-uploads', async (req, res) => {
       }
     });
 
-    // Check if there is an uploads directory in domain root or parent directories
-    let domainRoot = '/home/u187279157/domains/mcbackend.crescereluna.com';
-    let sharedUploads = path.join(domainRoot, 'public_html/uploads');
-    let hbuildsUploads = path.join(domainRoot, 'uploads');
+    // Scan parent directories
+    let hbuildsRoot = path.join(process.cwd(), '../../../..'); // /home/u187279157/domains/mcbackend.crescereluna.com
+    let hbuildsVersions = path.join(process.cwd(), '../..'); // versions
     
-    const extraDirs = {
-      sharedUploads: { path: sharedUploads, exists: fs.existsSync(sharedUploads) },
-      hbuildsUploads: { path: hbuildsUploads, exists: fs.existsSync(hbuildsUploads) }
-    };
+    let domainDirs = [];
+    try { domainDirs = fs.readdirSync(hbuildsRoot); } catch(e) {}
+    
+    let allVersions = [];
+    try { allVersions = fs.readdirSync(hbuildsVersions); } catch(e) {}
 
-    if (fs.existsSync(sharedUploads)) {
-      try { extraDirs.sharedUploads.files = fs.readdirSync(sharedUploads); } catch (e) {}
-    }
-    if (fs.existsSync(hbuildsUploads)) {
-      try { extraDirs.hbuildsUploads.files = fs.readdirSync(hbuildsUploads); } catch (e) {}
-    }
+    // Find any license images across versions and copy them to current baseUploads
+    let recoveredFiles = [];
+    allVersions.forEach(ver => {
+      const verUploads = path.join(hbuildsVersions, ver, 'nodejs/public/uploads');
+      if (fs.existsSync(verUploads)) {
+        subfolders.forEach(sub => {
+          const srcSub = path.join(verUploads, sub);
+          const destSub = path.join(baseUploads, sub);
+          if (fs.existsSync(srcSub)) {
+            const files = fs.readdirSync(srcSub);
+            files.forEach(file => {
+              const srcFile = path.join(srcSub, file);
+              const destFile = path.join(destSub, file);
+              if (!fs.existsSync(destFile)) {
+                fs.copyFileSync(srcFile, destFile);
+                recoveredFiles.push(`${sub}/${file} from ${ver}`);
+              }
+            });
+          }
+        });
+      }
+    });
 
     return res.status(200).json({
       success: true,
       cwd: process.cwd(),
       dirname: __dirname,
       baseUploads,
-      results,
-      extraDirs
+      domainDirs,
+      versionCount: allVersions.length,
+      recoveredFiles,
+      results
     });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
