@@ -16,18 +16,13 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Sync files to cPanel
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ${{ secrets.BACKEND_FTP_SERVER }}
         username: ${{ secrets.BACKEND_FTP_USERNAME }}
         password: ${{ secrets.BACKEND_FTP_PASSWORD }}
-        protocol: ftp
-        port: 21
-        timeout: 120000
-        security: loose
         local-dir: ./backend/
         server-dir: ./
-        dangerous-clean-slate: false
         exclude: |
           **/.git*
           **/.git*/**
@@ -37,14 +32,3 @@ jobs:
           **/.agents/**
           **/.claude/**
           **/.windsurf/**
-          **/*.d.ts
-          **/prisma/generated/client/*.node
-          **/prisma/generated/client/*.dll.node
-          **/prisma/generated/client/*.wasm
-          **/error.log
-          **/*.log
-          **/test*.js
-          **/deletePatients.js
-          **/fix_backend.js
-          **/migrate_order.js
-          **/patch_*.js
