@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, ActivityIndicator, Platform } from 'react-native';
@@ -530,9 +530,12 @@ const AppNavigator = () => {
     );
   };
 
+  const baseTheme = colors.isDark ? DarkTheme : DefaultTheme;
   const navTheme = {
+    ...baseTheme,
     dark: colors.isDark,
     colors: {
+      ...baseTheme.colors,
       primary: colors.primary,
       background: colors.background,
       card: colors.surface,
