@@ -35,4 +35,46 @@ router.get('/deploy-migrate', async (req, res) => {
   });
 });
 
+const fs = require('fs');
+const path = require('path');
+router.get('/deploy-fix-uploads', async (req, res) => {
+  const secret = req.query.secret;
+  if (secret !== 'brightangel_deploy_2026') {
+    return res.status(403).json({ message: 'Unauthorized. Secret key invalid.' });
+  }
+
+  try {
+    const baseUploads = path.join(__dirname, '../../public/uploads');
+    const subfolders = ['licenses', 'ids', 'products', 'elder-homes', 'elder-home-posts', 'professionals', 'bills'];
+    const results = {};
+
+    if (!fs.existsSync(baseUploads)) {
+      fs.mkdirSync(baseUploads, { recursive: true });
+    }
+
+    subfolders.forEach(sub => {
+      const p = path.join(baseUploads, sub);
+      if (!fs.existsSync(p)) {
+        fs.mkdirSync(p, { recursive: true });
+      }
+      try {
+        const files = fs.readdirSync(p);
+        results[sub] = { exists: true, count: files.length, sample: files.slice(0, 5) };
+      } catch (e) {
+        results[sub] = { exists: false, error: e.message };
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      cwd: process.cwd(),
+      dirname: __dirname,
+      baseUploads,
+      results
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 module.exports = router;
