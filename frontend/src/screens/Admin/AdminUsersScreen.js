@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator, 
 import { useTheme } from '../../context/themeContext';
 import { SIZES } from '../../styles/theme';
 import api from '../../api/axios';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 
 const AdminUsersScreen = ({ route, navigation }) => {
   const [users, setUsers] = useState([]);
@@ -178,6 +178,113 @@ const AdminUsersScreen = ({ route, navigation }) => {
                 )}
 
                 
+                {/* Elder Home Specific Information */}
+                {u.role === 'ELDER_HOME' && (
+                  <View style={{ marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.border }}>
+                    {u.professionalProfile.facilities && (
+                      <Text style={styles.detailText}>
+                        <Text style={styles.detailLabel}>Facilities: </Text>
+                        {u.professionalProfile.facilities}
+                      </Text>
+                    )}
+                    {u.professionalProfile.policies && (
+                      <Text style={styles.detailText}>
+                        <Text style={styles.detailLabel}>Policies: </Text>
+                        {u.professionalProfile.policies}
+                      </Text>
+                    )}
+                    {u.professionalProfile.contactPhone && (
+                      <Text style={styles.detailText}>
+                        <Text style={styles.detailLabel}>Contact Phone: </Text>
+                        {u.professionalProfile.contactPhone}
+                      </Text>
+                    )}
+                    
+                    {/* Social / Contact Links */}
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 6, marginBottom: 8 }}>
+                      {u.professionalProfile.socialWhatsapp && (
+                        <TouchableOpacity 
+                          style={[styles.smallActionBadge, { backgroundColor: '#25D36620' }]}
+                          onPress={() => Linking.openURL(`https://wa.me/${u.professionalProfile.socialWhatsapp.replace(/[^0-9]/g, '')}`)}
+                        >
+                          <Ionicons name="logo-whatsapp" size={13} color="#25D366" />
+                          <Text style={{ fontSize: 11, color: '#25D366', fontWeight: 'bold' }}>WhatsApp</Text>
+                        </TouchableOpacity>
+                      )}
+                      {u.professionalProfile.socialFacebook && (
+                        <TouchableOpacity 
+                          style={[styles.smallActionBadge, { backgroundColor: '#1877F220' }]}
+                          onPress={() => Linking.openURL(u.professionalProfile.socialFacebook.startsWith('http') ? u.professionalProfile.socialFacebook : `https://${u.professionalProfile.socialFacebook}`)}
+                        >
+                          <Ionicons name="logo-facebook" size={13} color="#1877F2" />
+                          <Text style={{ fontSize: 11, color: '#1877F2', fontWeight: 'bold' }}>Facebook</Text>
+                        </TouchableOpacity>
+                      )}
+                      {u.professionalProfile.socialWebsite && (
+                        <TouchableOpacity 
+                          style={[styles.smallActionBadge, { backgroundColor: colors.primary + '20' }]}
+                          onPress={() => Linking.openURL(u.professionalProfile.socialWebsite.startsWith('http') ? u.professionalProfile.socialWebsite : `https://${u.professionalProfile.socialWebsite}`)}
+                        >
+                          <Ionicons name="globe-outline" size={13} color={colors.primary} />
+                          <Text style={{ fontSize: 11, color: colors.primary, fontWeight: 'bold' }}>Website</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+
+                    {/* Services Count / Pricing Preview */}
+                    {u.professionalProfile.elderHomeServices && u.professionalProfile.elderHomeServices.length > 0 && (
+                      <View style={{ marginTop: 4, marginBottom: 8 }}>
+                        <Text style={styles.detailLabel}>Services Offered ({u.professionalProfile.elderHomeServices.length}):</Text>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
+                          {u.professionalProfile.elderHomeServices.map((srv, idx) => (
+                            <View key={srv.id || idx} style={styles.serviceChip}>
+                              <Text style={styles.serviceChipText}>{srv.name} (Rs. {srv.price})</Text>
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    )}
+
+                    {/* Cover / Profile Image Previews */}
+                    {(u.professionalProfile.coverImage || u.professionalProfile.profileImage) && (
+                      <View style={{ marginTop: 8 }}>
+                        <Text style={styles.detailLabel}>Elder Home Images (Cover & Profile):</Text>
+                        <View style={styles.imageRow}>
+                          {u.professionalProfile.coverImage && (
+                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(u.professionalProfile.coverImage)}>
+                              <Text style={styles.imageLabel}>Cover Banner</Text>
+                              <Image source={{ uri: u.professionalProfile.coverImage }} style={styles.licenseImg} />
+                            </TouchableOpacity>
+                          )}
+                          {u.professionalProfile.profileImage && (
+                            <TouchableOpacity style={{ flex: 1 }} onPress={() => setSelectedImage(u.professionalProfile.profileImage)}>
+                              <Text style={styles.imageLabel}>Profile Picture</Text>
+                              <Image source={{ uri: u.professionalProfile.profileImage }} style={styles.licenseImg} />
+                            </TouchableOpacity>
+                          )}
+                        </View>
+                      </View>
+                    )}
+
+                    {/* Button to View Full Elder Home Profile */}
+                    <TouchableOpacity
+                      style={styles.viewProfileBtn}
+                      onPress={() => navigation.navigate('ElderHomeDetail', {
+                        elderHome: {
+                          ...u.professionalProfile,
+                          userId: u.id,
+                          user: u,
+                          fullName: u.fullName
+                        }
+                      })}
+                    >
+                      <MaterialCommunityIcons name="home-heart" size={18} color="#fff" />
+                      <Text style={styles.viewProfileBtnText}>View Full Elder Home Page</Text>
+                      <Ionicons name="chevron-forward" size={16} color="#fff" />
+                    </TouchableOpacity>
+                  </View>
+                )}
+
                 {(u.professionalProfile.idFrontImage || u.professionalProfile.idBackImage) && (
                   <View style={{marginTop: 10}}>
                     <Text style={styles.detailLabel}>ID / Document Images:</Text>
@@ -360,7 +467,12 @@ const getStyles = (colors) => StyleSheet.create({
   modalContent: { width: '100%', height: '80%', justifyContent: 'center', alignItems: 'center' },
   fullImage: { width: '100%', height: '100%' },
   closeBtn: { marginTop: 20, padding: 10, backgroundColor: colors.surface, borderRadius: 20, paddingHorizontal: 30 },
-  closeBtnText: { color: colors.text, fontWeight: 'bold' }
+  closeBtnText: { color: colors.text, fontWeight: 'bold' },
+  smallActionBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 12 },
+  serviceChip: { paddingHorizontal: 8, paddingVertical: 4, backgroundColor: colors.surface, borderRadius: 8, borderWidth: 1, borderColor: colors.border },
+  serviceChipText: { fontSize: 11, color: colors.text, fontWeight: '500' },
+  viewProfileBtn: { marginTop: 12, backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 10, paddingHorizontal: 16, borderRadius: SIZES.radius }
+  ,viewProfileBtnText: { color: '#fff', fontSize: 13, fontWeight: 'bold' }
 });
 
 export default AdminUsersScreen;

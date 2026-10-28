@@ -129,7 +129,15 @@ exports.getAllUsers = async(req,res) => {
         const users = await prisma.user.findMany({
             include: {
                 patientProfile: true,
-                professionalProfile: true,
+                professionalProfile: {
+                    include: {
+                        elderHomeServices: true,
+                        elderHomePosts: {
+                            take: 5,
+                            orderBy: { createdAt: 'desc' }
+                        }
+                    }
+                },
                 pharmacistProfile: true,
             }
         });
