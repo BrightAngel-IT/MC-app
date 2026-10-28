@@ -23,7 +23,8 @@ jobs:
         password: ${{ secrets.BACKEND_FTP_PASSWORD }}
         protocol: ftp
         port: 21
-        timeout: 60000
+        timeout: 120000
+        security: loose
         local-dir: ./backend/
         server-dir: ./
         dangerous-clean-slate: false
