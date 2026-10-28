@@ -1,10 +1,36 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator, TouchableOpacity, Image, Modal, TouchableWithoutFeedback, TextInput, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator, TouchableOpacity, Image, Modal, TouchableWithoutFeedback, TextInput, Linking, Dimensions, Platform } from 'react-native';
 import { useTheme } from '../../context/themeContext';
 import { SIZES } from '../../styles/theme';
 import api from '../../api/axios';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+
+const ImageWithFallback = ({ uri, style, onPress, colors }) => {
+  const [loadError, setLoadError] = useState(false);
+
+  if (loadError || !uri) {
+    return (
+      <View style={[style, { justifyContent: 'center', alignItems: 'center', backgroundColor: colors.surfaceLight, borderWidth: 1, borderColor: colors.border, borderStyle: 'dashed' }]}>
+        <Ionicons name="document-text-outline" size={26} color={colors.textLight} />
+        <Text style={{ fontSize: 11, color: colors.textLight, marginTop: 4, fontWeight: '500' }}>Document File</Text>
+      </View>
+    );
+  }
+
+  return (
+    <TouchableOpacity activeOpacity={0.85} onPress={onPress} style={{ width: '100%', height: '100%' }}>
+      <Image 
+        source={{ uri }} 
+        style={style} 
+        resizeMode="cover"
+        onError={() => setLoadError(true)} 
+      />
+    </TouchableOpacity>
+  );
+};
 
 const AdminUsersScreen = ({ route, navigation }) => {
   const [users, setUsers] = useState([]);
@@ -16,6 +42,31 @@ const AdminUsersScreen = ({ route, navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const { colors } = useTheme();
   const styles = getStyles(colors);
+
+  const downloadImage = async () => {
+    if (!selectedImage) return;
+    try {
+      if (Platform.OS === 'web') {
+        const link = document.createElement('a');
+        link.href = selectedImage;
+        link.download = 'user_document.png';
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        const fileUri = FileSystem.documentDirectory + `user_document_${Date.now()}.png`;
+        if (selectedImage.startsWith('http')) {
+          await FileSystem.downloadAsync(selectedImage, fileUri);
+        }
+        if (await Sharing.isAvailableAsync()) {
+          await Sharing.shareAsync(fileUri, { mimeType: 'image/png' });
+        }
+      }
+    } catch (e) {
+      console.log('Download error:', e);
+    }
+  };
 
   const resolveImage = (imgPath) => {
     if (!imgPath) return null;
@@ -313,35 +364,55 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={styles.detailLabel}>ID / Document Images:</Text>
                     <View style={styles.imageRow}>
                       {u.professionalProfile.idFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.idFrontImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: resolveImage(u.professionalProfile.idFrontImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.professionalProfile.idFrontImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.professionalProfile.idFrontImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                       {u.professionalProfile.idBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.idBackImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: resolveImage(u.professionalProfile.idBackImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.professionalProfile.idBackImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.professionalProfile.idBackImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                     </View>
                   </View>
                 )}
-{(u.professionalProfile.licenseFrontImage || u.professionalProfile.licenseBackImage) && (
+                {(u.professionalProfile.licenseFrontImage || u.professionalProfile.licenseBackImage) && (
                   <View style={{marginTop: 10}}>
                     <Text style={styles.detailLabel}>License / ID / Driving License Images:</Text>
                     <View style={styles.imageRow}>
                       {u.professionalProfile.licenseFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.licenseFrontImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: resolveImage(u.professionalProfile.licenseFrontImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.professionalProfile.licenseFrontImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.professionalProfile.licenseFrontImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                       {u.professionalProfile.licenseBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.professionalProfile.licenseBackImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: resolveImage(u.professionalProfile.licenseBackImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.professionalProfile.licenseBackImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.professionalProfile.licenseBackImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                     </View>
                   </View>
@@ -382,35 +453,55 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={styles.detailLabel}>ID / Document Images:</Text>
                     <View style={styles.imageRow}>
                       {u.pharmacistProfile.idFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.idFrontImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: resolveImage(u.pharmacistProfile.idFrontImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.pharmacistProfile.idFrontImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.idFrontImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                       {u.pharmacistProfile.idBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.idBackImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: resolveImage(u.pharmacistProfile.idBackImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.pharmacistProfile.idBackImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.idBackImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                     </View>
                   </View>
                 )}
-{(u.pharmacistProfile.licenseFrontImage || u.pharmacistProfile.licenseBackImage) && (
+                {(u.pharmacistProfile.licenseFrontImage || u.pharmacistProfile.licenseBackImage) && (
                   <View style={{marginTop: 10}}>
                     <Text style={styles.detailLabel}>License Images:</Text>
                     <View style={styles.imageRow}>
                       {u.pharmacistProfile.licenseFrontImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.licenseFrontImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Front Side</Text>
-                           <Image source={{uri: resolveImage(u.pharmacistProfile.licenseFrontImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.pharmacistProfile.licenseFrontImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.licenseFrontImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                       {u.pharmacistProfile.licenseBackImage && (
-                         <TouchableOpacity style={{flex: 1}} onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.licenseBackImage))}>
+                         <View style={{flex: 1}}>
                            <Text style={styles.imageLabel}>Back Side</Text>
-                           <Image source={{uri: resolveImage(u.pharmacistProfile.licenseBackImage)}} style={styles.licenseImg} />
-                         </TouchableOpacity>
+                           <ImageWithFallback 
+                             uri={resolveImage(u.pharmacistProfile.licenseBackImage)} 
+                             style={styles.licenseImg} 
+                             onPress={() => setSelectedImage(resolveImage(u.pharmacistProfile.licenseBackImage))}
+                             colors={colors}
+                           />
+                         </View>
                       )}
                     </View>
                   </View>
@@ -447,16 +538,29 @@ const AdminUsersScreen = ({ route, navigation }) => {
       </ScrollView>
 
       <Modal visible={!!selectedImage} transparent={true} animationType="fade" onRequestClose={() => setSelectedImage(null)}>
-        <TouchableWithoutFeedback onPress={() => setSelectedImage(null)}>
-          <View style={styles.modalBg}>
-            <View style={styles.modalContent}>
+        <View style={styles.modalBg}>
+          <ScrollView
+            contentContainerStyle={styles.modalContent}
+            maximumZoomScale={5}
+            minimumZoomScale={1}
+            centerContent={true}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+          >
+            <TouchableWithoutFeedback>
               <Image source={{uri: selectedImage}} style={styles.fullImage} resizeMode="contain" />
-              <TouchableOpacity style={styles.closeBtn} onPress={() => setSelectedImage(null)}>
-                <Text style={styles.closeBtnText}>Close</Text>
-              </TouchableOpacity>
-            </View>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+          <View style={styles.modalActions}>
+            <TouchableOpacity style={styles.downloadBtn} onPress={downloadImage}>
+              <Ionicons name="download-outline" size={20} color="#fff" style={{marginRight: 8}} />
+              <Text style={[styles.closeBtnText, {color: '#fff'}]}>Download</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeBtn} onPress={() => setSelectedImage(null)}>
+              <Text style={styles.closeBtnText}>Close</Text>
+            </TouchableOpacity>
           </View>
-        </TouchableWithoutFeedback>
+        </View>
       </Modal>
     </View>
   );
@@ -493,10 +597,12 @@ const getStyles = (colors) => StyleSheet.create({
   imageRow: { flexDirection: 'row', gap: 10, marginTop: 5 },
   imageLabel: { fontSize: 12, color: colors.textLight, marginBottom: 4 },
   licenseImg: { width: '100%', height: 100, borderRadius: SIZES.radius, backgroundColor: colors.border },
-  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.8)', justifyContent: 'center', alignItems: 'center', padding: 20 },
-  modalContent: { width: '100%', height: '80%', justifyContent: 'center', alignItems: 'center' },
-  fullImage: { width: '100%', height: '100%' },
-  closeBtn: { marginTop: 20, padding: 10, backgroundColor: colors.surface, borderRadius: 20, paddingHorizontal: 30 },
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  modalContent: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  fullImage: { width: Dimensions.get('window').width * 0.9, height: Dimensions.get('window').height * 0.75 },
+  modalActions: { flexDirection: 'row', position: 'absolute', bottom: 30, gap: 15, zIndex: 10 },
+  downloadBtn: { flexDirection: 'row', alignItems: 'center', padding: 12, backgroundColor: colors.primary, borderRadius: 20, paddingHorizontal: 25, cursor: Platform.OS === 'web' ? 'pointer' : 'auto' },
+  closeBtn: { padding: 12, backgroundColor: colors.surface, borderRadius: 20, paddingHorizontal: 30, cursor: Platform.OS === 'web' ? 'pointer' : 'auto' },
   closeBtnText: { color: colors.text, fontWeight: 'bold' },
   smallActionBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 12 },
   serviceChip: { paddingHorizontal: 8, paddingVertical: 4, backgroundColor: colors.surface, borderRadius: 8, borderWidth: 1, borderColor: colors.border },
