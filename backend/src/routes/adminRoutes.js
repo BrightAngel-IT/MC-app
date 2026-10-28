@@ -65,12 +65,30 @@ router.get('/deploy-fix-uploads', async (req, res) => {
       }
     });
 
+    // Check if there is an uploads directory in domain root or parent directories
+    let domainRoot = '/home/u187279157/domains/mcbackend.crescereluna.com';
+    let sharedUploads = path.join(domainRoot, 'public_html/uploads');
+    let hbuildsUploads = path.join(domainRoot, 'uploads');
+    
+    const extraDirs = {
+      sharedUploads: { path: sharedUploads, exists: fs.existsSync(sharedUploads) },
+      hbuildsUploads: { path: hbuildsUploads, exists: fs.existsSync(hbuildsUploads) }
+    };
+
+    if (fs.existsSync(sharedUploads)) {
+      try { extraDirs.sharedUploads.files = fs.readdirSync(sharedUploads); } catch (e) {}
+    }
+    if (fs.existsSync(hbuildsUploads)) {
+      try { extraDirs.hbuildsUploads.files = fs.readdirSync(hbuildsUploads); } catch (e) {}
+    }
+
     return res.status(200).json({
       success: true,
       cwd: process.cwd(),
       dirname: __dirname,
       baseUploads,
-      results
+      results,
+      extraDirs
     });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
