@@ -37,6 +37,9 @@ jobs:
           **/.claude/**
           **/.windsurf/**
           **/*.d.ts
+          **/prisma/generated/client/*.node
+          **/prisma/generated/client/*.dll.node
+          **/prisma/generated/client/*.wasm
           **/error.log
           **/*.log
           **/test*.js
