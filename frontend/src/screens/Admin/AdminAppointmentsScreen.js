@@ -517,12 +517,14 @@ const AdminAppointmentsScreen = () => {
                               style={{ 
                                 padding: 8, 
                                 borderRadius: 8, 
-                                backgroundColor: isPatient ? colors.primary + '12' : '#f1f5f9',
+                                backgroundColor: isPatient ? colors.primary + '18' : colors.surfaceLight,
                                 alignSelf: isPatient ? 'flex-start' : 'flex-end',
-                                maxWidth: '90%'
+                                maxWidth: '90%',
+                                borderWidth: 1,
+                                borderColor: colors.border
                               }}
                             >
-                              <Text style={{ fontSize: 10, fontWeight: 'bold', color: isPatient ? colors.primary : '#475569' }}>
+                              <Text style={{ fontSize: 10, fontWeight: 'bold', color: isPatient ? colors.primary : colors.textLight }}>
                                 {isPatient ? '👤 Patient' : '🩺 Professional'} • {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                               </Text>
                               <Text style={{ fontSize: 12, color: colors.text, marginTop: 2 }}>{m.text}</Text>
@@ -769,7 +771,7 @@ const getStyles = (colors) => StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: colors.border,
     paddingBottom: 10,
   },
   modalTitle: {
@@ -789,19 +791,21 @@ const getStyles = (colors) => StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
+    borderBottomColor: colors.border,
   },
   detailSectionTitle: {
     fontSize: 13,
     fontWeight: 'bold',
-    color: '#64748b',
+    color: colors.primary,
     marginBottom: 6,
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   detailText: {
     fontSize: 13,
-    color: '#334155',
-    marginBottom: 3,
+    color: colors.text,
+    marginBottom: 4,
+    lineHeight: 18,
   },
   modalOkBtn: {
     marginTop: 14,

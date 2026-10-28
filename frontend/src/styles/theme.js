@@ -74,9 +74,9 @@ export const darkTheme = {
   surfaceLight: '#1e293b', // Borders & Light surfaces
   
   text: '#ffffff', // Primary white
-  textLight: '#94a3b8', // Secondary Slate
-  textMuted: '#64748b', // Muted text
-  border: '#1e293b',
+  textLight: '#cbd5e1', // Secondary Slate (high-contrast readable light silver)
+  textMuted: '#94a3b8', // Muted text (clearly legible secondary)
+  border: '#334155', // Clear visible card border
   
   primary: '#0891b2', 
   secondary: '#3b82f6',

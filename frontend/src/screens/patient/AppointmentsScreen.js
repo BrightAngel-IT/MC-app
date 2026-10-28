@@ -346,10 +346,10 @@ const AppointmentsScreen = ({ route }) => {
 
           <View style={[styles.feeItemRow, styles.feeTotalRow, { borderTopColor: colors.border }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name="wallet-outline" size={14} color="#059669" />
-              <Text style={[styles.feeTotalLabel, { color: '#059669' }]}>Total Charge</Text>
+              <Ionicons name="wallet-outline" size={14} color={colors.isDark ? '#34d399' : '#059669'} />
+              <Text style={[styles.feeTotalLabel, { color: colors.isDark ? '#34d399' : '#059669' }]}>Total Charge</Text>
             </View>
-            <Text style={[styles.feeTotalValue, { color: '#059669' }]}>
+            <Text style={[styles.feeTotalValue, { color: colors.isDark ? '#34d399' : '#059669' }]}>
               Rs. {Number(fees.totalFee).toLocaleString()}
             </Text>
           </View>
@@ -692,26 +692,26 @@ const getStyles = (colors) => StyleSheet.create({
     borderRadius: 10,
   },
   paymentBadgePaid: {
-    backgroundColor: '#d1fae5',
+    backgroundColor: colors.isDark ? '#064e3b' : '#d1fae5',
   },
   paymentBadgePending: {
-    backgroundColor: '#fef3c7',
+    backgroundColor: colors.isDark ? '#451a03' : '#fef3c7',
   },
   paymentBadgeCard: {
-    backgroundColor: '#eff6ff',
+    backgroundColor: colors.isDark ? '#172554' : '#eff6ff',
   },
   paymentBadgeText: {
     fontSize: 10,
     fontWeight: 'bold',
   },
   paymentTextPaid: {
-    color: '#065f46',
+    color: colors.isDark ? '#6ee7b7' : '#065f46',
   },
   paymentTextPending: {
-    color: '#92400e',
+    color: colors.isDark ? '#fcd34d' : '#92400e',
   },
   paymentTextCard: {
-    color: '#1d4ed8',
+    color: colors.isDark ? '#93c5fd' : '#1d4ed8',
   },
   feeDivider: {
     height: 1,
