@@ -534,7 +534,7 @@ const AppNavigator = () => {
             title: route.params?.elderHome?.fullName || 'Elder Home Profile',
             headerStyle: { backgroundColor: colors.surface },
             headerTintColor: colors.text,
-          }} 
+          })} 
         />
       </>
     );
