@@ -713,7 +713,18 @@ const getStyles = (colors) => StyleSheet.create({
   downloadBtn: { flexDirection: 'row', alignItems: 'center', padding: 12, backgroundColor: colors.primary, borderRadius: 20, paddingHorizontal: 25 },
   closeBtn: { padding: 12, backgroundColor: colors.surface, borderRadius: 20, paddingHorizontal: 30 },
   closeBtnText: { color: colors.text, fontWeight: 'bold' },
-  pdfBtn: { backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', padding: 12, borderRadius: 8, marginTop: 15 },
+  pdfBtn: { 
+    backgroundColor: colors.primary, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    padding: 12, 
+    borderRadius: 8, 
+    marginTop: 15,
+    alignSelf: Platform.OS === 'web' ? 'flex-start' : 'stretch',
+    maxWidth: Platform.OS === 'web' ? 280 : undefined,
+    cursor: Platform.OS === 'web' ? 'pointer' : 'auto',
+  },
   pdfBtnText: { color: '#fff', fontSize: 14, fontWeight: '600' }
 });
 

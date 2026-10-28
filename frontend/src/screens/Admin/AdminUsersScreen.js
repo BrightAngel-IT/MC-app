@@ -496,9 +496,21 @@ const getStyles = (colors) => StyleSheet.create({
   closeBtnText: { color: colors.text, fontWeight: 'bold' },
   smallActionBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 12 },
   serviceChip: { paddingHorizontal: 8, paddingVertical: 4, backgroundColor: colors.surface, borderRadius: 8, borderWidth: 1, borderColor: colors.border },
-  serviceChipText: { fontSize: 11, color: colors.text, fontWeight: '500' },
-  viewProfileBtn: { marginTop: 12, backgroundColor: colors.primary, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 10, paddingHorizontal: 16, borderRadius: SIZES.radius }
-  ,viewProfileBtnText: { color: '#fff', fontSize: 13, fontWeight: 'bold' }
+  viewProfileBtn: { 
+    marginTop: 12, 
+    backgroundColor: colors.primary, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    gap: 8, 
+    paddingVertical: 10, 
+    paddingHorizontal: 20, 
+    borderRadius: SIZES.radius,
+    alignSelf: Platform.OS === 'web' ? 'flex-start' : 'stretch',
+    maxWidth: Platform.OS === 'web' ? 240 : undefined,
+    cursor: Platform.OS === 'web' ? 'pointer' : 'auto',
+  },
+  viewProfileBtnText: { color: '#fff', fontSize: 13, fontWeight: 'bold' }
 });
 
 export default AdminUsersScreen;
