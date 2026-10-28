@@ -462,7 +462,22 @@ const VendorOrdersScreen = ({ route, navigation }) => {
                   <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.success, marginBottom: 6 }}>
                     Uploaded Medicine Bill (Rs. {(selectedOrder.totalAmount || 0).toFixed(2)})
                   </Text>
-                  <Image source={{ uri: selectedOrder.billImageUrl }} style={{ width: '100%', height: 160, borderRadius: 8, resizeMode: 'cover' }} />
+                  <Image 
+                    source={{ 
+                      uri: (() => {
+                        const url = selectedOrder.billImageUrl;
+                        if (!url) return null;
+                        const apiBase = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'https://mcbackend.crescereluna.com';
+                        if (url.startsWith('/uploads')) return `${apiBase}${url}`;
+                        if (url.includes('localhost:5000') || url.includes('127.0.0.1:5000')) {
+                          const isLocalHost = Platform.OS === 'web' && typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+                          if (!isLocalHost) return url.replace(/^http:\/\/(localhost|127\.0\.0\.1):5000/, apiBase);
+                        }
+                        return url;
+                      })() 
+                    }} 
+                    style={{ width: '100%', height: 160, borderRadius: 8, resizeMode: 'cover' }} 
+                  />
                 </View>
               )}
 

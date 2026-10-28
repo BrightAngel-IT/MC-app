@@ -34,13 +34,31 @@ const PharmacyScreen = ({ navigation, route }) => {
   const [viewingBillUrl, setViewingBillUrl] = useState(null);
   const [downloadingBill, setDownloadingBill] = useState(false);
 
+  const resolveBillUrl = (url) => {
+    if (!url) return null;
+    const apiBase = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'https://mcbackend.crescereluna.com';
+    // If it's a relative path like /uploads/bills/...
+    if (url.startsWith('/uploads')) {
+      return `${apiBase}${url}`;
+    }
+    // If it contains localhost/127.0.0.1 on a live mobile device or live web domain
+    if (url.includes('localhost:5000') || url.includes('127.0.0.1:5000')) {
+      const isLocalHost = Platform.OS === 'web' && typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      if (!isLocalHost) {
+        return url.replace(/^http:\/\/(localhost|127\.0\.0\.1):5000/, apiBase);
+      }
+    }
+    return url;
+  };
+
   const handleDownloadBill = async () => {
-    if (!viewingBillUrl) return;
+    const targetUrl = resolveBillUrl(viewingBillUrl);
+    if (!targetUrl) return;
     try {
       setDownloadingBill(true);
       if (Platform.OS === 'web') {
         const link = document.createElement('a');
-        link.href = viewingBillUrl;
+        link.href = targetUrl;
         link.download = `pharmacy_bill_${Date.now()}.png`;
         link.target = '_blank';
         document.body.appendChild(link);
@@ -48,10 +66,10 @@ const PharmacyScreen = ({ navigation, route }) => {
         document.body.removeChild(link);
       } else {
         const fileUri = FileSystem.documentDirectory + `pharmacy_bill_${Date.now()}.png`;
-        if (viewingBillUrl.startsWith('http')) {
-          await FileSystem.downloadAsync(viewingBillUrl, fileUri);
+        if (targetUrl.startsWith('http')) {
+          await FileSystem.downloadAsync(targetUrl, fileUri);
         } else {
-          let base64Code = viewingBillUrl.includes(',') ? viewingBillUrl.split(',')[1] : viewingBillUrl;
+          let base64Code = targetUrl.includes(',') ? targetUrl.split(',')[1] : targetUrl;
           base64Code = base64Code.replace(/[^A-Za-z0-9+/=]/g, '');
           while (base64Code.length % 4 > 0) {
             base64Code += '=';
@@ -688,7 +706,7 @@ const PharmacyScreen = ({ navigation, route }) => {
               </View>
             </View>
             {viewingBillUrl && (
-              <Image source={{ uri: viewingBillUrl }} style={{ width: '100%', height: 350, borderRadius: 8, resizeMode: 'contain' }} />
+              <Image source={{ uri: resolveBillUrl(viewingBillUrl) }} style={{ width: '100%', height: 350, borderRadius: 8, resizeMode: 'contain' }} />
             )}
             <View style={{ flexDirection: 'row', gap: 10, marginTop: 14 }}>
               <TouchableOpacity 

@@ -92,9 +92,16 @@ exports.updateOrders = async(req, res) => {
         }
 
         if (billImage && typeof billImage === 'string' && billImage.startsWith('data:image')) {
-            const baseUrl = `${req.protocol}://${req.get('host')}`;
             const savedPath = saveBase64Image(billImage, 'bills');
-            if (savedPath) updateData.billImageUrl = baseUrl + savedPath;
+            if (savedPath) {
+                // If Host header contains localhost/127.0.0.1 and not explicitly local testing, or in general, prefer public host or relative path
+                const host = req.get('host') || '';
+                const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+                const baseUrl = isLocal 
+                    ? (process.env.BACKEND_URL || 'https://mcbackend.crescereluna.com')
+                    : `${req.protocol}://${host}`;
+                updateData.billImageUrl = baseUrl + savedPath;
+            }
         }
 
         if (status === 'COMPLETED' || status === 'ACCEPTED') {

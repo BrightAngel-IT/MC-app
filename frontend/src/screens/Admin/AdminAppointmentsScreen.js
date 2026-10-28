@@ -36,13 +36,29 @@ const AdminAppointmentsScreen = () => {
   const [viewingBillUrl, setViewingBillUrl] = useState(null);
   const [downloadingBill, setDownloadingBill] = useState(false);
 
+  const resolveBillUrl = (url) => {
+    if (!url) return null;
+    const apiBase = api.defaults.baseURL ? api.defaults.baseURL.replace('/api', '') : 'https://mcbackend.crescereluna.com';
+    if (url.startsWith('/uploads')) {
+      return `${apiBase}${url}`;
+    }
+    if (url.includes('localhost:5000') || url.includes('127.0.0.1:5000')) {
+      const isLocalHost = Platform.OS === 'web' && typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+      if (!isLocalHost) {
+        return url.replace(/^http:\/\/(localhost|127\.0\.0\.1):5000/, apiBase);
+      }
+    }
+    return url;
+  };
+
   const downloadBillImage = async () => {
-    if (!viewingBillUrl) return;
+    const targetUrl = resolveBillUrl(viewingBillUrl);
+    if (!targetUrl) return;
     try {
       setDownloadingBill(true);
       if (Platform.OS === 'web') {
         const link = document.createElement('a');
-        link.href = viewingBillUrl;
+        link.href = targetUrl;
         link.download = `pharmacy_bill_${Date.now()}.png`;
         link.target = '_blank';
         document.body.appendChild(link);
@@ -50,10 +66,10 @@ const AdminAppointmentsScreen = () => {
         document.body.removeChild(link);
       } else {
         const fileUri = FileSystem.documentDirectory + `pharmacy_bill_${Date.now()}.png`;
-        if (viewingBillUrl.startsWith('http')) {
-          await FileSystem.downloadAsync(viewingBillUrl, fileUri);
+        if (targetUrl.startsWith('http')) {
+          await FileSystem.downloadAsync(targetUrl, fileUri);
         } else {
-          let base64Code = viewingBillUrl.includes(',') ? viewingBillUrl.split(',')[1] : viewingBillUrl;
+          let base64Code = targetUrl.includes(',') ? targetUrl.split(',')[1] : targetUrl;
           base64Code = base64Code.replace(/[^A-Za-z0-9+/=]/g, '');
           while (base64Code.length % 4 > 0) {
             base64Code += '=';
@@ -553,8 +569,8 @@ const AdminAppointmentsScreen = () => {
             <ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }} style={{ width: '100%' }}>
               {viewingBillUrl && (
                 <Image
-                  source={{ uri: viewingBillUrl }}
-                  style={{ width: 380, height: 480, resizeMode: 'contain', borderRadius: 8, backgroundColor: '#000' }}
+                  source={{ uri: resolveBillUrl(viewingBillUrl) }}
+                  style={{ width: '100%', height: 420, resizeMode: 'contain', borderRadius: 8 }}
                 />
               )}
             </ScrollView>
