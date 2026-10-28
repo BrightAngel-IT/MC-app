@@ -28,6 +28,10 @@ const AdminApprovalsScreen = ({ route }) => {
     if (url.includes('localhost:5000')) {
       url = url.replace('http://localhost:5000', 'https://mcbackend.crescereluna.com');
     }
+    // Convert any insecure http:// to https:// for production domain to avoid browser mixed content blocking
+    if (url.startsWith('http://mcbackend.crescereluna.com')) {
+      url = url.replace('http://', 'https://');
+    }
     if (url.startsWith('http') || url.startsWith('data:image')) {
       return url;
     }

@@ -23,6 +23,10 @@ const AdminUsersScreen = ({ route, navigation }) => {
     if (url.includes('localhost:5000')) {
       url = url.replace('http://localhost:5000', 'https://mcbackend.crescereluna.com');
     }
+    // Convert any insecure http:// to https:// for production domain to avoid browser mixed content blocking
+    if (url.startsWith('http://mcbackend.crescereluna.com')) {
+      url = url.replace('http://', 'https://');
+    }
     if (url.startsWith('http') || url.startsWith('data:image')) {
       return url;
     }
@@ -114,7 +118,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
 
       <ScrollView 
         style={styles.container}
-        contentContainerStyle={{padding: SIZES.padding}}
+        contentContainerStyle={{ paddingHorizontal: 12, paddingBottom: 20 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
       >
         {filteredUsers.length === 0 ? (
@@ -459,7 +463,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
 };
 
 const getStyles = (colors) => StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: SIZES.padding },
+  container: { flex: 1, backgroundColor: colors.background },
   center: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' },
   headerTitle: { fontSize: 24, fontWeight: 'bold', color: colors.text, marginTop: 10 },
   headerSub: { fontSize: 14, color: colors.textLight, marginBottom: 10 },
