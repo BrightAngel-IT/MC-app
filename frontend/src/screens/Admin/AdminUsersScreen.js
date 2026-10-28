@@ -289,7 +289,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                       })}
                     >
                       <MaterialCommunityIcons name="home-heart" size={18} color="#fff" />
-                      <Text style={styles.viewProfileBtnText}>View Full Elder Home Page</Text>
+                      <Text style={styles.viewProfileBtnText}>View Profile</Text>
                       <Ionicons name="chevron-forward" size={16} color="#fff" />
                     </TouchableOpacity>
                   </View>
