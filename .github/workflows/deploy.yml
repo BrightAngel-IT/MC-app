@@ -21,8 +21,12 @@ jobs:
         server: ${{ secrets.BACKEND_FTP_SERVER }}
         username: ${{ secrets.BACKEND_FTP_USERNAME }}
         password: ${{ secrets.BACKEND_FTP_PASSWORD }}
+        protocol: ftp
+        port: 21
+        timeout: 60000
         local-dir: ./backend/
         server-dir: ./
+        dangerous-clean-slate: false
         exclude: |
           **/.git*
           **/.git*/**
