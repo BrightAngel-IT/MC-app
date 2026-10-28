@@ -171,8 +171,13 @@ const VendorDashboard = ({ navigation }) => {
 
   const renderRecentOrder = (order) => {
     let activityText = 'Order Received';
+    if(order.status === 'ACCEPTED') activityText = 'Order Accepted';
     if(order.status === 'COMPLETED') activityText = 'Order Completed';
     if(order.status === 'CANCELED') activityText = 'Order Canceled';
+    if(order.status === 'REJECTED') activityText = 'Order Rejected';
+
+    const isAcceptedOrCompleted = order.status === 'ACCEPTED' || order.status === 'COMPLETED';
+    const isPendingOrProcessing = order.status === 'PENDING' || order.status === 'PROCESSING';
     
     return (
       <TouchableOpacity 
@@ -190,8 +195,16 @@ const VendorDashboard = ({ navigation }) => {
             <Text style={styles.recentSub}>Order #{order.id.slice(0,6)} • {new Date(order.updatedAt || order.createdAt).toLocaleString()}</Text>
           </View>
         </View>
-        <View style={[styles.statusBadge, order.status === 'PENDING' ? styles.bgWarning : (order.status === 'COMPLETED' ? styles.bgSuccess : styles.bgDanger)]}>
-          <Text style={styles.statusText}>{order.status}</Text>
+        <View style={[
+          styles.statusBadge, 
+          isAcceptedOrCompleted ? styles.bgSuccess : (isPendingOrProcessing ? styles.bgWarning : styles.bgDanger)
+        ]}>
+          <Text style={[
+            styles.statusText,
+            isAcceptedOrCompleted ? { color: colors.success } : (isPendingOrProcessing ? { color: colors.warning } : { color: colors.danger })
+          ]}>
+            {order.status}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -352,9 +365,54 @@ const VendorDashboard = ({ navigation }) => {
               <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.primary, marginBottom: 5 }}>
                 Patient: {selectedOrder?.patient?.user?.fullName}
               </Text>
-              <Text style={{ fontSize: 14, color: colors.textLight, marginBottom: 15 }}>
-                Order #{selectedOrder?.id?.slice(0,8)}
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                <Text style={{ fontSize: 13, color: colors.textLight, marginRight: 6 }}>Status: </Text>
+                <View style={{
+                  paddingHorizontal: 8,
+                  paddingVertical: 2,
+                  borderRadius: 10,
+                  backgroundColor: (selectedOrder?.status === 'ACCEPTED' || selectedOrder?.status === 'COMPLETED') ? colors.success + '20' : (selectedOrder?.status === 'REJECTED' || selectedOrder?.status === 'CANCELED' ? colors.danger + '20' : colors.warning + '20')
+                }}>
+                  <Text style={{ 
+                    fontSize: 11, 
+                    fontWeight: 'bold', 
+                    color: (selectedOrder?.status === 'ACCEPTED' || selectedOrder?.status === 'COMPLETED') ? colors.success : (selectedOrder?.status === 'REJECTED' || selectedOrder?.status === 'CANCELED' ? colors.danger : colors.warning) 
+                  }}>
+                    {selectedOrder?.status}
+                  </Text>
+                </View>
+              </View>
+
+              {/* Status Notice Banner (Accepted / Rejected / Completed) */}
+              {selectedOrder?.status === 'ACCEPTED' && (
+                <View style={{ backgroundColor: colors.success + '15', borderWidth: 1, borderColor: colors.success + '40', borderRadius: SIZES.radius, padding: 12, marginBottom: 12, flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="checkmark-circle" size={24} color={colors.success} style={{ marginRight: 10 }} />
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.success }}>Prescription Accepted</Text>
+                    <Text style={{ fontSize: 12, color: colors.text, marginTop: 2 }}>Medicine bill and confirmation sent to the patient.</Text>
+                  </View>
+                </View>
+              )}
+
+              {selectedOrder?.status === 'REJECTED' && (
+                <View style={{ backgroundColor: colors.danger + '15', borderWidth: 1, borderColor: colors.danger + '40', borderRadius: SIZES.radius, padding: 12, marginBottom: 12, flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="close-circle" size={24} color={colors.danger} style={{ marginRight: 10 }} />
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.danger }}>Prescription Rejected</Text>
+                    <Text style={{ fontSize: 12, color: colors.text, marginTop: 2 }}>This prescription order has been declined. Patient has been notified.</Text>
+                  </View>
+                </View>
+              )}
+
+              {selectedOrder?.status === 'COMPLETED' && (
+                <View style={{ backgroundColor: colors.success + '15', borderWidth: 1, borderColor: colors.success + '40', borderRadius: SIZES.radius, padding: 12, marginBottom: 12, flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="shield-checkmark" size={24} color={colors.success} style={{ marginRight: 10 }} />
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.success }}>Order Completed</Text>
+                    <Text style={{ fontSize: 12, color: colors.text, marginTop: 2 }}>This order has been fulfilled successfully.</Text>
+                  </View>
+                </View>
+              )}
 
               {selectedOrder?.prescription ? (
                 <View style={{ backgroundColor: colors.surfaceLight, padding: 15, borderRadius: SIZES.radius, borderWidth: 1, borderColor: colors.border, marginBottom: 15 }}>

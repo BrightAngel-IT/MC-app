@@ -141,27 +141,53 @@ const NativeNearbyMap = ({ location, professionals = [], distanceRate = 50 }) =>
                     '<button class="book-btn" style="background-color:#ea580c; margin-top:6px;" onclick="sendBooking(\\'' + role + '\\', \\'' + (prof.fullName || prof.user?.fullName || '').replace(/'/g, "\\\\'") + '\\', \\'' + prof.id + '\\')">View Profile & Details ></button>' +
                   '</div>';
               } else {
-                let distanceText = '';
-                let feeBreakdown = '';
+                let distanceKm = 0;
+                let distanceCost = 0;
+                const baseFee = (prof.bookingFee !== undefined && prof.bookingFee !== null) ? Number(prof.bookingFee) : 0;
+                const isPharmacy = role === 'PHARMACIST';
 
-                if (userLoc && prof.bookingFee !== undefined && prof.bookingFee !== null) {
+                if (userLoc && prof.locationLat && prof.locationLng) {
                   const rawDist = calculateDistance(userLoc.latitude, userLoc.longitude, prof.locationLat, prof.locationLng);
-                  const distKm = Number(rawDist.toFixed(1));
-                  const distanceCost = Math.round(distKm * distRate);
-                  distanceText = '<span style="font-size:12px; color:#555;">Distance: ' + distKm + ' km</span><br/>';
-                  feeBreakdown = '<span style="font-size:12px; color:#555;">Base: Rs. ' + prof.bookingFee + ' | Travel: Rs. ' + distanceCost + '</span><br/>' +
-                                 '<span style="font-weight:bold; color:#10b981; margin-top:4px; display:block;">Total: Rs. ' + (prof.bookingFee + distanceCost) + '</span>';
-                } else if (prof.bookingFee !== undefined && prof.bookingFee !== null) {
-                  feeBreakdown = '<span style="font-weight:bold; color:#10b981; margin-top:4px; display:block;">Fee: Rs. ' + prof.bookingFee + '</span>';
+                  distanceKm = Number(rawDist.toFixed(1));
+                  distanceCost = Math.round(distanceKm * distRate);
                 }
 
+                let feeHtml = '';
+                if (isPharmacy) {
+                  feeHtml = 
+                    '<div style="background:#f8fafc; border-radius:6px; padding:6px 8px; margin:6px 0; border:1px solid #e2e8f0; font-size:12px; text-align:left;">' +
+                      (userLoc ? '<div style="display:flex; justify-content:space-between; margin-bottom:2px;"><span style="color:#64748b;">Distance:</span><span style="font-weight:600; color:#0f172a;">' + distanceKm + ' km</span></div>' : '') +
+                      '<div style="color:#f59e0b; font-weight:600; text-align:center; margin-top:2px;">Medicines & Delivery by Pharmacy</div>' +
+                    '</div>';
+                } else {
+                  const totalFee = baseFee + distanceCost;
+                  feeHtml = 
+                    '<div style="background:#f8fafc; border-radius:6px; padding:6px 8px; margin:6px 0; border:1px solid #e2e8f0; font-size:12px; text-align:left;">' +
+                      '<div style="display:flex; justify-content:space-between; margin-bottom:2px;">' +
+                        '<span style="color:#64748b;">Booking Fee:</span>' +
+                        '<span style="font-weight:600; color:#0f172a;">Rs. ' + baseFee + '</span>' +
+                      '</div>' +
+                      (userLoc ? (
+                        '<div style="display:flex; justify-content:space-between; margin-bottom:2px;">' +
+                          '<span style="color:#64748b;">Distance (' + distanceKm + ' km):</span>' +
+                          '<span style="font-weight:600; color:#0f172a;">Rs. ' + distanceCost + '</span>' +
+                        '</div>' +
+                        '<div style="border-top:1px dashed #cbd5e1; margin-top:4px; padding-top:4px; display:flex; justify-content:space-between;">' +
+                          '<span style="font-weight:bold; color:#0f172a;">Total:</span>' +
+                          '<span style="font-weight:bold; color:#10b981; font-size:13px;">Rs. ' + totalFee + '</span>' +
+                        '</div>'
+                      ) : '') +
+                    '</div>';
+                }
+
+                const btnText = isPharmacy ? 'Order from Pharmacy >' : 'Tap to book >';
+
                 popupHtml = 
-                  '<div style="text-align:center; padding: 2px;">' +
-                    '<strong style="font-size:14px;">' + (prof.user?.fullName || '') + '</strong><br/>' +
-                    '<span style="color:#666; font-size:12px;">' + (prof.user?.role || '').replace('_', ' ') + '</span><br/>' +
-                    distanceText +
-                    feeBreakdown +
-                    '<button class="book-btn" onclick="sendBooking(\\'' + (prof.user?.role || '') + '\\', \\'' + (prof.user?.fullName || '').replace(/'/g, "\\\\'") + '\\', \\'' + prof.id + '\\')">Tap to book ></button>' +
+                  '<div style="text-align:center; padding: 4px; min-width: 180px;">' +
+                    '<strong style="font-size:14px; color:#0f172a;">' + (prof.user?.fullName || prof.fullName || 'Provider') + '</strong><br/>' +
+                    '<span style="color:#64748b; font-size:12px; font-weight:600; text-transform:uppercase;">' + (prof.user?.role || role).replace('_', ' ') + '</span>' +
+                    feeHtml +
+                    '<button class="book-btn" style="background-color:' + color + ';" onclick="sendBooking(\\'' + (prof.user?.role || role) + '\\', \\'' + (prof.user?.fullName || prof.fullName || '').replace(/'/g, "\\\\'") + '\\', \\'' + prof.id + '\\')">' + btnText + '</button>' +
                   '</div>';
               }
 

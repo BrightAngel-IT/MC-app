@@ -287,8 +287,11 @@ exports.Prisma.OrderScalarFieldEnum = {
   status: 'status',
   vendorNotes: 'vendorNotes',
   patientNotes: 'patientNotes',
+  billImageUrl: 'billImageUrl',
+  rejectionReason: 'rejectionReason',
   completedAt: 'completedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.OrderMessageScalarFieldEnum = {

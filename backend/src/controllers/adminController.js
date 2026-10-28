@@ -220,9 +220,30 @@ exports.getAllAppointments = async(req, res) => {
         }
         if (search) {
             where.OR = [
+                // Patient matches
                 { patient: { fullName: { contains: search } } },
+                { patient: { address: { contains: search } } },
+                { patient: { emergencyContact: { contains: search } } },
+                { patient: { user: { fullName: { contains: search } } } },
+                { patient: { user: { phone: { contains: search } } } },
+                { patient: { user: { email: { contains: search } } } },
+
+                // Professional matches
                 { professional: { fullName: { contains: search } } },
-                { serviceType: { contains: search } }
+                { professional: { address: { contains: search } } },
+                { professional: { specialization: { contains: search } } },
+                { professional: { workingHospital: { contains: search } } },
+                { professional: { user: { fullName: { contains: search } } } },
+                { professional: { user: { phone: { contains: search } } } },
+                { professional: { user: { email: { contains: search } } } },
+
+                // Appointment details & symptoms/complaints
+                { serviceType: { contains: search } },
+                { symptoms: { contains: search } },
+                { paymentMethod: { contains: search } },
+
+                // Complaint / dispute messages sent within the appointment chat
+                { messages: { some: { text: { contains: search } } } }
             ];
         }
 
@@ -235,13 +256,18 @@ exports.getAllAppointments = async(req, res) => {
                     include: {
                         items: true,
                         orders: {
+                            orderBy: { createdAt: 'desc' },
                             include: {
-                                pharmacist: true
+                                pharmacist: {
+                                    include: {
+                                        user: { select: { fullName: true, phone: true } }
+                                    }
+                                }
                             }
                         }
                     }
                 },
-                messages: { orderBy: { createdAt: 'desc' }, take: 5 }
+                messages: { orderBy: { createdAt: 'asc' } }
             },
             orderBy: { scheduledDate: 'desc' }
         });

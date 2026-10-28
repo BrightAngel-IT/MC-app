@@ -430,6 +430,11 @@ exports.getPrescriptions = async (req, res) => {
                 orders: {
                     orderBy: { createdAt: 'desc' },
                     include: {
+                        pharmacist: {
+                            include: {
+                                user: { select: { fullName: true, phone: true } }
+                            }
+                        },
                         messages: { orderBy: { createdAt: 'asc' } }
                     }
                 }

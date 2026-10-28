@@ -75,11 +75,32 @@ exports.getOrders = async(req, res) => {
 
 exports.updateOrders = async(req, res) => {
     try {
-        const{orderId} = req.params;
-        const { status, vendorNotes, clearPatientNotes } = req.body;
+        const { orderId } = req.params;
+        const { status, vendorNotes, clearPatientNotes, billImage, rejectionReason, totalAmount } = req.body;
         
         let updateData = {};
         if (status) updateData.status = status;
+        if (rejectionReason !== undefined) updateData.rejectionReason = rejectionReason;
+        if (totalAmount !== undefined && totalAmount !== null && !isNaN(totalAmount)) {
+            updateData.totalAmount = parseFloat(totalAmount);
+        }
+        
+        if (status === 'ACCEPTED') {
+            if (!billImage) {
+                return res.status(400).json({ message: 'Bill or invoice image is required to accept this prescription order.' });
+            }
+        }
+
+        if (billImage && typeof billImage === 'string' && billImage.startsWith('data:image')) {
+            const baseUrl = `${req.protocol}://${req.get('host')}`;
+            const savedPath = saveBase64Image(billImage, 'bills');
+            if (savedPath) updateData.billImageUrl = baseUrl + savedPath;
+        }
+
+        if (status === 'COMPLETED' || status === 'ACCEPTED') {
+            updateData.completedAt = new Date();
+        }
+
         if (vendorNotes !== undefined) {
             updateData.vendorNotes = vendorNotes; // Keep for backward compatibility
             
@@ -99,16 +120,22 @@ exports.updateOrders = async(req, res) => {
         const updatedOrders = await prisma.order.update({
             where: {id: orderId},
             data: updateData,
-            include: { messages: true, patient: { include: { user: true } } }
+            include: { messages: true, patient: { include: { user: true } }, pharmacist: true }
         });
 
         // Send push notification to patient
         let notifMessage = status ? `Your order status was updated to ${status}.` : `You received a message regarding your order.`;
-        if (vendorNotes && vendorNotes.trim() !== '') notifMessage = `New message on order: ${vendorNotes}`;
+        if (status === 'ACCEPTED' || status === 'COMPLETED') {
+            notifMessage = `Your prescription order was accepted by ${updatedOrders.pharmacist?.businessName || 'Pharmacy'}. Bill amount: Rs. ${updatedOrders.totalAmount.toFixed(2)}`;
+        } else if (status === 'REJECTED') {
+            notifMessage = `Prescription order was declined by ${updatedOrders.pharmacist?.businessName || 'Pharmacy'}.${rejectionReason ? ' Reason: ' + rejectionReason : ''}`;
+        } else if (vendorNotes && vendorNotes.trim() !== '') {
+            notifMessage = `New message on order: ${vendorNotes}`;
+        }
 
         await notificationService.sendNotification(
             updatedOrders.patient.userId,
-            "Order Update",
+            "Prescription Order Update",
             notifMessage,
             "ORDER",
             updatedOrders.id

@@ -280,7 +280,7 @@ const AdminTabs = () => {
       />
       <Tab.Screen 
         name="ProfileTab" component={AdminProfileScreen} 
-        options={{ tabBarLabel: 'Settings', tabBarIcon: ({ color, size }) => (<Ionicons name="settings-sharp" color={color} size={size} />) }} 
+        options={{ tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (<Ionicons name="person" color={color} size={size} />) }} 
       />
     </Tab.Navigator>
   );

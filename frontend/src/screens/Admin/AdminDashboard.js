@@ -8,7 +8,6 @@ import AdminOverviewScreen from './AdminOverviewScreen';
 import AdminApprovalsScreen from './AdminApprovalsScreen';
 import AdminAppointmentsScreen from './AdminAppointmentsScreen';
 import AdminUsersScreen from './AdminUsersScreen';
-import AdminProfileScreen from './AdminProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,8 +29,6 @@ const AdminDashboard = () => {
             iconName = focused ? 'clipboard-check' : 'clipboard-check-outline';
           } else if (route.name === 'Users') {
             iconName = focused ? 'account-group' : 'account-group-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'account' : 'account-outline';
           }
 
           return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
@@ -51,7 +48,6 @@ const AdminDashboard = () => {
       <Tab.Screen name="Approvals" component={AdminApprovalsScreen} />
       <Tab.Screen name="Appointments" component={AdminAppointmentsScreen} options={{ tabBarLabel: 'Audit' }} />
       <Tab.Screen name="Users" component={AdminUsersScreen} options={{ tabBarLabel: 'Users' }} />
-      <Tab.Screen name="Profile" component={AdminProfileScreen} />
     </Tab.Navigator>
   );
 };

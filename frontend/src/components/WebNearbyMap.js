@@ -150,29 +150,54 @@ const WebNearbyMap = ({ location, professionals, isIslandwide, distanceRate = 50
             </div>
           `;
         } else {
-          let distanceText = '';
+          let distanceKm = 0;
           let distanceCost = 0;
-          let feeBreakdown = '';
+          const baseFee = (prof.bookingFee !== undefined && prof.bookingFee !== null) ? Number(prof.bookingFee) : 0;
+          const isPharmacy = role === 'PHARMACIST';
 
-          if (location && prof.bookingFee !== undefined && prof.bookingFee !== null) {
+          if (location && prof.locationLat && prof.locationLng) {
             const rawDist = calculateDistance(location.latitude, location.longitude, prof.locationLat, prof.locationLng);
-            const distKm = Number(rawDist.toFixed(1));
-            distanceCost = Math.round(distKm * distanceRate);
-            distanceText = `<span style="font-size:12px; color:#555;">Distance: ${distKm} km</span><br/>`;
-            feeBreakdown = `<span style="font-size:12px; color:#555;">Base: Rs. ${prof.bookingFee} | Travel: Rs. ${distanceCost}</span><br/>
-                            <span style="font-weight:bold; color:#10b981; margin-top:5px; display:block;">Total: Rs. ${prof.bookingFee + distanceCost}</span>`;
-          } else if (prof.bookingFee !== undefined && prof.bookingFee !== null) {
-            feeBreakdown = `<span style="font-weight:bold; margin-top:5px; display:block;">Fee: Rs. ${prof.bookingFee}</span>`;
+            distanceKm = Number(rawDist.toFixed(1));
+            distanceCost = Math.round(distanceKm * (distanceRate || 50));
           }
 
+          let feeHtml = '';
+          if (isPharmacy) {
+            feeHtml = `
+              <div style="background:#f8fafc; border-radius:6px; padding:6px 8px; margin:6px 0; border:1px solid #e2e8f0; font-size:12px; text-align:left;">
+                ${location ? `<div style="display:flex; justify-content:space-between; margin-bottom:2px;"><span style="color:#64748b;">Distance:</span><span style="font-weight:600; color:#0f172a;">${distanceKm} km</span></div>` : ''}
+                <div style="color:#f59e0b; font-weight:600; text-align:center; margin-top:2px;">Medicines & Delivery by Pharmacy</div>
+              </div>
+            `;
+          } else {
+            const totalFee = baseFee + distanceCost;
+            feeHtml = `
+              <div style="background:#f8fafc; border-radius:6px; padding:6px 8px; margin:6px 0; border:1px solid #e2e8f0; font-size:12px; text-align:left;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+                  <span style="color:#64748b;">Booking Fee:</span>
+                  <span style="font-weight:600; color:#0f172a;">Rs. ${baseFee}</span>
+                </div>
+                ${location ? `
+                <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+                  <span style="color:#64748b;">Distance (${distanceKm} km):</span>
+                  <span style="font-weight:600; color:#0f172a;">Rs. ${distanceCost}</span>
+                </div>
+                <div style="border-top:1px dashed #cbd5e1; margin-top:4px; padding-top:4px; display:flex; justify-content:space-between;">
+                  <span style="font-weight:bold; color:#0f172a;">Total:</span>
+                  <span style="font-weight:bold; color:#10b981; font-size:13px;">Rs. ${totalFee}</span>
+                </div>` : ''}
+              </div>
+            `;
+          }
+
+          const btnText = isPharmacy ? 'Order from Pharmacy >' : 'Tap to book >';
           popupContent = `
-            <div style="text-align:center; padding:5px;">
-              <strong style="font-size:14px;">${prof.user.fullName}</strong><br/>
-              <span style="color:#666; font-size:12px;">${prof.user.role.replace('_', ' ')}</span><br/>
-              ${distanceText}
-              ${feeBreakdown}
-              <button onclick="window.handleMarkerClick('${prof.user.role}', '${prof.user.fullName.replace(/'/g, "\\'")}', '${prof.id}')" style="margin-top:8px; padding:6px 14px; background-color:${colors.primary}; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
-                Tap to book >
+            <div style="text-align:center; padding:4px; min-width:180px;">
+              <strong style="font-size:14px; color:#0f172a;">${prof.user?.fullName || prof.fullName || 'Provider'}</strong><br/>
+              <span style="color:#64748b; font-size:12px; font-weight:600; text-transform:uppercase;">${(prof.user?.role || role).replace('_', ' ')}</span>
+              ${feeHtml}
+              <button onclick="window.handleMarkerClick('${prof.user?.role || role}', '${(prof.user?.fullName || prof.fullName || '').replace(/'/g, "\\'")}', '${prof.id}')" style="margin-top:4px; padding:7px 14px; background-color:${color}; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer; width:100%; font-size:12px;">
+                ${btnText}
               </button>
             </div>
           `;
@@ -196,8 +221,7 @@ const WebNearbyMap = ({ location, professionals, isIslandwide, distanceRate = 50
   }, [location, professionals, isIslandwide]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'red' }}>
-      <Text style={{ color: 'white', fontSize: 20 }}>WEB NEARBY MAP LOADED</Text>
+    <View style={{ flex: 1 }}>
       <div ref={mapRef} style={{ width: '100%', height: '100%', outline: 'none' }} />
     </View>
   );

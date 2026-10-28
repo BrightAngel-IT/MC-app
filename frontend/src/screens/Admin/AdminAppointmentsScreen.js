@@ -10,8 +10,13 @@ import {
   TextInput, 
   Modal, 
   Linking, 
-  ScrollView 
+  ScrollView,
+  Image,
+  Platform,
+  Alert
 } from 'react-native';
+import * as FileSystem from 'expo-file-system/legacy';
+import * as Sharing from 'expo-sharing';
 import { MaterialCommunityIcons, Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { useTheme } from '../../context/themeContext';
 import { SIZES } from '../../styles/theme';
@@ -28,6 +33,47 @@ const AdminAppointmentsScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedApt, setSelectedApt] = useState(null);
   const [detailModalVisible, setDetailModalVisible] = useState(false);
+  const [viewingBillUrl, setViewingBillUrl] = useState(null);
+  const [downloadingBill, setDownloadingBill] = useState(false);
+
+  const downloadBillImage = async () => {
+    if (!viewingBillUrl) return;
+    try {
+      setDownloadingBill(true);
+      if (Platform.OS === 'web') {
+        const link = document.createElement('a');
+        link.href = viewingBillUrl;
+        link.download = `pharmacy_bill_${Date.now()}.png`;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        const fileUri = FileSystem.documentDirectory + `pharmacy_bill_${Date.now()}.png`;
+        if (viewingBillUrl.startsWith('http')) {
+          await FileSystem.downloadAsync(viewingBillUrl, fileUri);
+        } else {
+          let base64Code = viewingBillUrl.includes(',') ? viewingBillUrl.split(',')[1] : viewingBillUrl;
+          base64Code = base64Code.replace(/[^A-Za-z0-9+/=]/g, '');
+          while (base64Code.length % 4 > 0) {
+            base64Code += '=';
+          }
+          await FileSystem.writeAsStringAsync(fileUri, base64Code, { encoding: FileSystem.EncodingType.Base64 });
+        }
+
+        if (await Sharing.isAvailableAsync()) {
+          await Sharing.shareAsync(fileUri, { mimeType: 'image/png', UTI: 'public.png', dialogTitle: 'Download Bill' });
+        } else {
+          Alert.alert('Notice', 'Sharing is not supported on this device');
+        }
+      }
+    } catch (err) {
+      console.log('Error downloading bill:', err);
+      Alert.alert('Download Failed', err.message || 'Could not download bill.');
+    } finally {
+      setDownloadingBill(false);
+    }
+  };
 
   const fetchAppointments = async () => {
     try {
@@ -260,6 +306,12 @@ const AdminAppointmentsScreen = () => {
                     <Text style={styles.detailSectionTitle}>Patient Information 👤</Text>
                     <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Name: </Text>{selectedApt.patient?.fullName || selectedApt.patient?.user?.fullName}</Text>
                     <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Email: </Text>{selectedApt.patient?.user?.email || 'N/A'}</Text>
+                    {selectedApt.patient?.address && (
+                      <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Address: </Text>{selectedApt.patient.address}</Text>
+                    )}
+                    {selectedApt.patient?.emergencyContact && (
+                      <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Emergency Contact: </Text>{selectedApt.patient.emergencyContact}</Text>
+                    )}
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                       <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Phone: </Text>{selectedApt.patient?.user?.phone || 'Not provided'}</Text>
                       {selectedApt.patient?.user?.phone && (
@@ -292,6 +344,9 @@ const AdminAppointmentsScreen = () => {
                         )}
                         {selectedApt.professional?.workingHospital && (
                           <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Hospital / Workplace: </Text>{selectedApt.professional.workingHospital}</Text>
+                        )}
+                        {selectedApt.professional?.address && (
+                          <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Base Address: </Text>{selectedApt.professional.address}</Text>
                         )}
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                           <Text style={styles.detailText}><Text style={{ fontWeight: 'bold' }}>Phone: </Text>{selectedApt.professional?.user?.phone || 'Not provided'}</Text>
@@ -375,10 +430,45 @@ const AdminAppointmentsScreen = () => {
                           )}
 
                           {p.orders && p.orders.length > 0 && (
-                            <View style={{ marginTop: 8, paddingTop: 6, borderTopWidth: 1, borderTopColor: colors.border }}>
-                              <Text style={{ fontSize: 11, fontWeight: 'bold', color: colors.primary }}>
-                                Sent to Pharmacy: {p.orders[0]?.pharmacist?.businessName || 'Partner Pharmacy'} ({p.orders[0]?.status})
-                              </Text>
+                            <View style={{ marginTop: 8, paddingTop: 6, borderTopWidth: 1, borderTopColor: colors.border, gap: 6 }}>
+                              {p.orders.map((ord, oIdx) => {
+                                const isOrdDone = ord.status === 'COMPLETED';
+                                const isOrdAccepted = ord.status === 'ACCEPTED';
+                                const ordStatusColor = isOrdDone ? colors.success : (isOrdAccepted ? '#0284c7' : (ord.status === 'REJECTED' ? colors.danger : colors.warning));
+
+                                return (
+                                  <View key={ord.id || oIdx} style={{ backgroundColor: colors.surface, padding: 8, borderRadius: 6, borderWidth: 1, borderColor: colors.border }}>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                      <Text style={{ fontSize: 11, fontWeight: 'bold', color: colors.text }}>
+                                        🏥 {ord.pharmacist?.businessName || 'Partner Pharmacy'}
+                                      </Text>
+                                      <View style={{ backgroundColor: ordStatusColor + '20', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
+                                        <Text style={{ fontSize: 10, fontWeight: 'bold', color: ordStatusColor }}>
+                                          {ord.status}
+                                        </Text>
+                                      </View>
+                                    </View>
+
+                                    {ord.totalAmount > 0 && (
+                                      <Text style={{ fontSize: 11, color: colors.success, fontWeight: 'bold', marginTop: 4 }}>
+                                        Bill Amount: Rs. {Number(ord.totalAmount).toFixed(2)}
+                                      </Text>
+                                    )}
+
+                                    {ord.billImageUrl && (
+                                      <TouchableOpacity
+                                        style={{ marginTop: 6, flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', backgroundColor: colors.primary + '15', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4, gap: 4 }}
+                                        onPress={() => setViewingBillUrl(ord.billImageUrl)}
+                                      >
+                                        <Ionicons name="receipt-outline" size={13} color={colors.primary} />
+                                        <Text style={{ fontSize: 11, fontWeight: 'bold', color: colors.primary }}>
+                                          View Pharmacy Bill / Invoice
+                                        </Text>
+                                      </TouchableOpacity>
+                                    )}
+                                  </View>
+                                );
+                              })}
                             </View>
                           )}
                         </View>
@@ -386,6 +476,47 @@ const AdminAppointmentsScreen = () => {
                     ) : (
                       <Text style={{ fontSize: 12, color: colors.textLight, fontStyle: 'italic' }}>
                         No prescription has been issued yet for this appointment.
+                      </Text>
+                    )}
+                  </View>
+
+                  {/* Communication & Dispute Audit Log */}
+                  <View style={[styles.detailSection, { borderBottomWidth: 0 }]}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                      <Text style={styles.detailSectionTitle}>Communication & Chat Audit 💬</Text>
+                      <View style={{ backgroundColor: selectedApt.messages?.length > 0 ? colors.primary + '20' : '#64748b20', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
+                        <Text style={{ fontSize: 11, fontWeight: 'bold', color: selectedApt.messages?.length > 0 ? colors.primary : '#64748b' }}>
+                          {selectedApt.messages?.length || 0} Messages
+                        </Text>
+                      </View>
+                    </View>
+
+                    {selectedApt.messages && selectedApt.messages.length > 0 ? (
+                      <View style={{ gap: 6 }}>
+                        {selectedApt.messages.map((m, mIdx) => {
+                          const isPatient = m.sender === 'PATIENT';
+                          return (
+                            <View 
+                              key={m.id || mIdx} 
+                              style={{ 
+                                padding: 8, 
+                                borderRadius: 8, 
+                                backgroundColor: isPatient ? colors.primary + '12' : '#f1f5f9',
+                                alignSelf: isPatient ? 'flex-start' : 'flex-end',
+                                maxWidth: '90%'
+                              }}
+                            >
+                              <Text style={{ fontSize: 10, fontWeight: 'bold', color: isPatient ? colors.primary : '#475569' }}>
+                                {isPatient ? '👤 Patient' : '🩺 Professional'} • {new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </Text>
+                              <Text style={{ fontSize: 12, color: colors.text, marginTop: 2 }}>{m.text}</Text>
+                            </View>
+                          );
+                        })}
+                      </View>
+                    ) : (
+                      <Text style={{ fontSize: 12, color: colors.textLight, fontStyle: 'italic' }}>
+                        No chat messages or communication recorded for this appointment.
                       </Text>
                     )}
                   </View>
@@ -399,6 +530,57 @@ const AdminAppointmentsScreen = () => {
             >
               <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>Close Overview</Text>
             </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Bill / Invoice Viewer Modal */}
+      <Modal
+        visible={!!viewingBillUrl}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setViewingBillUrl(null)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalCard, { backgroundColor: colors.surface, maxHeight: '90%', alignItems: 'center' }]}>
+            <View style={[styles.modalHeader, { width: '100%', marginBottom: 10 }]}>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>Pharmacy Bill / Invoice</Text>
+              <TouchableOpacity onPress={() => setViewingBillUrl(null)} style={styles.closeBtn}>
+                <Ionicons name="close" size={24} color={colors.textLight} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }} style={{ width: '100%' }}>
+              {viewingBillUrl && (
+                <Image
+                  source={{ uri: viewingBillUrl }}
+                  style={{ width: 380, height: 480, resizeMode: 'contain', borderRadius: 8, backgroundColor: '#000' }}
+                />
+              )}
+            </ScrollView>
+
+            <View style={{ flexDirection: 'row', gap: 10, width: '100%', marginTop: 12 }}>
+              <TouchableOpacity
+                style={[styles.modalOkBtn, { flex: 1, backgroundColor: colors.accent || '#10b981', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 }]}
+                onPress={downloadBillImage}
+                disabled={downloadingBill}
+              >
+                {downloadingBill ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <>
+                    <Ionicons name="download-outline" size={18} color="#fff" />
+                    <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>Download Bill</Text>
+                  </>
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalOkBtn, { flex: 1, backgroundColor: colors.primary }]}
+                onPress={() => setViewingBillUrl(null)}
+              >
+                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>Close</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>

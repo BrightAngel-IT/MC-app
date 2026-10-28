@@ -16516,8 +16516,11 @@ export namespace Prisma {
     status: string | null
     vendorNotes: string | null
     patientNotes: string | null
+    billImageUrl: string | null
+    rejectionReason: string | null
     completedAt: Date | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type OrderMaxAggregateOutputType = {
@@ -16529,8 +16532,11 @@ export namespace Prisma {
     status: string | null
     vendorNotes: string | null
     patientNotes: string | null
+    billImageUrl: string | null
+    rejectionReason: string | null
     completedAt: Date | null
     createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type OrderCountAggregateOutputType = {
@@ -16542,8 +16548,11 @@ export namespace Prisma {
     status: number
     vendorNotes: number
     patientNotes: number
+    billImageUrl: number
+    rejectionReason: number
     completedAt: number
     createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -16565,8 +16574,11 @@ export namespace Prisma {
     status?: true
     vendorNotes?: true
     patientNotes?: true
+    billImageUrl?: true
+    rejectionReason?: true
     completedAt?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type OrderMaxAggregateInputType = {
@@ -16578,8 +16590,11 @@ export namespace Prisma {
     status?: true
     vendorNotes?: true
     patientNotes?: true
+    billImageUrl?: true
+    rejectionReason?: true
     completedAt?: true
     createdAt?: true
+    updatedAt?: true
   }
 
   export type OrderCountAggregateInputType = {
@@ -16591,8 +16606,11 @@ export namespace Prisma {
     status?: true
     vendorNotes?: true
     patientNotes?: true
+    billImageUrl?: true
+    rejectionReason?: true
     completedAt?: true
     createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -16691,8 +16709,11 @@ export namespace Prisma {
     status: string
     vendorNotes: string | null
     patientNotes: string | null
+    billImageUrl: string | null
+    rejectionReason: string | null
     completedAt: Date | null
     createdAt: Date
+    updatedAt: Date
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -16723,8 +16744,11 @@ export namespace Prisma {
     status?: boolean
     vendorNotes?: boolean
     patientNotes?: boolean
+    billImageUrl?: boolean
+    rejectionReason?: boolean
     completedAt?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     pharmacist?: boolean | PharmacistProfileDefaultArgs<ExtArgs>
     prescription?: boolean | Order$prescriptionArgs<ExtArgs>
@@ -16742,8 +16766,11 @@ export namespace Prisma {
     status?: boolean
     vendorNotes?: boolean
     patientNotes?: boolean
+    billImageUrl?: boolean
+    rejectionReason?: boolean
     completedAt?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     pharmacist?: boolean | PharmacistProfileDefaultArgs<ExtArgs>
     prescription?: boolean | Order$prescriptionArgs<ExtArgs>
@@ -16758,8 +16785,11 @@ export namespace Prisma {
     status?: boolean
     vendorNotes?: boolean
     patientNotes?: boolean
+    billImageUrl?: boolean
+    rejectionReason?: boolean
     completedAt?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     pharmacist?: boolean | PharmacistProfileDefaultArgs<ExtArgs>
     prescription?: boolean | Order$prescriptionArgs<ExtArgs>
@@ -16774,11 +16804,14 @@ export namespace Prisma {
     status?: boolean
     vendorNotes?: boolean
     patientNotes?: boolean
+    billImageUrl?: boolean
+    rejectionReason?: boolean
     completedAt?: boolean
     createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "pharmacistId" | "prescriptionId" | "totalAmount" | "status" | "vendorNotes" | "patientNotes" | "completedAt" | "createdAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "pharmacistId" | "prescriptionId" | "totalAmount" | "status" | "vendorNotes" | "patientNotes" | "billImageUrl" | "rejectionReason" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     pharmacist?: boolean | PharmacistProfileDefaultArgs<ExtArgs>
@@ -16816,8 +16849,11 @@ export namespace Prisma {
       status: string
       vendorNotes: string | null
       patientNotes: string | null
+      billImageUrl: string | null
+      rejectionReason: string | null
       completedAt: Date | null
       createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -17254,8 +17290,11 @@ export namespace Prisma {
     readonly status: FieldRef<"Order", 'String'>
     readonly vendorNotes: FieldRef<"Order", 'String'>
     readonly patientNotes: FieldRef<"Order", 'String'>
+    readonly billImageUrl: FieldRef<"Order", 'String'>
+    readonly rejectionReason: FieldRef<"Order", 'String'>
     readonly completedAt: FieldRef<"Order", 'DateTime'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
+    readonly updatedAt: FieldRef<"Order", 'DateTime'>
   }
     
 
@@ -27611,8 +27650,11 @@ export namespace Prisma {
     status: 'status',
     vendorNotes: 'vendorNotes',
     patientNotes: 'patientNotes',
+    billImageUrl: 'billImageUrl',
+    rejectionReason: 'rejectionReason',
     completedAt: 'completedAt',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -28894,8 +28936,11 @@ export namespace Prisma {
     status?: StringFilter<"Order"> | string
     vendorNotes?: StringNullableFilter<"Order"> | string | null
     patientNotes?: StringNullableFilter<"Order"> | string | null
+    billImageUrl?: StringNullableFilter<"Order"> | string | null
+    rejectionReason?: StringNullableFilter<"Order"> | string | null
     completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
+    updatedAt?: DateTimeFilter<"Order"> | Date | string
     patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
     pharmacist?: XOR<PharmacistProfileScalarRelationFilter, PharmacistProfileWhereInput>
     prescription?: XOR<PrescriptionNullableScalarRelationFilter, PrescriptionWhereInput> | null
@@ -28912,8 +28957,11 @@ export namespace Prisma {
     status?: SortOrder
     vendorNotes?: SortOrderInput | SortOrder
     patientNotes?: SortOrderInput | SortOrder
+    billImageUrl?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     patient?: PatientProfileOrderByWithRelationInput
     pharmacist?: PharmacistProfileOrderByWithRelationInput
     prescription?: PrescriptionOrderByWithRelationInput
@@ -28933,8 +28981,11 @@ export namespace Prisma {
     status?: StringFilter<"Order"> | string
     vendorNotes?: StringNullableFilter<"Order"> | string | null
     patientNotes?: StringNullableFilter<"Order"> | string | null
+    billImageUrl?: StringNullableFilter<"Order"> | string | null
+    rejectionReason?: StringNullableFilter<"Order"> | string | null
     completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
+    updatedAt?: DateTimeFilter<"Order"> | Date | string
     patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
     pharmacist?: XOR<PharmacistProfileScalarRelationFilter, PharmacistProfileWhereInput>
     prescription?: XOR<PrescriptionNullableScalarRelationFilter, PrescriptionWhereInput> | null
@@ -28951,8 +29002,11 @@ export namespace Prisma {
     status?: SortOrder
     vendorNotes?: SortOrderInput | SortOrder
     patientNotes?: SortOrderInput | SortOrder
+    billImageUrl?: SortOrderInput | SortOrder
+    rejectionReason?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -28972,8 +29026,11 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"Order"> | string
     vendorNotes?: StringNullableWithAggregatesFilter<"Order"> | string | null
     patientNotes?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    billImageUrl?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    rejectionReason?: StringNullableWithAggregatesFilter<"Order"> | string | null
     completedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
   }
 
   export type OrderMessageWhereInput = {
@@ -30700,8 +30757,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutOrdersInput
     pharmacist: PharmacistProfileCreateNestedOneWithoutOrdersInput
     prescription?: PrescriptionCreateNestedOneWithoutOrdersInput
@@ -30718,8 +30778,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     messages?: OrderMessageUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -30730,8 +30793,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutOrdersNestedInput
     pharmacist?: PharmacistProfileUpdateOneRequiredWithoutOrdersNestedInput
     prescription?: PrescriptionUpdateOneWithoutOrdersNestedInput
@@ -30748,8 +30814,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     messages?: OrderMessageUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -30763,8 +30832,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type OrderUpdateManyMutationInput = {
@@ -30773,8 +30845,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderUncheckedUpdateManyInput = {
@@ -30786,8 +30861,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderMessageCreateInput = {
@@ -32335,8 +32413,11 @@ export namespace Prisma {
     status?: SortOrder
     vendorNotes?: SortOrder
     patientNotes?: SortOrder
+    billImageUrl?: SortOrder
+    rejectionReason?: SortOrder
     completedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
@@ -32352,8 +32433,11 @@ export namespace Prisma {
     status?: SortOrder
     vendorNotes?: SortOrder
     patientNotes?: SortOrder
+    billImageUrl?: SortOrder
+    rejectionReason?: SortOrder
     completedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
@@ -32365,8 +32449,11 @@ export namespace Prisma {
     status?: SortOrder
     vendorNotes?: SortOrder
     patientNotes?: SortOrder
+    billImageUrl?: SortOrder
+    rejectionReason?: SortOrder
     completedAt?: SortOrder
     createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type OrderSumOrderByAggregateInput = {
@@ -35124,8 +35211,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     pharmacist: PharmacistProfileCreateNestedOneWithoutOrdersInput
     prescription?: PrescriptionCreateNestedOneWithoutOrdersInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
@@ -35140,8 +35230,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     messages?: OrderMessageUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -35349,8 +35442,11 @@ export namespace Prisma {
     status?: StringFilter<"Order"> | string
     vendorNotes?: StringNullableFilter<"Order"> | string | null
     patientNotes?: StringNullableFilter<"Order"> | string | null
+    billImageUrl?: StringNullableFilter<"Order"> | string | null
+    rejectionReason?: StringNullableFilter<"Order"> | string | null
     completedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
+    updatedAt?: DateTimeFilter<"Order"> | Date | string
   }
 
   export type EmergencySOSUpsertWithWhereUniqueWithoutPatientInput = {
@@ -35895,8 +35991,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutOrdersInput
     prescription?: PrescriptionCreateNestedOneWithoutOrdersInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
@@ -35911,8 +36010,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     messages?: OrderMessageUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -36747,8 +36849,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutOrdersInput
     pharmacist: PharmacistProfileCreateNestedOneWithoutOrdersInput
     items?: OrderItemCreateNestedManyWithoutOrderInput
@@ -36763,8 +36868,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
     messages?: OrderMessageUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -37537,8 +37645,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutOrdersInput
     pharmacist: PharmacistProfileCreateNestedOneWithoutOrdersInput
     prescription?: PrescriptionCreateNestedOneWithoutOrdersInput
@@ -37554,8 +37665,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     items?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -37581,8 +37695,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutOrdersNestedInput
     pharmacist?: PharmacistProfileUpdateOneRequiredWithoutOrdersNestedInput
     prescription?: PrescriptionUpdateOneWithoutOrdersNestedInput
@@ -37598,8 +37715,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -37609,8 +37729,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutOrdersInput
     pharmacist: PharmacistProfileCreateNestedOneWithoutOrdersInput
     prescription?: PrescriptionCreateNestedOneWithoutOrdersInput
@@ -37626,8 +37749,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
     messages?: OrderMessageUncheckedCreateNestedManyWithoutOrderInput
   }
 
@@ -37686,8 +37812,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutOrdersNestedInput
     pharmacist?: PharmacistProfileUpdateOneRequiredWithoutOrdersNestedInput
     prescription?: PrescriptionUpdateOneWithoutOrdersNestedInput
@@ -37703,8 +37832,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: OrderMessageUncheckedUpdateManyWithoutOrderNestedInput
   }
 
@@ -38813,8 +38945,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type EmergencySOSCreateManyPatientInput = {
@@ -38926,8 +39061,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     pharmacist?: PharmacistProfileUpdateOneRequiredWithoutOrdersNestedInput
     prescription?: PrescriptionUpdateOneWithoutOrdersNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
@@ -38942,8 +39080,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     messages?: OrderMessageUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -38956,8 +39097,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmergencySOSUpdateWithoutPatientInput = {
@@ -39292,8 +39436,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ProductUpdateWithoutPharmacistInput = {
@@ -39343,8 +39490,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutOrdersNestedInput
     prescription?: PrescriptionUpdateOneWithoutOrdersNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
@@ -39359,8 +39509,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     messages?: OrderMessageUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -39373,8 +39526,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PrescriptionCreateManyAppointmentInput = {
@@ -39460,8 +39616,11 @@ export namespace Prisma {
     status?: string
     vendorNotes?: string | null
     patientNotes?: string | null
+    billImageUrl?: string | null
+    rejectionReason?: string | null
     completedAt?: Date | string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PrescriptionItemUpdateWithoutPrescriptionInput = {
@@ -39491,8 +39650,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutOrdersNestedInput
     pharmacist?: PharmacistProfileUpdateOneRequiredWithoutOrdersNestedInput
     items?: OrderItemUpdateManyWithoutOrderNestedInput
@@ -39507,8 +39669,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     items?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
     messages?: OrderMessageUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -39521,8 +39686,11 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     vendorNotes?: NullableStringFieldUpdateOperationsInput | string | null
     patientNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    billImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    rejectionReason?: NullableStringFieldUpdateOperationsInput | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type OrderItemCreateManyProductInput = {

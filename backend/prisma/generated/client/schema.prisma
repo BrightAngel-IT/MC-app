@@ -242,16 +242,19 @@ model Product {
 }
 
 model Order {
-  id             String    @id @default(uuid())
-  patientId      String
-  pharmacistId   String
-  prescriptionId String?
-  totalAmount    Float     @default(0.0)
-  status         String    @default("PROCESSING")
-  vendorNotes    String?   @db.Text
-  patientNotes   String?   @db.Text
-  completedAt    DateTime?
-  createdAt      DateTime  @default(now())
+  id              String    @id @default(uuid())
+  patientId       String
+  pharmacistId    String
+  prescriptionId  String?
+  totalAmount     Float     @default(0.0)
+  status          String    @default("PROCESSING")
+  vendorNotes     String?   @db.Text
+  patientNotes    String?   @db.Text
+  billImageUrl    String?   @db.Text
+  rejectionReason String?   @db.Text
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now()) @updatedAt
 
   patient      PatientProfile    @relation(fields: [patientId], references: [id])
   pharmacist   PharmacistProfile @relation(fields: [pharmacistId], references: [id])
