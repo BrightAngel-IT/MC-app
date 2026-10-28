@@ -177,7 +177,7 @@ const ElderHomeDetailScreen = ({ route, navigation }) => {
                 style={[styles.socialChip, { backgroundColor: '#1877F215', borderColor: '#1877F240' }]}
                 onPress={() => handleOpenLink(elderHome.socialFacebook)}
               >
-                <FontAwesome5 name="facebook" size={14} color="#1877F2" />
+                <Ionicons name="logo-facebook" size={15} color="#1877F2" />
                 <Text style={[styles.socialChipText, { color: '#1877F2' }]}>Facebook</Text>
               </TouchableOpacity>
             )}
@@ -187,7 +187,7 @@ const ElderHomeDetailScreen = ({ route, navigation }) => {
                 style={[styles.socialChip, { backgroundColor: '#E1306C15', borderColor: '#E1306C40' }]}
                 onPress={() => handleOpenLink(elderHome.socialInstagram)}
               >
-                <FontAwesome5 name="instagram" size={14} color="#E1306C" />
+                <Ionicons name="logo-instagram" size={15} color="#E1306C" />
                 <Text style={[styles.socialChipText, { color: '#E1306C' }]}>Instagram</Text>
               </TouchableOpacity>
             )}

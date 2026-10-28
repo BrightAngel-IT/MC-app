@@ -245,20 +245,41 @@ const ElderHomeDashboard = ({ navigation }) => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        allowsEditing: true,
+        allowsEditing: Platform.OS !== 'web',
         aspect: [16, 9],
         quality: 0.6,
         base64: true,
       });
 
-      if (!result.canceled && result.assets && result.assets[0].base64) {
-        const base64Img = `data:image/jpeg;base64,${result.assets[0].base64}`;
-        await api.put('/elder-home/my/profile', { coverImage: base64Img });
-        showAlert('success', 'Cover Banner Updated', 'Your cover photo has been updated successfully.');
-        fetchMyProfile();
+      if (!result.canceled && result.assets && result.assets[0]) {
+        const asset = result.assets[0];
+        let base64Img = asset.base64 ? `data:image/jpeg;base64,${asset.base64}` : null;
+        
+        // On web, if base64 is not populated by launchImageLibraryAsync directly:
+        if (!base64Img && asset.uri) {
+          if (asset.uri.startsWith('data:image')) {
+            base64Img = asset.uri;
+          } else {
+            const res = await fetch(asset.uri);
+            const blob = await res.blob();
+            base64Img = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            });
+          }
+        }
+
+        if (base64Img) {
+          await api.put('/elder-home/my/profile', { coverImage: base64Img });
+          showAlert('success', 'Cover Banner Updated', 'Your cover photo has been updated successfully.');
+          fetchMyProfile();
+        }
       }
     } catch (e) {
-      showAlert('error', 'Upload Failed', 'Failed to upload cover photo.');
+      console.log('Cover photo upload error:', e);
+      showAlert('error', 'Upload Failed', e.response?.data?.message || 'Failed to upload cover photo.');
     }
   };
 
@@ -267,20 +288,40 @@ const ElderHomeDashboard = ({ navigation }) => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        allowsEditing: true,
+        allowsEditing: Platform.OS !== 'web',
         aspect: [1, 1],
         quality: 0.6,
         base64: true,
       });
 
-      if (!result.canceled && result.assets && result.assets[0].base64) {
-        const base64Img = `data:image/jpeg;base64,${result.assets[0].base64}`;
-        await api.put('/elder-home/my/profile', { profileImage: base64Img });
-        showAlert('success', 'Profile Logo Updated', 'Your profile logo has been updated successfully.');
-        fetchMyProfile();
+      if (!result.canceled && result.assets && result.assets[0]) {
+        const asset = result.assets[0];
+        let base64Img = asset.base64 ? `data:image/jpeg;base64,${asset.base64}` : null;
+
+        if (!base64Img && asset.uri) {
+          if (asset.uri.startsWith('data:image')) {
+            base64Img = asset.uri;
+          } else {
+            const res = await fetch(asset.uri);
+            const blob = await res.blob();
+            base64Img = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            });
+          }
+        }
+
+        if (base64Img) {
+          await api.put('/elder-home/my/profile', { profileImage: base64Img });
+          showAlert('success', 'Profile Logo Updated', 'Your profile logo has been updated successfully.');
+          fetchMyProfile();
+        }
       }
     } catch (e) {
-      showAlert('error', 'Upload Failed', 'Failed to upload profile photo.');
+      console.log('Profile photo upload error:', e);
+      showAlert('error', 'Upload Failed', e.response?.data?.message || 'Failed to upload profile photo.');
     }
   };
 

@@ -247,6 +247,15 @@ const AdminUsersScreen = ({ route, navigation }) => {
                           <Text style={{ fontSize: 11, color: '#1877F2', fontWeight: 'bold' }}>Facebook</Text>
                         </TouchableOpacity>
                       )}
+                      {u.professionalProfile.socialInstagram && (
+                        <TouchableOpacity 
+                          style={[styles.smallActionBadge, { backgroundColor: '#E1306C20' }]}
+                          onPress={() => Linking.openURL(u.professionalProfile.socialInstagram.startsWith('http') ? u.professionalProfile.socialInstagram : `https://${u.professionalProfile.socialInstagram}`)}
+                        >
+                          <Ionicons name="logo-instagram" size={13} color="#E1306C" />
+                          <Text style={{ fontSize: 11, color: '#E1306C', fontWeight: 'bold' }}>Instagram</Text>
+                        </TouchableOpacity>
+                      )}
                       {u.professionalProfile.socialWebsite && (
                         <TouchableOpacity 
                           style={[styles.smallActionBadge, { backgroundColor: colors.primary + '20' }]}

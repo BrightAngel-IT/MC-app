@@ -185,9 +185,10 @@ export default function NotificationsScreen({ navigation }) {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Notifications</Text>
-        <TouchableOpacity onPress={markAllAsRead}>
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
+        <Text style={[styles.sectionSubtitle, { color: colors.textMuted }]}>Recent Updates & Alerts</Text>
+        <TouchableOpacity onPress={markAllAsRead} style={styles.markAllBtn}>
+          <Ionicons name="checkmark-done" size={16} color={colors.primary} style={{ marginRight: 4 }} />
           <Text style={[styles.markAllText, { color: colors.primary }]}>Mark all as read</Text>
         </TouchableOpacity>
       </View>
@@ -217,20 +218,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  sectionSubtitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    letterSpacing: 0.3,
+  },
+  markAllBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
   },
   markAllText: {
+    fontSize: 13,
     fontWeight: '600',
   },
   notificationCard: {
     flexDirection: 'row',
-    padding: 15,
+    padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#f3f4f6',
     alignItems: 'flex-start',
