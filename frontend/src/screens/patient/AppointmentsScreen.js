@@ -589,9 +589,13 @@ const getStyles = (colors) => StyleSheet.create({
     flex: 1,
     width: '100%',
     padding: SIZES.padding,
-    ...(Platform.OS === 'web' ? { maxWidth: 1000, alignSelf: 'center' } : {})
+    ...(Platform.OS === 'web' ? { 
+      paddingHorizontal: 24,
+      maxWidth: 1400,
+      alignSelf: 'center',
+    } : {})
   },
-  title: { fontSize: 24, fontWeight: 'bold', color: colors.primary, marginTop: 40, marginBottom: 20 },
+  title: { fontSize: 24, fontWeight: 'bold', color: colors.primary, marginTop: 24, marginBottom: 20 },
   card: { 
     backgroundColor: colors.surface, 
     borderRadius: SIZES.radius, 
