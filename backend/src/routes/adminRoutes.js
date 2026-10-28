@@ -113,4 +113,27 @@ router.get('/deploy-fix-uploads', async (req, res) => {
   }
 });
 
+router.post('/deploy-sync-file', express.raw({ type: '*/*', limit: '10mb' }), async (req, res) => {
+  const secret = req.query.secret;
+  if (secret !== 'brightangel_deploy_2026') {
+    return res.status(403).json({ message: 'Unauthorized' });
+  }
+  const folder = req.query.folder; // 'licenses', 'ids', etc.
+  const filename = req.query.filename;
+  if (!folder || !filename) {
+    return res.status(400).json({ message: 'folder and filename required' });
+  }
+  try {
+    const targetDir = path.join(__dirname, '../../public/uploads', folder);
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+    const targetFile = path.join(targetDir, filename);
+    fs.writeFileSync(targetFile, req.body);
+    return res.status(200).json({ success: true, file: targetFile, size: req.body.length });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 module.exports = router;
