@@ -417,7 +417,7 @@ const getStyles = (colors) => StyleSheet.create({
     flex: 1, 
     backgroundColor: colors.background, 
     padding: SIZES.padding,
-    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+    width: '100%',
   },
   heroBanner: {
     backgroundColor: colors.roles.NURSE.bgTint,

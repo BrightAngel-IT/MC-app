@@ -536,7 +536,7 @@ const getStyles = (colors) => StyleSheet.create({
     flex: 1, 
     backgroundColor: colors.background, 
     padding: SIZES.padding,
-    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+    width: '100%',
   },
   headerTitle: { fontSize: 24, fontWeight: 'bold', color: colors.text, marginBottom: 15 },
   searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderRadius: SIZES.radius, paddingHorizontal: 15, marginBottom: 20, height: 45, borderWidth: 1, borderColor: colors.border },

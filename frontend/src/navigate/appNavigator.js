@@ -530,9 +530,21 @@ const AppNavigator = () => {
     );
   };
 
+  const navTheme = {
+    dark: colors.isDark,
+    colors: {
+      primary: colors.primary,
+      background: colors.background,
+      card: colors.surface,
+      text: colors.text,
+      border: colors.border,
+      notification: colors.primary,
+    },
+  };
+
   return (
-    <NavigationContainer linking={linking}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <NavigationContainer linking={linking} theme={navTheme}>
+      <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         {renderScreens()}
       </Stack.Navigator>
     </NavigationContainer>

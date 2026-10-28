@@ -409,15 +409,17 @@ const AppointmentsScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Appointments</Text>
-      <FlatList 
-        data={appointments}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 20 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />}
-        ListEmptyComponent={<Text style={{textAlign: 'center', color: colors.textLight, marginTop: 40}}>No appointments found.</Text>}
-      />
+      <View style={styles.innerContent}>
+        <Text style={styles.title}>My Appointments</Text>
+        <FlatList 
+          data={appointments}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />}
+          ListEmptyComponent={<Text style={{textAlign: 'center', color: colors.textLight, marginTop: 40}}>No appointments found.</Text>}
+        />
+      </View>
 
       {/* Reschedule Modal */}
       <Modal visible={rescheduleModalVisible} animationType="slide" transparent>
@@ -581,8 +583,13 @@ const getStyles = (colors) => StyleSheet.create({
   container: { 
     flex: 1, 
     backgroundColor: colors.background, 
+    width: '100%',
+  },
+  innerContent: {
+    flex: 1,
+    width: '100%',
     padding: SIZES.padding,
-    ...(Platform.OS === 'web' ? { width: '100%', maxWidth: 1000, alignSelf: 'center' } : {})
+    ...(Platform.OS === 'web' ? { maxWidth: 1000, alignSelf: 'center' } : {})
   },
   title: { fontSize: 24, fontWeight: 'bold', color: colors.primary, marginTop: 40, marginBottom: 20 },
   card: { 
