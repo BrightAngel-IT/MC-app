@@ -705,9 +705,14 @@ const PharmacyScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
               </View>
             </View>
-            {viewingBillUrl && (
-              <Image source={{ uri: resolveBillUrl(viewingBillUrl) }} style={{ width: '100%', height: 350, borderRadius: 8, resizeMode: 'contain' }} />
-            )}
+            <ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'center' }} style={{ width: '100%', maxHeight: 420 }}>
+              {viewingBillUrl ? (
+                <Image 
+                  source={{ uri: resolveBillUrl(viewingBillUrl) }} 
+                  style={{ width: '100%', height: 380, resizeMode: 'contain', borderRadius: 8 }} 
+                />
+              ) : null}
+            </ScrollView>
             <View style={{ flexDirection: 'row', gap: 10, marginTop: 14 }}>
               <TouchableOpacity 
                 style={{ 
