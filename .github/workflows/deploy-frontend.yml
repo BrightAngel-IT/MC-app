@@ -43,6 +43,26 @@ jobs:
           mkdir -p dist/fonts
           cp -rf node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/* dist/fonts/ 2>/dev/null || true
 
+          # Also replicate the node_modules path inside dist/assets in case Metro runtime queries it
+          mkdir -p dist/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/
+          cp -rf node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/* dist/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/ 2>/dev/null || true
+
+          # If expo export created hashed font files inside dist/assets, copy unhashed ones too
+          find dist/assets -name "*.ttf" -exec cp -f {} dist/fonts/ \; 2>/dev/null || true
+          # Find any MaterialCommunityIcons hash requested and duplicate into it
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const targetDir = "dist/assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts";
+            if (fs.existsSync(targetDir)) {
+              const src = path.join(targetDir, "MaterialCommunityIcons.ttf");
+              if (fs.existsSync(src)) {
+                // copy to common hash name seen in web bundle
+                fs.copyFileSync(src, path.join(targetDir, "MaterialCommunityIcons.6e435534bd35da5fef04168860a9b8fa.ttf"));
+              }
+            }
+          '
+
           # Inject CSS @font-face rules into index.html so browser loads icons universally
           node -e '
             const fs = require("fs");
