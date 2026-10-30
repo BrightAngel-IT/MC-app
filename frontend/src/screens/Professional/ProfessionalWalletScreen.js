@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator, TouchableOpacity, Alert, Modal, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator, TouchableOpacity, Alert, Modal, Platform, TextInput } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,6 +19,15 @@ const ProfessionalWalletScreen = ({ navigation }) => {
   const [payModalVisible, setPayModalVisible] = useState(false);
   const [paymentData, setPaymentData] = useState(null);
   const [payLoading, setPayLoading] = useState(false);
+
+  // Payout / Withdrawal States
+  const [withdrawModalVisible, setWithdrawModalVisible] = useState(false);
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [bankName, setBankName] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [accountHolderName, setAccountHolderName] = useState('');
+  const [branchName, setBranchName] = useState('');
 
 
   const fetchWallet = async () => {
@@ -162,6 +171,54 @@ const ProfessionalWalletScreen = ({ navigation }) => {
       setPayLoading(false);
     }
   };
+
+  const handleRequestPayout = async () => {
+    const amountNum = parseFloat(withdrawAmount);
+    if (!amountNum || amountNum <= 0) {
+      Alert.alert("Invalid Amount", "Please enter a valid withdrawal amount.");
+      return;
+    }
+
+    if (amountNum > walletBalance) {
+      Alert.alert("Insufficient Balance", `You can withdraw up to Rs. ${walletBalance.toFixed(2)}.`);
+      return;
+    }
+
+    if (!bankName.trim() || !accountNumber.trim() || !accountHolderName.trim()) {
+      Alert.alert("Required Fields", "Please enter your Bank Name, Account Number, and Account Holder Name.");
+      return;
+    }
+
+    try {
+      setWithdrawLoading(true);
+      const res = await api.post('/wallet/payout-request', {
+        amount: amountNum,
+        bankName: bankName.trim(),
+        accountNumber: accountNumber.trim(),
+        accountHolderName: accountHolderName.trim(),
+        branchName: branchName.trim()
+      });
+
+      setWithdrawModalVisible(false);
+      setWithdrawAmount('');
+      setBankName('');
+      setAccountNumber('');
+      setAccountHolderName('');
+      setBranchName('');
+
+      Alert.alert(
+        "Request Submitted! 🏦", 
+        res.data.message || "Withdrawal request sent to Admin for transfer."
+      );
+      fetchWallet();
+    } catch (error) {
+      const msg = error.response?.data?.message || "Failed to submit withdrawal request.";
+      Alert.alert("Withdrawal Error", msg);
+    } finally {
+      setWithdrawLoading(false);
+    }
+  };
+
 
   const getPayHereHtml = (data) => {
     if (!data) return '';
@@ -312,7 +369,111 @@ const ProfessionalWalletScreen = ({ navigation }) => {
               )}
             </TouchableOpacity>
           )}
+
+          {/* Request Bank Payout Button for Positive Balance */}
+          {isPositive && walletBalance > 0 && (
+            <TouchableOpacity 
+              style={[styles.payNowBtn, { backgroundColor: '#ffffff' }]}
+              onPress={() => setWithdrawModalVisible(true)}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="cash-outline" size={18} color="#065f46" style={{ marginRight: 8 }} />
+                <Text style={[styles.payNowBtnText, { color: '#065f46' }]}>
+                  Request Bank Withdrawal (Max: Rs. {walletBalance.toFixed(2)})
+                </Text>
+                <Ionicons name="chevron-forward" size={16} color="#065f46" style={{ marginLeft: 6 }} />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
+
+        {/* Doctor Withdrawal Modal */}
+        <Modal
+          visible={withdrawModalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setWithdrawModalVisible(false)}
+        >
+          <View style={styles.withdrawModalOverlay}>
+            <View style={[styles.withdrawModalContent, { backgroundColor: colors.surface }]}>
+              <View style={styles.withdrawModalHeader}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <Ionicons name="business" size={20} color={colors.primary} />
+                  <Text style={[styles.withdrawModalTitle, { color: colors.text }]}>Withdraw to Bank Account</Text>
+                </View>
+                <TouchableOpacity onPress={() => setWithdrawModalVisible(false)}>
+                  <Ionicons name="close" size={24} color={colors.textLight} />
+                </TouchableOpacity>
+              </View>
+
+              <ScrollView style={{ padding: 16 }}>
+                <Text style={{ fontSize: 13, color: colors.textLight, marginBottom: 14 }}>
+                  Available Balance: <Text style={{ fontWeight: 'bold', color: '#10b981' }}>Rs. {walletBalance.toFixed(2)}</Text>
+                </Text>
+
+                <Text style={styles.inputLabel}>Withdrawal Amount (Rs.) *</Text>
+                <TextInput
+                  style={[styles.modalInput, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
+                  placeholder={`e.g. ${walletBalance.toFixed(0)}`}
+                  placeholderTextColor={colors.textLight}
+                  keyboardType="numeric"
+                  value={withdrawAmount}
+                  onChangeText={setWithdrawAmount}
+                />
+
+                <Text style={styles.inputLabel}>Bank Name *</Text>
+                <TextInput
+                  style={[styles.modalInput, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
+                  placeholder="e.g. Commercial Bank, BOC, Sampath"
+                  placeholderTextColor={colors.textLight}
+                  value={bankName}
+                  onChangeText={setBankName}
+                />
+
+                <Text style={styles.inputLabel}>Account Number *</Text>
+                <TextInput
+                  style={[styles.modalInput, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
+                  placeholder="e.g. 10002345678"
+                  placeholderTextColor={colors.textLight}
+                  keyboardType="number-pad"
+                  value={accountNumber}
+                  onChangeText={setAccountNumber}
+                />
+
+                <Text style={styles.inputLabel}>Account Holder Name *</Text>
+                <TextInput
+                  style={[styles.modalInput, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
+                  placeholder="e.g. Dr. K. A. Perera"
+                  placeholderTextColor={colors.textLight}
+                  value={accountHolderName}
+                  onChangeText={setAccountHolderName}
+                />
+
+                <Text style={styles.inputLabel}>Branch Name (Optional)</Text>
+                <TextInput
+                  style={[styles.modalInput, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
+                  placeholder="e.g. Colombo Fort"
+                  placeholderTextColor={colors.textLight}
+                  value={branchName}
+                  onChangeText={setBranchName}
+                />
+
+                <TouchableOpacity 
+                  style={[styles.confirmWithdrawBtn, { backgroundColor: colors.primary }]}
+                  onPress={handleRequestPayout}
+                  disabled={withdrawLoading}
+                >
+                  {withdrawLoading ? (
+                    <ActivityIndicator size="small" color="#fff" />
+                  ) : (
+                    <Text style={styles.confirmWithdrawBtnText}>Submit Payout Request</Text>
+                  )}
+                </TouchableOpacity>
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+
 
         {/* PayHere Checkout Modal */}
         <Modal
@@ -612,6 +773,56 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 10,
+  },
+  withdrawModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  withdrawModalContent: {
+    borderRadius: 16,
+    maxHeight: '85%',
+    overflow: 'hidden',
+  },
+  withdrawModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.08)',
+  },
+  withdrawModalTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  inputLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#64748b',
+    marginBottom: 6,
+    marginTop: 10,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+  },
+  confirmWithdrawBtn: {
+    borderRadius: 10,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  confirmWithdrawBtnText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 });
 

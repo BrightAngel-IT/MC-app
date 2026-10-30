@@ -128,7 +128,9 @@ model ProfessionalProfile {
   elderHomePosts    ElderHomePost[]
   elderHomeServices ElderHomeService[]
   walletTransactions WalletTransaction[]
+  payoutRequests    PayoutRequest[]
 }
+
 
 model PharmacistProfile {
   id                String  @id @default(uuid())
@@ -377,4 +379,22 @@ model WalletTransaction {
 
   professional    ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
 }
+
+model PayoutRequest {
+  id                 String   @id @default(uuid())
+  professionalId     String
+  amount             Float
+  bankName           String
+  accountNumber      String
+  accountHolderName  String
+  branchName         String?
+  status             String   @default("PENDING") // 'PENDING', 'APPROVED', 'REJECTED'
+  referenceNumber    String?  // Bank transfer reference/slip number by admin
+  adminNote          String?  @db.Text
+  createdAt          DateTime @default(now())
+  processedAt        DateTime?
+
+  professional       ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+}
+
 

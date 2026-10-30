@@ -26,12 +26,15 @@ const AdminFinanceScreen = ({ navigation }) => {
   const [summary, setSummary] = useState(null);
   const [professionals, setProfessionals] = useState([]);
   const [transactions, setTransactions] = useState([]);
-  const [activeTab, setActiveTab] = useState('TRANSACTIONS'); // 'TRANSACTIONS' | 'WALLETS'
+  const [payoutRequests, setPayoutRequests] = useState([]);
+  const [activeTab, setActiveTab] = useState('TRANSACTIONS'); // 'TRANSACTIONS' | 'WALLETS' | 'PAYOUTS'
   const [filterType, setFilterType] = useState('ALL'); // 'ALL' | 'CREDIT' | 'DEBIT'
   const [filterMethod, setFilterMethod] = useState('ALL'); // 'ALL' | 'CARD' | 'CASH'
   const [selectedDoctorWallet, setSelectedDoctorWallet] = useState(null);
   const [walletModalVisible, setWalletModalVisible] = useState(false);
   const [loadingDoctorWallet, setLoadingDoctorWallet] = useState(false);
+  const [processingPayoutId, setProcessingPayoutId] = useState(null);
+
 
   const openDoctorStatement = async (profId, docName) => {
     try {
@@ -49,14 +52,50 @@ const AdminFinanceScreen = ({ navigation }) => {
     }
   };
 
+  const fetchPayouts = async () => {
+    try {
+      const res = await api.get('/wallet/admin/payouts');
+      if (res.data) {
+        setPayoutRequests(res.data);
+      }
+    } catch (err) {
+      console.log('Error fetching payout requests:', err);
+    }
+  };
+
+  const handleProcessPayout = async (requestId, action) => {
+    try {
+      setProcessingPayoutId(requestId);
+      const res = await api.put(`/wallet/admin/payout/${requestId}`, {
+        action: action,
+        referenceNumber: `BANK-TX-${Date.now().toString().slice(-6)}`,
+        adminNote: action === 'APPROVE' ? 'Approved & transferred via bank' : 'Rejected by Admin'
+      });
+
+      fetchLedger();
+    } catch (err) {
+      console.error('Error processing payout:', err);
+    } finally {
+      setProcessingPayoutId(null);
+    }
+  };
+
   const fetchLedger = async () => {
     try {
       setLoading(true);
-      const res = await api.get(`/admin/financial-ledger?type=${filterType}&paymentMethod=${filterMethod}`);
-      if (res.data) {
-        setSummary(res.data.summary);
-        setProfessionals(res.data.professionals || []);
-        setTransactions(res.data.transactions || []);
+      const [ledgerRes, payoutRes] = await Promise.allSettled([
+        api.get(`/admin/financial-ledger?type=${filterType}&paymentMethod=${filterMethod}`),
+        api.get('/wallet/admin/payouts')
+      ]);
+
+      if (ledgerRes.status === 'fulfilled' && ledgerRes.value.data) {
+        setSummary(ledgerRes.value.data.summary);
+        setProfessionals(ledgerRes.value.data.professionals || []);
+        setTransactions(ledgerRes.value.data.transactions || []);
+      }
+
+      if (payoutRes.status === 'fulfilled' && payoutRes.value.data) {
+        setPayoutRequests(payoutRes.value.data);
       }
     } catch (error) {
       console.log('Error fetching financial ledger:', error);
@@ -74,6 +113,7 @@ const AdminFinanceScreen = ({ navigation }) => {
     setRefreshing(true);
     fetchLedger();
   };
+
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return 'N/A';
@@ -168,7 +208,22 @@ const AdminFinanceScreen = ({ navigation }) => {
               Doctor Wallets ({professionals.length})
             </Text>
           </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.switchTab, activeTab === 'PAYOUTS' && styles.activeSwitchTab]}
+            onPress={() => setActiveTab('PAYOUTS')}
+          >
+            <Ionicons 
+              name="cash-outline" 
+              size={18} 
+              color={activeTab === 'PAYOUTS' ? '#fff' : colors.textLight} 
+            />
+            <Text style={[styles.switchTabText, activeTab === 'PAYOUTS' && styles.activeSwitchTabText]}>
+              Payout Requests ({payoutRequests.filter(r => r.status === 'PENDING').length})
+            </Text>
+          </TouchableOpacity>
         </View>
+
 
         {/* View 1: Line by Line Transactions */}
         {activeTab === 'TRANSACTIONS' && (
@@ -325,7 +380,128 @@ const AdminFinanceScreen = ({ navigation }) => {
             )}
           </View>
         )}
+
+        {/* View 3: Doctor Payout Requests List */}
+        {activeTab === 'PAYOUTS' && (
+          <View style={styles.sectionContainer}>
+            {loading ? (
+              <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 30 }} />
+            ) : payoutRequests.length === 0 ? (
+              <View style={styles.emptyBox}>
+                <Ionicons name="cash-outline" size={48} color={colors.textLight} />
+                <Text style={{ color: colors.textLight, marginTop: 10, fontStyle: 'italic' }}>
+                  No bank withdrawal requests yet.
+                </Text>
+              </View>
+            ) : (
+              payoutRequests.map((req) => {
+                const isPending = req.status === 'PENDING';
+                const isApproved = req.status === 'APPROVED';
+
+                return (
+                  <View 
+                    key={req.id} 
+                    style={[styles.txCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                  >
+                    <View style={styles.txTopRow}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={[styles.docName, { color: colors.text }]}>
+                          {req.professional?.user?.fullName || 'Doctor'}
+                        </Text>
+                        <Text style={{ fontSize: 11, color: colors.textLight }}>
+                          {req.professional?.user?.role} • {formatDateTime(req.createdAt)}
+                        </Text>
+                      </View>
+
+                      <View style={{ alignItems: 'flex-end' }}>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#10b981' }}>
+                          Rs. {Number(req.amount).toFixed(2)}
+                        </Text>
+                        <View style={[
+                          styles.methodBadge, 
+                          { backgroundColor: isPending ? '#fef3c7' : isApproved ? '#ecfdf5' : '#fef2f2', marginTop: 4 }
+                        ]}>
+                          <Text style={{ 
+                            fontSize: 10, 
+                            fontWeight: 'bold', 
+                            color: isPending ? '#92400e' : isApproved ? '#059669' : '#dc2626' 
+                          }}>
+                            {req.status}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    {/* Bank Details Box */}
+                    <View style={{ backgroundColor: colors.background, padding: 10, borderRadius: 8, marginTop: 10 }}>
+                      <Text style={{ fontSize: 12, color: colors.text, fontWeight: '600' }}>
+                        🏦 {req.bankName} {req.branchName ? `(${req.branchName})` : ''}
+                      </Text>
+                      <Text style={{ fontSize: 13, color: colors.text, marginTop: 2, fontWeight: 'bold' }}>
+                        A/C: {req.accountNumber}
+                      </Text>
+                      <Text style={{ fontSize: 11, color: colors.textLight, marginTop: 2 }}>
+                        Beneficiary: {req.accountHolderName}
+                      </Text>
+                    </View>
+
+                    {/* Action Buttons for Pending Requests */}
+                    {isPending && (
+                      <View style={{ flexDirection: 'row', gap: 10, marginTop: 12 }}>
+                        <TouchableOpacity
+                          style={{
+                            flex: 1,
+                            backgroundColor: '#10b981',
+                            paddingVertical: 10,
+                            borderRadius: 8,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexDirection: 'row',
+                            gap: 6
+                          }}
+                          onPress={() => handleProcessPayout(req.id, 'APPROVE')}
+                          disabled={processingPayoutId === req.id}
+                        >
+                          {processingPayoutId === req.id ? (
+                            <ActivityIndicator size="small" color="#fff" />
+                          ) : (
+                            <>
+                              <Ionicons name="checkmark-circle" size={16} color="#fff" />
+                              <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 13 }}>Mark Transferred</Text>
+                            </>
+                          )}
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          style={{
+                            paddingHorizontal: 16,
+                            paddingVertical: 10,
+                            backgroundColor: '#fee2e2',
+                            borderRadius: 8,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                          onPress={() => handleProcessPayout(req.id, 'REJECT')}
+                          disabled={processingPayoutId === req.id}
+                        >
+                          <Text style={{ color: '#b91c1c', fontWeight: 'bold', fontSize: 13 }}>Reject</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+
+                    {!isPending && req.referenceNumber && (
+                      <Text style={{ fontSize: 11, color: colors.textLight, marginTop: 8 }}>
+                        Ref: {req.referenceNumber} • Processed: {formatDateTime(req.processedAt)}
+                      </Text>
+                    )}
+                  </View>
+                );
+              })
+            )}
+          </View>
+        )}
       </ScrollView>
+
 
       {/* Doctor Wallet Statement History Modal */}
       <Modal 

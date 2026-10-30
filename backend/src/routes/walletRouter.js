@@ -7,7 +7,11 @@ const {
     unblockWallet,
     initiatePayHereSettlement,
     handlePayHereNotify,
-    verifyAndSettleDue
+    verifyAndSettleDue,
+    requestPayout,
+    getMyPayoutHistory,
+    getAllPayoutRequests,
+    processPayoutRequest
 } = require('../controllers/walletController');
 const {protect} = require('../middleware/authMiddleware');
 
@@ -21,4 +25,11 @@ router.post('/payhere-initiate', protect, initiatePayHereSettlement);
 router.post('/payhere-notify', handlePayHereNotify); // Webhook from PayHere (Public, verified via md5sig)
 router.post('/verify-settle', protect, verifyAndSettleDue);
 
-module.exports = router;
+// Payout / Withdrawal Routes
+router.post('/payout-request', protect, requestPayout);
+router.get('/my-payouts', protect, getMyPayoutHistory);
+router.get('/admin/payouts', protect, getAllPayoutRequests);
+router.put('/admin/payout/:requestId', protect, processPayoutRequest);
+
+module.exports = router;
+

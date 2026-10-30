@@ -471,3 +471,230 @@ exports.verifyAndSettleDue = async (req, res) => {
     }
 };
 
+// 1. Doctor creates a Payout / Withdrawal Request
+exports.requestPayout = async (req, res) => {
+    try {
+        const { amount, bankName, accountNumber, accountHolderName, branchName } = req.body;
+
+        if (!amount || Number(amount) <= 0) {
+            return res.status(400).json({ message: "Please provide a valid withdrawal amount." });
+        }
+
+        if (!bankName || !accountNumber || !accountHolderName) {
+            return res.status(400).json({ message: "Please provide bank name, account number, and holder name." });
+        }
+
+        const professional = await prisma.professionalProfile.findUnique({
+            where: { userId: req.user.id },
+            include: { user: true }
+        });
+
+        if (!professional) {
+            return res.status(404).json({ message: "Professional profile not found." });
+        }
+
+        const currentBal = Number(professional.walletBalance || 0);
+        const reqAmount = parseFloat(amount);
+
+        if (currentBal <= 0) {
+            return res.status(400).json({ message: "You have no available earnings to withdraw." });
+        }
+
+        if (reqAmount > currentBal) {
+            return res.status(400).json({ 
+                message: `Withdrawal amount (Rs. ${reqAmount}) exceeds your available balance (Rs. ${currentBal}).` 
+            });
+        }
+
+        // Check if there is already an active PENDING request
+        const pendingReq = await prisma.payoutRequest.findFirst({
+            where: {
+                professionalId: professional.id,
+                status: 'PENDING'
+            }
+        });
+
+        if (pendingReq) {
+            return res.status(400).json({ 
+                message: "You already have a pending withdrawal request under review." 
+            });
+        }
+
+        // Deduct from wallet right away and reserve it for payout
+        const newBal = currentBal - reqAmount;
+
+        const [payoutRequest] = await prisma.$transaction([
+            prisma.payoutRequest.create({
+                data: {
+                    professionalId: professional.id,
+                    amount: reqAmount,
+                    bankName,
+                    accountNumber,
+                    accountHolderName,
+                    branchName: branchName || '',
+                    status: 'PENDING'
+                }
+            }),
+            prisma.professionalProfile.update({
+                where: { id: professional.id },
+                data: { walletBalance: newBal }
+            }),
+            prisma.walletTransaction.create({
+                data: {
+                    professionalId: professional.id,
+                    amount: -reqAmount,
+                    type: 'DEBIT',
+                    paymentMethod: 'BANK_TRANSFER',
+                    totalFee: reqAmount,
+                    commissionAmount: 0,
+                    balanceAfter: newBal,
+                    description: `Bank Withdrawal Requested (${bankName} - ${accountNumber})`
+                }
+            })
+        ]);
+
+        return res.status(201).json({
+            message: "Withdrawal request submitted successfully! Admin will process the transfer.",
+            payoutRequest,
+            walletBalance: newBal
+        });
+    } catch (error) {
+        console.error("Error creating payout request:", error);
+        return res.status(500).json({ message: "Error requesting payout", error: error.message });
+    }
+};
+
+// 2. Doctor fetches their payout history
+exports.getMyPayoutHistory = async (req, res) => {
+    try {
+        const professional = await prisma.professionalProfile.findUnique({
+            where: { userId: req.user.id }
+        });
+
+        if (!professional) {
+            return res.status(404).json({ message: "Professional not found" });
+        }
+
+        const requests = await prisma.payoutRequest.findMany({
+            where: { professionalId: professional.id },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        return res.status(200).json(requests);
+    } catch (error) {
+        console.error("Error fetching payout history:", error);
+        return res.status(500).json({ message: "Error fetching payouts" });
+    }
+};
+
+// 3. Admin fetches ALL Payout Requests
+exports.getAllPayoutRequests = async (req, res) => {
+    try {
+        const { status } = req.query;
+        const whereClause = {};
+        if (status && status !== 'ALL') {
+            whereClause.status = status;
+        }
+
+        const requests = await prisma.payoutRequest.findMany({
+            where: whereClause,
+            include: {
+                professional: {
+                    include: {
+                        user: {
+                            select: { fullName: true, email: true, phone: true, role: true }
+                        }
+                    }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        return res.status(200).json(requests);
+    } catch (error) {
+        console.error("Error fetching admin payout requests:", error);
+        return res.status(500).json({ message: "Error fetching payout requests" });
+    }
+};
+
+// 4. Admin Approves or Rejects a Payout Request
+exports.processPayoutRequest = async (req, res) => {
+    try {
+        const { requestId } = req.params;
+        const { action, referenceNumber, adminNote } = req.body; // action: 'APPROVE' or 'REJECT'
+
+        const payoutReq = await prisma.payoutRequest.findUnique({
+            where: { id: requestId },
+            include: { professional: { include: { user: true } } }
+        });
+
+        if (!payoutReq) {
+            return res.status(404).json({ message: "Payout request not found" });
+        }
+
+        if (payoutReq.status !== 'PENDING') {
+            return res.status(400).json({ message: `Request is already ${payoutReq.status}` });
+        }
+
+        if (action === 'APPROVE') {
+            // Mark as completed
+            const updated = await prisma.payoutRequest.update({
+                where: { id: requestId },
+                data: {
+                    status: 'APPROVED',
+                    referenceNumber: referenceNumber || 'BANK-TRANSFER',
+                    adminNote: adminNote || 'Transferred by Admin',
+                    processedAt: new Date()
+                }
+            });
+
+            return res.status(200).json({
+                message: "Payout approved and marked as transferred successfully!",
+                payoutRequest: updated
+            });
+        } else if (action === 'REJECT') {
+            // Refund the deducted amount back to doctor's wallet balance!
+            const currentBal = Number(payoutReq.professional.walletBalance || 0);
+            const refundBal = currentBal + Number(payoutReq.amount);
+
+            const [updated] = await prisma.$transaction([
+                prisma.payoutRequest.update({
+                    where: { id: requestId },
+                    data: {
+                        status: 'REJECTED',
+                        adminNote: adminNote || 'Rejected by Admin',
+                        processedAt: new Date()
+                    }
+                }),
+                prisma.professionalProfile.update({
+                    where: { id: payoutReq.professionalId },
+                    data: { walletBalance: refundBal }
+                }),
+                prisma.walletTransaction.create({
+                    data: {
+                        professionalId: payoutReq.professionalId,
+                        amount: payoutReq.amount,
+                        type: 'CREDIT',
+                        paymentMethod: 'REFUND',
+                        totalFee: payoutReq.amount,
+                        commissionAmount: 0,
+                        balanceAfter: refundBal,
+                        description: `Withdrawal Request Rejected & Refunded (Reason: ${adminNote || 'Invalid bank info'})`
+                    }
+                })
+            ]);
+
+            return res.status(200).json({
+                message: "Payout request rejected and funds returned to Doctor's wallet.",
+                payoutRequest: updated
+            });
+        } else {
+            return res.status(400).json({ message: "Invalid action. Use 'APPROVE' or 'REJECT'." });
+        }
+    } catch (error) {
+        console.error("Error processing payout request:", error);
+        return res.status(500).json({ message: "Error processing payout", error: error.message });
+    }
+};
+
+

@@ -388,6 +388,21 @@ exports.Prisma.WalletTransactionScalarFieldEnum = {
   isBlocked: 'isBlocked'
 };
 
+exports.Prisma.PayoutRequestScalarFieldEnum = {
+  id: 'id',
+  professionalId: 'professionalId',
+  amount: 'amount',
+  bankName: 'bankName',
+  accountNumber: 'accountNumber',
+  accountHolderName: 'accountHolderName',
+  branchName: 'branchName',
+  status: 'status',
+  referenceNumber: 'referenceNumber',
+  adminNote: 'adminNote',
+  createdAt: 'createdAt',
+  processedAt: 'processedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -443,7 +458,8 @@ exports.Prisma.ModelName = {
   SystemSetting: 'SystemSetting',
   ElderHomePost: 'ElderHomePost',
   ElderHomeService: 'ElderHomeService',
-  WalletTransaction: 'WalletTransaction'
+  WalletTransaction: 'WalletTransaction',
+  PayoutRequest: 'PayoutRequest'
 };
 
 /**

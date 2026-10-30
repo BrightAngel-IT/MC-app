@@ -123,6 +123,11 @@ export type ElderHomeService = $Result.DefaultSelection<Prisma.$ElderHomeService
  * 
  */
 export type WalletTransaction = $Result.DefaultSelection<Prisma.$WalletTransactionPayload>
+/**
+ * Model PayoutRequest
+ * 
+ */
+export type PayoutRequest = $Result.DefaultSelection<Prisma.$PayoutRequestPayload>
 
 /**
  * Enums
@@ -499,6 +504,16 @@ export class PrismaClient<
     * ```
     */
   get walletTransaction(): Prisma.WalletTransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.payoutRequest`: Exposes CRUD operations for the **PayoutRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PayoutRequests
+    * const payoutRequests = await prisma.payoutRequest.findMany()
+    * ```
+    */
+  get payoutRequest(): Prisma.PayoutRequestDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -961,7 +976,8 @@ export namespace Prisma {
     SystemSetting: 'SystemSetting',
     ElderHomePost: 'ElderHomePost',
     ElderHomeService: 'ElderHomeService',
-    WalletTransaction: 'WalletTransaction'
+    WalletTransaction: 'WalletTransaction',
+    PayoutRequest: 'PayoutRequest'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -980,7 +996,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "notification" | "patientProfile" | "professionalProfile" | "pharmacistProfile" | "adminProfile" | "appointment" | "appointmentMessage" | "prescription" | "prescriptionItem" | "product" | "order" | "orderMessage" | "orderItem" | "emergencySOS" | "activityLog" | "rejectedRecord" | "review" | "systemSetting" | "elderHomePost" | "elderHomeService" | "walletTransaction"
+      modelProps: "user" | "notification" | "patientProfile" | "professionalProfile" | "pharmacistProfile" | "adminProfile" | "appointment" | "appointmentMessage" | "prescription" | "prescriptionItem" | "product" | "order" | "orderMessage" | "orderItem" | "emergencySOS" | "activityLog" | "rejectedRecord" | "review" | "systemSetting" | "elderHomePost" | "elderHomeService" | "walletTransaction" | "payoutRequest"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2612,6 +2628,80 @@ export namespace Prisma {
           }
         }
       }
+      PayoutRequest: {
+        payload: Prisma.$PayoutRequestPayload<ExtArgs>
+        fields: Prisma.PayoutRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PayoutRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PayoutRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.PayoutRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PayoutRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>
+          }
+          findMany: {
+            args: Prisma.PayoutRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>[]
+          }
+          create: {
+            args: Prisma.PayoutRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>
+          }
+          createMany: {
+            args: Prisma.PayoutRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PayoutRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.PayoutRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>
+          }
+          update: {
+            args: Prisma.PayoutRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.PayoutRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PayoutRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PayoutRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.PayoutRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayoutRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.PayoutRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayoutRequest>
+          }
+          groupBy: {
+            args: Prisma.PayoutRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PayoutRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PayoutRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<PayoutRequestCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2730,6 +2820,7 @@ export namespace Prisma {
     elderHomePost?: ElderHomePostOmit
     elderHomeService?: ElderHomeServiceOmit
     walletTransaction?: WalletTransactionOmit
+    payoutRequest?: PayoutRequestOmit
   }
 
   /* Types for Logging */
@@ -2924,6 +3015,7 @@ export namespace Prisma {
     elderHomePosts: number
     elderHomeServices: number
     walletTransactions: number
+    payoutRequests: number
   }
 
   export type ProfessionalProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2934,6 +3026,7 @@ export namespace Prisma {
     elderHomePosts?: boolean | ProfessionalProfileCountOutputTypeCountElderHomePostsArgs
     elderHomeServices?: boolean | ProfessionalProfileCountOutputTypeCountElderHomeServicesArgs
     walletTransactions?: boolean | ProfessionalProfileCountOutputTypeCountWalletTransactionsArgs
+    payoutRequests?: boolean | ProfessionalProfileCountOutputTypeCountPayoutRequestsArgs
   }
 
   // Custom InputTypes
@@ -2994,6 +3087,13 @@ export namespace Prisma {
    */
   export type ProfessionalProfileCountOutputTypeCountWalletTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WalletTransactionWhereInput
+  }
+
+  /**
+   * ProfessionalProfileCountOutputType without action
+   */
+  export type ProfessionalProfileCountOutputTypeCountPayoutRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayoutRequestWhereInput
   }
 
 
@@ -7227,6 +7327,7 @@ export namespace Prisma {
     elderHomePosts?: boolean | ProfessionalProfile$elderHomePostsArgs<ExtArgs>
     elderHomeServices?: boolean | ProfessionalProfile$elderHomeServicesArgs<ExtArgs>
     walletTransactions?: boolean | ProfessionalProfile$walletTransactionsArgs<ExtArgs>
+    payoutRequests?: boolean | ProfessionalProfile$payoutRequestsArgs<ExtArgs>
     _count?: boolean | ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalProfile"]>
 
@@ -7356,6 +7457,7 @@ export namespace Prisma {
     elderHomePosts?: boolean | ProfessionalProfile$elderHomePostsArgs<ExtArgs>
     elderHomeServices?: boolean | ProfessionalProfile$elderHomeServicesArgs<ExtArgs>
     walletTransactions?: boolean | ProfessionalProfile$walletTransactionsArgs<ExtArgs>
+    payoutRequests?: boolean | ProfessionalProfile$payoutRequestsArgs<ExtArgs>
     _count?: boolean | ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfessionalProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7376,6 +7478,7 @@ export namespace Prisma {
       elderHomePosts: Prisma.$ElderHomePostPayload<ExtArgs>[]
       elderHomeServices: Prisma.$ElderHomeServicePayload<ExtArgs>[]
       walletTransactions: Prisma.$WalletTransactionPayload<ExtArgs>[]
+      payoutRequests: Prisma.$PayoutRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7815,6 +7918,7 @@ export namespace Prisma {
     elderHomePosts<T extends ProfessionalProfile$elderHomePostsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$elderHomePostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     elderHomeServices<T extends ProfessionalProfile$elderHomeServicesArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$elderHomeServicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     walletTransactions<T extends ProfessionalProfile$walletTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$walletTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payoutRequests<T extends ProfessionalProfile$payoutRequestsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$payoutRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8440,6 +8544,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WalletTransactionScalarFieldEnum | WalletTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalProfile.payoutRequests
+   */
+  export type ProfessionalProfile$payoutRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    where?: PayoutRequestWhereInput
+    orderBy?: PayoutRequestOrderByWithRelationInput | PayoutRequestOrderByWithRelationInput[]
+    cursor?: PayoutRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PayoutRequestScalarFieldEnum | PayoutRequestScalarFieldEnum[]
   }
 
   /**
@@ -28774,6 +28902,1189 @@ export namespace Prisma {
 
 
   /**
+   * Model PayoutRequest
+   */
+
+  export type AggregatePayoutRequest = {
+    _count: PayoutRequestCountAggregateOutputType | null
+    _avg: PayoutRequestAvgAggregateOutputType | null
+    _sum: PayoutRequestSumAggregateOutputType | null
+    _min: PayoutRequestMinAggregateOutputType | null
+    _max: PayoutRequestMaxAggregateOutputType | null
+  }
+
+  export type PayoutRequestAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type PayoutRequestSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type PayoutRequestMinAggregateOutputType = {
+    id: string | null
+    professionalId: string | null
+    amount: number | null
+    bankName: string | null
+    accountNumber: string | null
+    accountHolderName: string | null
+    branchName: string | null
+    status: string | null
+    referenceNumber: string | null
+    adminNote: string | null
+    createdAt: Date | null
+    processedAt: Date | null
+  }
+
+  export type PayoutRequestMaxAggregateOutputType = {
+    id: string | null
+    professionalId: string | null
+    amount: number | null
+    bankName: string | null
+    accountNumber: string | null
+    accountHolderName: string | null
+    branchName: string | null
+    status: string | null
+    referenceNumber: string | null
+    adminNote: string | null
+    createdAt: Date | null
+    processedAt: Date | null
+  }
+
+  export type PayoutRequestCountAggregateOutputType = {
+    id: number
+    professionalId: number
+    amount: number
+    bankName: number
+    accountNumber: number
+    accountHolderName: number
+    branchName: number
+    status: number
+    referenceNumber: number
+    adminNote: number
+    createdAt: number
+    processedAt: number
+    _all: number
+  }
+
+
+  export type PayoutRequestAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type PayoutRequestSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type PayoutRequestMinAggregateInputType = {
+    id?: true
+    professionalId?: true
+    amount?: true
+    bankName?: true
+    accountNumber?: true
+    accountHolderName?: true
+    branchName?: true
+    status?: true
+    referenceNumber?: true
+    adminNote?: true
+    createdAt?: true
+    processedAt?: true
+  }
+
+  export type PayoutRequestMaxAggregateInputType = {
+    id?: true
+    professionalId?: true
+    amount?: true
+    bankName?: true
+    accountNumber?: true
+    accountHolderName?: true
+    branchName?: true
+    status?: true
+    referenceNumber?: true
+    adminNote?: true
+    createdAt?: true
+    processedAt?: true
+  }
+
+  export type PayoutRequestCountAggregateInputType = {
+    id?: true
+    professionalId?: true
+    amount?: true
+    bankName?: true
+    accountNumber?: true
+    accountHolderName?: true
+    branchName?: true
+    status?: true
+    referenceNumber?: true
+    adminNote?: true
+    createdAt?: true
+    processedAt?: true
+    _all?: true
+  }
+
+  export type PayoutRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayoutRequest to aggregate.
+     */
+    where?: PayoutRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutRequests to fetch.
+     */
+    orderBy?: PayoutRequestOrderByWithRelationInput | PayoutRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PayoutRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PayoutRequests
+    **/
+    _count?: true | PayoutRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PayoutRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PayoutRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PayoutRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PayoutRequestMaxAggregateInputType
+  }
+
+  export type GetPayoutRequestAggregateType<T extends PayoutRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayoutRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayoutRequest[P]>
+      : GetScalarType<T[P], AggregatePayoutRequest[P]>
+  }
+
+
+
+
+  export type PayoutRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayoutRequestWhereInput
+    orderBy?: PayoutRequestOrderByWithAggregationInput | PayoutRequestOrderByWithAggregationInput[]
+    by: PayoutRequestScalarFieldEnum[] | PayoutRequestScalarFieldEnum
+    having?: PayoutRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PayoutRequestCountAggregateInputType | true
+    _avg?: PayoutRequestAvgAggregateInputType
+    _sum?: PayoutRequestSumAggregateInputType
+    _min?: PayoutRequestMinAggregateInputType
+    _max?: PayoutRequestMaxAggregateInputType
+  }
+
+  export type PayoutRequestGroupByOutputType = {
+    id: string
+    professionalId: string
+    amount: number
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    branchName: string | null
+    status: string
+    referenceNumber: string | null
+    adminNote: string | null
+    createdAt: Date
+    processedAt: Date | null
+    _count: PayoutRequestCountAggregateOutputType | null
+    _avg: PayoutRequestAvgAggregateOutputType | null
+    _sum: PayoutRequestSumAggregateOutputType | null
+    _min: PayoutRequestMinAggregateOutputType | null
+    _max: PayoutRequestMaxAggregateOutputType | null
+  }
+
+  type GetPayoutRequestGroupByPayload<T extends PayoutRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PayoutRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PayoutRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PayoutRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], PayoutRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PayoutRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    professionalId?: boolean
+    amount?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    branchName?: boolean
+    status?: boolean
+    referenceNumber?: boolean
+    adminNote?: boolean
+    createdAt?: boolean
+    processedAt?: boolean
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payoutRequest"]>
+
+  export type PayoutRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    professionalId?: boolean
+    amount?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    branchName?: boolean
+    status?: boolean
+    referenceNumber?: boolean
+    adminNote?: boolean
+    createdAt?: boolean
+    processedAt?: boolean
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payoutRequest"]>
+
+  export type PayoutRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    professionalId?: boolean
+    amount?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    branchName?: boolean
+    status?: boolean
+    referenceNumber?: boolean
+    adminNote?: boolean
+    createdAt?: boolean
+    processedAt?: boolean
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payoutRequest"]>
+
+  export type PayoutRequestSelectScalar = {
+    id?: boolean
+    professionalId?: boolean
+    amount?: boolean
+    bankName?: boolean
+    accountNumber?: boolean
+    accountHolderName?: boolean
+    branchName?: boolean
+    status?: boolean
+    referenceNumber?: boolean
+    adminNote?: boolean
+    createdAt?: boolean
+    processedAt?: boolean
+  }
+
+  export type PayoutRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "professionalId" | "amount" | "bankName" | "accountNumber" | "accountHolderName" | "branchName" | "status" | "referenceNumber" | "adminNote" | "createdAt" | "processedAt", ExtArgs["result"]["payoutRequest"]>
+  export type PayoutRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type PayoutRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type PayoutRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $PayoutRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PayoutRequest"
+    objects: {
+      professional: Prisma.$ProfessionalProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      professionalId: string
+      amount: number
+      bankName: string
+      accountNumber: string
+      accountHolderName: string
+      branchName: string | null
+      status: string
+      referenceNumber: string | null
+      adminNote: string | null
+      createdAt: Date
+      processedAt: Date | null
+    }, ExtArgs["result"]["payoutRequest"]>
+    composites: {}
+  }
+
+  type PayoutRequestGetPayload<S extends boolean | null | undefined | PayoutRequestDefaultArgs> = $Result.GetResult<Prisma.$PayoutRequestPayload, S>
+
+  type PayoutRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PayoutRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PayoutRequestCountAggregateInputType | true
+    }
+
+  export interface PayoutRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PayoutRequest'], meta: { name: 'PayoutRequest' } }
+    /**
+     * Find zero or one PayoutRequest that matches the filter.
+     * @param {PayoutRequestFindUniqueArgs} args - Arguments to find a PayoutRequest
+     * @example
+     * // Get one PayoutRequest
+     * const payoutRequest = await prisma.payoutRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PayoutRequestFindUniqueArgs>(args: SelectSubset<T, PayoutRequestFindUniqueArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PayoutRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PayoutRequestFindUniqueOrThrowArgs} args - Arguments to find a PayoutRequest
+     * @example
+     * // Get one PayoutRequest
+     * const payoutRequest = await prisma.payoutRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PayoutRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, PayoutRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayoutRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutRequestFindFirstArgs} args - Arguments to find a PayoutRequest
+     * @example
+     * // Get one PayoutRequest
+     * const payoutRequest = await prisma.payoutRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PayoutRequestFindFirstArgs>(args?: SelectSubset<T, PayoutRequestFindFirstArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayoutRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutRequestFindFirstOrThrowArgs} args - Arguments to find a PayoutRequest
+     * @example
+     * // Get one PayoutRequest
+     * const payoutRequest = await prisma.payoutRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PayoutRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, PayoutRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PayoutRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PayoutRequests
+     * const payoutRequests = await prisma.payoutRequest.findMany()
+     * 
+     * // Get first 10 PayoutRequests
+     * const payoutRequests = await prisma.payoutRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const payoutRequestWithIdOnly = await prisma.payoutRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PayoutRequestFindManyArgs>(args?: SelectSubset<T, PayoutRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PayoutRequest.
+     * @param {PayoutRequestCreateArgs} args - Arguments to create a PayoutRequest.
+     * @example
+     * // Create one PayoutRequest
+     * const PayoutRequest = await prisma.payoutRequest.create({
+     *   data: {
+     *     // ... data to create a PayoutRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends PayoutRequestCreateArgs>(args: SelectSubset<T, PayoutRequestCreateArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PayoutRequests.
+     * @param {PayoutRequestCreateManyArgs} args - Arguments to create many PayoutRequests.
+     * @example
+     * // Create many PayoutRequests
+     * const payoutRequest = await prisma.payoutRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PayoutRequestCreateManyArgs>(args?: SelectSubset<T, PayoutRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PayoutRequests and returns the data saved in the database.
+     * @param {PayoutRequestCreateManyAndReturnArgs} args - Arguments to create many PayoutRequests.
+     * @example
+     * // Create many PayoutRequests
+     * const payoutRequest = await prisma.payoutRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PayoutRequests and only return the `id`
+     * const payoutRequestWithIdOnly = await prisma.payoutRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PayoutRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, PayoutRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PayoutRequest.
+     * @param {PayoutRequestDeleteArgs} args - Arguments to delete one PayoutRequest.
+     * @example
+     * // Delete one PayoutRequest
+     * const PayoutRequest = await prisma.payoutRequest.delete({
+     *   where: {
+     *     // ... filter to delete one PayoutRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PayoutRequestDeleteArgs>(args: SelectSubset<T, PayoutRequestDeleteArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PayoutRequest.
+     * @param {PayoutRequestUpdateArgs} args - Arguments to update one PayoutRequest.
+     * @example
+     * // Update one PayoutRequest
+     * const payoutRequest = await prisma.payoutRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PayoutRequestUpdateArgs>(args: SelectSubset<T, PayoutRequestUpdateArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PayoutRequests.
+     * @param {PayoutRequestDeleteManyArgs} args - Arguments to filter PayoutRequests to delete.
+     * @example
+     * // Delete a few PayoutRequests
+     * const { count } = await prisma.payoutRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PayoutRequestDeleteManyArgs>(args?: SelectSubset<T, PayoutRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayoutRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PayoutRequests
+     * const payoutRequest = await prisma.payoutRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PayoutRequestUpdateManyArgs>(args: SelectSubset<T, PayoutRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayoutRequests and returns the data updated in the database.
+     * @param {PayoutRequestUpdateManyAndReturnArgs} args - Arguments to update many PayoutRequests.
+     * @example
+     * // Update many PayoutRequests
+     * const payoutRequest = await prisma.payoutRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PayoutRequests and only return the `id`
+     * const payoutRequestWithIdOnly = await prisma.payoutRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PayoutRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, PayoutRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PayoutRequest.
+     * @param {PayoutRequestUpsertArgs} args - Arguments to update or create a PayoutRequest.
+     * @example
+     * // Update or create a PayoutRequest
+     * const payoutRequest = await prisma.payoutRequest.upsert({
+     *   create: {
+     *     // ... data to create a PayoutRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PayoutRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PayoutRequestUpsertArgs>(args: SelectSubset<T, PayoutRequestUpsertArgs<ExtArgs>>): Prisma__PayoutRequestClient<$Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PayoutRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutRequestCountArgs} args - Arguments to filter PayoutRequests to count.
+     * @example
+     * // Count the number of PayoutRequests
+     * const count = await prisma.payoutRequest.count({
+     *   where: {
+     *     // ... the filter for the PayoutRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends PayoutRequestCountArgs>(
+      args?: Subset<T, PayoutRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PayoutRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PayoutRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PayoutRequestAggregateArgs>(args: Subset<T, PayoutRequestAggregateArgs>): Prisma.PrismaPromise<GetPayoutRequestAggregateType<T>>
+
+    /**
+     * Group by PayoutRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayoutRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PayoutRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PayoutRequestGroupByArgs['orderBy'] }
+        : { orderBy?: PayoutRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PayoutRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPayoutRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PayoutRequest model
+   */
+  readonly fields: PayoutRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PayoutRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PayoutRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    professional<T extends ProfessionalProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfileDefaultArgs<ExtArgs>>): Prisma__ProfessionalProfileClient<$Result.GetResult<Prisma.$ProfessionalProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PayoutRequest model
+   */
+  interface PayoutRequestFieldRefs {
+    readonly id: FieldRef<"PayoutRequest", 'String'>
+    readonly professionalId: FieldRef<"PayoutRequest", 'String'>
+    readonly amount: FieldRef<"PayoutRequest", 'Float'>
+    readonly bankName: FieldRef<"PayoutRequest", 'String'>
+    readonly accountNumber: FieldRef<"PayoutRequest", 'String'>
+    readonly accountHolderName: FieldRef<"PayoutRequest", 'String'>
+    readonly branchName: FieldRef<"PayoutRequest", 'String'>
+    readonly status: FieldRef<"PayoutRequest", 'String'>
+    readonly referenceNumber: FieldRef<"PayoutRequest", 'String'>
+    readonly adminNote: FieldRef<"PayoutRequest", 'String'>
+    readonly createdAt: FieldRef<"PayoutRequest", 'DateTime'>
+    readonly processedAt: FieldRef<"PayoutRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PayoutRequest findUnique
+   */
+  export type PayoutRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PayoutRequest to fetch.
+     */
+    where: PayoutRequestWhereUniqueInput
+  }
+
+  /**
+   * PayoutRequest findUniqueOrThrow
+   */
+  export type PayoutRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PayoutRequest to fetch.
+     */
+    where: PayoutRequestWhereUniqueInput
+  }
+
+  /**
+   * PayoutRequest findFirst
+   */
+  export type PayoutRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PayoutRequest to fetch.
+     */
+    where?: PayoutRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutRequests to fetch.
+     */
+    orderBy?: PayoutRequestOrderByWithRelationInput | PayoutRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayoutRequests.
+     */
+    cursor?: PayoutRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayoutRequests.
+     */
+    distinct?: PayoutRequestScalarFieldEnum | PayoutRequestScalarFieldEnum[]
+  }
+
+  /**
+   * PayoutRequest findFirstOrThrow
+   */
+  export type PayoutRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PayoutRequest to fetch.
+     */
+    where?: PayoutRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutRequests to fetch.
+     */
+    orderBy?: PayoutRequestOrderByWithRelationInput | PayoutRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayoutRequests.
+     */
+    cursor?: PayoutRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayoutRequests.
+     */
+    distinct?: PayoutRequestScalarFieldEnum | PayoutRequestScalarFieldEnum[]
+  }
+
+  /**
+   * PayoutRequest findMany
+   */
+  export type PayoutRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which PayoutRequests to fetch.
+     */
+    where?: PayoutRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayoutRequests to fetch.
+     */
+    orderBy?: PayoutRequestOrderByWithRelationInput | PayoutRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PayoutRequests.
+     */
+    cursor?: PayoutRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayoutRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayoutRequests.
+     */
+    skip?: number
+    distinct?: PayoutRequestScalarFieldEnum | PayoutRequestScalarFieldEnum[]
+  }
+
+  /**
+   * PayoutRequest create
+   */
+  export type PayoutRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PayoutRequest.
+     */
+    data: XOR<PayoutRequestCreateInput, PayoutRequestUncheckedCreateInput>
+  }
+
+  /**
+   * PayoutRequest createMany
+   */
+  export type PayoutRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PayoutRequests.
+     */
+    data: PayoutRequestCreateManyInput | PayoutRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PayoutRequest createManyAndReturn
+   */
+  export type PayoutRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many PayoutRequests.
+     */
+    data: PayoutRequestCreateManyInput | PayoutRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PayoutRequest update
+   */
+  export type PayoutRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PayoutRequest.
+     */
+    data: XOR<PayoutRequestUpdateInput, PayoutRequestUncheckedUpdateInput>
+    /**
+     * Choose, which PayoutRequest to update.
+     */
+    where: PayoutRequestWhereUniqueInput
+  }
+
+  /**
+   * PayoutRequest updateMany
+   */
+  export type PayoutRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PayoutRequests.
+     */
+    data: XOR<PayoutRequestUpdateManyMutationInput, PayoutRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which PayoutRequests to update
+     */
+    where?: PayoutRequestWhereInput
+    /**
+     * Limit how many PayoutRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayoutRequest updateManyAndReturn
+   */
+  export type PayoutRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update PayoutRequests.
+     */
+    data: XOR<PayoutRequestUpdateManyMutationInput, PayoutRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which PayoutRequests to update
+     */
+    where?: PayoutRequestWhereInput
+    /**
+     * Limit how many PayoutRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PayoutRequest upsert
+   */
+  export type PayoutRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PayoutRequest to update in case it exists.
+     */
+    where: PayoutRequestWhereUniqueInput
+    /**
+     * In case the PayoutRequest found by the `where` argument doesn't exist, create a new PayoutRequest with this data.
+     */
+    create: XOR<PayoutRequestCreateInput, PayoutRequestUncheckedCreateInput>
+    /**
+     * In case the PayoutRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PayoutRequestUpdateInput, PayoutRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * PayoutRequest delete
+   */
+  export type PayoutRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+    /**
+     * Filter which PayoutRequest to delete.
+     */
+    where: PayoutRequestWhereUniqueInput
+  }
+
+  /**
+   * PayoutRequest deleteMany
+   */
+  export type PayoutRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayoutRequests to delete
+     */
+    where?: PayoutRequestWhereInput
+    /**
+     * Limit how many PayoutRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayoutRequest without action
+   */
+  export type PayoutRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayoutRequest
+     */
+    select?: PayoutRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayoutRequest
+     */
+    omit?: PayoutRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayoutRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -29118,6 +30429,24 @@ export namespace Prisma {
   };
 
   export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
+
+
+  export const PayoutRequestScalarFieldEnum: {
+    id: 'id',
+    professionalId: 'professionalId',
+    amount: 'amount',
+    bankName: 'bankName',
+    accountNumber: 'accountNumber',
+    accountHolderName: 'accountHolderName',
+    branchName: 'branchName',
+    status: 'status',
+    referenceNumber: 'referenceNumber',
+    adminNote: 'adminNote',
+    createdAt: 'createdAt',
+    processedAt: 'processedAt'
+  };
+
+  export type PayoutRequestScalarFieldEnum = (typeof PayoutRequestScalarFieldEnum)[keyof typeof PayoutRequestScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -29530,6 +30859,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostListRelationFilter
     elderHomeServices?: ElderHomeServiceListRelationFilter
     walletTransactions?: WalletTransactionListRelationFilter
+    payoutRequests?: PayoutRequestListRelationFilter
   }
 
   export type ProfessionalProfileOrderByWithRelationInput = {
@@ -29576,6 +30906,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostOrderByRelationAggregateInput
     elderHomeServices?: ElderHomeServiceOrderByRelationAggregateInput
     walletTransactions?: WalletTransactionOrderByRelationAggregateInput
+    payoutRequests?: PayoutRequestOrderByRelationAggregateInput
   }
 
   export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -29625,6 +30956,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostListRelationFilter
     elderHomeServices?: ElderHomeServiceListRelationFilter
     walletTransactions?: WalletTransactionListRelationFilter
+    payoutRequests?: PayoutRequestListRelationFilter
   }, "id" | "userId">
 
   export type ProfessionalProfileOrderByWithAggregationInput = {
@@ -31024,6 +32356,98 @@ export namespace Prisma {
     isBlocked?: BoolWithAggregatesFilter<"WalletTransaction"> | boolean
   }
 
+  export type PayoutRequestWhereInput = {
+    AND?: PayoutRequestWhereInput | PayoutRequestWhereInput[]
+    OR?: PayoutRequestWhereInput[]
+    NOT?: PayoutRequestWhereInput | PayoutRequestWhereInput[]
+    id?: StringFilter<"PayoutRequest"> | string
+    professionalId?: StringFilter<"PayoutRequest"> | string
+    amount?: FloatFilter<"PayoutRequest"> | number
+    bankName?: StringFilter<"PayoutRequest"> | string
+    accountNumber?: StringFilter<"PayoutRequest"> | string
+    accountHolderName?: StringFilter<"PayoutRequest"> | string
+    branchName?: StringNullableFilter<"PayoutRequest"> | string | null
+    status?: StringFilter<"PayoutRequest"> | string
+    referenceNumber?: StringNullableFilter<"PayoutRequest"> | string | null
+    adminNote?: StringNullableFilter<"PayoutRequest"> | string | null
+    createdAt?: DateTimeFilter<"PayoutRequest"> | Date | string
+    processedAt?: DateTimeNullableFilter<"PayoutRequest"> | Date | string | null
+    professional?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }
+
+  export type PayoutRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    amount?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    branchName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    referenceNumber?: SortOrderInput | SortOrder
+    adminNote?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    professional?: ProfessionalProfileOrderByWithRelationInput
+  }
+
+  export type PayoutRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PayoutRequestWhereInput | PayoutRequestWhereInput[]
+    OR?: PayoutRequestWhereInput[]
+    NOT?: PayoutRequestWhereInput | PayoutRequestWhereInput[]
+    professionalId?: StringFilter<"PayoutRequest"> | string
+    amount?: FloatFilter<"PayoutRequest"> | number
+    bankName?: StringFilter<"PayoutRequest"> | string
+    accountNumber?: StringFilter<"PayoutRequest"> | string
+    accountHolderName?: StringFilter<"PayoutRequest"> | string
+    branchName?: StringNullableFilter<"PayoutRequest"> | string | null
+    status?: StringFilter<"PayoutRequest"> | string
+    referenceNumber?: StringNullableFilter<"PayoutRequest"> | string | null
+    adminNote?: StringNullableFilter<"PayoutRequest"> | string | null
+    createdAt?: DateTimeFilter<"PayoutRequest"> | Date | string
+    processedAt?: DateTimeNullableFilter<"PayoutRequest"> | Date | string | null
+    professional?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }, "id">
+
+  export type PayoutRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    amount?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    branchName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    referenceNumber?: SortOrderInput | SortOrder
+    adminNote?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    processedAt?: SortOrderInput | SortOrder
+    _count?: PayoutRequestCountOrderByAggregateInput
+    _avg?: PayoutRequestAvgOrderByAggregateInput
+    _max?: PayoutRequestMaxOrderByAggregateInput
+    _min?: PayoutRequestMinOrderByAggregateInput
+    _sum?: PayoutRequestSumOrderByAggregateInput
+  }
+
+  export type PayoutRequestScalarWhereWithAggregatesInput = {
+    AND?: PayoutRequestScalarWhereWithAggregatesInput | PayoutRequestScalarWhereWithAggregatesInput[]
+    OR?: PayoutRequestScalarWhereWithAggregatesInput[]
+    NOT?: PayoutRequestScalarWhereWithAggregatesInput | PayoutRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PayoutRequest"> | string
+    professionalId?: StringWithAggregatesFilter<"PayoutRequest"> | string
+    amount?: FloatWithAggregatesFilter<"PayoutRequest"> | number
+    bankName?: StringWithAggregatesFilter<"PayoutRequest"> | string
+    accountNumber?: StringWithAggregatesFilter<"PayoutRequest"> | string
+    accountHolderName?: StringWithAggregatesFilter<"PayoutRequest"> | string
+    branchName?: StringNullableWithAggregatesFilter<"PayoutRequest"> | string | null
+    status?: StringWithAggregatesFilter<"PayoutRequest"> | string
+    referenceNumber?: StringNullableWithAggregatesFilter<"PayoutRequest"> | string | null
+    adminNote?: StringNullableWithAggregatesFilter<"PayoutRequest"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PayoutRequest"> | Date | string
+    processedAt?: DateTimeNullableWithAggregatesFilter<"PayoutRequest"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -31340,6 +32764,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateInput = {
@@ -31385,6 +32810,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUpdateInput = {
@@ -31430,6 +32856,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateInput = {
@@ -31475,6 +32902,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileCreateManyInput = {
@@ -32974,6 +34402,110 @@ export namespace Prisma {
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type PayoutRequestCreateInput = {
+    id?: string
+    amount: number
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    branchName?: string | null
+    status?: string
+    referenceNumber?: string | null
+    adminNote?: string | null
+    createdAt?: Date | string
+    processedAt?: Date | string | null
+    professional: ProfessionalProfileCreateNestedOneWithoutPayoutRequestsInput
+  }
+
+  export type PayoutRequestUncheckedCreateInput = {
+    id?: string
+    professionalId: string
+    amount: number
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    branchName?: string | null
+    status?: string
+    referenceNumber?: string | null
+    adminNote?: string | null
+    createdAt?: Date | string
+    processedAt?: Date | string | null
+  }
+
+  export type PayoutRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    branchName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    professional?: ProfessionalProfileUpdateOneRequiredWithoutPayoutRequestsNestedInput
+  }
+
+  export type PayoutRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    branchName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayoutRequestCreateManyInput = {
+    id?: string
+    professionalId: string
+    amount: number
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    branchName?: string | null
+    status?: string
+    referenceNumber?: string | null
+    adminNote?: string | null
+    createdAt?: Date | string
+    processedAt?: Date | string | null
+  }
+
+  export type PayoutRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    branchName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayoutRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    branchName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -33398,6 +34930,12 @@ export namespace Prisma {
     none?: WalletTransactionWhereInput
   }
 
+  export type PayoutRequestListRelationFilter = {
+    every?: PayoutRequestWhereInput
+    some?: PayoutRequestWhereInput
+    none?: PayoutRequestWhereInput
+  }
+
   export type ElderHomePostOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -33407,6 +34945,10 @@ export namespace Prisma {
   }
 
   export type WalletTransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PayoutRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34382,6 +35924,59 @@ export namespace Prisma {
     balanceAfter?: SortOrder
   }
 
+  export type PayoutRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    amount?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    branchName?: SortOrder
+    status?: SortOrder
+    referenceNumber?: SortOrder
+    adminNote?: SortOrder
+    createdAt?: SortOrder
+    processedAt?: SortOrder
+  }
+
+  export type PayoutRequestAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type PayoutRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    amount?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    branchName?: SortOrder
+    status?: SortOrder
+    referenceNumber?: SortOrder
+    adminNote?: SortOrder
+    createdAt?: SortOrder
+    processedAt?: SortOrder
+  }
+
+  export type PayoutRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    amount?: SortOrder
+    bankName?: SortOrder
+    accountNumber?: SortOrder
+    accountHolderName?: SortOrder
+    branchName?: SortOrder
+    status?: SortOrder
+    referenceNumber?: SortOrder
+    adminNote?: SortOrder
+    createdAt?: SortOrder
+    processedAt?: SortOrder
+  }
+
+  export type PayoutRequestSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
   export type PatientProfileCreateNestedOneWithoutUserInput = {
     create?: XOR<PatientProfileCreateWithoutUserInput, PatientProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: PatientProfileCreateOrConnectWithoutUserInput
@@ -34915,6 +36510,13 @@ export namespace Prisma {
     connect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
   }
 
+  export type PayoutRequestCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<PayoutRequestCreateWithoutProfessionalInput, PayoutRequestUncheckedCreateWithoutProfessionalInput> | PayoutRequestCreateWithoutProfessionalInput[] | PayoutRequestUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: PayoutRequestCreateOrConnectWithoutProfessionalInput | PayoutRequestCreateOrConnectWithoutProfessionalInput[]
+    createMany?: PayoutRequestCreateManyProfessionalInputEnvelope
+    connect?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+  }
+
   export type AppointmentUncheckedCreateNestedManyWithoutProfessionalInput = {
     create?: XOR<AppointmentCreateWithoutProfessionalInput, AppointmentUncheckedCreateWithoutProfessionalInput> | AppointmentCreateWithoutProfessionalInput[] | AppointmentUncheckedCreateWithoutProfessionalInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutProfessionalInput | AppointmentCreateOrConnectWithoutProfessionalInput[]
@@ -34962,6 +36564,13 @@ export namespace Prisma {
     connectOrCreate?: WalletTransactionCreateOrConnectWithoutProfessionalInput | WalletTransactionCreateOrConnectWithoutProfessionalInput[]
     createMany?: WalletTransactionCreateManyProfessionalInputEnvelope
     connect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+  }
+
+  export type PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<PayoutRequestCreateWithoutProfessionalInput, PayoutRequestUncheckedCreateWithoutProfessionalInput> | PayoutRequestCreateWithoutProfessionalInput[] | PayoutRequestUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: PayoutRequestCreateOrConnectWithoutProfessionalInput | PayoutRequestCreateOrConnectWithoutProfessionalInput[]
+    createMany?: PayoutRequestCreateManyProfessionalInputEnvelope
+    connect?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -35102,6 +36711,20 @@ export namespace Prisma {
     deleteMany?: WalletTransactionScalarWhereInput | WalletTransactionScalarWhereInput[]
   }
 
+  export type PayoutRequestUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<PayoutRequestCreateWithoutProfessionalInput, PayoutRequestUncheckedCreateWithoutProfessionalInput> | PayoutRequestCreateWithoutProfessionalInput[] | PayoutRequestUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: PayoutRequestCreateOrConnectWithoutProfessionalInput | PayoutRequestCreateOrConnectWithoutProfessionalInput[]
+    upsert?: PayoutRequestUpsertWithWhereUniqueWithoutProfessionalInput | PayoutRequestUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: PayoutRequestCreateManyProfessionalInputEnvelope
+    set?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    disconnect?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    delete?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    connect?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    update?: PayoutRequestUpdateWithWhereUniqueWithoutProfessionalInput | PayoutRequestUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: PayoutRequestUpdateManyWithWhereWithoutProfessionalInput | PayoutRequestUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: PayoutRequestScalarWhereInput | PayoutRequestScalarWhereInput[]
+  }
+
   export type AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput = {
     create?: XOR<AppointmentCreateWithoutProfessionalInput, AppointmentUncheckedCreateWithoutProfessionalInput> | AppointmentCreateWithoutProfessionalInput[] | AppointmentUncheckedCreateWithoutProfessionalInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutProfessionalInput | AppointmentCreateOrConnectWithoutProfessionalInput[]
@@ -35198,6 +36821,20 @@ export namespace Prisma {
     update?: WalletTransactionUpdateWithWhereUniqueWithoutProfessionalInput | WalletTransactionUpdateWithWhereUniqueWithoutProfessionalInput[]
     updateMany?: WalletTransactionUpdateManyWithWhereWithoutProfessionalInput | WalletTransactionUpdateManyWithWhereWithoutProfessionalInput[]
     deleteMany?: WalletTransactionScalarWhereInput | WalletTransactionScalarWhereInput[]
+  }
+
+  export type PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<PayoutRequestCreateWithoutProfessionalInput, PayoutRequestUncheckedCreateWithoutProfessionalInput> | PayoutRequestCreateWithoutProfessionalInput[] | PayoutRequestUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: PayoutRequestCreateOrConnectWithoutProfessionalInput | PayoutRequestCreateOrConnectWithoutProfessionalInput[]
+    upsert?: PayoutRequestUpsertWithWhereUniqueWithoutProfessionalInput | PayoutRequestUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: PayoutRequestCreateManyProfessionalInputEnvelope
+    set?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    disconnect?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    delete?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    connect?: PayoutRequestWhereUniqueInput | PayoutRequestWhereUniqueInput[]
+    update?: PayoutRequestUpdateWithWhereUniqueWithoutProfessionalInput | PayoutRequestUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: PayoutRequestUpdateManyWithWhereWithoutProfessionalInput | PayoutRequestUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: PayoutRequestScalarWhereInput | PayoutRequestScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPharmacistProfileInput = {
@@ -35918,6 +37555,20 @@ export namespace Prisma {
     update?: XOR<XOR<ProfessionalProfileUpdateToOneWithWhereWithoutWalletTransactionsInput, ProfessionalProfileUpdateWithoutWalletTransactionsInput>, ProfessionalProfileUncheckedUpdateWithoutWalletTransactionsInput>
   }
 
+  export type ProfessionalProfileCreateNestedOneWithoutPayoutRequestsInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutPayoutRequestsInput, ProfessionalProfileUncheckedCreateWithoutPayoutRequestsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutPayoutRequestsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+  }
+
+  export type ProfessionalProfileUpdateOneRequiredWithoutPayoutRequestsNestedInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutPayoutRequestsInput, ProfessionalProfileUncheckedCreateWithoutPayoutRequestsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutPayoutRequestsInput
+    upsert?: ProfessionalProfileUpsertWithoutPayoutRequestsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+    update?: XOR<XOR<ProfessionalProfileUpdateToOneWithWhereWithoutPayoutRequestsInput, ProfessionalProfileUpdateWithoutPayoutRequestsInput>, ProfessionalProfileUncheckedUpdateWithoutPayoutRequestsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -36260,6 +37911,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
@@ -36304,6 +37956,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutUserInput = {
@@ -36525,6 +38178,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
@@ -36569,6 +38223,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type PharmacistProfileUpsertWithoutUserInput = {
@@ -37483,6 +39138,44 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PayoutRequestCreateWithoutProfessionalInput = {
+    id?: string
+    amount: number
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    branchName?: string | null
+    status?: string
+    referenceNumber?: string | null
+    adminNote?: string | null
+    createdAt?: Date | string
+    processedAt?: Date | string | null
+  }
+
+  export type PayoutRequestUncheckedCreateWithoutProfessionalInput = {
+    id?: string
+    amount: number
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    branchName?: string | null
+    status?: string
+    referenceNumber?: string | null
+    adminNote?: string | null
+    createdAt?: Date | string
+    processedAt?: Date | string | null
+  }
+
+  export type PayoutRequestCreateOrConnectWithoutProfessionalInput = {
+    where: PayoutRequestWhereUniqueInput
+    create: XOR<PayoutRequestCreateWithoutProfessionalInput, PayoutRequestUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type PayoutRequestCreateManyProfessionalInputEnvelope = {
+    data: PayoutRequestCreateManyProfessionalInput | PayoutRequestCreateManyProfessionalInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutProfessionalProfileInput = {
     update: XOR<UserUpdateWithoutProfessionalProfileInput, UserUncheckedUpdateWithoutProfessionalProfileInput>
     create: XOR<UserCreateWithoutProfessionalProfileInput, UserUncheckedCreateWithoutProfessionalProfileInput>
@@ -37684,6 +39377,40 @@ export namespace Prisma {
     balanceAfter?: FloatFilter<"WalletTransaction"> | number
     createdAt?: DateTimeFilter<"WalletTransaction"> | Date | string
     isBlocked?: BoolFilter<"WalletTransaction"> | boolean
+  }
+
+  export type PayoutRequestUpsertWithWhereUniqueWithoutProfessionalInput = {
+    where: PayoutRequestWhereUniqueInput
+    update: XOR<PayoutRequestUpdateWithoutProfessionalInput, PayoutRequestUncheckedUpdateWithoutProfessionalInput>
+    create: XOR<PayoutRequestCreateWithoutProfessionalInput, PayoutRequestUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type PayoutRequestUpdateWithWhereUniqueWithoutProfessionalInput = {
+    where: PayoutRequestWhereUniqueInput
+    data: XOR<PayoutRequestUpdateWithoutProfessionalInput, PayoutRequestUncheckedUpdateWithoutProfessionalInput>
+  }
+
+  export type PayoutRequestUpdateManyWithWhereWithoutProfessionalInput = {
+    where: PayoutRequestScalarWhereInput
+    data: XOR<PayoutRequestUpdateManyMutationInput, PayoutRequestUncheckedUpdateManyWithoutProfessionalInput>
+  }
+
+  export type PayoutRequestScalarWhereInput = {
+    AND?: PayoutRequestScalarWhereInput | PayoutRequestScalarWhereInput[]
+    OR?: PayoutRequestScalarWhereInput[]
+    NOT?: PayoutRequestScalarWhereInput | PayoutRequestScalarWhereInput[]
+    id?: StringFilter<"PayoutRequest"> | string
+    professionalId?: StringFilter<"PayoutRequest"> | string
+    amount?: FloatFilter<"PayoutRequest"> | number
+    bankName?: StringFilter<"PayoutRequest"> | string
+    accountNumber?: StringFilter<"PayoutRequest"> | string
+    accountHolderName?: StringFilter<"PayoutRequest"> | string
+    branchName?: StringNullableFilter<"PayoutRequest"> | string | null
+    status?: StringFilter<"PayoutRequest"> | string
+    referenceNumber?: StringNullableFilter<"PayoutRequest"> | string | null
+    adminNote?: StringNullableFilter<"PayoutRequest"> | string | null
+    createdAt?: DateTimeFilter<"PayoutRequest"> | Date | string
+    processedAt?: DateTimeNullableFilter<"PayoutRequest"> | Date | string | null
   }
 
   export type UserCreateWithoutPharmacistProfileInput = {
@@ -38060,6 +39787,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutAppointmentsInput = {
@@ -38104,6 +39832,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutAppointmentsInput = {
@@ -38259,6 +39988,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutAppointmentsInput = {
@@ -38303,6 +40033,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type PrescriptionUpsertWithWhereUniqueWithoutAppointmentInput = {
@@ -38525,6 +40256,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutPrescriptionsInput = {
@@ -38569,6 +40301,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutPrescriptionsInput = {
@@ -38779,6 +40512,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutPrescriptionsInput = {
@@ -38823,6 +40557,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type PatientProfileUpsertWithoutPrescriptionsInput = {
@@ -39748,6 +41483,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutEmergencySOSsInput = {
@@ -39792,6 +41528,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutEmergencySOSsInput = {
@@ -39891,6 +41628,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutEmergencySOSsInput = {
@@ -39935,6 +41673,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type UserCreateWithoutActivityLogsInput = {
@@ -40096,6 +41835,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutReviewsInput = {
@@ -40140,6 +41880,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutReviewsInput = {
@@ -40239,6 +41980,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutReviewsInput = {
@@ -40283,6 +42025,7 @@ export namespace Prisma {
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileCreateWithoutElderHomePostsInput = {
@@ -40327,6 +42070,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutElderHomePostsInput = {
@@ -40371,6 +42115,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutElderHomePostsInput = {
@@ -40431,6 +42176,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutElderHomePostsInput = {
@@ -40475,6 +42221,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileCreateWithoutElderHomeServicesInput = {
@@ -40519,6 +42266,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutElderHomeServicesInput = {
@@ -40563,6 +42311,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutElderHomeServicesInput = {
@@ -40623,6 +42372,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutElderHomeServicesInput = {
@@ -40667,6 +42417,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileCreateWithoutWalletTransactionsInput = {
@@ -40711,6 +42462,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    payoutRequests?: PayoutRequestCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutWalletTransactionsInput = {
@@ -40755,6 +42507,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    payoutRequests?: PayoutRequestUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutWalletTransactionsInput = {
@@ -40815,6 +42568,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    payoutRequests?: PayoutRequestUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutWalletTransactionsInput = {
@@ -40859,6 +42613,203 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    payoutRequests?: PayoutRequestUncheckedUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type ProfessionalProfileCreateWithoutPayoutRequestsInput = {
+    id?: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    isWalletBlocked?: boolean
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    user: UserCreateNestedOneWithoutProfessionalProfileInput
+    appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
+  }
+
+  export type ProfessionalProfileUncheckedCreateWithoutPayoutRequestsInput = {
+    id?: string
+    userId: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    isWalletBlocked?: boolean
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
+  }
+
+  export type ProfessionalProfileCreateOrConnectWithoutPayoutRequestsInput = {
+    where: ProfessionalProfileWhereUniqueInput
+    create: XOR<ProfessionalProfileCreateWithoutPayoutRequestsInput, ProfessionalProfileUncheckedCreateWithoutPayoutRequestsInput>
+  }
+
+  export type ProfessionalProfileUpsertWithoutPayoutRequestsInput = {
+    update: XOR<ProfessionalProfileUpdateWithoutPayoutRequestsInput, ProfessionalProfileUncheckedUpdateWithoutPayoutRequestsInput>
+    create: XOR<ProfessionalProfileCreateWithoutPayoutRequestsInput, ProfessionalProfileUncheckedCreateWithoutPayoutRequestsInput>
+    where?: ProfessionalProfileWhereInput
+  }
+
+  export type ProfessionalProfileUpdateToOneWithWhereWithoutPayoutRequestsInput = {
+    where?: ProfessionalProfileWhereInput
+    data: XOR<ProfessionalProfileUpdateWithoutPayoutRequestsInput, ProfessionalProfileUncheckedUpdateWithoutPayoutRequestsInput>
+  }
+
+  export type ProfessionalProfileUpdateWithoutPayoutRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+    appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type ProfessionalProfileUncheckedUpdateWithoutPayoutRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ActivityLogCreateManyUserInput = {
@@ -41250,6 +43201,20 @@ export namespace Prisma {
     isBlocked?: boolean
   }
 
+  export type PayoutRequestCreateManyProfessionalInput = {
+    id?: string
+    amount: number
+    bankName: string
+    accountNumber: string
+    accountHolderName: string
+    branchName?: string | null
+    status?: string
+    referenceNumber?: string | null
+    adminNote?: string | null
+    createdAt?: Date | string
+    processedAt?: Date | string | null
+  }
+
   export type AppointmentUpdateWithoutProfessionalInput = {
     id?: StringFieldUpdateOperationsInput | string
     serviceType?: StringFieldUpdateOperationsInput | string
@@ -41487,6 +43452,48 @@ export namespace Prisma {
     balanceAfter?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type PayoutRequestUpdateWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    branchName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayoutRequestUncheckedUpdateWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    branchName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayoutRequestUncheckedUpdateManyWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    bankName?: StringFieldUpdateOperationsInput | string
+    accountNumber?: StringFieldUpdateOperationsInput | string
+    accountHolderName?: StringFieldUpdateOperationsInput | string
+    branchName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    referenceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    adminNote?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ProductCreateManyPharmacistInput = {
