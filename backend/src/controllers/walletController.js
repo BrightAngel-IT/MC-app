@@ -678,24 +678,3 @@ exports.processPayoutRequest = async (req, res) => {
         return res.status(500).json({ message: "Error processing payout", error: error.message });
     }
 };
-
-                        balanceAfter: refundBal,
-                        description: `Withdrawal Request Rejected & Refunded (Reason: ${adminNote || 'Invalid bank info'})`
-                    }
-                })
-            ]);
-
-            return res.status(200).json({
-                message: "Payout request rejected and funds returned to Doctor's wallet.",
-                payoutRequest: updated
-            });
-        } else {
-            return res.status(400).json({ message: "Invalid action. Use 'APPROVE' or 'REJECT'." });
-        }
-    } catch (error) {
-        console.error("Error processing payout request:", error);
-        return res.status(500).json({ message: "Error processing payout", error: error.message });
-    }
-};
-
-
