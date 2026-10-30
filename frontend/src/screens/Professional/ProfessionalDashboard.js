@@ -224,13 +224,39 @@ const ProfessionalDashboard = ({ navigation }) => {
           </View>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity onPress={() => setMapModalVisible(true)} style={{marginRight: 15}}><Ionicons name='map-outline' size={24} color={colors.primary} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Calendar')} style={{marginRight: 15}}>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfessionalWallet')} style={{marginRight: 15}}>
+            <Ionicons name="wallet-outline" size={24} color={colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setMapModalVisible(true)} style={{marginRight: 15}}>
+            <Ionicons name='map-outline' size={24} color={colors.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Calendar')} style={{marginRight: 15}}>
             <Ionicons name="calendar-outline" size={24} color={colors.primary} />
           </TouchableOpacity>
           <NotificationBell />
         </View>
       </View>
+
+      {/* Quick Wallet Summary Card */}
+      <TouchableOpacity 
+        style={[styles.quickWalletCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+        onPress={() => navigation.navigate('ProfessionalWallet')}
+        activeOpacity={0.85}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={[styles.walletCircle, { backgroundColor: colors.primary + '18' }]}>
+            <Ionicons name="wallet" size={22} color={colors.primary} />
+          </View>
+          <View style={{ marginLeft: 12 }}>
+            <Text style={{ fontSize: 12, color: colors.textLight, fontWeight: '600' }}>MY WALLET & EARNINGS</Text>
+            <Text style={{ fontSize: 13, color: colors.text, marginTop: 2 }}>Tap to view line-by-line statements</Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary, marginRight: 4 }}>Open</Text>
+          <Ionicons name="chevron-forward" size={16} color={colors.primary} />
+        </View>
+      </TouchableOpacity>
 
       {todayAppointments > 0 && (
         <View style={styles.bannerContainer}>
@@ -397,6 +423,29 @@ const getStyles = (colors) => StyleSheet.create({
     color: colors.primary,
     marginTop: 4,
     letterSpacing: 1,
+  },
+  quickWalletCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    marginTop: 15,
+    marginBottom: 5,
+    padding: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  walletCircle: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bannerContainer: {
     flexDirection: 'row',

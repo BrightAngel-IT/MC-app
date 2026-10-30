@@ -176,6 +176,7 @@ exports.Prisma.ProfessionalProfileScalarFieldEnum = {
   serviceRadius: 'serviceRadius',
   serveEverywhere: 'serveEverywhere',
   walletBalance: 'walletBalance',
+  isWalletBlocked: 'isWalletBlocked',
   licenseIssuedYear: 'licenseIssuedYear',
   licenseNumber: 'licenseNumber',
   idFrontImage: 'idFrontImage',
@@ -372,6 +373,21 @@ exports.Prisma.ElderHomeServiceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WalletTransactionScalarFieldEnum = {
+  id: 'id',
+  professionalId: 'professionalId',
+  appointmentId: 'appointmentId',
+  amount: 'amount',
+  type: 'type',
+  paymentMethod: 'paymentMethod',
+  totalFee: 'totalFee',
+  commissionAmount: 'commissionAmount',
+  description: 'description',
+  balanceAfter: 'balanceAfter',
+  createdAt: 'createdAt',
+  isBlocked: 'isBlocked'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -426,7 +442,8 @@ exports.Prisma.ModelName = {
   Review: 'Review',
   SystemSetting: 'SystemSetting',
   ElderHomePost: 'ElderHomePost',
-  ElderHomeService: 'ElderHomeService'
+  ElderHomeService: 'ElderHomeService',
+  WalletTransaction: 'WalletTransaction'
 };
 
 /**

@@ -37,6 +37,7 @@ import AdminReportsScreen from '../screens/Admin/AdminReportsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import EditProfessionalProfileScreen from '../screens/Professional/EditProfessionalProfileScreen';
+import ProfessionalWalletScreen from '../screens/Professional/ProfessionalWalletScreen';
 import AdminProfileScreen from '../screens/Admin/AdminProfileScreen';
 
 const Stack = createNativeStackNavigator();
@@ -536,6 +537,13 @@ const AppNavigator = () => {
             headerStyle: { backgroundColor: colors.surface },
             headerTintColor: colors.text,
           })} 
+        />
+        <Stack.Screen 
+          name="ProfessionalWallet" 
+          component={ProfessionalWalletScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
         />
       </>
     );

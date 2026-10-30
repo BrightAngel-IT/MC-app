@@ -142,10 +142,12 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.padding * 3,
   },
   btn: {
-    width: width * 0.8,
+    width: '100%',
+    maxWidth: 360,
     padding: SIZES.padding,
     borderRadius: SIZES.radius,
     alignItems: 'center',
+    marginTop: 10,
   },
   btnText: {
     color: '#fff',

@@ -8,6 +8,7 @@ import AdminOverviewScreen from './AdminOverviewScreen';
 import AdminApprovalsScreen from './AdminApprovalsScreen';
 import AdminAppointmentsScreen from './AdminAppointmentsScreen';
 import AdminUsersScreen from './AdminUsersScreen';
+import AdminFinanceScreen from './AdminFinanceScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,8 @@ const AdminDashboard = () => {
             iconName = focused ? 'check-decagram' : 'check-decagram-outline';
           } else if (route.name === 'Appointments') {
             iconName = focused ? 'clipboard-check' : 'clipboard-check-outline';
+          } else if (route.name === 'Finance') {
+            iconName = focused ? 'cash-multiple' : 'cash-refund';
           } else if (route.name === 'Users') {
             iconName = focused ? 'account-group' : 'account-group-outline';
           }
@@ -47,6 +50,7 @@ const AdminDashboard = () => {
       <Tab.Screen name="Overview" component={AdminOverviewScreen} />
       <Tab.Screen name="Approvals" component={AdminApprovalsScreen} />
       <Tab.Screen name="Appointments" component={AdminAppointmentsScreen} options={{ tabBarLabel: 'Audit' }} />
+      <Tab.Screen name="Finance" component={AdminFinanceScreen} options={{ tabBarLabel: 'Finance' }} />
       <Tab.Screen name="Users" component={AdminUsersScreen} options={{ tabBarLabel: 'Users' }} />
     </Tab.Navigator>
   );

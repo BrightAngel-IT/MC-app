@@ -25,6 +25,20 @@ exports.approveUser = async(req,res)=>{
             where: {id: userId},
             data: {verificationStatus: "APPROVED"}
         });
+
+        // Record approval timestamp in ActivityLog so it is permanently tracked
+        try {
+            await prisma.activityLog.create({
+                data: {
+                    userId: userId,
+                    actionType: 'ACCOUNT_APPROVED',
+                    description: `User account approved by admin (${req.user?.fullName || req.user?.email || 'Admin'})`
+                }
+            });
+        } catch (logErr) {
+            console.log('Error creating approval activity log:', logErr.message);
+        }
+
         return res.status(200).json({message: 'User approved successfully', updatedUser});
     } catch (error) {
         console.log(error);
@@ -139,7 +153,13 @@ exports.getAllUsers = async(req,res) => {
                     }
                 },
                 pharmacistProfile: true,
-            }
+                activityLogs: {
+                    where: { actionType: 'ACCOUNT_APPROVED' },
+                    orderBy: { createdAt: 'desc' },
+                    take: 1
+                }
+            },
+            orderBy: { createdAt: 'desc' }
         });
         return res.status(200).json({message: 'Users fetched successfully', users});
     } catch (error) {

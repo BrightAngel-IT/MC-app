@@ -91,26 +91,100 @@ exports.confirmAppointment = async (req, res) => {
 exports.completeAppointment = async (req, res) => {
     try {
         const { id } = req.params;
-        const appointment = await prisma.appointment.update({
+
+        const appointment = await prisma.appointment.findUnique({
             where: { id },
-            data: { status: 'COMPLETED', completedAt: new Date() },
-            include: { patient: { include: { user: true } }, professional: { include: { user: true } } }
+            include: {
+                patient: { include: { user: true } },
+                professional: { include: { user: true } }
+            }
         });
 
-        await notificationService.sendNotification(
-            appointment.patient.userId,
-            "Appointment Completed",
-            `Your appointment with Dr. ${appointment.professional.user.fullName} has been completed.`,
-            "APPOINTMENT",
-            appointment.id
-        );
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found" });
+        }
 
-        res.status(200).json({ message: "Appointment completed" });
+        if (appointment.status !== "COMPLETED") {
+            const totalFee = Number(appointment.totalAmount) || 0;
+            const paymentMethod = appointment.paymentMethod || "CASH";
+
+            let commissionPercent = 30;
+            try {
+                const setting = await prisma.systemSetting.findUnique({
+                    where: { key: "COMMISSION_PERCENTAGE" }
+                });
+                if (setting && setting.value) {
+                    commissionPercent = parseFloat(setting.value);
+                }
+            } catch (setErr) {}
+
+            const commissionAmount = totalFee * (commissionPercent / 100);
+            const professionalIncome = totalFee - commissionAmount;
+
+            let walletChange = 0;
+            let transactionType = 'CREDIT';
+            let description = '';
+
+            if (paymentMethod === "CARD") {
+                // Card payment -> Collected by company, doctor gets credited their share (+)
+                walletChange = professionalIncome;
+                transactionType = "CREDIT";
+                description = `Card Payment Received (Total: Rs. ${totalFee}, Platform Fee: Rs. ${commissionAmount}, Your Share: +Rs. ${professionalIncome})`;
+            } else {
+                // Cash payment -> Collected by doctor, company commission is debited (-)
+                walletChange = -commissionAmount;
+                transactionType = "DEBIT";
+                description = `Cash Collected by Doctor (Total: Rs. ${totalFee}, Platform Fee Due: -Rs. ${commissionAmount})`;
+            }
+
+            const currentBalance = Number(appointment.professional.walletBalance) || 0;
+            const newBalance = currentBalance + walletChange;
+
+            await prisma.$transaction([
+                prisma.professionalProfile.update({
+                    where: { id: appointment.professional.id },
+                    data: { walletBalance: newBalance }
+                }),
+                prisma.walletTransaction.create({
+                    data: {
+                        professionalId: appointment.professional.id,
+                        appointmentId: appointment.id,
+                        amount: walletChange,
+                        type: transactionType,
+                        paymentMethod: paymentMethod,
+                        totalFee: totalFee,
+                        commissionAmount: commissionAmount,
+                        description: description,
+                        balanceAfter: newBalance
+                    }
+                }),
+                prisma.appointment.update({
+                    where: { id },
+                    data: {
+                        status: "COMPLETED",
+                        paymentStatus: "PAID",
+                        completedAt: new Date()
+                    }
+                })
+            ]);
+        }
+
+        try {
+            await notificationService.sendNotification(
+                appointment.patient.userId,
+                "Appointment Completed",
+                `Your appointment with Dr. ${appointment.professional.user.fullName} has been completed.`,
+                "APPOINTMENT",
+                appointment.id
+            );
+        } catch (notiError) {}
+
+        return res.status(200).json({ message: "Appointment Completed and Payment processed successfully!" });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Error completing" });
+        console.log("Complete Appointment Error:", error);
+        return res.status(500).json({ message: "Error completing appointment!", error: error.message });
     }
-};  
+};
 
 exports.issuePrescription = async (req, res) => {
     try {
@@ -252,29 +326,6 @@ exports.deleteAppointment = async(req, res) => {
     }
 };
 
-exports.completeAppointment = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const appointment = await prisma.appointment.update({
-            where: { id },
-            data: { status: 'COMPLETED' },
-            include: { patient: { include: { user: true } }, professional: { include: { user: true } } }
-        });
-        
-        await notificationService.sendNotification(
-            appointment.patient.userId,
-            "Service Completed",
-            `${appointment.professional.user.fullName} has completed your request. Please rate your experience!`,
-            "APPOINTMENT_COMPLETED",
-            appointment.id
-        );
-        
-        res.status(200).json({ message: "Appointment completed" });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Error completing appointment" });
-    }
-};
 
 exports.completeSOS = async (req, res) => {
     try {

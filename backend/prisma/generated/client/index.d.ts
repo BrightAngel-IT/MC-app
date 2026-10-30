@@ -118,6 +118,11 @@ export type ElderHomePost = $Result.DefaultSelection<Prisma.$ElderHomePostPayloa
  * 
  */
 export type ElderHomeService = $Result.DefaultSelection<Prisma.$ElderHomeServicePayload>
+/**
+ * Model WalletTransaction
+ * 
+ */
+export type WalletTransaction = $Result.DefaultSelection<Prisma.$WalletTransactionPayload>
 
 /**
  * Enums
@@ -484,6 +489,16 @@ export class PrismaClient<
     * ```
     */
   get elderHomeService(): Prisma.ElderHomeServiceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.walletTransaction`: Exposes CRUD operations for the **WalletTransaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WalletTransactions
+    * const walletTransactions = await prisma.walletTransaction.findMany()
+    * ```
+    */
+  get walletTransaction(): Prisma.WalletTransactionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -945,7 +960,8 @@ export namespace Prisma {
     Review: 'Review',
     SystemSetting: 'SystemSetting',
     ElderHomePost: 'ElderHomePost',
-    ElderHomeService: 'ElderHomeService'
+    ElderHomeService: 'ElderHomeService',
+    WalletTransaction: 'WalletTransaction'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -964,7 +980,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "notification" | "patientProfile" | "professionalProfile" | "pharmacistProfile" | "adminProfile" | "appointment" | "appointmentMessage" | "prescription" | "prescriptionItem" | "product" | "order" | "orderMessage" | "orderItem" | "emergencySOS" | "activityLog" | "rejectedRecord" | "review" | "systemSetting" | "elderHomePost" | "elderHomeService"
+      modelProps: "user" | "notification" | "patientProfile" | "professionalProfile" | "pharmacistProfile" | "adminProfile" | "appointment" | "appointmentMessage" | "prescription" | "prescriptionItem" | "product" | "order" | "orderMessage" | "orderItem" | "emergencySOS" | "activityLog" | "rejectedRecord" | "review" | "systemSetting" | "elderHomePost" | "elderHomeService" | "walletTransaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2522,6 +2538,80 @@ export namespace Prisma {
           }
         }
       }
+      WalletTransaction: {
+        payload: Prisma.$WalletTransactionPayload<ExtArgs>
+        fields: Prisma.WalletTransactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WalletTransactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WalletTransactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+          }
+          findFirst: {
+            args: Prisma.WalletTransactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WalletTransactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+          }
+          findMany: {
+            args: Prisma.WalletTransactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>[]
+          }
+          create: {
+            args: Prisma.WalletTransactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+          }
+          createMany: {
+            args: Prisma.WalletTransactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WalletTransactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>[]
+          }
+          delete: {
+            args: Prisma.WalletTransactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+          }
+          update: {
+            args: Prisma.WalletTransactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.WalletTransactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WalletTransactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WalletTransactionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>[]
+          }
+          upsert: {
+            args: Prisma.WalletTransactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletTransactionPayload>
+          }
+          aggregate: {
+            args: Prisma.WalletTransactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWalletTransaction>
+          }
+          groupBy: {
+            args: Prisma.WalletTransactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WalletTransactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WalletTransactionCountArgs<ExtArgs>
+            result: $Utils.Optional<WalletTransactionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2639,6 +2729,7 @@ export namespace Prisma {
     systemSetting?: SystemSettingOmit
     elderHomePost?: ElderHomePostOmit
     elderHomeService?: ElderHomeServiceOmit
+    walletTransaction?: WalletTransactionOmit
   }
 
   /* Types for Logging */
@@ -2832,6 +2923,7 @@ export namespace Prisma {
     reviews: number
     elderHomePosts: number
     elderHomeServices: number
+    walletTransactions: number
   }
 
   export type ProfessionalProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2841,6 +2933,7 @@ export namespace Prisma {
     reviews?: boolean | ProfessionalProfileCountOutputTypeCountReviewsArgs
     elderHomePosts?: boolean | ProfessionalProfileCountOutputTypeCountElderHomePostsArgs
     elderHomeServices?: boolean | ProfessionalProfileCountOutputTypeCountElderHomeServicesArgs
+    walletTransactions?: boolean | ProfessionalProfileCountOutputTypeCountWalletTransactionsArgs
   }
 
   // Custom InputTypes
@@ -2894,6 +2987,13 @@ export namespace Prisma {
    */
   export type ProfessionalProfileCountOutputTypeCountElderHomeServicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ElderHomeServiceWhereInput
+  }
+
+  /**
+   * ProfessionalProfileCountOutputType without action
+   */
+  export type ProfessionalProfileCountOutputTypeCountWalletTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletTransactionWhereInput
   }
 
 
@@ -6711,6 +6811,7 @@ export namespace Prisma {
     serviceRadius: number | null
     serveEverywhere: boolean | null
     walletBalance: number | null
+    isWalletBlocked: boolean | null
     licenseIssuedYear: number | null
     licenseNumber: string | null
     idFrontImage: string | null
@@ -6748,6 +6849,7 @@ export namespace Prisma {
     serviceRadius: number | null
     serveEverywhere: boolean | null
     walletBalance: number | null
+    isWalletBlocked: boolean | null
     licenseIssuedYear: number | null
     licenseNumber: string | null
     idFrontImage: string | null
@@ -6785,6 +6887,7 @@ export namespace Prisma {
     serviceRadius: number
     serveEverywhere: number
     walletBalance: number
+    isWalletBlocked: number
     licenseIssuedYear: number
     licenseNumber: number
     idFrontImage: number
@@ -6844,6 +6947,7 @@ export namespace Prisma {
     serviceRadius?: true
     serveEverywhere?: true
     walletBalance?: true
+    isWalletBlocked?: true
     licenseIssuedYear?: true
     licenseNumber?: true
     idFrontImage?: true
@@ -6881,6 +6985,7 @@ export namespace Prisma {
     serviceRadius?: true
     serveEverywhere?: true
     walletBalance?: true
+    isWalletBlocked?: true
     licenseIssuedYear?: true
     licenseNumber?: true
     idFrontImage?: true
@@ -6918,6 +7023,7 @@ export namespace Prisma {
     serviceRadius?: true
     serveEverywhere?: true
     walletBalance?: true
+    isWalletBlocked?: true
     licenseIssuedYear?: true
     licenseNumber?: true
     idFrontImage?: true
@@ -7042,6 +7148,7 @@ export namespace Prisma {
     serviceRadius: number
     serveEverywhere: boolean
     walletBalance: number
+    isWalletBlocked: boolean
     licenseIssuedYear: number | null
     licenseNumber: string | null
     idFrontImage: string | null
@@ -7098,6 +7205,7 @@ export namespace Prisma {
     serviceRadius?: boolean
     serveEverywhere?: boolean
     walletBalance?: boolean
+    isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
@@ -7118,6 +7226,7 @@ export namespace Prisma {
     reviews?: boolean | ProfessionalProfile$reviewsArgs<ExtArgs>
     elderHomePosts?: boolean | ProfessionalProfile$elderHomePostsArgs<ExtArgs>
     elderHomeServices?: boolean | ProfessionalProfile$elderHomeServicesArgs<ExtArgs>
+    walletTransactions?: boolean | ProfessionalProfile$walletTransactionsArgs<ExtArgs>
     _count?: boolean | ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professionalProfile"]>
 
@@ -7143,6 +7252,7 @@ export namespace Prisma {
     serviceRadius?: boolean
     serveEverywhere?: boolean
     walletBalance?: boolean
+    isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
@@ -7181,6 +7291,7 @@ export namespace Prisma {
     serviceRadius?: boolean
     serveEverywhere?: boolean
     walletBalance?: boolean
+    isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
@@ -7219,6 +7330,7 @@ export namespace Prisma {
     serviceRadius?: boolean
     serveEverywhere?: boolean
     walletBalance?: boolean
+    isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
     licenseNumber?: boolean
     idFrontImage?: boolean
@@ -7234,7 +7346,7 @@ export namespace Prisma {
     contactPhone?: boolean
   }
 
-  export type ProfessionalProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "specialization" | "qualifications" | "licenseFrontImage" | "licenseBackImage" | "address" | "idCardNumber" | "workingHospital" | "isCurrentlyWorking" | "ambulanceVehicleNumber" | "attachedHospital" | "availabilityStatus" | "rating" | "locationLat" | "locationLng" | "bookingFee" | "serviceRadius" | "serveEverywhere" | "walletBalance" | "licenseIssuedYear" | "licenseNumber" | "idFrontImage" | "idBackImage" | "policies" | "facilities" | "coverImage" | "profileImage" | "socialFacebook" | "socialInstagram" | "socialWhatsapp" | "socialWebsite" | "contactPhone", ExtArgs["result"]["professionalProfile"]>
+  export type ProfessionalProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "specialization" | "qualifications" | "licenseFrontImage" | "licenseBackImage" | "address" | "idCardNumber" | "workingHospital" | "isCurrentlyWorking" | "ambulanceVehicleNumber" | "attachedHospital" | "availabilityStatus" | "rating" | "locationLat" | "locationLng" | "bookingFee" | "serviceRadius" | "serveEverywhere" | "walletBalance" | "isWalletBlocked" | "licenseIssuedYear" | "licenseNumber" | "idFrontImage" | "idBackImage" | "policies" | "facilities" | "coverImage" | "profileImage" | "socialFacebook" | "socialInstagram" | "socialWhatsapp" | "socialWebsite" | "contactPhone", ExtArgs["result"]["professionalProfile"]>
   export type ProfessionalProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     appointments?: boolean | ProfessionalProfile$appointmentsArgs<ExtArgs>
@@ -7243,6 +7355,7 @@ export namespace Prisma {
     reviews?: boolean | ProfessionalProfile$reviewsArgs<ExtArgs>
     elderHomePosts?: boolean | ProfessionalProfile$elderHomePostsArgs<ExtArgs>
     elderHomeServices?: boolean | ProfessionalProfile$elderHomeServicesArgs<ExtArgs>
+    walletTransactions?: boolean | ProfessionalProfile$walletTransactionsArgs<ExtArgs>
     _count?: boolean | ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfessionalProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7262,6 +7375,7 @@ export namespace Prisma {
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
       elderHomePosts: Prisma.$ElderHomePostPayload<ExtArgs>[]
       elderHomeServices: Prisma.$ElderHomeServicePayload<ExtArgs>[]
+      walletTransactions: Prisma.$WalletTransactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7285,6 +7399,7 @@ export namespace Prisma {
       serviceRadius: number
       serveEverywhere: boolean
       walletBalance: number
+      isWalletBlocked: boolean
       licenseIssuedYear: number | null
       licenseNumber: string | null
       idFrontImage: string | null
@@ -7699,6 +7814,7 @@ export namespace Prisma {
     reviews<T extends ProfessionalProfile$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     elderHomePosts<T extends ProfessionalProfile$elderHomePostsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$elderHomePostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomePostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     elderHomeServices<T extends ProfessionalProfile$elderHomeServicesArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$elderHomeServicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ElderHomeServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    walletTransactions<T extends ProfessionalProfile$walletTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfile$walletTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7749,6 +7865,7 @@ export namespace Prisma {
     readonly serviceRadius: FieldRef<"ProfessionalProfile", 'Int'>
     readonly serveEverywhere: FieldRef<"ProfessionalProfile", 'Boolean'>
     readonly walletBalance: FieldRef<"ProfessionalProfile", 'Float'>
+    readonly isWalletBlocked: FieldRef<"ProfessionalProfile", 'Boolean'>
     readonly licenseIssuedYear: FieldRef<"ProfessionalProfile", 'Int'>
     readonly licenseNumber: FieldRef<"ProfessionalProfile", 'String'>
     readonly idFrontImage: FieldRef<"ProfessionalProfile", 'String'>
@@ -8299,6 +8416,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ElderHomeServiceScalarFieldEnum | ElderHomeServiceScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalProfile.walletTransactions
+   */
+  export type ProfessionalProfile$walletTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    where?: WalletTransactionWhereInput
+    orderBy?: WalletTransactionOrderByWithRelationInput | WalletTransactionOrderByWithRelationInput[]
+    cursor?: WalletTransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WalletTransactionScalarFieldEnum | WalletTransactionScalarFieldEnum[]
   }
 
   /**
@@ -27438,6 +27579,1201 @@ export namespace Prisma {
 
 
   /**
+   * Model WalletTransaction
+   */
+
+  export type AggregateWalletTransaction = {
+    _count: WalletTransactionCountAggregateOutputType | null
+    _avg: WalletTransactionAvgAggregateOutputType | null
+    _sum: WalletTransactionSumAggregateOutputType | null
+    _min: WalletTransactionMinAggregateOutputType | null
+    _max: WalletTransactionMaxAggregateOutputType | null
+  }
+
+  export type WalletTransactionAvgAggregateOutputType = {
+    amount: number | null
+    totalFee: number | null
+    commissionAmount: number | null
+    balanceAfter: number | null
+  }
+
+  export type WalletTransactionSumAggregateOutputType = {
+    amount: number | null
+    totalFee: number | null
+    commissionAmount: number | null
+    balanceAfter: number | null
+  }
+
+  export type WalletTransactionMinAggregateOutputType = {
+    id: string | null
+    professionalId: string | null
+    appointmentId: string | null
+    amount: number | null
+    type: string | null
+    paymentMethod: string | null
+    totalFee: number | null
+    commissionAmount: number | null
+    description: string | null
+    balanceAfter: number | null
+    createdAt: Date | null
+    isBlocked: boolean | null
+  }
+
+  export type WalletTransactionMaxAggregateOutputType = {
+    id: string | null
+    professionalId: string | null
+    appointmentId: string | null
+    amount: number | null
+    type: string | null
+    paymentMethod: string | null
+    totalFee: number | null
+    commissionAmount: number | null
+    description: string | null
+    balanceAfter: number | null
+    createdAt: Date | null
+    isBlocked: boolean | null
+  }
+
+  export type WalletTransactionCountAggregateOutputType = {
+    id: number
+    professionalId: number
+    appointmentId: number
+    amount: number
+    type: number
+    paymentMethod: number
+    totalFee: number
+    commissionAmount: number
+    description: number
+    balanceAfter: number
+    createdAt: number
+    isBlocked: number
+    _all: number
+  }
+
+
+  export type WalletTransactionAvgAggregateInputType = {
+    amount?: true
+    totalFee?: true
+    commissionAmount?: true
+    balanceAfter?: true
+  }
+
+  export type WalletTransactionSumAggregateInputType = {
+    amount?: true
+    totalFee?: true
+    commissionAmount?: true
+    balanceAfter?: true
+  }
+
+  export type WalletTransactionMinAggregateInputType = {
+    id?: true
+    professionalId?: true
+    appointmentId?: true
+    amount?: true
+    type?: true
+    paymentMethod?: true
+    totalFee?: true
+    commissionAmount?: true
+    description?: true
+    balanceAfter?: true
+    createdAt?: true
+    isBlocked?: true
+  }
+
+  export type WalletTransactionMaxAggregateInputType = {
+    id?: true
+    professionalId?: true
+    appointmentId?: true
+    amount?: true
+    type?: true
+    paymentMethod?: true
+    totalFee?: true
+    commissionAmount?: true
+    description?: true
+    balanceAfter?: true
+    createdAt?: true
+    isBlocked?: true
+  }
+
+  export type WalletTransactionCountAggregateInputType = {
+    id?: true
+    professionalId?: true
+    appointmentId?: true
+    amount?: true
+    type?: true
+    paymentMethod?: true
+    totalFee?: true
+    commissionAmount?: true
+    description?: true
+    balanceAfter?: true
+    createdAt?: true
+    isBlocked?: true
+    _all?: true
+  }
+
+  export type WalletTransactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WalletTransaction to aggregate.
+     */
+    where?: WalletTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WalletTransactions to fetch.
+     */
+    orderBy?: WalletTransactionOrderByWithRelationInput | WalletTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WalletTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WalletTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WalletTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WalletTransactions
+    **/
+    _count?: true | WalletTransactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WalletTransactionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WalletTransactionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WalletTransactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WalletTransactionMaxAggregateInputType
+  }
+
+  export type GetWalletTransactionAggregateType<T extends WalletTransactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateWalletTransaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWalletTransaction[P]>
+      : GetScalarType<T[P], AggregateWalletTransaction[P]>
+  }
+
+
+
+
+  export type WalletTransactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletTransactionWhereInput
+    orderBy?: WalletTransactionOrderByWithAggregationInput | WalletTransactionOrderByWithAggregationInput[]
+    by: WalletTransactionScalarFieldEnum[] | WalletTransactionScalarFieldEnum
+    having?: WalletTransactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WalletTransactionCountAggregateInputType | true
+    _avg?: WalletTransactionAvgAggregateInputType
+    _sum?: WalletTransactionSumAggregateInputType
+    _min?: WalletTransactionMinAggregateInputType
+    _max?: WalletTransactionMaxAggregateInputType
+  }
+
+  export type WalletTransactionGroupByOutputType = {
+    id: string
+    professionalId: string
+    appointmentId: string | null
+    amount: number
+    type: string
+    paymentMethod: string
+    totalFee: number
+    commissionAmount: number
+    description: string
+    balanceAfter: number
+    createdAt: Date
+    isBlocked: boolean
+    _count: WalletTransactionCountAggregateOutputType | null
+    _avg: WalletTransactionAvgAggregateOutputType | null
+    _sum: WalletTransactionSumAggregateOutputType | null
+    _min: WalletTransactionMinAggregateOutputType | null
+    _max: WalletTransactionMaxAggregateOutputType | null
+  }
+
+  type GetWalletTransactionGroupByPayload<T extends WalletTransactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WalletTransactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WalletTransactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WalletTransactionGroupByOutputType[P]>
+            : GetScalarType<T[P], WalletTransactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WalletTransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    professionalId?: boolean
+    appointmentId?: boolean
+    amount?: boolean
+    type?: boolean
+    paymentMethod?: boolean
+    totalFee?: boolean
+    commissionAmount?: boolean
+    description?: boolean
+    balanceAfter?: boolean
+    createdAt?: boolean
+    isBlocked?: boolean
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["walletTransaction"]>
+
+  export type WalletTransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    professionalId?: boolean
+    appointmentId?: boolean
+    amount?: boolean
+    type?: boolean
+    paymentMethod?: boolean
+    totalFee?: boolean
+    commissionAmount?: boolean
+    description?: boolean
+    balanceAfter?: boolean
+    createdAt?: boolean
+    isBlocked?: boolean
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["walletTransaction"]>
+
+  export type WalletTransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    professionalId?: boolean
+    appointmentId?: boolean
+    amount?: boolean
+    type?: boolean
+    paymentMethod?: boolean
+    totalFee?: boolean
+    commissionAmount?: boolean
+    description?: boolean
+    balanceAfter?: boolean
+    createdAt?: boolean
+    isBlocked?: boolean
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["walletTransaction"]>
+
+  export type WalletTransactionSelectScalar = {
+    id?: boolean
+    professionalId?: boolean
+    appointmentId?: boolean
+    amount?: boolean
+    type?: boolean
+    paymentMethod?: boolean
+    totalFee?: boolean
+    commissionAmount?: boolean
+    description?: boolean
+    balanceAfter?: boolean
+    createdAt?: boolean
+    isBlocked?: boolean
+  }
+
+  export type WalletTransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "professionalId" | "appointmentId" | "amount" | "type" | "paymentMethod" | "totalFee" | "commissionAmount" | "description" | "balanceAfter" | "createdAt" | "isBlocked", ExtArgs["result"]["walletTransaction"]>
+  export type WalletTransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type WalletTransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+  export type WalletTransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
+  }
+
+  export type $WalletTransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WalletTransaction"
+    objects: {
+      professional: Prisma.$ProfessionalProfilePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      professionalId: string
+      appointmentId: string | null
+      amount: number
+      type: string
+      paymentMethod: string
+      totalFee: number
+      commissionAmount: number
+      description: string
+      balanceAfter: number
+      createdAt: Date
+      isBlocked: boolean
+    }, ExtArgs["result"]["walletTransaction"]>
+    composites: {}
+  }
+
+  type WalletTransactionGetPayload<S extends boolean | null | undefined | WalletTransactionDefaultArgs> = $Result.GetResult<Prisma.$WalletTransactionPayload, S>
+
+  type WalletTransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WalletTransactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WalletTransactionCountAggregateInputType | true
+    }
+
+  export interface WalletTransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WalletTransaction'], meta: { name: 'WalletTransaction' } }
+    /**
+     * Find zero or one WalletTransaction that matches the filter.
+     * @param {WalletTransactionFindUniqueArgs} args - Arguments to find a WalletTransaction
+     * @example
+     * // Get one WalletTransaction
+     * const walletTransaction = await prisma.walletTransaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WalletTransactionFindUniqueArgs>(args: SelectSubset<T, WalletTransactionFindUniqueArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one WalletTransaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WalletTransactionFindUniqueOrThrowArgs} args - Arguments to find a WalletTransaction
+     * @example
+     * // Get one WalletTransaction
+     * const walletTransaction = await prisma.walletTransaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WalletTransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, WalletTransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WalletTransaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WalletTransactionFindFirstArgs} args - Arguments to find a WalletTransaction
+     * @example
+     * // Get one WalletTransaction
+     * const walletTransaction = await prisma.walletTransaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WalletTransactionFindFirstArgs>(args?: SelectSubset<T, WalletTransactionFindFirstArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WalletTransaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WalletTransactionFindFirstOrThrowArgs} args - Arguments to find a WalletTransaction
+     * @example
+     * // Get one WalletTransaction
+     * const walletTransaction = await prisma.walletTransaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WalletTransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, WalletTransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more WalletTransactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WalletTransactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WalletTransactions
+     * const walletTransactions = await prisma.walletTransaction.findMany()
+     * 
+     * // Get first 10 WalletTransactions
+     * const walletTransactions = await prisma.walletTransaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const walletTransactionWithIdOnly = await prisma.walletTransaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WalletTransactionFindManyArgs>(args?: SelectSubset<T, WalletTransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a WalletTransaction.
+     * @param {WalletTransactionCreateArgs} args - Arguments to create a WalletTransaction.
+     * @example
+     * // Create one WalletTransaction
+     * const WalletTransaction = await prisma.walletTransaction.create({
+     *   data: {
+     *     // ... data to create a WalletTransaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends WalletTransactionCreateArgs>(args: SelectSubset<T, WalletTransactionCreateArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many WalletTransactions.
+     * @param {WalletTransactionCreateManyArgs} args - Arguments to create many WalletTransactions.
+     * @example
+     * // Create many WalletTransactions
+     * const walletTransaction = await prisma.walletTransaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WalletTransactionCreateManyArgs>(args?: SelectSubset<T, WalletTransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many WalletTransactions and returns the data saved in the database.
+     * @param {WalletTransactionCreateManyAndReturnArgs} args - Arguments to create many WalletTransactions.
+     * @example
+     * // Create many WalletTransactions
+     * const walletTransaction = await prisma.walletTransaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many WalletTransactions and only return the `id`
+     * const walletTransactionWithIdOnly = await prisma.walletTransaction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends WalletTransactionCreateManyAndReturnArgs>(args?: SelectSubset<T, WalletTransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a WalletTransaction.
+     * @param {WalletTransactionDeleteArgs} args - Arguments to delete one WalletTransaction.
+     * @example
+     * // Delete one WalletTransaction
+     * const WalletTransaction = await prisma.walletTransaction.delete({
+     *   where: {
+     *     // ... filter to delete one WalletTransaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WalletTransactionDeleteArgs>(args: SelectSubset<T, WalletTransactionDeleteArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one WalletTransaction.
+     * @param {WalletTransactionUpdateArgs} args - Arguments to update one WalletTransaction.
+     * @example
+     * // Update one WalletTransaction
+     * const walletTransaction = await prisma.walletTransaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WalletTransactionUpdateArgs>(args: SelectSubset<T, WalletTransactionUpdateArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more WalletTransactions.
+     * @param {WalletTransactionDeleteManyArgs} args - Arguments to filter WalletTransactions to delete.
+     * @example
+     * // Delete a few WalletTransactions
+     * const { count } = await prisma.walletTransaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WalletTransactionDeleteManyArgs>(args?: SelectSubset<T, WalletTransactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WalletTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WalletTransactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WalletTransactions
+     * const walletTransaction = await prisma.walletTransaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WalletTransactionUpdateManyArgs>(args: SelectSubset<T, WalletTransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WalletTransactions and returns the data updated in the database.
+     * @param {WalletTransactionUpdateManyAndReturnArgs} args - Arguments to update many WalletTransactions.
+     * @example
+     * // Update many WalletTransactions
+     * const walletTransaction = await prisma.walletTransaction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more WalletTransactions and only return the `id`
+     * const walletTransactionWithIdOnly = await prisma.walletTransaction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends WalletTransactionUpdateManyAndReturnArgs>(args: SelectSubset<T, WalletTransactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one WalletTransaction.
+     * @param {WalletTransactionUpsertArgs} args - Arguments to update or create a WalletTransaction.
+     * @example
+     * // Update or create a WalletTransaction
+     * const walletTransaction = await prisma.walletTransaction.upsert({
+     *   create: {
+     *     // ... data to create a WalletTransaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WalletTransaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WalletTransactionUpsertArgs>(args: SelectSubset<T, WalletTransactionUpsertArgs<ExtArgs>>): Prisma__WalletTransactionClient<$Result.GetResult<Prisma.$WalletTransactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of WalletTransactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WalletTransactionCountArgs} args - Arguments to filter WalletTransactions to count.
+     * @example
+     * // Count the number of WalletTransactions
+     * const count = await prisma.walletTransaction.count({
+     *   where: {
+     *     // ... the filter for the WalletTransactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends WalletTransactionCountArgs>(
+      args?: Subset<T, WalletTransactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WalletTransactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WalletTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WalletTransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WalletTransactionAggregateArgs>(args: Subset<T, WalletTransactionAggregateArgs>): Prisma.PrismaPromise<GetWalletTransactionAggregateType<T>>
+
+    /**
+     * Group by WalletTransaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WalletTransactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WalletTransactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WalletTransactionGroupByArgs['orderBy'] }
+        : { orderBy?: WalletTransactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WalletTransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWalletTransactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WalletTransaction model
+   */
+  readonly fields: WalletTransactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WalletTransaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WalletTransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    professional<T extends ProfessionalProfileDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalProfileDefaultArgs<ExtArgs>>): Prisma__ProfessionalProfileClient<$Result.GetResult<Prisma.$ProfessionalProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WalletTransaction model
+   */
+  interface WalletTransactionFieldRefs {
+    readonly id: FieldRef<"WalletTransaction", 'String'>
+    readonly professionalId: FieldRef<"WalletTransaction", 'String'>
+    readonly appointmentId: FieldRef<"WalletTransaction", 'String'>
+    readonly amount: FieldRef<"WalletTransaction", 'Float'>
+    readonly type: FieldRef<"WalletTransaction", 'String'>
+    readonly paymentMethod: FieldRef<"WalletTransaction", 'String'>
+    readonly totalFee: FieldRef<"WalletTransaction", 'Float'>
+    readonly commissionAmount: FieldRef<"WalletTransaction", 'Float'>
+    readonly description: FieldRef<"WalletTransaction", 'String'>
+    readonly balanceAfter: FieldRef<"WalletTransaction", 'Float'>
+    readonly createdAt: FieldRef<"WalletTransaction", 'DateTime'>
+    readonly isBlocked: FieldRef<"WalletTransaction", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WalletTransaction findUnique
+   */
+  export type WalletTransactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which WalletTransaction to fetch.
+     */
+    where: WalletTransactionWhereUniqueInput
+  }
+
+  /**
+   * WalletTransaction findUniqueOrThrow
+   */
+  export type WalletTransactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which WalletTransaction to fetch.
+     */
+    where: WalletTransactionWhereUniqueInput
+  }
+
+  /**
+   * WalletTransaction findFirst
+   */
+  export type WalletTransactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which WalletTransaction to fetch.
+     */
+    where?: WalletTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WalletTransactions to fetch.
+     */
+    orderBy?: WalletTransactionOrderByWithRelationInput | WalletTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WalletTransactions.
+     */
+    cursor?: WalletTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WalletTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WalletTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WalletTransactions.
+     */
+    distinct?: WalletTransactionScalarFieldEnum | WalletTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * WalletTransaction findFirstOrThrow
+   */
+  export type WalletTransactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which WalletTransaction to fetch.
+     */
+    where?: WalletTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WalletTransactions to fetch.
+     */
+    orderBy?: WalletTransactionOrderByWithRelationInput | WalletTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WalletTransactions.
+     */
+    cursor?: WalletTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WalletTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WalletTransactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WalletTransactions.
+     */
+    distinct?: WalletTransactionScalarFieldEnum | WalletTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * WalletTransaction findMany
+   */
+  export type WalletTransactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which WalletTransactions to fetch.
+     */
+    where?: WalletTransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WalletTransactions to fetch.
+     */
+    orderBy?: WalletTransactionOrderByWithRelationInput | WalletTransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WalletTransactions.
+     */
+    cursor?: WalletTransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WalletTransactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WalletTransactions.
+     */
+    skip?: number
+    distinct?: WalletTransactionScalarFieldEnum | WalletTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * WalletTransaction create
+   */
+  export type WalletTransactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WalletTransaction.
+     */
+    data: XOR<WalletTransactionCreateInput, WalletTransactionUncheckedCreateInput>
+  }
+
+  /**
+   * WalletTransaction createMany
+   */
+  export type WalletTransactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WalletTransactions.
+     */
+    data: WalletTransactionCreateManyInput | WalletTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WalletTransaction createManyAndReturn
+   */
+  export type WalletTransactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * The data used to create many WalletTransactions.
+     */
+    data: WalletTransactionCreateManyInput | WalletTransactionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WalletTransaction update
+   */
+  export type WalletTransactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WalletTransaction.
+     */
+    data: XOR<WalletTransactionUpdateInput, WalletTransactionUncheckedUpdateInput>
+    /**
+     * Choose, which WalletTransaction to update.
+     */
+    where: WalletTransactionWhereUniqueInput
+  }
+
+  /**
+   * WalletTransaction updateMany
+   */
+  export type WalletTransactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WalletTransactions.
+     */
+    data: XOR<WalletTransactionUpdateManyMutationInput, WalletTransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which WalletTransactions to update
+     */
+    where?: WalletTransactionWhereInput
+    /**
+     * Limit how many WalletTransactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WalletTransaction updateManyAndReturn
+   */
+  export type WalletTransactionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * The data used to update WalletTransactions.
+     */
+    data: XOR<WalletTransactionUpdateManyMutationInput, WalletTransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which WalletTransactions to update
+     */
+    where?: WalletTransactionWhereInput
+    /**
+     * Limit how many WalletTransactions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * WalletTransaction upsert
+   */
+  export type WalletTransactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WalletTransaction to update in case it exists.
+     */
+    where: WalletTransactionWhereUniqueInput
+    /**
+     * In case the WalletTransaction found by the `where` argument doesn't exist, create a new WalletTransaction with this data.
+     */
+    create: XOR<WalletTransactionCreateInput, WalletTransactionUncheckedCreateInput>
+    /**
+     * In case the WalletTransaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WalletTransactionUpdateInput, WalletTransactionUncheckedUpdateInput>
+  }
+
+  /**
+   * WalletTransaction delete
+   */
+  export type WalletTransactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+    /**
+     * Filter which WalletTransaction to delete.
+     */
+    where: WalletTransactionWhereUniqueInput
+  }
+
+  /**
+   * WalletTransaction deleteMany
+   */
+  export type WalletTransactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WalletTransactions to delete
+     */
+    where?: WalletTransactionWhereInput
+    /**
+     * Limit how many WalletTransactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WalletTransaction without action
+   */
+  export type WalletTransactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WalletTransaction
+     */
+    select?: WalletTransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WalletTransaction
+     */
+    omit?: WalletTransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletTransactionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -27515,6 +28851,7 @@ export namespace Prisma {
     serviceRadius: 'serviceRadius',
     serveEverywhere: 'serveEverywhere',
     walletBalance: 'walletBalance',
+    isWalletBlocked: 'isWalletBlocked',
     licenseIssuedYear: 'licenseIssuedYear',
     licenseNumber: 'licenseNumber',
     idFrontImage: 'idFrontImage',
@@ -27763,6 +29100,24 @@ export namespace Prisma {
   };
 
   export type ElderHomeServiceScalarFieldEnum = (typeof ElderHomeServiceScalarFieldEnum)[keyof typeof ElderHomeServiceScalarFieldEnum]
+
+
+  export const WalletTransactionScalarFieldEnum: {
+    id: 'id',
+    professionalId: 'professionalId',
+    appointmentId: 'appointmentId',
+    amount: 'amount',
+    type: 'type',
+    paymentMethod: 'paymentMethod',
+    totalFee: 'totalFee',
+    commissionAmount: 'commissionAmount',
+    description: 'description',
+    balanceAfter: 'balanceAfter',
+    createdAt: 'createdAt',
+    isBlocked: 'isBlocked'
+  };
+
+  export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -28153,6 +29508,7 @@ export namespace Prisma {
     serviceRadius?: IntFilter<"ProfessionalProfile"> | number
     serveEverywhere?: BoolFilter<"ProfessionalProfile"> | boolean
     walletBalance?: FloatFilter<"ProfessionalProfile"> | number
+    isWalletBlocked?: BoolFilter<"ProfessionalProfile"> | boolean
     licenseIssuedYear?: IntNullableFilter<"ProfessionalProfile"> | number | null
     licenseNumber?: StringNullableFilter<"ProfessionalProfile"> | string | null
     idFrontImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
@@ -28173,6 +29529,7 @@ export namespace Prisma {
     reviews?: ReviewListRelationFilter
     elderHomePosts?: ElderHomePostListRelationFilter
     elderHomeServices?: ElderHomeServiceListRelationFilter
+    walletTransactions?: WalletTransactionListRelationFilter
   }
 
   export type ProfessionalProfileOrderByWithRelationInput = {
@@ -28197,6 +29554,7 @@ export namespace Prisma {
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
     walletBalance?: SortOrder
+    isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrderInput | SortOrder
     licenseNumber?: SortOrderInput | SortOrder
     idFrontImage?: SortOrderInput | SortOrder
@@ -28217,6 +29575,7 @@ export namespace Prisma {
     reviews?: ReviewOrderByRelationAggregateInput
     elderHomePosts?: ElderHomePostOrderByRelationAggregateInput
     elderHomeServices?: ElderHomeServiceOrderByRelationAggregateInput
+    walletTransactions?: WalletTransactionOrderByRelationAggregateInput
   }
 
   export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -28244,6 +29603,7 @@ export namespace Prisma {
     serviceRadius?: IntFilter<"ProfessionalProfile"> | number
     serveEverywhere?: BoolFilter<"ProfessionalProfile"> | boolean
     walletBalance?: FloatFilter<"ProfessionalProfile"> | number
+    isWalletBlocked?: BoolFilter<"ProfessionalProfile"> | boolean
     licenseIssuedYear?: IntNullableFilter<"ProfessionalProfile"> | number | null
     licenseNumber?: StringNullableFilter<"ProfessionalProfile"> | string | null
     idFrontImage?: StringNullableFilter<"ProfessionalProfile"> | string | null
@@ -28264,6 +29624,7 @@ export namespace Prisma {
     reviews?: ReviewListRelationFilter
     elderHomePosts?: ElderHomePostListRelationFilter
     elderHomeServices?: ElderHomeServiceListRelationFilter
+    walletTransactions?: WalletTransactionListRelationFilter
   }, "id" | "userId">
 
   export type ProfessionalProfileOrderByWithAggregationInput = {
@@ -28288,6 +29649,7 @@ export namespace Prisma {
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
     walletBalance?: SortOrder
+    isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrderInput | SortOrder
     licenseNumber?: SortOrderInput | SortOrder
     idFrontImage?: SortOrderInput | SortOrder
@@ -28333,6 +29695,7 @@ export namespace Prisma {
     serviceRadius?: IntWithAggregatesFilter<"ProfessionalProfile"> | number
     serveEverywhere?: BoolWithAggregatesFilter<"ProfessionalProfile"> | boolean
     walletBalance?: FloatWithAggregatesFilter<"ProfessionalProfile"> | number
+    isWalletBlocked?: BoolWithAggregatesFilter<"ProfessionalProfile"> | boolean
     licenseIssuedYear?: IntNullableWithAggregatesFilter<"ProfessionalProfile"> | number | null
     licenseNumber?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
     idFrontImage?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
@@ -29569,6 +30932,98 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ElderHomeService"> | Date | string
   }
 
+  export type WalletTransactionWhereInput = {
+    AND?: WalletTransactionWhereInput | WalletTransactionWhereInput[]
+    OR?: WalletTransactionWhereInput[]
+    NOT?: WalletTransactionWhereInput | WalletTransactionWhereInput[]
+    id?: StringFilter<"WalletTransaction"> | string
+    professionalId?: StringFilter<"WalletTransaction"> | string
+    appointmentId?: StringNullableFilter<"WalletTransaction"> | string | null
+    amount?: FloatFilter<"WalletTransaction"> | number
+    type?: StringFilter<"WalletTransaction"> | string
+    paymentMethod?: StringFilter<"WalletTransaction"> | string
+    totalFee?: FloatFilter<"WalletTransaction"> | number
+    commissionAmount?: FloatFilter<"WalletTransaction"> | number
+    description?: StringFilter<"WalletTransaction"> | string
+    balanceAfter?: FloatFilter<"WalletTransaction"> | number
+    createdAt?: DateTimeFilter<"WalletTransaction"> | Date | string
+    isBlocked?: BoolFilter<"WalletTransaction"> | boolean
+    professional?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }
+
+  export type WalletTransactionOrderByWithRelationInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    appointmentId?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    paymentMethod?: SortOrder
+    totalFee?: SortOrder
+    commissionAmount?: SortOrder
+    description?: SortOrder
+    balanceAfter?: SortOrder
+    createdAt?: SortOrder
+    isBlocked?: SortOrder
+    professional?: ProfessionalProfileOrderByWithRelationInput
+  }
+
+  export type WalletTransactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: WalletTransactionWhereInput | WalletTransactionWhereInput[]
+    OR?: WalletTransactionWhereInput[]
+    NOT?: WalletTransactionWhereInput | WalletTransactionWhereInput[]
+    professionalId?: StringFilter<"WalletTransaction"> | string
+    appointmentId?: StringNullableFilter<"WalletTransaction"> | string | null
+    amount?: FloatFilter<"WalletTransaction"> | number
+    type?: StringFilter<"WalletTransaction"> | string
+    paymentMethod?: StringFilter<"WalletTransaction"> | string
+    totalFee?: FloatFilter<"WalletTransaction"> | number
+    commissionAmount?: FloatFilter<"WalletTransaction"> | number
+    description?: StringFilter<"WalletTransaction"> | string
+    balanceAfter?: FloatFilter<"WalletTransaction"> | number
+    createdAt?: DateTimeFilter<"WalletTransaction"> | Date | string
+    isBlocked?: BoolFilter<"WalletTransaction"> | boolean
+    professional?: XOR<ProfessionalProfileScalarRelationFilter, ProfessionalProfileWhereInput>
+  }, "id">
+
+  export type WalletTransactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    appointmentId?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    paymentMethod?: SortOrder
+    totalFee?: SortOrder
+    commissionAmount?: SortOrder
+    description?: SortOrder
+    balanceAfter?: SortOrder
+    createdAt?: SortOrder
+    isBlocked?: SortOrder
+    _count?: WalletTransactionCountOrderByAggregateInput
+    _avg?: WalletTransactionAvgOrderByAggregateInput
+    _max?: WalletTransactionMaxOrderByAggregateInput
+    _min?: WalletTransactionMinOrderByAggregateInput
+    _sum?: WalletTransactionSumOrderByAggregateInput
+  }
+
+  export type WalletTransactionScalarWhereWithAggregatesInput = {
+    AND?: WalletTransactionScalarWhereWithAggregatesInput | WalletTransactionScalarWhereWithAggregatesInput[]
+    OR?: WalletTransactionScalarWhereWithAggregatesInput[]
+    NOT?: WalletTransactionScalarWhereWithAggregatesInput | WalletTransactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"WalletTransaction"> | string
+    professionalId?: StringWithAggregatesFilter<"WalletTransaction"> | string
+    appointmentId?: StringNullableWithAggregatesFilter<"WalletTransaction"> | string | null
+    amount?: FloatWithAggregatesFilter<"WalletTransaction"> | number
+    type?: StringWithAggregatesFilter<"WalletTransaction"> | string
+    paymentMethod?: StringWithAggregatesFilter<"WalletTransaction"> | string
+    totalFee?: FloatWithAggregatesFilter<"WalletTransaction"> | number
+    commissionAmount?: FloatWithAggregatesFilter<"WalletTransaction"> | number
+    description?: StringWithAggregatesFilter<"WalletTransaction"> | string
+    balanceAfter?: FloatWithAggregatesFilter<"WalletTransaction"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"WalletTransaction"> | Date | string
+    isBlocked?: BoolWithAggregatesFilter<"WalletTransaction"> | boolean
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -29863,6 +31318,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -29883,6 +31339,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateInput = {
@@ -29907,6 +31364,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -29926,6 +31384,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUpdateInput = {
@@ -29949,6 +31408,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29969,6 +31429,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateInput = {
@@ -29993,6 +31454,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30012,6 +31474,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileCreateManyInput = {
@@ -30036,6 +31499,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -30072,6 +31536,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30109,6 +31574,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31404,6 +32870,110 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type WalletTransactionCreateInput = {
+    id?: string
+    appointmentId?: string | null
+    amount: number
+    type: string
+    paymentMethod: string
+    totalFee: number
+    commissionAmount: number
+    description: string
+    balanceAfter: number
+    createdAt?: Date | string
+    isBlocked?: boolean
+    professional: ProfessionalProfileCreateNestedOneWithoutWalletTransactionsInput
+  }
+
+  export type WalletTransactionUncheckedCreateInput = {
+    id?: string
+    professionalId: string
+    appointmentId?: string | null
+    amount: number
+    type: string
+    paymentMethod: string
+    totalFee: number
+    commissionAmount: number
+    description: string
+    balanceAfter: number
+    createdAt?: Date | string
+    isBlocked?: boolean
+  }
+
+  export type WalletTransactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    appointmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: StringFieldUpdateOperationsInput | string
+    totalFee?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    balanceAfter?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+    professional?: ProfessionalProfileUpdateOneRequiredWithoutWalletTransactionsNestedInput
+  }
+
+  export type WalletTransactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    appointmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: StringFieldUpdateOperationsInput | string
+    totalFee?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    balanceAfter?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type WalletTransactionCreateManyInput = {
+    id?: string
+    professionalId: string
+    appointmentId?: string | null
+    amount: number
+    type: string
+    paymentMethod: string
+    totalFee: number
+    commissionAmount: number
+    description: string
+    balanceAfter: number
+    createdAt?: Date | string
+    isBlocked?: boolean
+  }
+
+  export type WalletTransactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    appointmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: StringFieldUpdateOperationsInput | string
+    totalFee?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    balanceAfter?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type WalletTransactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    professionalId?: StringFieldUpdateOperationsInput | string
+    appointmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: StringFieldUpdateOperationsInput | string
+    totalFee?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    balanceAfter?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -31822,11 +33392,21 @@ export namespace Prisma {
     none?: ElderHomeServiceWhereInput
   }
 
+  export type WalletTransactionListRelationFilter = {
+    every?: WalletTransactionWhereInput
+    some?: WalletTransactionWhereInput
+    none?: WalletTransactionWhereInput
+  }
+
   export type ElderHomePostOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type ElderHomeServiceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WalletTransactionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31852,6 +33432,7 @@ export namespace Prisma {
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
     walletBalance?: SortOrder
+    isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrder
     licenseNumber?: SortOrder
     idFrontImage?: SortOrder
@@ -31899,6 +33480,7 @@ export namespace Prisma {
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
     walletBalance?: SortOrder
+    isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrder
     licenseNumber?: SortOrder
     idFrontImage?: SortOrder
@@ -31936,6 +33518,7 @@ export namespace Prisma {
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
     walletBalance?: SortOrder
+    isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrder
     licenseNumber?: SortOrder
     idFrontImage?: SortOrder
@@ -32740,6 +34323,65 @@ export namespace Prisma {
     price?: SortOrder
   }
 
+  export type WalletTransactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    appointmentId?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    paymentMethod?: SortOrder
+    totalFee?: SortOrder
+    commissionAmount?: SortOrder
+    description?: SortOrder
+    balanceAfter?: SortOrder
+    createdAt?: SortOrder
+    isBlocked?: SortOrder
+  }
+
+  export type WalletTransactionAvgOrderByAggregateInput = {
+    amount?: SortOrder
+    totalFee?: SortOrder
+    commissionAmount?: SortOrder
+    balanceAfter?: SortOrder
+  }
+
+  export type WalletTransactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    appointmentId?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    paymentMethod?: SortOrder
+    totalFee?: SortOrder
+    commissionAmount?: SortOrder
+    description?: SortOrder
+    balanceAfter?: SortOrder
+    createdAt?: SortOrder
+    isBlocked?: SortOrder
+  }
+
+  export type WalletTransactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    professionalId?: SortOrder
+    appointmentId?: SortOrder
+    amount?: SortOrder
+    type?: SortOrder
+    paymentMethod?: SortOrder
+    totalFee?: SortOrder
+    commissionAmount?: SortOrder
+    description?: SortOrder
+    balanceAfter?: SortOrder
+    createdAt?: SortOrder
+    isBlocked?: SortOrder
+  }
+
+  export type WalletTransactionSumOrderByAggregateInput = {
+    amount?: SortOrder
+    totalFee?: SortOrder
+    commissionAmount?: SortOrder
+    balanceAfter?: SortOrder
+  }
+
   export type PatientProfileCreateNestedOneWithoutUserInput = {
     create?: XOR<PatientProfileCreateWithoutUserInput, PatientProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: PatientProfileCreateOrConnectWithoutUserInput
@@ -33266,6 +34908,13 @@ export namespace Prisma {
     connect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
   }
 
+  export type WalletTransactionCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<WalletTransactionCreateWithoutProfessionalInput, WalletTransactionUncheckedCreateWithoutProfessionalInput> | WalletTransactionCreateWithoutProfessionalInput[] | WalletTransactionUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: WalletTransactionCreateOrConnectWithoutProfessionalInput | WalletTransactionCreateOrConnectWithoutProfessionalInput[]
+    createMany?: WalletTransactionCreateManyProfessionalInputEnvelope
+    connect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+  }
+
   export type AppointmentUncheckedCreateNestedManyWithoutProfessionalInput = {
     create?: XOR<AppointmentCreateWithoutProfessionalInput, AppointmentUncheckedCreateWithoutProfessionalInput> | AppointmentCreateWithoutProfessionalInput[] | AppointmentUncheckedCreateWithoutProfessionalInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutProfessionalInput | AppointmentCreateOrConnectWithoutProfessionalInput[]
@@ -33306,6 +34955,13 @@ export namespace Prisma {
     connectOrCreate?: ElderHomeServiceCreateOrConnectWithoutElderHomeInput | ElderHomeServiceCreateOrConnectWithoutElderHomeInput[]
     createMany?: ElderHomeServiceCreateManyElderHomeInputEnvelope
     connect?: ElderHomeServiceWhereUniqueInput | ElderHomeServiceWhereUniqueInput[]
+  }
+
+  export type WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<WalletTransactionCreateWithoutProfessionalInput, WalletTransactionUncheckedCreateWithoutProfessionalInput> | WalletTransactionCreateWithoutProfessionalInput[] | WalletTransactionUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: WalletTransactionCreateOrConnectWithoutProfessionalInput | WalletTransactionCreateOrConnectWithoutProfessionalInput[]
+    createMany?: WalletTransactionCreateManyProfessionalInputEnvelope
+    connect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -33432,6 +35088,20 @@ export namespace Prisma {
     deleteMany?: ElderHomeServiceScalarWhereInput | ElderHomeServiceScalarWhereInput[]
   }
 
+  export type WalletTransactionUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<WalletTransactionCreateWithoutProfessionalInput, WalletTransactionUncheckedCreateWithoutProfessionalInput> | WalletTransactionCreateWithoutProfessionalInput[] | WalletTransactionUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: WalletTransactionCreateOrConnectWithoutProfessionalInput | WalletTransactionCreateOrConnectWithoutProfessionalInput[]
+    upsert?: WalletTransactionUpsertWithWhereUniqueWithoutProfessionalInput | WalletTransactionUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: WalletTransactionCreateManyProfessionalInputEnvelope
+    set?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    disconnect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    delete?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    connect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    update?: WalletTransactionUpdateWithWhereUniqueWithoutProfessionalInput | WalletTransactionUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: WalletTransactionUpdateManyWithWhereWithoutProfessionalInput | WalletTransactionUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: WalletTransactionScalarWhereInput | WalletTransactionScalarWhereInput[]
+  }
+
   export type AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput = {
     create?: XOR<AppointmentCreateWithoutProfessionalInput, AppointmentUncheckedCreateWithoutProfessionalInput> | AppointmentCreateWithoutProfessionalInput[] | AppointmentUncheckedCreateWithoutProfessionalInput[]
     connectOrCreate?: AppointmentCreateOrConnectWithoutProfessionalInput | AppointmentCreateOrConnectWithoutProfessionalInput[]
@@ -33514,6 +35184,20 @@ export namespace Prisma {
     update?: ElderHomeServiceUpdateWithWhereUniqueWithoutElderHomeInput | ElderHomeServiceUpdateWithWhereUniqueWithoutElderHomeInput[]
     updateMany?: ElderHomeServiceUpdateManyWithWhereWithoutElderHomeInput | ElderHomeServiceUpdateManyWithWhereWithoutElderHomeInput[]
     deleteMany?: ElderHomeServiceScalarWhereInput | ElderHomeServiceScalarWhereInput[]
+  }
+
+  export type WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<WalletTransactionCreateWithoutProfessionalInput, WalletTransactionUncheckedCreateWithoutProfessionalInput> | WalletTransactionCreateWithoutProfessionalInput[] | WalletTransactionUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: WalletTransactionCreateOrConnectWithoutProfessionalInput | WalletTransactionCreateOrConnectWithoutProfessionalInput[]
+    upsert?: WalletTransactionUpsertWithWhereUniqueWithoutProfessionalInput | WalletTransactionUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: WalletTransactionCreateManyProfessionalInputEnvelope
+    set?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    disconnect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    delete?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    connect?: WalletTransactionWhereUniqueInput | WalletTransactionWhereUniqueInput[]
+    update?: WalletTransactionUpdateWithWhereUniqueWithoutProfessionalInput | WalletTransactionUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: WalletTransactionUpdateManyWithWhereWithoutProfessionalInput | WalletTransactionUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: WalletTransactionScalarWhereInput | WalletTransactionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPharmacistProfileInput = {
@@ -34220,6 +35904,20 @@ export namespace Prisma {
     update?: XOR<XOR<ProfessionalProfileUpdateToOneWithWhereWithoutElderHomeServicesInput, ProfessionalProfileUpdateWithoutElderHomeServicesInput>, ProfessionalProfileUncheckedUpdateWithoutElderHomeServicesInput>
   }
 
+  export type ProfessionalProfileCreateNestedOneWithoutWalletTransactionsInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutWalletTransactionsInput, ProfessionalProfileUncheckedCreateWithoutWalletTransactionsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutWalletTransactionsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+  }
+
+  export type ProfessionalProfileUpdateOneRequiredWithoutWalletTransactionsNestedInput = {
+    create?: XOR<ProfessionalProfileCreateWithoutWalletTransactionsInput, ProfessionalProfileUncheckedCreateWithoutWalletTransactionsInput>
+    connectOrCreate?: ProfessionalProfileCreateOrConnectWithoutWalletTransactionsInput
+    upsert?: ProfessionalProfileUpsertWithoutWalletTransactionsInput
+    connect?: ProfessionalProfileWhereUniqueInput
+    update?: XOR<XOR<ProfessionalProfileUpdateToOneWithWhereWithoutWalletTransactionsInput, ProfessionalProfileUpdateWithoutWalletTransactionsInput>, ProfessionalProfileUncheckedUpdateWithoutWalletTransactionsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -34541,6 +36239,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -34560,6 +36259,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
@@ -34583,6 +36283,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -34602,6 +36303,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutUserInput = {
@@ -34802,6 +36504,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34821,6 +36524,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
@@ -34844,6 +36548,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34863,6 +36568,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type PharmacistProfileUpsertWithoutUserInput = {
@@ -35739,6 +37445,44 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type WalletTransactionCreateWithoutProfessionalInput = {
+    id?: string
+    appointmentId?: string | null
+    amount: number
+    type: string
+    paymentMethod: string
+    totalFee: number
+    commissionAmount: number
+    description: string
+    balanceAfter: number
+    createdAt?: Date | string
+    isBlocked?: boolean
+  }
+
+  export type WalletTransactionUncheckedCreateWithoutProfessionalInput = {
+    id?: string
+    appointmentId?: string | null
+    amount: number
+    type: string
+    paymentMethod: string
+    totalFee: number
+    commissionAmount: number
+    description: string
+    balanceAfter: number
+    createdAt?: Date | string
+    isBlocked?: boolean
+  }
+
+  export type WalletTransactionCreateOrConnectWithoutProfessionalInput = {
+    where: WalletTransactionWhereUniqueInput
+    create: XOR<WalletTransactionCreateWithoutProfessionalInput, WalletTransactionUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type WalletTransactionCreateManyProfessionalInputEnvelope = {
+    data: WalletTransactionCreateManyProfessionalInput | WalletTransactionCreateManyProfessionalInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutProfessionalProfileInput = {
     update: XOR<UserUpdateWithoutProfessionalProfileInput, UserUncheckedUpdateWithoutProfessionalProfileInput>
     create: XOR<UserCreateWithoutProfessionalProfileInput, UserUncheckedCreateWithoutProfessionalProfileInput>
@@ -35906,6 +37650,40 @@ export namespace Prisma {
     priceUnit?: StringFilter<"ElderHomeService"> | string
     createdAt?: DateTimeFilter<"ElderHomeService"> | Date | string
     updatedAt?: DateTimeFilter<"ElderHomeService"> | Date | string
+  }
+
+  export type WalletTransactionUpsertWithWhereUniqueWithoutProfessionalInput = {
+    where: WalletTransactionWhereUniqueInput
+    update: XOR<WalletTransactionUpdateWithoutProfessionalInput, WalletTransactionUncheckedUpdateWithoutProfessionalInput>
+    create: XOR<WalletTransactionCreateWithoutProfessionalInput, WalletTransactionUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type WalletTransactionUpdateWithWhereUniqueWithoutProfessionalInput = {
+    where: WalletTransactionWhereUniqueInput
+    data: XOR<WalletTransactionUpdateWithoutProfessionalInput, WalletTransactionUncheckedUpdateWithoutProfessionalInput>
+  }
+
+  export type WalletTransactionUpdateManyWithWhereWithoutProfessionalInput = {
+    where: WalletTransactionScalarWhereInput
+    data: XOR<WalletTransactionUpdateManyMutationInput, WalletTransactionUncheckedUpdateManyWithoutProfessionalInput>
+  }
+
+  export type WalletTransactionScalarWhereInput = {
+    AND?: WalletTransactionScalarWhereInput | WalletTransactionScalarWhereInput[]
+    OR?: WalletTransactionScalarWhereInput[]
+    NOT?: WalletTransactionScalarWhereInput | WalletTransactionScalarWhereInput[]
+    id?: StringFilter<"WalletTransaction"> | string
+    professionalId?: StringFilter<"WalletTransaction"> | string
+    appointmentId?: StringNullableFilter<"WalletTransaction"> | string | null
+    amount?: FloatFilter<"WalletTransaction"> | number
+    type?: StringFilter<"WalletTransaction"> | string
+    paymentMethod?: StringFilter<"WalletTransaction"> | string
+    totalFee?: FloatFilter<"WalletTransaction"> | number
+    commissionAmount?: FloatFilter<"WalletTransaction"> | number
+    description?: StringFilter<"WalletTransaction"> | string
+    balanceAfter?: FloatFilter<"WalletTransaction"> | number
+    createdAt?: DateTimeFilter<"WalletTransaction"> | Date | string
+    isBlocked?: BoolFilter<"WalletTransaction"> | boolean
   }
 
   export type UserCreateWithoutPharmacistProfileInput = {
@@ -36261,6 +38039,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -36280,6 +38059,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutAppointmentsInput = {
@@ -36304,6 +38084,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -36322,6 +38103,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutAppointmentsInput = {
@@ -36456,6 +38238,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36475,6 +38258,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutAppointmentsInput = {
@@ -36499,6 +38283,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36517,6 +38302,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type PrescriptionUpsertWithWhereUniqueWithoutAppointmentInput = {
@@ -36718,6 +38504,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -36737,6 +38524,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutPrescriptionsInput = {
@@ -36761,6 +38549,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -36779,6 +38568,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutPrescriptionsInput = {
@@ -36968,6 +38758,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36987,6 +38778,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutPrescriptionsInput = {
@@ -37011,6 +38803,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37029,6 +38822,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type PatientProfileUpsertWithoutPrescriptionsInput = {
@@ -37933,6 +39727,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -37952,6 +39747,7 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutEmergencySOSsInput = {
@@ -37976,6 +39772,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -37994,6 +39791,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutEmergencySOSsInput = {
@@ -38072,6 +39870,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38091,6 +39890,7 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutEmergencySOSsInput = {
@@ -38115,6 +39915,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38133,6 +39934,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type UserCreateWithoutActivityLogsInput = {
@@ -38273,6 +40075,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -38292,6 +40095,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutReviewsInput = {
@@ -38316,6 +40120,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -38334,6 +40139,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutReviewsInput = {
@@ -38412,6 +40218,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38431,6 +40238,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutReviewsInput = {
@@ -38455,6 +40263,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38473,6 +40282,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileCreateWithoutElderHomePostsInput = {
@@ -38496,6 +40306,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -38515,6 +40326,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutElderHomePostsInput = {
@@ -38539,6 +40351,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -38557,6 +40370,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutElderHomePostsInput = {
@@ -38596,6 +40410,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38615,6 +40430,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutElderHomePostsInput = {
@@ -38639,6 +40455,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38657,6 +40474,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileCreateWithoutElderHomeServicesInput = {
@@ -38680,6 +40498,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -38699,6 +40518,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
     reviews?: ReviewCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileUncheckedCreateWithoutElderHomeServicesInput = {
@@ -38723,6 +40543,7 @@ export namespace Prisma {
     serviceRadius?: number
     serveEverywhere?: boolean
     walletBalance?: number
+    isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
     licenseNumber?: string | null
     idFrontImage?: string | null
@@ -38741,6 +40562,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
     elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    walletTransactions?: WalletTransactionUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalProfileCreateOrConnectWithoutElderHomeServicesInput = {
@@ -38780,6 +40602,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38799,6 +40622,7 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
     reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalProfileUncheckedUpdateWithoutElderHomeServicesInput = {
@@ -38823,6 +40647,7 @@ export namespace Prisma {
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
     walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
     licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
     idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38841,6 +40666,199 @@ export namespace Prisma {
     emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
     elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    walletTransactions?: WalletTransactionUncheckedUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type ProfessionalProfileCreateWithoutWalletTransactionsInput = {
+    id?: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    isWalletBlocked?: boolean
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    user: UserCreateNestedOneWithoutProfessionalProfileInput
+    appointments?: AppointmentCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileUncheckedCreateWithoutWalletTransactionsInput = {
+    id?: string
+    userId: string
+    fullName: string
+    specialization?: string | null
+    qualifications?: string | null
+    licenseFrontImage?: string | null
+    licenseBackImage?: string | null
+    address?: string | null
+    idCardNumber?: string | null
+    workingHospital?: string | null
+    isCurrentlyWorking?: boolean
+    ambulanceVehicleNumber?: string | null
+    attachedHospital?: string | null
+    availabilityStatus?: string
+    rating?: number
+    locationLat?: number | null
+    locationLng?: number | null
+    bookingFee?: number
+    serviceRadius?: number
+    serveEverywhere?: boolean
+    walletBalance?: number
+    isWalletBlocked?: boolean
+    licenseIssuedYear?: number | null
+    licenseNumber?: string | null
+    idFrontImage?: string | null
+    idBackImage?: string | null
+    policies?: string | null
+    facilities?: string | null
+    coverImage?: string | null
+    profileImage?: string | null
+    socialFacebook?: string | null
+    socialInstagram?: string | null
+    socialWhatsapp?: string | null
+    socialWebsite?: string | null
+    contactPhone?: string | null
+    appointments?: AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
+    prescriptions?: PrescriptionUncheckedCreateNestedManyWithoutProfessionalInput
+    emergencySOSs?: EmergencySOSUncheckedCreateNestedManyWithoutParamedicInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProfessionalInput
+    elderHomePosts?: ElderHomePostUncheckedCreateNestedManyWithoutElderHomeInput
+    elderHomeServices?: ElderHomeServiceUncheckedCreateNestedManyWithoutElderHomeInput
+  }
+
+  export type ProfessionalProfileCreateOrConnectWithoutWalletTransactionsInput = {
+    where: ProfessionalProfileWhereUniqueInput
+    create: XOR<ProfessionalProfileCreateWithoutWalletTransactionsInput, ProfessionalProfileUncheckedCreateWithoutWalletTransactionsInput>
+  }
+
+  export type ProfessionalProfileUpsertWithoutWalletTransactionsInput = {
+    update: XOR<ProfessionalProfileUpdateWithoutWalletTransactionsInput, ProfessionalProfileUncheckedUpdateWithoutWalletTransactionsInput>
+    create: XOR<ProfessionalProfileCreateWithoutWalletTransactionsInput, ProfessionalProfileUncheckedCreateWithoutWalletTransactionsInput>
+    where?: ProfessionalProfileWhereInput
+  }
+
+  export type ProfessionalProfileUpdateToOneWithWhereWithoutWalletTransactionsInput = {
+    where?: ProfessionalProfileWhereInput
+    data: XOR<ProfessionalProfileUpdateWithoutWalletTransactionsInput, ProfessionalProfileUncheckedUpdateWithoutWalletTransactionsInput>
+  }
+
+  export type ProfessionalProfileUpdateWithoutWalletTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+    appointments?: AppointmentUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUpdateManyWithoutElderHomeNestedInput
+  }
+
+  export type ProfessionalProfileUncheckedUpdateWithoutWalletTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    specialization?: NullableStringFieldUpdateOperationsInput | string | null
+    qualifications?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    licenseBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    idCardNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    isCurrentlyWorking?: BoolFieldUpdateOperationsInput | boolean
+    ambulanceVehicleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    attachedHospital?: NullableStringFieldUpdateOperationsInput | string | null
+    availabilityStatus?: StringFieldUpdateOperationsInput | string
+    rating?: FloatFieldUpdateOperationsInput | number
+    locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookingFee?: FloatFieldUpdateOperationsInput | number
+    serviceRadius?: IntFieldUpdateOperationsInput | number
+    serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    walletBalance?: FloatFieldUpdateOperationsInput | number
+    isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
+    licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
+    licenseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    idFrontImage?: NullableStringFieldUpdateOperationsInput | string | null
+    idBackImage?: NullableStringFieldUpdateOperationsInput | string | null
+    policies?: NullableStringFieldUpdateOperationsInput | string | null
+    facilities?: NullableStringFieldUpdateOperationsInput | string | null
+    coverImage?: NullableStringFieldUpdateOperationsInput | string | null
+    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
+    socialFacebook?: NullableStringFieldUpdateOperationsInput | string | null
+    socialInstagram?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWhatsapp?: NullableStringFieldUpdateOperationsInput | string | null
+    socialWebsite?: NullableStringFieldUpdateOperationsInput | string | null
+    contactPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    appointments?: AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
+    prescriptions?: PrescriptionUncheckedUpdateManyWithoutProfessionalNestedInput
+    emergencySOSs?: EmergencySOSUncheckedUpdateManyWithoutParamedicNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProfessionalNestedInput
+    elderHomePosts?: ElderHomePostUncheckedUpdateManyWithoutElderHomeNestedInput
+    elderHomeServices?: ElderHomeServiceUncheckedUpdateManyWithoutElderHomeNestedInput
   }
 
   export type ActivityLogCreateManyUserInput = {
@@ -39218,6 +41236,20 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type WalletTransactionCreateManyProfessionalInput = {
+    id?: string
+    appointmentId?: string | null
+    amount: number
+    type: string
+    paymentMethod: string
+    totalFee: number
+    commissionAmount: number
+    description: string
+    balanceAfter: number
+    createdAt?: Date | string
+    isBlocked?: boolean
+  }
+
   export type AppointmentUpdateWithoutProfessionalInput = {
     id?: StringFieldUpdateOperationsInput | string
     serviceType?: StringFieldUpdateOperationsInput | string
@@ -39413,6 +41445,48 @@ export namespace Prisma {
     priceUnit?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WalletTransactionUpdateWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    appointmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: StringFieldUpdateOperationsInput | string
+    totalFee?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    balanceAfter?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type WalletTransactionUncheckedUpdateWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    appointmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: StringFieldUpdateOperationsInput | string
+    totalFee?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    balanceAfter?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type WalletTransactionUncheckedUpdateManyWithoutProfessionalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    appointmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: FloatFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    paymentMethod?: StringFieldUpdateOperationsInput | string
+    totalFee?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    balanceAfter?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isBlocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ProductCreateManyPharmacistInput = {

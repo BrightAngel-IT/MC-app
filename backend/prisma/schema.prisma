@@ -102,6 +102,7 @@ model ProfessionalProfile {
     serviceRadius          Int     @default(10)
     serveEverywhere        Boolean @default(true)
   walletBalance          Float   @default(0.0)
+  isWalletBlocked        Boolean @default(false)
   licenseIssuedYear      Int?
   licenseNumber          String?
   idFrontImage           String? @db.Text
@@ -126,6 +127,7 @@ model ProfessionalProfile {
   reviews           Review[]
   elderHomePosts    ElderHomePost[]
   elderHomeServices ElderHomeService[]
+  walletTransactions WalletTransaction[]
 }
 
 model PharmacistProfile {
@@ -358,3 +360,21 @@ model ElderHomeService {
 
   elderHome      ProfessionalProfile @relation(fields: [elderHomeId], references: [id], onDelete: Cascade)
 }
+
+model WalletTransaction {
+  id              String   @id @default(uuid())
+  professionalId  String
+  appointmentId   String?
+  amount          Float    // උදා: +700 (Credit) හෝ -300 (Debit)
+  type            String   // 'CREDIT' හෝ 'DEBIT'
+  paymentMethod   String   // 'CARD' හෝ 'CASH'
+  totalFee        Float    // සම්පූර්ණ අයකිරීම (Rs. 1000)
+  commissionAmount Float   // Company Commission (Rs. 300)
+  description     String   @db.Text
+  balanceAfter    Float    // ගනුදෙනුවෙන් පසු ඉතිරි මුළු Balance එක
+  createdAt       DateTime @default(now())
+  isBlocked       Boolean  @default(false)
+
+  professional    ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+}
+

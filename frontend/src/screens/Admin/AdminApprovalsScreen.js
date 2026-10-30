@@ -75,11 +75,27 @@ const AdminApprovalsScreen = ({ route }) => {
     fetchUsers();
   }, [tab]);
 
-  const filteredUsers = usersList.filter(u => {
-    const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
-    const matchesSearch = u.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) || u.email?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesRole && matchesSearch;
-  });
+  const formatDateTime = (dateVal) => {
+    if (!dateVal) return null;
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return null;
+    return d.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  const filteredUsers = usersList
+    .filter(u => {
+      const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
+      const matchesSearch = u.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) || u.email?.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesRole && matchesSearch;
+    })
+    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 
   const roles = [
     { id: 'ALL', label: 'All Users' },
@@ -603,6 +619,12 @@ profile.idBackImage.split(',')[1] : profile.idBackImage}`) : '';
                   </View>
                 )}
                 
+                <View style={{ marginTop: 10, marginBottom: 8, paddingHorizontal: 4, flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="calendar-outline" size={14} color={colors.textLight} style={{ marginRight: 6 }} />
+                  <Text style={{ fontSize: 12, color: colors.textLight, fontWeight: '600', marginRight: 6 }}>Submitted / Applied:</Text>
+                  <Text style={{ fontSize: 12, color: colors.text, fontWeight: '500' }}>{formatDateTime(pUser.createdAt) || 'N/A'}</Text>
+                </View>
+
                 <TouchableOpacity style={styles.pdfBtn} onPress={() => downloadUserPDF(pUser)}>
                   <Ionicons name="document-text-outline" size={20} color="#fff" style={{ marginRight: 8 }} />
                   <Text style={styles.pdfBtnText}>Download Full Profile as PDF</Text>

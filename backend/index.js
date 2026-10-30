@@ -11,6 +11,7 @@ const vendorRoutes = require('./src/routes/vendorRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
 const settingsRoutes = require('./src/routes/settingsRoutes');
 const elderHomeRoutes = require('./src/routes/elderHomeRoutes');
+const walletRoutes = require('./src/routes/walletRouter');
 
 const app = express();
 
@@ -30,6 +31,8 @@ app.use('/api/vendor', vendorRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/elder-home', elderHomeRoutes);
+
+app.use('/api/wallet', walletRoutes);
 
 const notificationRoutes = require('./src/routes/notificationRoutes');
 app.use('/api/notifications', notificationRoutes);

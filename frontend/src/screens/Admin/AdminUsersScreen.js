@@ -40,8 +40,27 @@ const AdminUsersScreen = ({ route, navigation }) => {
   const [statusFilter, setStatusFilter] = useState('APPROVED');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  const [walletModalVisible, setWalletModalVisible] = useState(false);
+  const [selectedDoctorWallet, setSelectedDoctorWallet] = useState(null);
+  const [loadingWallet, setLoadingWallet] = useState(false);
   const { colors } = useTheme();
   const styles = getStyles(colors);
+
+  const openDoctorWallet = async (professionalId, docName) => {
+    try {
+      setLoadingWallet(true);
+      setWalletModalVisible(true);
+      setSelectedDoctorWallet({ doctorName: docName, walletBalance: 0, transactions: [] });
+      const res = await api.get(`/admin/wallet/${professionalId}`);
+      if (res.data) {
+        setSelectedDoctorWallet(res.data);
+      }
+    } catch (err) {
+      console.log('Error fetching doctor wallet:', err);
+    } finally {
+      setLoadingWallet(false);
+    }
+  };
 
   const downloadImage = async () => {
     if (!selectedImage) return;
@@ -117,12 +136,41 @@ const AdminUsersScreen = ({ route, navigation }) => {
     );
   }
 
-  const filteredUsers = users.filter(u => {
-    const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
-    const matchesStatus = statusFilter === 'ALL' || u.verificationStatus === statusFilter;
-    const matchesSearch = u.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) || u.email?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesRole && matchesStatus && matchesSearch;
-  });
+  const formatDateTime = (dateVal) => {
+    if (!dateVal) return null;
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return null;
+    return d.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  const filteredUsers = users
+    .filter(u => {
+      const matchesRole = roleFilter === 'ALL' || u.role === roleFilter;
+      const matchesStatus = statusFilter === 'ALL' || u.verificationStatus === statusFilter;
+      const matchesSearch = u.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) || u.email?.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesRole && matchesStatus && matchesSearch;
+    })
+    .sort((a, b) => {
+      // Newly accepted/approved user first (descending by approval date or created date)
+      const aApproval = a.approvedAt || (a.activityLogs && a.activityLogs[0]?.createdAt) || (a.verificationStatus === 'APPROVED' ? a.createdAt : null);
+      const bApproval = b.approvedAt || (b.activityLogs && b.activityLogs[0]?.createdAt) || (b.verificationStatus === 'APPROVED' ? b.createdAt : null);
+      
+      const timeA = aApproval ? new Date(aApproval).getTime() : 0;
+      const timeB = bApproval ? new Date(bApproval).getTime() : 0;
+
+      if (timeA !== timeB) {
+        return timeB - timeA; // Most recent approval first
+      }
+      // If neither has approval or dates are identical, fall back to newest registration first
+      return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+    });
 
   const roles = [
     { id: 'ALL', label: 'All Users' },
@@ -194,6 +242,36 @@ const AdminUsersScreen = ({ route, navigation }) => {
                 <Ionicons name="call" size={14} color={colors.primary} />
                 <Text style={{ fontSize: 13, color: colors.primary, fontWeight: 'bold' }}>Call {u.phone}</Text>
               </TouchableOpacity>
+            )}
+
+            {/* Professional Wallet Badge & Statement Action */}
+            {u.professionalProfile && (
+              <View style={[styles.adminWalletRow, { backgroundColor: (u.professionalProfile.walletBalance || 0) >= 0 ? '#ecfdf5' : '#fef2f2', borderColor: (u.professionalProfile.walletBalance || 0) >= 0 ? '#10b981' : '#ef4444' }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                  <Ionicons 
+                    name="wallet" 
+                    size={18} 
+                    color={(u.professionalProfile.walletBalance || 0) >= 0 ? '#059669' : '#dc2626'} 
+                    style={{ marginRight: 8 }} 
+                  />
+                  <View>
+                    <Text style={{ fontSize: 11, color: colors.textLight, fontWeight: '600' }}>WALLET BALANCE</Text>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: (u.professionalProfile.walletBalance || 0) >= 0 ? '#059669' : '#dc2626' }}>
+                      {(u.professionalProfile.walletBalance || 0) >= 0 
+                        ? `+Rs. ${(u.professionalProfile.walletBalance || 0).toFixed(2)}` 
+                        : `-Rs. ${Math.abs(u.professionalProfile.walletBalance || 0).toFixed(2)}`}
+                    </Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity 
+                  style={[styles.viewWalletBtn, { backgroundColor: colors.primary }]}
+                  onPress={() => openDoctorWallet(u.professionalProfile.id, u.fullName)}
+                >
+                  <Ionicons name="receipt-outline" size={13} color="#fff" style={{ marginRight: 4 }} />
+                  <Text style={{ color: '#fff', fontSize: 11, fontWeight: 'bold' }}>View Statement</Text>
+                </TouchableOpacity>
+              </View>
             )}
             
             {u.professionalProfile && (
@@ -526,6 +604,24 @@ const AdminUsersScreen = ({ route, navigation }) => {
               </View>
             )}
 
+            <View style={styles.timestampContainer}>
+              <View style={styles.timestampItem}>
+                <Ionicons name="calendar-outline" size={14} color={colors.textLight} style={{ marginRight: 5 }} />
+                <Text style={styles.timestampLabel}>Applied / Registered:</Text>
+                <Text style={styles.timestampValue}>{formatDateTime(u.createdAt) || 'N/A'}</Text>
+              </View>
+
+              {u.verificationStatus === 'APPROVED' && (
+                <View style={[styles.timestampItem, { marginTop: 4 }]}>
+                  <Ionicons name="checkmark-circle-outline" size={14} color={colors.success} style={{ marginRight: 5 }} />
+                  <Text style={[styles.timestampLabel, { color: colors.success }]}>Accepted / Approved:</Text>
+                  <Text style={[styles.timestampValue, { color: colors.success, fontWeight: 'bold' }]}>
+                    {formatDateTime(u.approvedAt || (u.activityLogs && u.activityLogs[0]?.createdAt) || u.createdAt) || 'Approved'}
+                  </Text>
+                </View>
+              )}
+            </View>
+
             <Text style={[
               styles.status, 
               { color: u.verificationStatus === 'APPROVED' ? colors.success : (u.verificationStatus === 'PENDING' ? colors.warning : colors.danger) }
@@ -562,6 +658,99 @@ const AdminUsersScreen = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
+
+      {/* Admin Doctor Wallet Statement Modal */}
+      <Modal visible={walletModalVisible} transparent={true} animationType="slide" onRequestClose={() => setWalletModalVisible(false)}>
+        <View style={styles.walletModalBg}>
+          <View style={[styles.walletModalContent, { backgroundColor: colors.surface }]}>
+            {/* Modal Header */}
+            <View style={[styles.walletModalHeader, { borderBottomColor: colors.border }]}>
+              <View>
+                <Text style={[styles.walletModalTitle, { color: colors.text }]}>Doctor Wallet Statement</Text>
+                <Text style={{ fontSize: 13, color: colors.primary, fontWeight: 'bold' }}>
+                  {selectedDoctorWallet?.doctorName || 'Doctor'}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={() => setWalletModalVisible(false)} style={{ padding: 4 }}>
+                <Ionicons name="close-circle" size={26} color={colors.textLight} />
+              </TouchableOpacity>
+            </View>
+
+            {loadingWallet ? (
+              <View style={{ padding: 40, alignItems: 'center' }}>
+                <ActivityIndicator size="large" color={colors.primary} />
+                <Text style={{ color: colors.textLight, marginTop: 10 }}>Fetching wallet statement...</Text>
+              </View>
+            ) : (
+              <ScrollView contentContainerStyle={{ padding: 16 }}>
+                {/* Balance Summary Header */}
+                <View style={[
+                  styles.adminWalletBalanceCard,
+                  { backgroundColor: (selectedDoctorWallet?.walletBalance || 0) >= 0 ? '#065f46' : '#991b1b' }
+                ]}>
+                  <Text style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12, fontWeight: 'bold' }}>CURRENT DOCTOR BALANCE</Text>
+                  <Text style={{ color: '#fff', fontSize: 26, fontWeight: 'bold', marginTop: 4 }}>
+                    {(selectedDoctorWallet?.walletBalance || 0) >= 0 
+                      ? `+Rs. ${(selectedDoctorWallet?.walletBalance || 0).toFixed(2)}` 
+                      : `-Rs. ${Math.abs(selectedDoctorWallet?.walletBalance || 0).toFixed(2)}`}
+                  </Text>
+                  <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 12, marginTop: 4 }}>
+                    {(selectedDoctorWallet?.walletBalance || 0) >= 0
+                      ? 'Doctor has net earnings to receive from Company.'
+                      : 'Doctor owes commission to Company from cash appointments.'}
+                  </Text>
+                </View>
+
+                {/* Line by Line Transactions */}
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.text, marginBottom: 10, marginTop: 14 }}>
+                  Ledger History ({selectedDoctorWallet?.transactions?.length || 0} entries)
+                </Text>
+
+                {(!selectedDoctorWallet?.transactions || selectedDoctorWallet.transactions.length === 0) ? (
+                  <View style={{ padding: 30, alignItems: 'center' }}>
+                    <Text style={{ color: colors.textLight, fontStyle: 'italic' }}>No transactions recorded yet.</Text>
+                  </View>
+                ) : (
+                  selectedDoctorWallet.transactions.map((tx) => {
+                    const isCredit = tx.type === 'CREDIT';
+                    return (
+                      <View key={tx.id} style={[styles.adminTxCard, { backgroundColor: colors.surfaceLight, borderColor: colors.border }]}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                            <View style={{
+                              paddingHorizontal: 6,
+                              paddingVertical: 2,
+                              borderRadius: 4,
+                              backgroundColor: tx.paymentMethod === 'CARD' ? '#dbeafe' : '#fef3c7'
+                            }}>
+                              <Text style={{ fontSize: 10, fontWeight: 'bold', color: tx.paymentMethod === 'CARD' ? '#1e40af' : '#92400e' }}>
+                                {tx.paymentMethod}
+                              </Text>
+                            </View>
+                            <Text style={{ fontSize: 11, color: colors.textLight }}>{formatDateTime(tx.createdAt)}</Text>
+                          </View>
+
+                          <Text style={{ fontSize: 14, fontWeight: 'bold', color: isCredit ? '#10b981' : '#ef4444' }}>
+                            {isCredit ? `+Rs. ${Math.abs(tx.amount).toFixed(2)}` : `-Rs. ${Math.abs(tx.amount).toFixed(2)}`}
+                          </Text>
+                        </View>
+
+                        <Text style={{ fontSize: 12, color: colors.text, marginTop: 6 }}>{tx.description}</Text>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, paddingTop: 6, borderTopWidth: 1, borderTopColor: colors.border }}>
+                          <Text style={{ fontSize: 11, color: colors.textLight }}>Total Fee: Rs. {tx.totalFee?.toFixed(2)}</Text>
+                          <Text style={{ fontSize: 11, color: '#ef4444' }}>Company Comm: Rs. {tx.commissionAmount?.toFixed(2)}</Text>
+                          <Text style={{ fontSize: 11, fontWeight: 'bold', color: colors.text }}>Balance: Rs. {tx.balanceAfter?.toFixed(2)}</Text>
+                        </View>
+                      </View>
+                    );
+                  })
+                )}
+              </ScrollView>
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -586,6 +775,10 @@ const getStyles = (colors) => StyleSheet.create({
   detailText: { fontSize: 13, color: colors.text, marginBottom: 4 },
   detailLabel: { fontWeight: 'bold', color: colors.textLight },
   status: { fontSize: 12, fontWeight: 'bold', marginTop: 8 },
+  timestampContainer: { marginTop: 10, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.border },
+  timestampItem: { flexDirection: 'row', alignItems: 'center' },
+  timestampLabel: { fontSize: 12, color: colors.textLight, fontWeight: '600', marginRight: 6 },
+  timestampValue: { fontSize: 12, color: colors.text },
   filterScroll: { flexGrow: 0, marginBottom: 10, marginTop: 15 },
   filterBtn: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
   filterBtnActive: { backgroundColor: colors.primary, borderColor: colors.primary },
@@ -620,7 +813,61 @@ const getStyles = (colors) => StyleSheet.create({
     maxWidth: Platform.OS === 'web' ? 240 : undefined,
     cursor: Platform.OS === 'web' ? 'pointer' : 'auto',
   },
-  viewProfileBtnText: { color: '#fff', fontSize: 13, fontWeight: 'bold' }
+  viewProfileBtnText: { color: '#fff', fontSize: 13, fontWeight: 'bold' },
+  adminWalletRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: SIZES.radius,
+    borderWidth: 1,
+    marginTop: 8,
+  },
+  viewWalletBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    cursor: Platform.OS === 'web' ? 'pointer' : 'auto',
+  },
+  walletModalBg: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.65)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  walletModalContent: {
+    width: '100%',
+    maxWidth: 580,
+    maxHeight: '85%',
+    borderRadius: 16,
+    overflow: 'hidden',
+    elevation: 5,
+  },
+  walletModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+  },
+  walletModalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  adminWalletBalanceCard: {
+    borderRadius: 12,
+    padding: 16,
+  },
+  adminTxCard: {
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    marginBottom: 8,
+  },
 });
 
 export default AdminUsersScreen;
