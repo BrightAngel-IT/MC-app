@@ -520,43 +520,23 @@ exports.requestPayout = async (req, res) => {
             });
         }
 
-        // Deduct from wallet right away and reserve it for payout
-        const newBal = currentBal - reqAmount;
-
-        const [payoutRequest] = await prisma.$transaction([
-            prisma.payoutRequest.create({
-                data: {
-                    professionalId: professional.id,
-                    amount: reqAmount,
-                    bankName,
-                    accountNumber,
-                    accountHolderName,
-                    branchName: branchName || '',
-                    status: 'PENDING'
-                }
-            }),
-            prisma.professionalProfile.update({
-                where: { id: professional.id },
-                data: { walletBalance: newBal }
-            }),
-            prisma.walletTransaction.create({
-                data: {
-                    professionalId: professional.id,
-                    amount: -reqAmount,
-                    type: 'DEBIT',
-                    paymentMethod: 'BANK_TRANSFER',
-                    totalFee: reqAmount,
-                    commissionAmount: 0,
-                    balanceAfter: newBal,
-                    description: `Bank Withdrawal Requested (${bankName} - ${accountNumber})`
-                }
-            })
-        ]);
+        // Just create the PayoutRequest without deducting from wallet yet
+        const payoutRequest = await prisma.payoutRequest.create({
+            data: {
+                professionalId: professional.id,
+                amount: reqAmount,
+                bankName,
+                accountNumber,
+                accountHolderName,
+                branchName: branchName || '',
+                status: 'PENDING'
+            }
+        });
 
         return res.status(201).json({
-            message: "Withdrawal request submitted successfully! Admin will process the transfer.",
+            message: "Withdrawal request submitted! Amount will be deducted from your wallet once Admin transfers the payment.",
             payoutRequest,
-            walletBalance: newBal
+            walletBalance: currentBal
         });
     } catch (error) {
         console.error("Error creating payout request:", error);
@@ -637,47 +617,68 @@ exports.processPayoutRequest = async (req, res) => {
         }
 
         if (action === 'APPROVE') {
-            // Mark as completed
-            const updated = await prisma.payoutRequest.update({
-                where: { id: requestId },
-                data: {
-                    status: 'APPROVED',
-                    referenceNumber: referenceNumber || 'BANK-TRANSFER',
-                    adminNote: adminNote || 'Transferred by Admin',
-                    processedAt: new Date()
-                }
-            });
-
-            return res.status(200).json({
-                message: "Payout approved and marked as transferred successfully!",
-                payoutRequest: updated
-            });
-        } else if (action === 'REJECT') {
-            // Refund the deducted amount back to doctor's wallet balance!
+            // Deduct from doctor's wallet NOW upon Admin approval & transfer
             const currentBal = Number(payoutReq.professional.walletBalance || 0);
-            const refundBal = currentBal + Number(payoutReq.amount);
+            const reqAmount = Number(payoutReq.amount);
+            const newBal = currentBal - reqAmount;
 
             const [updated] = await prisma.$transaction([
                 prisma.payoutRequest.update({
                     where: { id: requestId },
                     data: {
-                        status: 'REJECTED',
-                        adminNote: adminNote || 'Rejected by Admin',
+                        status: 'APPROVED',
+                        referenceNumber: referenceNumber || 'BANK-TRANSFER',
+                        adminNote: adminNote || 'Transferred by Admin',
                         processedAt: new Date()
                     }
                 }),
                 prisma.professionalProfile.update({
                     where: { id: payoutReq.professionalId },
-                    data: { walletBalance: refundBal }
+                    data: { walletBalance: newBal }
                 }),
                 prisma.walletTransaction.create({
                     data: {
                         professionalId: payoutReq.professionalId,
-                        amount: payoutReq.amount,
-                        type: 'CREDIT',
-                        paymentMethod: 'REFUND',
-                        totalFee: payoutReq.amount,
+                        amount: -reqAmount,
+                        type: 'DEBIT',
+                        paymentMethod: 'BANK_TRANSFER',
+                        totalFee: reqAmount,
                         commissionAmount: 0,
+                        balanceAfter: newBal,
+                        description: `Bank Withdrawal Transferred & Completed (${payoutReq.bankName} - ${payoutReq.accountNumber}, Ref: ${referenceNumber || 'ADMIN'})`
+                    }
+                })
+            ]);
+
+            return res.status(200).json({
+                message: "Payout approved, funds transferred, and doctor wallet updated successfully!",
+                payoutRequest: updated,
+                walletBalance: newBal
+            });
+        } else if (action === 'REJECT') {
+            // If rejected, just mark request as REJECTED without modifying wallet
+            const updated = await prisma.payoutRequest.update({
+                where: { id: requestId },
+                data: {
+                    status: 'REJECTED',
+                    adminNote: adminNote || 'Rejected by Admin',
+                    processedAt: new Date()
+                }
+            });
+
+            return res.status(200).json({
+                message: "Payout request rejected.",
+                payoutRequest: updated
+            });
+        } else {
+            return res.status(400).json({ message: "Invalid action. Use 'APPROVE' or 'REJECT'." });
+        }
+    } catch (error) {
+        console.error("Error processing payout request:", error);
+        return res.status(500).json({ message: "Error processing payout", error: error.message });
+    }
+};
+
                         balanceAfter: refundBal,
                         description: `Withdrawal Request Rejected & Refunded (Reason: ${adminNote || 'Invalid bank info'})`
                     }
