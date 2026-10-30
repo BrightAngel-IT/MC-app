@@ -101,6 +101,9 @@ model ProfessionalProfile {
   bookingFee             Float   @default(0.0)
     serviceRadius          Int     @default(10)
     serveEverywhere        Boolean @default(true)
+  visitStartHour         String? @default("08:00 AM")
+  visitEndHour           String? @default("08:00 PM")
+  visitDays              String? @default("Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday")
   walletBalance          Float   @default(0.0)
   isWalletBlocked        Boolean @default(false)
   licenseIssuedYear      Int?

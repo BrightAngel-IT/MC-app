@@ -68,6 +68,28 @@ const DoctorSearch = ({ navigation, route }) => {
     setBookDate(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
   };
 
+  const parseTimeToMinutes = (timeStr) => {
+    if (!timeStr) return 0;
+    const clean = timeStr.trim().toUpperCase();
+    const isPM = clean.includes('PM');
+    const isAM = clean.includes('AM');
+    const parts = clean.replace(/[^\d:]/g, '').split(':').map(Number);
+    let hours = parts[0] || 0;
+    let minutes = parts[1] || 0;
+    if (isPM && hours < 12) hours += 12;
+    if (isAM && hours === 12) hours = 0;
+    return hours * 60 + minutes;
+  };
+
+  const formatMinutesTo12Hour = (totalMinutes) => {
+    let hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    const isPM = hours >= 12;
+    if (hours === 0) hours = 12;
+    else if (hours > 12) hours -= 12;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${isPM ? 'PM' : 'AM'}`;
+  };
+
   const getCombinedDateTime = (dateStr, timeStr) => {
     if (!dateStr) return new Date().toISOString();
     let [year, month, day] = dateStr.trim().split('-').map(Number);
@@ -97,6 +119,23 @@ const DoctorSearch = ({ navigation, route }) => {
     }
     const combined = new Date(year, month - 1, day, hours, minutes, 0);
     return isNaN(combined.getTime()) ? new Date(dateStr).toISOString() : combined.toISOString();
+  };
+
+  const getAvailableTimeSlots = () => {
+    const startStr = selectedDoc?.visitStartHour || '08:00 AM';
+    const endStr = selectedDoc?.visitEndHour || '08:00 PM';
+    const startMin = parseTimeToMinutes(startStr);
+    const endMin = parseTimeToMinutes(endStr);
+
+    const slots = [];
+    const step = 90; // 1.5 hours interval
+    for (let m = startMin; m <= endMin; m += step) {
+      slots.push(formatMinutesTo12Hour(m));
+    }
+    if (slots.length === 0) {
+      slots.push('09:00 AM', '11:00 AM', '02:00 PM', '04:30 PM', '06:00 PM');
+    }
+    return slots;
   };
 
   const filteredDoctors = doctors.filter(doc => 
@@ -164,8 +203,27 @@ const DoctorSearch = ({ navigation, route }) => {
 
   const handleOpenBook = async (doctor) => {
     setSelectedDoc(doctor);
-    setBookDate(getTodayStr());
-    setBookTime('10:00 AM');
+    const today = getTodayStr();
+    setBookDate(today);
+
+    // Pick first slot in working hours
+    const startStr = doctor.visitStartHour || '08:00 AM';
+    const endStr = doctor.visitEndHour || '08:00 PM';
+    const startMin = parseTimeToMinutes(startStr);
+    const endMin = parseTimeToMinutes(endStr);
+    
+    // Check current time if booking today
+    const now = new Date();
+    const currentMin = now.getHours() * 60 + now.getMinutes();
+    let initialSlot = formatMinutesTo12Hour(startMin);
+    for (let m = startMin; m <= endMin; m += 90) {
+      if (m > currentMin + 15) {
+        initialSlot = formatMinutesTo12Hour(m);
+        break;
+      }
+    }
+
+    setBookTime(initialSlot);
     setSymptoms('');
     setDistance(null);
     setPaymentMethod('CASH');
@@ -208,16 +266,58 @@ const DoctorSearch = ({ navigation, route }) => {
 
   const handleBookSubmit = async () => {
     if (!bookDate) {
-      setAlertConfig({ visible: true, type: 'error', title: 'Error', message: 'Please select or enter a date' });
+      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Date', message: 'Please select or enter an appointment date.' });
       return;
     }
+
+    const todayStr = getTodayStr();
+    if (bookDate < todayStr) {
+      setAlertConfig({ 
+        visible: true, 
+        type: 'error', 
+        title: 'Past Date Not Allowed ❌', 
+        message: 'You cannot book an appointment for a past date. Please select Today or a future date.' 
+      });
+      return;
+    }
+
+    const scheduledDateISO = getCombinedDateTime(bookDate, bookTime);
+    const appointmentDate = new Date(scheduledDateISO);
+    const now = new Date();
+
+    if (appointmentDate.getTime() < now.getTime() - 2 * 60 * 1000) {
+      setAlertConfig({ 
+        visible: true, 
+        type: 'error', 
+        title: 'Past Time Not Allowed ❌', 
+        message: 'The selected appointment time has already passed. Please choose an upcoming time slot.' 
+      });
+      return;
+    }
+
+    // Validate Doctor's working hours
+    if (selectedDoc?.visitStartHour && selectedDoc?.visitEndHour) {
+      const selectedMin = parseTimeToMinutes(bookTime);
+      const startMin = parseTimeToMinutes(selectedDoc.visitStartHour);
+      const endMin = parseTimeToMinutes(selectedDoc.visitEndHour);
+
+      if (selectedMin < startMin || selectedMin > endMin) {
+        setAlertConfig({
+          visible: true,
+          type: 'error',
+          title: 'Outside Visiting Hours 🕒',
+          message: `Dr. ${selectedDoc.user?.fullName} is available for home visits between ${selectedDoc.visitStartHour} and ${selectedDoc.visitEndHour}. Please pick a time within this duration.`
+        });
+        return;
+      }
+    }
+
     if (isBooking) return;
     setIsBooking(true);
     try {
-      const scheduledDate = getCombinedDateTime(bookDate, bookTime);
       await api.post('/patient/appointment', {
         professionalId: selectedDoc.id,
-        scheduledDate, 
+        scheduledDate: scheduledDateISO, 
         symptoms: symptoms || 'General Checkup',
         serviceType: 'Consultation',
         locationLat: patientLocation ? patientLocation.lat : null,
@@ -277,6 +377,14 @@ const DoctorSearch = ({ navigation, route }) => {
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
               <Ionicons name="location" size={14} color={colors.textLight} />
               <Text style={{fontSize: 13, color: colors.textLight, marginLeft: 6}}>{item.address}</Text>
+            </View>
+          )}
+          {item.visitStartHour && item.visitEndHour && (
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
+              <Ionicons name="time" size={14} color={colors.primary} />
+              <Text style={{fontSize: 12, color: colors.primary, fontWeight: '600', marginLeft: 6}}>
+                Visits: {item.visitStartHour} - {item.visitEndHour}
+              </Text>
             </View>
           )}
         </View>
@@ -426,17 +534,49 @@ const DoctorSearch = ({ navigation, route }) => {
               onChangeText={setBookDate} 
             />
 
-            <Text style={styles.label}>Select Time</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8}}>
+              <Text style={styles.label}>Select Time</Text>
+              {selectedDoc?.visitStartHour && selectedDoc?.visitEndHour ? (
+                <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
+                  <Ionicons name="time-outline" size={13} color={colors.primary} />
+                  <Text style={{fontSize: 11, color: colors.primary, fontWeight: 'bold'}}>
+                    Visiting Hours: {selectedDoc.visitStartHour} - {selectedDoc.visitEndHour}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+
             <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 8}}>
-              {['09:00 AM', '10:30 AM', '02:00 PM', '04:30 PM', '06:00 PM'].map((slot) => (
-                <TouchableOpacity
-                  key={slot}
-                  style={[styles.quickChip, bookTime === slot && styles.quickChipActive]}
-                  onPress={() => setBookTime(slot)}
-                >
-                  <Text style={[styles.quickChipText, bookTime === slot && styles.quickChipTextActive]}>{slot}</Text>
-                </TouchableOpacity>
-              ))}
+              {getAvailableTimeSlots().map((slot) => {
+                const isSelected = bookTime === slot;
+                // If selected date is today, check if this slot is already in the past
+                const isToday = bookDate === getTodayStr();
+                const now = new Date();
+                const currentMin = now.getHours() * 60 + now.getMinutes();
+                const slotMin = parseTimeToMinutes(slot);
+                const isPastSlot = isToday && slotMin <= currentMin;
+
+                return (
+                  <TouchableOpacity
+                    key={slot}
+                    disabled={isPastSlot}
+                    style={[
+                      styles.quickChip, 
+                      isSelected && styles.quickChipActive,
+                      isPastSlot && { opacity: 0.35, backgroundColor: colors.border }
+                    ]}
+                    onPress={() => setBookTime(slot)}
+                  >
+                    <Text style={[
+                      styles.quickChipText, 
+                      isSelected && styles.quickChipTextActive,
+                      isPastSlot && { color: colors.textMuted, textDecorationLine: 'line-through' }
+                    ]}>
+                      {slot}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
             <TextInput 
               style={styles.input} 

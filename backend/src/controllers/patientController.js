@@ -189,11 +189,14 @@ exports.getVerifiedDoctors = async (req, res) => {
             profileImage: doc.profileImage,
             experienceYears: doc.licenseIssuedYear ? new Date().getFullYear() - doc.licenseIssuedYear : 0,
             user: doc.user,
-              locationLat: doc.locationLat,
-              locationLng: doc.locationLng,
-              serveEverywhere: doc.serveEverywhere,
-              serviceRadius: doc.serviceRadius,
-              bookingFee: doc.bookingFee
+            locationLat: doc.locationLat,
+            locationLng: doc.locationLng,
+            serveEverywhere: doc.serveEverywhere,
+            serviceRadius: doc.serviceRadius,
+            bookingFee: doc.bookingFee,
+            visitStartHour: doc.visitStartHour || "08:00 AM",
+            visitEndHour: doc.visitEndHour || "08:00 PM",
+            visitDays: doc.visitDays || "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday"
         }));
         
         return res.status(200).json({message: 'Doctors fetched successfully', verifiedDoctors: formattedDoctors})
@@ -225,11 +228,14 @@ exports.getVerifiedNurses = async (req, res) => {
             profileImage: nurse.profileImage,
             experienceYears: nurse.licenseIssuedYear ? new Date().getFullYear() - nurse.licenseIssuedYear : 0,
             user: nurse.user,
-              locationLat: nurse.locationLat,
-              locationLng: nurse.locationLng,
-              serveEverywhere: nurse.serveEverywhere,
-              serviceRadius: nurse.serviceRadius,
-              bookingFee: nurse.bookingFee
+            locationLat: nurse.locationLat,
+            locationLng: nurse.locationLng,
+            serveEverywhere: nurse.serveEverywhere,
+            serviceRadius: nurse.serviceRadius,
+            bookingFee: nurse.bookingFee,
+            visitStartHour: nurse.visitStartHour || "08:00 AM",
+            visitEndHour: nurse.visitEndHour || "08:00 PM",
+            visitDays: nurse.visitDays || "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday"
         }));
         
         return res.status(200).json({message: 'Nurses fetched successfully', verifiedNurses: formattedNurses})
@@ -246,7 +252,7 @@ exports.getVerifiedLabTechs = async (req, res) => {
             include: { user: true }
         });
         const formatted = labTechs.map(p => ({
-            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, workingHospital: p.workingHospital, address: p.address, profileImage: p.profileImage, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user
+            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, workingHospital: p.workingHospital, address: p.address, profileImage: p.profileImage, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user, locationLat: p.locationLat, locationLng: p.locationLng, bookingFee: p.bookingFee, visitStartHour: p.visitStartHour || "08:00 AM", visitEndHour: p.visitEndHour || "08:00 PM", visitDays: p.visitDays || "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday"
         }));
         return res.status(200).json({message: 'Lab Techs fetched successfully', verifiedLabTechs: formatted})
     } catch (error) {
@@ -262,7 +268,7 @@ exports.getVerifiedParamedics = async (req, res) => {
             include: { user: true }
         });
         const formatted = paramedics.map(p => ({
-            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, attachedHospital: p.attachedHospital, ambulanceVehicleNumber: p.ambulanceVehicleNumber, profileImage: p.profileImage, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user
+            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, attachedHospital: p.attachedHospital, ambulanceVehicleNumber: p.ambulanceVehicleNumber, profileImage: p.profileImage, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user, locationLat: p.locationLat, locationLng: p.locationLng, bookingFee: p.bookingFee, visitStartHour: p.visitStartHour || "08:00 AM", visitEndHour: p.visitEndHour || "08:00 PM", visitDays: p.visitDays || "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday"
         }));
         return res.status(200).json({message: 'Paramedics fetched successfully', verifiedParamedics: formatted})
     } catch (error) {
@@ -278,7 +284,7 @@ exports.getVerifiedCaregivers = async (req, res) => {
             include: { user: true }
         });
         const formatted = caregivers.map(p => ({
-            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, workingHospital: p.workingHospital, address: p.address, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user
+            id: p.id, fullName: p.fullName, specialization: p.specialization, rating: p.rating, availabilityStatus: p.availabilityStatus, workingHospital: p.workingHospital, address: p.address, experienceYears: p.licenseIssuedYear ? new Date().getFullYear() - p.licenseIssuedYear : 0, user: p.user, locationLat: p.locationLat, locationLng: p.locationLng, bookingFee: p.bookingFee, visitStartHour: p.visitStartHour || "08:00 AM", visitEndHour: p.visitEndHour || "08:00 PM", visitDays: p.visitDays || "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday"
         }));
         return res.status(200).json({message: 'Caregivers fetched successfully', verifiedCaregivers: formatted})
     } catch (error) {
@@ -297,11 +303,22 @@ exports.bookAppointment = async ( req, res) => {
 
         if(!Patient) return res.status(404).json({message: 'Patient not found'});
 
+        const appointmentTime = new Date(scheduledDate);
+        if (isNaN(appointmentTime.getTime())) {
+            return res.status(400).json({ message: "Invalid date and time selected." });
+        }
+
+        const now = new Date();
+        // Allow a 5-minute grace window for booking current time
+        if (appointmentTime.getTime() < now.getTime() - 5 * 60 * 1000) {
+            return res.status(400).json({ message: "Cannot book appointments in the past. Please select an upcoming date and time." });
+        }
+
         const newAppointment = await prisma.appointment.create({
             data: {
                 patientId: Patient.id,
                 professionalId,
-                scheduledDate: new Date(scheduledDate),
+                scheduledDate: appointmentTime,
                 symptoms,
                 serviceType,
                 locationLat,

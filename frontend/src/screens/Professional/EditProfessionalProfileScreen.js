@@ -24,6 +24,11 @@ const EditProfessionalProfileScreen = ({ navigation }) => {
   const [profileImage, setProfileImage] = useState(null);
   const [newImageBase64, setNewImageBase64] = useState(null);
 
+  // Home Visit Time Duration states
+  const [visitStartHour, setVisitStartHour] = useState('08:00 AM');
+  const [visitEndHour, setVisitEndHour] = useState('08:00 PM');
+  const [visitDays, setVisitDays] = useState('Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday');
+
   // Password change states
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -94,6 +99,9 @@ const EditProfessionalProfileScreen = ({ navigation }) => {
         setLocationLat(res.data.locationLat);
         setLocationLng(res.data.locationLng);
         setProfileImage(res.data.profileImage || null);
+        setVisitStartHour(res.data.visitStartHour || '08:00 AM');
+        setVisitEndHour(res.data.visitEndHour || '08:00 PM');
+        setVisitDays(res.data.visitDays || 'Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday');
       }
     } catch (err) {
       console.log('Error fetching profile:', err);
@@ -164,7 +172,10 @@ const EditProfessionalProfileScreen = ({ navigation }) => {
         address,
         phone,
         locationLat,
-        locationLng
+        locationLng,
+        visitStartHour,
+        visitEndHour,
+        visitDays
       };
 
       if (newImageBase64) {
@@ -196,7 +207,7 @@ const EditProfessionalProfileScreen = ({ navigation }) => {
         visible: true,
         type: 'success',
         title: 'Profile Updated! 🎉',
-        message: 'Your personal details, contact number, and profile picture have been updated successfully.',
+        message: 'Your personal details, contact number, home visit hours, and profile picture have been updated successfully.',
         onConfirm: () => {
           setAlertConfig(prev => ({ ...prev, visible: false }));
           handleBack();
@@ -369,6 +380,73 @@ const EditProfessionalProfileScreen = ({ navigation }) => {
             placeholder="e.g. 2500"
             placeholderTextColor={colors.textMuted}
           />
+        </View>
+
+        {/* Home Visit Available Hours Section */}
+        <View style={[styles.inputContainer, { backgroundColor: colors.background, padding: 12, borderRadius: 10, borderWidth: 1, borderColor: colors.border }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8, gap: 6 }}>
+            <Ionicons name="time-outline" size={18} color={colors.primary} />
+            <Text style={[styles.label, { color: colors.text, marginBottom: 0, fontWeight: 'bold' }]}>
+              Home Visit Available Hours (Working Time) 🕒
+            </Text>
+          </View>
+          <Text style={{ fontSize: 12, color: colors.textLight, marginBottom: 12 }}>
+            Specify the time range during which patients can book you for home visits.
+          </Text>
+
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 12, fontWeight: '600', color: colors.text, marginBottom: 4 }}>Start Time</Text>
+              <TextInput
+                style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.surface }]}
+                value={visitStartHour}
+                onChangeText={setVisitStartHour}
+                placeholder="e.g. 08:00 AM"
+                placeholderTextColor={colors.textMuted}
+              />
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 12, fontWeight: '600', color: colors.text, marginBottom: 4 }}>End Time</Text>
+              <TextInput
+                style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.surface }]}
+                value={visitEndHour}
+                onChangeText={setVisitEndHour}
+                placeholder="e.g. 08:00 PM"
+                placeholderTextColor={colors.textMuted}
+              />
+            </View>
+          </View>
+
+          {/* Quick preset chips */}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+            {[
+              { label: '8 AM - 8 PM (Full Day)', start: '08:00 AM', end: '08:00 PM' },
+              { label: '9 AM - 5 PM (Office Hours)', start: '09:00 AM', end: '05:00 PM' },
+              { label: '4 PM - 10 PM (Evening)', start: '04:00 PM', end: '10:00 PM' },
+              { label: '6 AM - 2 PM (Morning)', start: '06:00 AM', end: '02:00 PM' }
+            ].map((preset, idx) => (
+              <TouchableOpacity
+                key={idx}
+                onPress={() => {
+                  setVisitStartHour(preset.start);
+                  setVisitEndHour(preset.end);
+                }}
+                style={{
+                  paddingHorizontal: 8,
+                  paddingVertical: 4,
+                  backgroundColor: (visitStartHour === preset.start && visitEndHour === preset.end) ? colors.primary + '25' : colors.surface,
+                  borderRadius: 6,
+                  borderWidth: 1,
+                  borderColor: (visitStartHour === preset.start && visitEndHour === preset.end) ? colors.primary : colors.border
+                }}
+              >
+                <Text style={{ fontSize: 11, color: (visitStartHour === preset.start && visitEndHour === preset.end) ? colors.primary : colors.textLight, fontWeight: '500' }}>
+                  {preset.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
         {/* Location Pin */}

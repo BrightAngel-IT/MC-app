@@ -399,7 +399,10 @@ exports.updateProfile = async (req, res) => {
             address,
             profileImage,
             currentPassword,
-            newPassword
+            newPassword,
+            visitStartHour,
+            visitEndHour,
+            visitDays
         } = req.body;
         
         const profile = await prisma.professionalProfile.findUnique({ 
@@ -466,7 +469,10 @@ exports.updateProfile = async (req, res) => {
                 locationLng: locationLng !== undefined ? parseFloat(locationLng) : profile.locationLng,
                 serviceRadius: serviceRadius !== undefined ? parseInt(serviceRadius) : profile.serviceRadius,
                 serveEverywhere: serveEverywhere !== undefined ? serveEverywhere : profile.serveEverywhere,
-                availabilityStatus: availabilityStatus !== undefined ? availabilityStatus : profile.availabilityStatus
+                availabilityStatus: availabilityStatus !== undefined ? availabilityStatus : profile.availabilityStatus,
+                visitStartHour: visitStartHour !== undefined ? visitStartHour : profile.visitStartHour,
+                visitEndHour: visitEndHour !== undefined ? visitEndHour : profile.visitEndHour,
+                visitDays: visitDays !== undefined ? visitDays : profile.visitDays
             },
             include: { user: true }
         });
