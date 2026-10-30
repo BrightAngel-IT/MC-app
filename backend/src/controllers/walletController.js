@@ -346,20 +346,34 @@ exports.handlePayHereNotify = async (req, res) => {
             const paidAmount = parseFloat(payhere_amount);
 
             if (professionalId) {
+                // 1. Check if this order_id is ALREADY processed to prevent duplicate settlement
+                const existingTx = await prisma.walletTransaction.findFirst({
+                    where: {
+                        professionalId: professionalId,
+                        description: { contains: order_id }
+                    }
+                });
+
+                if (existingTx) {
+                    console.log(`Order ${order_id} already settled. Skipping duplicate.`);
+                    return res.status(200).send("OK");
+                }
+
                 const professional = await prisma.professionalProfile.findUnique({
                     where: { id: professionalId }
                 });
 
                 if (professional) {
                     const currentBal = Number(professional.walletBalance || 0);
-                    const newBal = currentBal + paidAmount;
+                    // Settle negative balance up to 0 or credit difference
+                    const newBal = currentBal < 0 ? Math.min(0, currentBal + paidAmount) : currentBal;
 
                     await prisma.$transaction([
                         prisma.professionalProfile.update({
                             where: { id: professionalId },
                             data: {
                                 walletBalance: newBal,
-                                isWalletBlocked: false // Auto unblock on full/due settlement!
+                                isWalletBlocked: false // Auto unblock on due settlement!
                             }
                         }),
                         prisma.walletTransaction.create({
@@ -388,7 +402,7 @@ exports.handlePayHereNotify = async (req, res) => {
     }
 };
 
-// Immediate client-side verification/fallback once PayHere completes (In case IPN is delayed in local testing)
+// Immediate client-side verification/fallback once PayHere completes
 exports.verifyAndSettleDue = async (req, res) => {
     try {
         const { order_id, amount, payment_id } = req.body;
@@ -401,9 +415,28 @@ exports.verifyAndSettleDue = async (req, res) => {
             return res.status(404).json({ message: "Professional profile not found." });
         }
 
-        const settleAmount = parseFloat(amount) || Math.abs(Number(professional.walletBalance || 0));
+        // 1. Check if this order_id was already settled by the webhook (IPN)
+        if (order_id) {
+            const alreadyProcessed = await prisma.walletTransaction.findFirst({
+                where: {
+                    professionalId: professional.id,
+                    description: { contains: order_id }
+                }
+            });
+
+            if (alreadyProcessed) {
+                // Already settled via webhook, just return current zero/settled balance!
+                return res.status(200).json({
+                    message: "Wallet due already settled successfully!",
+                    walletBalance: professional.walletBalance,
+                    isWalletBlocked: professional.isWalletBlocked
+                });
+            }
+        }
+
         const currentBal = Number(professional.walletBalance || 0);
-        const newBal = currentBal + settleAmount;
+        const settleAmount = parseFloat(amount) || Math.abs(currentBal);
+        const newBal = currentBal < 0 ? Math.min(0, currentBal + settleAmount) : currentBal;
 
         const updated = await prisma.$transaction([
             prisma.professionalProfile.update({
@@ -422,7 +455,7 @@ exports.verifyAndSettleDue = async (req, res) => {
                     totalFee: settleAmount,
                     commissionAmount: 0,
                     balanceAfter: newBal,
-                    description: `PayHere Settlement Confirmed (Ref: ${payment_id || order_id})`
+                    description: `PayHere Settlement Confirmed (Order #${order_id || 'DIRECT'}, Ref: ${payment_id || order_id})`
                 }
             })
         ]);
