@@ -108,7 +108,10 @@ exports.completeAppointment = async (req, res) => {
 
         if (appointment.status !== "COMPLETED") {
             const totalFee = Number(appointment.totalAmount) || 0;
-            const paymentMethod = selectedMethod || appointment.paymentMethod || "CASH";
+            const initialMethod = appointment.paymentMethod || "CASH";
+            const finalMethod = selectedMethod || initialMethod;
+            const wasSwitched = selectedMethod && selectedMethod !== appointment.paymentMethod;
+            const switchNote = wasSwitched ? ` [Payment Method Switched from ${initialMethod} to ${finalMethod}]` : '';
 
             let commissionPercent = 30;
             try {
@@ -127,13 +130,13 @@ exports.completeAppointment = async (req, res) => {
             let transactionType = 'CREDIT';
             let description = '';
 
-            if (paymentMethod === "CARD") {
+            if (finalMethod === "CARD") {
                 // For CARD payment: If patient already paid online earlier, credit now.
                 // Otherwise, leave paymentStatus as PENDING. Patient will have 'Pay Now' unlocked to complete card payment.
                 if (appointment.paymentStatus === "PAID") {
                     walletChange = professionalIncome;
                     transactionType = "CREDIT";
-                    description = `Card Payment Cleared (Total: Rs. ${totalFee}, Platform Fee: Rs. ${commissionAmount}, Your Share: +Rs. ${professionalIncome})`;
+                    description = `Card Payment Cleared${switchNote} (Total: Rs. ${totalFee}, Platform Fee: Rs. ${commissionAmount}, Your Share: +Rs. ${professionalIncome})`;
 
                     const currentBalance = Number(appointment.professional.walletBalance) || 0;
                     const newBalance = currentBalance + walletChange;
@@ -149,7 +152,7 @@ exports.completeAppointment = async (req, res) => {
                                 appointmentId: appointment.id,
                                 amount: walletChange,
                                 type: transactionType,
-                                paymentMethod: paymentMethod,
+                                paymentMethod: finalMethod,
                                 totalFee: totalFee,
                                 commissionAmount: commissionAmount,
                                 description: description,
@@ -160,6 +163,7 @@ exports.completeAppointment = async (req, res) => {
                             where: { id },
                             data: {
                                 status: "COMPLETED",
+                                paymentMethod: "CARD",
                                 completedAt: new Date()
                             }
                         })
@@ -179,7 +183,7 @@ exports.completeAppointment = async (req, res) => {
                 // Cash payment -> Collected by doctor on visit, company commission is debited (-)
                 walletChange = -commissionAmount;
                 transactionType = "DEBIT";
-                description = `Cash Collected by Doctor (Total: Rs. ${totalFee}, Platform Fee Due: -Rs. ${commissionAmount})`;
+                description = `Cash Collected by Doctor${switchNote} (Total: Rs. ${totalFee}, Platform Fee Due: -Rs. ${commissionAmount})`;
 
                 const currentBalance = Number(appointment.professional.walletBalance) || 0;
                 const newBalance = currentBalance + walletChange;
