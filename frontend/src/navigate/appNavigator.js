@@ -24,6 +24,7 @@ import ParamedicSearch from '../screens/patient/ParamedicSearch';
 import CaregiverSearch from '../screens/patient/CaregiverSearch';
 import ElderHomeSearch from '../screens/patient/ElderHomeSearch';
 import ElderHomeDetailScreen from '../screens/patient/ElderHomeDetailScreen';
+import PatientFinanceScreen from '../screens/patient/PatientFinanceScreen';
 import ElderHomeDashboard from '../screens/ElderHome/ElderHomeDashboard';
 import ProfessionalDashboard from '../screens/Professional/ProfessionalDashboard';
 import ProfessionalAppointments from '../screens/Professional/ProfessionalAppointments';
@@ -110,6 +111,16 @@ const PatientTabs = () => {
           tabBarLabel: 'Prescriptions',
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="file-medical" color={color} size={size} />
+          )
+        }} 
+      />
+      <Tab.Screen 
+        name="FinanceTab" 
+        component={PatientFinanceScreen} 
+        options={{
+          tabBarLabel: 'Billing',
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="file-invoice-dollar" color={color} size={size} />
           )
         }} 
       />
@@ -426,6 +437,13 @@ const PatientStack = () => {
           headerTintColor: colors.text,
         })} 
       />
+      <Stack.Screen 
+        name="PatientFinance" 
+        component={PatientFinanceScreen} 
+        options={{ 
+          headerShown: false,
+        }} 
+      />
     </Stack.Navigator>
   );
 };
@@ -446,6 +464,7 @@ const linking = {
       ElderHomeDetail: 'elder-home-detail/:id?',
       Notifications: 'notifications',
       Calendar: 'calendar',
+      PatientFinance: 'patient-finance',
     }
   }
 };
@@ -541,6 +560,13 @@ const AppNavigator = () => {
         <Stack.Screen 
           name="ProfessionalWallet" 
           component={ProfessionalWalletScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
+        <Stack.Screen 
+          name="PatientFinance" 
+          component={PatientFinanceScreen} 
           options={{ 
             headerShown: false,
           }} 

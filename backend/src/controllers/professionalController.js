@@ -92,6 +92,8 @@ exports.completeAppointment = async (req, res) => {
     try {
         const { id } = req.params;
 
+        const selectedMethod = req.body.paymentMethod;
+
         const appointment = await prisma.appointment.findUnique({
             where: { id },
             include: {
@@ -106,7 +108,7 @@ exports.completeAppointment = async (req, res) => {
 
         if (appointment.status !== "COMPLETED") {
             const totalFee = Number(appointment.totalAmount) || 0;
-            const paymentMethod = appointment.paymentMethod || "CASH";
+            const paymentMethod = selectedMethod || appointment.paymentMethod || "CASH";
 
             let commissionPercent = 30;
             try {
@@ -126,47 +128,91 @@ exports.completeAppointment = async (req, res) => {
             let description = '';
 
             if (paymentMethod === "CARD") {
-                // Card payment -> Collected by company, doctor gets credited their share (+)
-                walletChange = professionalIncome;
-                transactionType = "CREDIT";
-                description = `Card Payment Received (Total: Rs. ${totalFee}, Platform Fee: Rs. ${commissionAmount}, Your Share: +Rs. ${professionalIncome})`;
+                // For CARD payment: If patient already paid online earlier, credit now.
+                // Otherwise, leave paymentStatus as PENDING. Patient will have 'Pay Now' unlocked to complete card payment.
+                if (appointment.paymentStatus === "PAID") {
+                    walletChange = professionalIncome;
+                    transactionType = "CREDIT";
+                    description = `Card Payment Cleared (Total: Rs. ${totalFee}, Platform Fee: Rs. ${commissionAmount}, Your Share: +Rs. ${professionalIncome})`;
+
+                    const currentBalance = Number(appointment.professional.walletBalance) || 0;
+                    const newBalance = currentBalance + walletChange;
+
+                    await prisma.$transaction([
+                        prisma.professionalProfile.update({
+                            where: { id: appointment.professional.id },
+                            data: { walletBalance: newBalance }
+                        }),
+                        prisma.walletTransaction.create({
+                            data: {
+                                professionalId: appointment.professional.id,
+                                appointmentId: appointment.id,
+                                amount: walletChange,
+                                type: transactionType,
+                                paymentMethod: paymentMethod,
+                                totalFee: totalFee,
+                                commissionAmount: commissionAmount,
+                                description: description,
+                                balanceAfter: newBalance
+                            }
+                        }),
+                        prisma.appointment.update({
+                            where: { id },
+                            data: {
+                                status: "COMPLETED",
+                                completedAt: new Date()
+                            }
+                        })
+                    ]);
+                } else {
+                    // Patient will pay online now that appointment is COMPLETED
+                    await prisma.appointment.update({
+                        where: { id },
+                        data: {
+                            status: "COMPLETED",
+                            paymentMethod: "CARD",
+                            completedAt: new Date()
+                        }
+                    });
+                }
             } else {
-                // Cash payment -> Collected by doctor, company commission is debited (-)
+                // Cash payment -> Collected by doctor on visit, company commission is debited (-)
                 walletChange = -commissionAmount;
                 transactionType = "DEBIT";
                 description = `Cash Collected by Doctor (Total: Rs. ${totalFee}, Platform Fee Due: -Rs. ${commissionAmount})`;
+
+                const currentBalance = Number(appointment.professional.walletBalance) || 0;
+                const newBalance = currentBalance + walletChange;
+
+                await prisma.$transaction([
+                    prisma.professionalProfile.update({
+                        where: { id: appointment.professional.id },
+                        data: { walletBalance: newBalance }
+                    }),
+                    prisma.walletTransaction.create({
+                        data: {
+                            professionalId: appointment.professional.id,
+                            appointmentId: appointment.id,
+                            amount: walletChange,
+                            type: transactionType,
+                            paymentMethod: "CASH",
+                            totalFee: totalFee,
+                            commissionAmount: commissionAmount,
+                            description: description,
+                            balanceAfter: newBalance
+                        }
+                    }),
+                    prisma.appointment.update({
+                        where: { id },
+                        data: {
+                            status: "COMPLETED",
+                            paymentMethod: "CASH",
+                            paymentStatus: "PAID",
+                            completedAt: new Date()
+                        }
+                    })
+                ]);
             }
-
-            const currentBalance = Number(appointment.professional.walletBalance) || 0;
-            const newBalance = currentBalance + walletChange;
-
-            await prisma.$transaction([
-                prisma.professionalProfile.update({
-                    where: { id: appointment.professional.id },
-                    data: { walletBalance: newBalance }
-                }),
-                prisma.walletTransaction.create({
-                    data: {
-                        professionalId: appointment.professional.id,
-                        appointmentId: appointment.id,
-                        amount: walletChange,
-                        type: transactionType,
-                        paymentMethod: paymentMethod,
-                        totalFee: totalFee,
-                        commissionAmount: commissionAmount,
-                        description: description,
-                        balanceAfter: newBalance
-                    }
-                }),
-                prisma.appointment.update({
-                    where: { id },
-                    data: {
-                        status: "COMPLETED",
-                        paymentStatus: "PAID",
-                        completedAt: new Date()
-                    }
-                })
-            ]);
         }
 
         try {

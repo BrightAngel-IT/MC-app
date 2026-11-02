@@ -4,19 +4,55 @@ exports.getMyWallet = async (req, res) => {
     try {
         const wallet = await prisma.professionalProfile.findUnique({
             where:{userId: req.user.id},
-            include: {walletTransactions: {
-                orderBy:{createdAt: 'desc'}
-            }}
+            include: {
+                walletTransactions: {
+                    orderBy:{createdAt: 'desc'}
+                }
+            }
         });
 
         if(!wallet){
             return res.status(404).json({message: 'Doctor not found'});
         }
 
+        // Fetch related appointments for transactions that have appointmentId
+        const aptIds = wallet.walletTransactions.map(t => t.appointmentId).filter(Boolean);
+        let appointmentsMap = {};
+        if (aptIds.length > 0) {
+            const appointments = await prisma.appointment.findMany({
+                where: { id: { in: aptIds } },
+                include: {
+                    patient: { include: { user: true } }
+                }
+            });
+            appointments.forEach(a => {
+                appointmentsMap[a.id] = a;
+            });
+        }
+
+        const enrichedTransactions = wallet.walletTransactions.map(tx => {
+            const apt = tx.appointmentId ? appointmentsMap[tx.appointmentId] : null;
+            return {
+                ...tx,
+                appointment: apt ? {
+                    id: apt.id,
+                    serviceType: apt.serviceType,
+                    scheduledDate: apt.scheduledDate,
+                    status: apt.status,
+                    paymentStatus: apt.paymentStatus,
+                    locationLat: apt.locationLat,
+                    locationLng: apt.locationLng,
+                    patientName: apt.patient?.user?.fullName || apt.patient?.fullName || 'Patient',
+                    patientPhone: apt.patient?.user?.phone || apt.patient?.emergencyContact || '',
+                    patientAddress: apt.patient?.address || ''
+                } : null
+            };
+        });
+
         return res.status(200).json({
             walletBalance: wallet.walletBalance,
             isWalletBlocked: wallet.isWalletBlocked,
-            transactions: wallet.walletTransactions
+            transactions: enrichedTransactions
         });
 
     } catch (error) {
@@ -342,55 +378,120 @@ exports.handlePayHereNotify = async (req, res) => {
 
         // status_code 2 means Success
         if (parseInt(status_code) === 2) {
-            const professionalId = custom_1;
-            const paidAmount = parseFloat(payhere_amount);
+            const customType = req.body.custom_2;
 
-            if (professionalId) {
-                // 1. Check if this order_id is ALREADY processed to prevent duplicate settlement
-                const existingTx = await prisma.walletTransaction.findFirst({
-                    where: {
-                        professionalId: professionalId,
-                        description: { contains: order_id }
+            if (customType === 'APPOINTMENT_PAYMENT' || order_id.startsWith('APT-')) {
+                const appointmentId = custom_1;
+                const paidAmount = parseFloat(payhere_amount);
+
+                if (appointmentId) {
+                    const appointment = await prisma.appointment.findUnique({
+                        where: { id: appointmentId },
+                        include: {
+                            patient: { include: { user: true } },
+                            professional: { include: { user: true } }
+                        }
+                    });
+
+                    if (appointment && appointment.paymentStatus !== 'PAID') {
+                        const totalFee = Number(appointment.totalAmount) || paidAmount;
+                        let commissionPercent = 30;
+                        try {
+                            const setting = await prisma.systemSetting.findUnique({
+                                where: { key: "COMMISSION_PERCENTAGE" }
+                            });
+                            if (setting && setting.value) {
+                                commissionPercent = parseFloat(setting.value);
+                            }
+                        } catch (setErr) {}
+
+                        const commissionAmount = totalFee * (commissionPercent / 100);
+                        const professionalIncome = totalFee - commissionAmount;
+
+                        const currentBal = Number(appointment.professional.walletBalance || 0);
+                        const newBal = currentBal + professionalIncome;
+
+                        await prisma.$transaction([
+                            prisma.appointment.update({
+                                where: { id: appointmentId },
+                                data: {
+                                    paymentStatus: "PAID",
+                                    paymentMethod: "CARD"
+                                }
+                            }),
+                            prisma.professionalProfile.update({
+                                where: { id: appointment.professional.id },
+                                data: { walletBalance: newBal }
+                            }),
+                            prisma.walletTransaction.create({
+                                data: {
+                                    professionalId: appointment.professional.id,
+                                    appointmentId: appointment.id,
+                                    amount: professionalIncome,
+                                    type: 'CREDIT',
+                                    paymentMethod: 'CARD',
+                                    totalFee: totalFee,
+                                    commissionAmount: commissionAmount,
+                                    description: `Online Card Payment Cleared via Webhook (Order #${order_id}, Ref: ${payment_id || 'N/A'}, Doctor Share: +Rs. ${professionalIncome})`,
+                                    balanceAfter: newBal
+                                }
+                            })
+                        ]);
+                        console.log(`[PayHere Webhook] Cleared appointment payment for Apt ID: ${appointmentId}`);
                     }
-                });
-
-                if (existingTx) {
-                    console.log(`Order ${order_id} already settled. Skipping duplicate.`);
-                    return res.status(200).send("OK");
                 }
+            } else {
+                // Default: Doctor Wallet Settlement
+                const professionalId = custom_1;
+                const paidAmount = parseFloat(payhere_amount);
 
-                const professional = await prisma.professionalProfile.findUnique({
-                    where: { id: professionalId }
-                });
+                if (professionalId) {
+                    // 1. Check if this order_id is ALREADY processed to prevent duplicate settlement
+                    const existingTx = await prisma.walletTransaction.findFirst({
+                        where: {
+                            professionalId: professionalId,
+                            description: { contains: order_id }
+                        }
+                    });
 
-                if (professional) {
-                    const currentBal = Number(professional.walletBalance || 0);
-                    // Settle negative balance up to 0 or credit difference
-                    const newBal = currentBal < 0 ? Math.min(0, currentBal + paidAmount) : currentBal;
+                    if (existingTx) {
+                        console.log(`Order ${order_id} already settled. Skipping duplicate.`);
+                        return res.status(200).send("OK");
+                    }
 
-                    await prisma.$transaction([
-                        prisma.professionalProfile.update({
-                            where: { id: professionalId },
-                            data: {
-                                walletBalance: newBal,
-                                isWalletBlocked: false // Auto unblock on due settlement!
-                            }
-                        }),
-                        prisma.walletTransaction.create({
-                            data: {
-                                professionalId: professionalId,
-                                amount: paidAmount,
-                                type: 'CREDIT',
-                                paymentMethod: 'CARD',
-                                totalFee: paidAmount,
-                                commissionAmount: 0,
-                                balanceAfter: newBal,
-                                description: `Online Commission Due Settlement via PayHere (Order #${order_id}, Ref: ${payment_id || 'N/A'})`
-                            }
-                        })
-                    ]);
+                    const professional = await prisma.professionalProfile.findUnique({
+                        where: { id: professionalId }
+                    });
 
-                    console.log(`Successfully settled due of Rs. ${paidAmount} for Professional ID: ${professionalId}`);
+                    if (professional) {
+                        const currentBal = Number(professional.walletBalance || 0);
+                        // Settle negative balance up to 0 or credit difference
+                        const newBal = currentBal < 0 ? Math.min(0, currentBal + paidAmount) : currentBal;
+
+                        await prisma.$transaction([
+                            prisma.professionalProfile.update({
+                                where: { id: professionalId },
+                                data: {
+                                    walletBalance: newBal,
+                                    isWalletBlocked: false // Auto unblock on due settlement!
+                                }
+                            }),
+                            prisma.walletTransaction.create({
+                                data: {
+                                    professionalId: professionalId,
+                                    amount: paidAmount,
+                                    type: 'CREDIT',
+                                    paymentMethod: 'CARD',
+                                    totalFee: paidAmount,
+                                    commissionAmount: 0,
+                                    balanceAfter: newBal,
+                                    description: `Online Commission Due Settlement via PayHere (Order #${order_id}, Ref: ${payment_id || 'N/A'})`
+                                }
+                            })
+                        ]);
+
+                        console.log(`Successfully settled due of Rs. ${paidAmount} for Professional ID: ${professionalId}`);
+                    }
                 }
             }
         }

@@ -411,13 +411,26 @@ exports.rescheduleAppointment = async (req, res) => {
         const {id} = req.params;
         const {newDate} = req.body;
 
+        const existing = await prisma.appointment.findUnique({ where: { id } });
+        if (!existing) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        if (existing.status === 'CONFIRMED') {
+            return res.status(400).json({ message: 'Home visit has already been confirmed by the doctor and cannot be rescheduled.' });
+        }
+
+        if (existing.status === 'COMPLETED' || existing.status.startsWith('CANCELED')) {
+            return res.status(400).json({ message: 'Cannot reschedule completed or canceled appointments.' });
+        }
+
         const appointment = await prisma.appointment.update({
             where: {id},
             data:{
                 scheduledDate: new Date(newDate), 
                 status: "PENDING"
             }
-        })
+        });
 
         return res.status(200).json({message: 'Appointment rescheduled successfully', appointment});
     } catch (error) {
@@ -834,3 +847,320 @@ exports.getVerifiedElderHomes = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+
+// Initiate PayHere Card Payment for Completed Appointment by Patient
+exports.initiateAppointmentPayment = async (req, res) => {
+    try {
+        const crypto = require('crypto');
+        const { appointmentId } = req.body;
+
+        if (!appointmentId) {
+            return res.status(400).json({ message: "Appointment ID is required." });
+        }
+
+        const appointment = await prisma.appointment.findUnique({
+            where: { id: appointmentId },
+            include: {
+                patient: { include: { user: true } },
+                professional: { include: { user: true } }
+            }
+        });
+
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found." });
+        }
+
+        if (appointment.patient.userId !== req.user.id) {
+            return res.status(403).json({ message: "Unauthorized: This appointment does not belong to you." });
+        }
+
+        if (appointment.status !== 'COMPLETED') {
+            return res.status(400).json({ message: "Card payment can only be made after the doctor completes the appointment." });
+        }
+
+        if (appointment.paymentStatus === 'PAID') {
+            return res.status(400).json({ message: "This appointment has already been paid for." });
+        }
+
+        const totalAmount = Number(appointment.totalAmount) || 0;
+        if (totalAmount <= 0) {
+            return res.status(400).json({ message: "Invalid appointment fee amount." });
+        }
+
+        const orderId = `APT-${appointment.id.slice(0, 8)}-${Date.now()}`;
+        const merchantId = process.env.PAYHERE_MERCHANT_ID || '1211149';
+        const merchantSecret = process.env.PAYHERE_SECRET || '4T5A9b8c7d6e5f4a3b2c1d0e';
+        const currency = 'LKR';
+        const formattedAmount = totalAmount.toFixed(2);
+
+        // PayHere Hash generation: uppercase(md5(merchant_id + order_id + amountFormatted + currency + uppercase(md5(merchant_secret))))
+        const hashedSecret = crypto.createHash('md5').update(merchantSecret).digest('hex').toUpperCase();
+        const hashString = merchantId + orderId + formattedAmount + currency + hashedSecret;
+        const hash = crypto.createHash('md5').update(hashString).digest('hex').toUpperCase();
+
+        const isSandbox = (process.env.PAYHERE_MODE || 'sandbox').toLowerCase() === 'sandbox';
+
+        return res.status(200).json({
+            sandbox: isSandbox,
+            merchant_id: merchantId,
+            order_id: orderId,
+            items: `Medical Consultation - Dr. ${appointment.professional?.user?.fullName || 'Doctor'}`,
+            amount: formattedAmount,
+            currency: currency,
+            hash: hash,
+            first_name: appointment.patient?.user?.fullName?.split(' ')[0] || 'Patient',
+            last_name: appointment.patient?.user?.fullName?.split(' ').slice(1).join(' ') || 'User',
+            email: appointment.patient?.user?.email || 'patient@example.com',
+            phone: appointment.patient?.user?.phone || '0771234567',
+            address: appointment.patient?.address || 'Sri Lanka',
+            city: 'Colombo',
+            country: 'Sri Lanka',
+            custom_1: appointment.id,
+            custom_2: 'APPOINTMENT_PAYMENT'
+        });
+    } catch (error) {
+        console.error("Error initiating appointment payment:", error);
+        return res.status(500).json({ message: "Error initiating payment gateway", error: error.message });
+    }
+};
+
+// Verify and settle appointment payment upon success
+exports.verifyAppointmentPayment = async (req, res) => {
+    try {
+        const { appointmentId, order_id, payment_id } = req.body;
+
+        if (!appointmentId) {
+            return res.status(400).json({ message: "appointmentId is required." });
+        }
+
+        const appointment = await prisma.appointment.findUnique({
+            where: { id: appointmentId },
+            include: {
+                patient: { include: { user: true } },
+                professional: { include: { user: true } }
+            }
+        });
+
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found." });
+        }
+
+        if (appointment.paymentStatus === 'PAID') {
+            return res.status(200).json({ message: "Payment already recorded as PAID.", appointment });
+        }
+
+        const totalFee = Number(appointment.totalAmount) || 0;
+        let commissionPercent = 30;
+        try {
+            const setting = await prisma.systemSetting.findUnique({
+                where: { key: "COMMISSION_PERCENTAGE" }
+            });
+            if (setting && setting.value) {
+                commissionPercent = parseFloat(setting.value);
+            }
+        } catch (setErr) {}
+
+        const commissionAmount = totalFee * (commissionPercent / 100);
+        const professionalIncome = totalFee - commissionAmount;
+
+        const currentBalance = Number(appointment.professional.walletBalance) || 0;
+        const newBalance = currentBalance + professionalIncome;
+
+        await prisma.$transaction([
+            prisma.appointment.update({
+                where: { id: appointmentId },
+                data: {
+                    paymentStatus: "PAID",
+                    paymentMethod: "CARD"
+                }
+            }),
+            prisma.professionalProfile.update({
+                where: { id: appointment.professional.id },
+                data: { walletBalance: newBalance }
+            }),
+            prisma.walletTransaction.create({
+                data: {
+                    professionalId: appointment.professional.id,
+                    appointmentId: appointment.id,
+                    amount: professionalIncome,
+                    type: 'CREDIT',
+                    paymentMethod: 'CARD',
+                    totalFee: totalFee,
+                    commissionAmount: commissionAmount,
+                    description: `Online Card Payment Cleared by Patient (Order #${order_id || 'N/A'}, Ref: ${payment_id || 'N/A'}, Your Share: +Rs. ${professionalIncome})`,
+                    balanceAfter: newBalance
+                }
+            })
+        ]);
+
+        try {
+            await notificationService.sendNotification(
+                appointment.professional.userId,
+                "Card Payment Received",
+                `Patient ${appointment.patient.user.fullName} completed the card payment of Rs. ${totalFee}. Your wallet has been credited Rs. ${professionalIncome}.`,
+                "PAYMENT",
+                appointment.id
+            );
+        } catch (notiErr) {}
+
+        return res.status(200).json({
+            message: "Payment processed successfully! Appointment is now marked as PAID.",
+            paymentStatus: "PAID"
+        });
+    } catch (error) {
+        console.error("Error verifying appointment payment:", error);
+        return res.status(500).json({ message: "Error verifying appointment payment", error: error.message });
+    }
+};
+
+// Patient Finance / Billing Statement History (Doctor Visits vs Pharmacy Orders)
+exports.getPatientFinanceHistory = async (req, res) => {
+    try {
+        const patient = await prisma.patientProfile.findUnique({
+            where: { userId: req.user.id }
+        });
+
+        if (!patient) {
+            return res.status(404).json({ message: "Patient profile not found" });
+        }
+
+        // 1. Fetch all appointments (Doctors, Nurses, Caregivers, LabTechs, Paramedics)
+        const appointments = await prisma.appointment.findMany({
+            where: { patientId: patient.id },
+            orderBy: { scheduledDate: 'desc' },
+            include: {
+                professional: {
+                    include: {
+                        user: { select: { fullName: true, role: true, phone: true } }
+                    }
+                }
+            }
+        });
+
+        // 2. Fetch all pharmacy orders
+        const orders = await prisma.order.findMany({
+            where: { patientId: patient.id },
+            orderBy: { createdAt: 'desc' },
+            include: {
+                pharmacist: {
+                    include: {
+                        user: { select: { fullName: true, phone: true } }
+                    }
+                },
+                items: {
+                    include: { product: true }
+                },
+                prescription: true
+            }
+        });
+
+        // 3. Transform Appointments into Finance Records
+        const appointmentRecords = appointments.map(apt => {
+            const prof = apt.professional;
+            const profRole = prof?.user?.role || 'DOCTOR';
+            const profName = prof?.user?.fullName || 'Healthcare Provider';
+            const total = Number(apt.totalAmount) || 0;
+            const baseFee = Number(prof?.bookingFee) || 0;
+            const travelFee = total > baseFee ? total - baseFee : 0;
+
+            return {
+                id: apt.id,
+                category: 'APPOINTMENT', // DOCTOR / NURSE / CAREGIVER / ETC.
+                serviceType: apt.serviceType || `${profRole} Visit`,
+                providerName: profName,
+                providerRole: profRole,
+                providerPhone: prof?.user?.phone || '',
+                date: apt.completedAt || apt.scheduledDate || apt.createdAt,
+                status: apt.status,
+                paymentMethod: apt.paymentMethod || 'CASH',
+                paymentStatus: apt.paymentStatus || 'PENDING',
+                totalAmount: total,
+                breakdown: {
+                    baseFee: baseFee > 0 ? baseFee : total,
+                    travelFee: travelFee,
+                },
+                notes: apt.symptoms || ''
+            };
+        });
+
+        // 4. Transform Pharmacy Orders into Finance Records
+        const orderRecords = orders.map(ord => {
+            const pharma = ord.pharmacist;
+            const pharmaName = pharma?.businessName || pharma?.user?.fullName || 'Pharmacy Vendor';
+            const total = Number(ord.totalAmount) || 0;
+
+            return {
+                id: ord.id,
+                category: 'PHARMACY',
+                serviceType: ord.prescriptionId ? 'Prescription Dispense' : 'Direct Medicine Order',
+                providerName: pharmaName,
+                providerRole: 'PHARMACIST',
+                providerPhone: pharma?.user?.phone || '',
+                date: ord.completedAt || ord.createdAt,
+                status: ord.status,
+                paymentMethod: 'CASH', // or card
+                paymentStatus: ord.status === 'COMPLETED' ? 'PAID' : (ord.status === 'REJECTED' || ord.status === 'CANCELLED' ? 'CANCELLED' : 'PENDING'),
+                totalAmount: total,
+                billImageUrl: ord.billImageUrl || null,
+                itemsCount: ord.items?.length || 0,
+                items: ord.items?.map(it => ({
+                    id: it.id,
+                    name: it.product?.name || 'Medicine',
+                    quantity: it.quantity,
+                    price: it.priceAtPurchase,
+                    subtotal: it.quantity * it.priceAtPurchase
+                })) || [],
+                notes: ord.vendorNotes || ord.patientNotes || ''
+            };
+        });
+
+        // 5. Combine and Sort by Date desc
+        const allTransactions = [...appointmentRecords, ...orderRecords].sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        // 6. Summary Totals (only considering completed/paid transactions where applicable, plus pending)
+        let totalDoctorPaid = 0;
+        let totalDoctorPending = 0;
+        appointmentRecords.forEach(a => {
+            if (a.paymentStatus === 'PAID') {
+                totalDoctorPaid += a.totalAmount;
+            } else if (a.status !== 'CANCELED_BY_PATIENT' && a.status !== 'CANCELED_BY_DOCTOR') {
+                totalDoctorPending += a.totalAmount;
+            }
+        });
+
+        let totalPharmacyPaid = 0;
+        let totalPharmacyPending = 0;
+        orderRecords.forEach(o => {
+            if (o.status === 'COMPLETED') {
+                totalPharmacyPaid += o.totalAmount;
+            } else if (o.status !== 'REJECTED' && o.status !== 'CANCELLED') {
+                totalPharmacyPending += o.totalAmount;
+            }
+        });
+
+        return res.status(200).json({
+            summary: {
+                totalSpent: totalDoctorPaid + totalPharmacyPaid,
+                totalPending: totalDoctorPending + totalPharmacyPending,
+                doctor: {
+                    paid: totalDoctorPaid,
+                    pending: totalDoctorPending,
+                    count: appointmentRecords.length
+                },
+                pharmacy: {
+                    paid: totalPharmacyPaid,
+                    pending: totalPharmacyPending,
+                    count: orderRecords.length
+                }
+            },
+            history: allTransactions
+        });
+
+    } catch (error) {
+        console.error("Error fetching patient finance history:", error);
+        return res.status(500).json({ message: "Failed to fetch finance history", error: error.message });
+    }
+};
+

@@ -254,19 +254,44 @@ const ProfessionalAppointments = ({ route }) => {
     }
   };
 
-  const completeAppointment = async () => {
+  const [completeConfirmModalVisible, setCompleteConfirmModalVisible] = useState(false);
+  const [selectedPaymentMode, setSelectedPaymentMode] = useState('CASH');
+
+  const confirmCompleteAppointment = () => {
+    if (selectedApt?.status !== 'CONFIRMED') {
+      setAlertConfig({ visible: true, type: 'warning', title: 'Home Visit Required', message: 'Doctor must confirm the home visit first before completing the appointment.' });
+      return;
+    }
+    // Set default selected mode from appointment or CASH
+    setSelectedPaymentMode(selectedApt?.paymentMethod === 'CARD' ? 'CARD' : 'CASH');
+    // Open payment selection dialog to let doctor choose actual payment collected
+    setCompleteConfirmModalVisible(true);
+  };
+
+  const completeAppointment = async (paymentMethodOverride) => {
     if(isCompleting) return;
-      setIsCompleting(true);
-      try{
-        await api.put(`/professional/appointment/${selectedApt.id}/complete`);
-        setAlertConfig({ visible: true, type: 'success', title: 'Success', message: 'Appointment completed successfully.' });
-        setActionModalVisible(false);
-        fetchAppointments();
-      } catch (error) {
-        setAlertConfig({ visible: true, type: 'error', title: 'Error', message: 'Failed to complete appointment.' });
-      } finally {
-        setIsCompleting(false);
-      }
+    setIsCompleting(true);
+    setCompleteConfirmModalVisible(false);
+    try{
+      const finalMethod = paymentMethodOverride || selectedPaymentMode || selectedApt?.paymentMethod || 'CASH';
+      await api.put(`/professional/appointment/${selectedApt.id}/complete`, {
+        paymentMethod: finalMethod
+      });
+      setAlertConfig({ 
+        visible: true, 
+        type: 'success', 
+        title: 'Success', 
+        message: finalMethod === 'CASH' 
+          ? 'Appointment completed! Cash collected and commission debited.' 
+          : 'Appointment completed! Patient can now pay online via card.' 
+      });
+      setActionModalVisible(false);
+      fetchAppointments();
+    } catch (error) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Error', message: error.response?.data?.message || 'Failed to complete appointment.' });
+    } finally {
+      setIsCompleting(false);
+    }
   }
 
   const handleSendMessage = async () => {
@@ -560,13 +585,7 @@ const ProfessionalAppointments = ({ route }) => {
                     {backgroundColor: colors.success, marginBottom: 10},
                     selectedApt?.status !== 'CONFIRMED' && { backgroundColor: '#E2E8F0', opacity: 0.7 }
                   ]}
-                  onPress={() => {
-                    if (selectedApt?.status !== 'CONFIRMED') {
-                      setAlertConfig({ visible: true, type: 'warning', title: 'Home Visit Required', message: 'Doctor must confirm the home visit first before completing the appointment.' });
-                      return;
-                    }
-                    completeAppointment();
-                  }}
+                  onPress={confirmCompleteAppointment}
                   disabled={selectedApt?.status !== 'CONFIRMED'}
                 >
                   <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
@@ -738,6 +757,108 @@ const ProfessionalAppointments = ({ route }) => {
         </View>
       </Modal>
 
+      {/* Payment Method Confirmation Modal upon Appointment Completion */}
+      <Modal visible={completeConfirmModalVisible} animationType="fade" transparent>
+        <View style={styles.modalBg}>
+          <View style={[styles.modalContent, { maxWidth: 440 }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+              <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#ecfdf5', alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
+                <Ionicons name="checkmark-done-circle" size={24} color="#059669" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.modalTitle}>Complete Appointment</Text>
+                <Text style={{ fontSize: 12, color: colors.textLight }}>Select how the patient paid for this visit</Text>
+              </View>
+            </View>
+
+            <View style={{ backgroundColor: colors.surfaceLight, padding: 12, borderRadius: SIZES.radius, marginBottom: 16, borderWidth: 1, borderColor: colors.border }}>
+              <Text style={{ fontSize: 13, color: colors.textLight, marginBottom: 4 }}>
+                Initial Booking Method: <Text style={{ fontWeight: 'bold', color: colors.text }}>{selectedApt?.paymentMethod || 'CASH'}</Text>
+              </Text>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#059669' }}>
+                Total Fee: Rs. {Number(selectedApt?.totalAmount || 0).toLocaleString()}
+              </Text>
+            </View>
+
+            <Text style={{ fontSize: 13, fontWeight: '600', color: colors.text, marginBottom: 12 }}>
+              How was this appointment paid? (Select one)
+            </Text>
+
+            {/* Option 1: Cash Paid to Doctor */}
+            <TouchableOpacity 
+              style={[
+                styles.paymentSelectOption,
+                selectedPaymentMode === 'CASH' && styles.paymentSelectOptionActive,
+                { borderColor: selectedPaymentMode === 'CASH' ? '#059669' : colors.border }
+              ]}
+              onPress={() => setSelectedPaymentMode('CASH')}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                <View style={[styles.radioCircle, { borderColor: selectedPaymentMode === 'CASH' ? '#059669' : colors.border }]}>
+                  {selectedPaymentMode === 'CASH' && <View style={[styles.radioDot, { backgroundColor: '#059669' }]} />}
+                </View>
+                <View style={{ marginLeft: 10, flex: 1 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Ionicons name="cash-outline" size={17} color="#059669" style={{ marginRight: 6 }} />
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: colors.text }}>Patient Paid Cash on Visit</Text>
+                  </View>
+                  <Text style={{ fontSize: 11, color: colors.textLight, marginTop: 2 }}>Company commission will be debited from your wallet.</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            {/* Option 2: Card / Online Payment by Patient */}
+            <TouchableOpacity 
+              style={[
+                styles.paymentSelectOption,
+                selectedPaymentMode === 'CARD' && styles.paymentSelectOptionActive,
+                { borderColor: selectedPaymentMode === 'CARD' ? '#2563EB' : colors.border, marginTop: 10 }
+              ]}
+              onPress={() => setSelectedPaymentMode('CARD')}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                <View style={[styles.radioCircle, { borderColor: selectedPaymentMode === 'CARD' ? '#2563EB' : colors.border }]}>
+                  {selectedPaymentMode === 'CARD' && <View style={[styles.radioDot, { backgroundColor: '#2563EB' }]} />}
+                </View>
+                <View style={{ marginLeft: 10, flex: 1 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Ionicons name="card-outline" size={17} color="#2563EB" style={{ marginRight: 6 }} />
+                    <Text style={{ fontWeight: 'bold', fontSize: 14, color: colors.text }}>Patient Pays via Card (Online)</Text>
+                  </View>
+                  <Text style={{ fontSize: 11, color: colors.textLight, marginTop: 2 }}>Patient pays via Card; your income credited when paid.</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            <View style={{ flexDirection: 'row', gap: 10, marginTop: 20 }}>
+              <TouchableOpacity 
+                style={[styles.actionBtn, { flex: 1, backgroundColor: colors.surfaceLight, borderWidth: 1, borderColor: colors.border }]} 
+                onPress={() => setCompleteConfirmModalVisible(false)}
+              >
+                <Text style={{ color: colors.text, fontWeight: 'bold', fontSize: 14 }}>Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[
+                  styles.actionBtn, 
+                  { flex: 1.5, backgroundColor: selectedPaymentMode === 'CARD' ? '#2563EB' : '#059669' },
+                  isCompleting && { opacity: 0.7 }
+                ]} 
+                onPress={() => completeAppointment(selectedPaymentMode)}
+                disabled={isCompleting}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <Ionicons name="checkmark-circle" size={18} color="#fff" style={{ marginRight: 6 }} />
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>
+                    {isCompleting ? 'Completing...' : 'Confirm & Complete'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <CustomAlertModal 
         visible={alertConfig.visible}
         type={alertConfig.type}
@@ -879,7 +1000,32 @@ const getStyles = (colors) => StyleSheet.create({
   cancelBtn: { paddingVertical: 12, paddingHorizontal: 20 },
   cancelText: { color: colors.textLight, fontWeight: 'bold' },
   submitBtn: { backgroundColor: colors.primary, paddingVertical: 12, paddingHorizontal: 20, borderRadius: SIZES.radius },
-  submitText: { color: '#fff', fontWeight: 'bold' }
+  submitText: { color: '#fff', fontWeight: 'bold' },
+
+  paymentSelectOption: {
+    padding: 12,
+    borderRadius: SIZES.radius,
+    borderWidth: 1.5,
+    backgroundColor: colors.surfaceLight || '#f8fafc',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paymentSelectOptionActive: {
+    backgroundColor: colors.isDark ? '#1e293b' : '#eff6ff',
+  },
+  radioCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
 });
 
 export default ProfessionalAppointments;

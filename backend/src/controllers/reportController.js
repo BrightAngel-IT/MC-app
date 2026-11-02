@@ -16,6 +16,7 @@ exports.getPatientReport = async (req, res) => {
 
     const patient = await prisma.patientProfile.findUnique({
       where: { userId: req.user.id },
+      include: { user: true }
     });
 
     if (!patient) return res.status(404).json({ message: 'Patient not found' });
@@ -26,7 +27,14 @@ exports.getPatientReport = async (req, res) => {
         ...(dateFilter && { scheduledDate: dateFilter }),
       },
       include: {
-        professional: { include: { user: { select: { fullName: true } } } },
+        professional: {
+          include: {
+            user: { select: { fullName: true, role: true, phone: true } }
+          }
+        },
+        prescriptions: {
+          include: { items: true }
+        }
       },
       orderBy: { scheduledDate: 'desc' },
     });
@@ -37,14 +45,48 @@ exports.getPatientReport = async (req, res) => {
         ...(dateFilter && { issuedAt: dateFilter }),
       },
       include: {
-        professional: { include: { user: { select: { fullName: true } } } },
+        professional: {
+          include: {
+            user: { select: { fullName: true, role: true, phone: true } }
+          }
+        },
         items: true,
-        orders: true,
+        orders: {
+          include: {
+            pharmacist: { include: { user: { select: { fullName: true } } } }
+          }
+        },
       },
       orderBy: { issuedAt: 'desc' },
     });
 
-    return res.status(200).json({ appointments, prescriptions });
+    // Summary calculations
+    const completedApts = appointments.filter(a => a.status === 'COMPLETED').length;
+    const pendingApts = appointments.filter(a => a.status === 'PENDING' || a.status === 'CONFIRMED').length;
+    let totalSpend = 0;
+    appointments.forEach(a => {
+      if (a.status === 'COMPLETED' || a.paymentStatus === 'PAID') {
+        totalSpend += (Number(a.totalAmount) || 0);
+      }
+    });
+
+    return res.status(200).json({ 
+      patientInfo: {
+        name: patient.user?.fullName || 'Patient',
+        email: patient.user?.email || '',
+        phone: patient.user?.phone || patient.emergencyContact || '',
+        bloodGroup: patient.bloodGroup || 'Not specified'
+      },
+      stats: {
+        totalAppointments: appointments.length,
+        completedAppointments: completedApts,
+        pendingAppointments: pendingApts,
+        totalPrescriptions: prescriptions.length,
+        totalSpend: totalSpend
+      },
+      appointments, 
+      prescriptions 
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });

@@ -42,6 +42,7 @@ const ProfessionalDashboard = ({ navigation }) => {
   const [serviceRadius, setServiceRadius] = useState('10');
   const [bookingFee, setBookingFee] = useState('0');
   const [isAvailable, setIsAvailable] = useState(true);
+  const [walletBalance, setWalletBalance] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchingLocation, setIsSearchingLocation] = useState(false);
 
@@ -134,6 +135,9 @@ const ProfessionalDashboard = ({ navigation }) => {
         if (prof.serviceRadius) setServiceRadius(prof.serviceRadius.toString());
         if (prof.bookingFee !== undefined && prof.bookingFee !== null) setBookingFee(prof.bookingFee.toString());
         if (prof.availabilityStatus) setIsAvailable(prof.availabilityStatus === 'AVAILABLE');
+        if (prof.walletBalance !== undefined && prof.walletBalance !== null) {
+          setWalletBalance(Number(prof.walletBalance));
+        }
       }
       
       const allApts = response.data.appointments || [];
@@ -237,23 +241,64 @@ const ProfessionalDashboard = ({ navigation }) => {
         </View>
       </View>
 
-      {/* Quick Wallet Summary Card */}
+      {/* Quick Wallet Summary Card with Live Balance */}
       <TouchableOpacity 
-        style={[styles.quickWalletCard, { backgroundColor: colors.surface, borderColor: colors.border }]}
+        style={[
+          styles.quickWalletCard, 
+          { 
+            backgroundColor: colors.surface, 
+            borderColor: walletBalance < 0 ? '#ef4444' : colors.border,
+            borderLeftWidth: 4,
+            borderLeftColor: walletBalance < 0 ? '#ef4444' : (walletBalance > 0 ? '#10b981' : colors.primary)
+          }
+        ]}
         onPress={() => navigation.navigate('ProfessionalWallet')}
         activeOpacity={0.85}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={[styles.walletCircle, { backgroundColor: colors.primary + '18' }]}>
-            <Ionicons name="wallet" size={22} color={colors.primary} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+          <View style={[
+            styles.walletCircle, 
+            { backgroundColor: walletBalance < 0 ? '#fee2e2' : (walletBalance > 0 ? '#dcfce7' : colors.primary + '18') }
+          ]}>
+            <Ionicons 
+              name="wallet" 
+              size={22} 
+              color={walletBalance < 0 ? '#dc2626' : (walletBalance > 0 ? '#16a34a' : colors.primary)} 
+            />
           </View>
-          <View style={{ marginLeft: 12 }}>
-            <Text style={{ fontSize: 12, color: colors.textLight, fontWeight: '600' }}>MY WALLET & EARNINGS</Text>
-            <Text style={{ fontSize: 13, color: colors.text, marginTop: 2 }}>Tap to view line-by-line statements</Text>
+          <View style={{ marginLeft: 12, flex: 1 }}>
+            <Text style={{ fontSize: 11, color: colors.textLight, fontWeight: '700', letterSpacing: 0.5 }}>
+              MY WALLET & EARNINGS
+            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2, flexWrap: 'wrap' }}>
+              <Text style={{ 
+                fontSize: 18, 
+                fontWeight: 'bold', 
+                color: walletBalance < 0 ? '#dc2626' : (walletBalance > 0 ? '#16a34a' : colors.text),
+                marginRight: 8
+              }}>
+                {walletBalance < 0 ? `-Rs. ${Math.abs(walletBalance).toFixed(2)}` : `Rs. ${walletBalance.toFixed(2)}`}
+              </Text>
+              <View style={{
+                paddingHorizontal: 6,
+                paddingVertical: 2,
+                borderRadius: 4,
+                backgroundColor: walletBalance < 0 ? '#fef2f2' : '#f0fdf4'
+              }}>
+                <Text style={{ 
+                  fontSize: 10, 
+                  fontWeight: 'bold', 
+                  color: walletBalance < 0 ? '#b91c1c' : '#15803d' 
+                }}>
+                  {walletBalance < 0 ? 'Due to Company' : 'Available Balance'}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary, marginRight: 4 }}>Open</Text>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
+          <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary, marginRight: 2 }}>Manage</Text>
           <Ionicons name="chevron-forward" size={16} color={colors.primary} />
         </View>
       </TouchableOpacity>

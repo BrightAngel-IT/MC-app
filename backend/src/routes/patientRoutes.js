@@ -50,4 +50,11 @@ router.delete('/appointment/:id', protect, patientController.deleteAppointment);
 
 router.get('/nearby-professionals', protect, patientController.getNearbyProfessionals);
 
+// Patient Appointment Card Payment Routes
+router.post('/appointment/payhere-initiate', protect, patientController.initiateAppointmentPayment);
+router.post('/appointment/payhere-verify', protect, patientController.verifyAppointmentPayment);
+
+// Patient Finance / Billing Statement Route
+router.get('/finance-history', protect, patientController.getPatientFinanceHistory);
+
 module.exports = router;

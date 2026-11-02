@@ -143,6 +143,16 @@ const ProfileScreen = ({ navigation }) => {
           <FontAwesome5 name="chevron-right" size={14} color={colors.textMuted} />
         </TouchableOpacity>
 
+        {user?.role === 'PATIENT' && (
+          <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('PatientFinance')}>
+            <View style={styles.settingLeft}>
+              <Ionicons name="receipt-outline" size={24} color={colors.primary} />
+              <Text style={styles.settingText}>Billing & Expense History</Text>
+            </View>
+            <FontAwesome5 name="chevron-right" size={14} color={colors.textMuted} />
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity style={styles.settingItem} onPress={toggleTheme}>
           <View style={styles.settingLeft}>
             <Ionicons name={isDarkMode ? "moon" : "sunny"} size={24} color={colors.primary} />

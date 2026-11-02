@@ -6910,6 +6910,9 @@ export namespace Prisma {
     bookingFee: number | null
     serviceRadius: number | null
     serveEverywhere: boolean | null
+    visitStartHour: string | null
+    visitEndHour: string | null
+    visitDays: string | null
     walletBalance: number | null
     isWalletBlocked: boolean | null
     licenseIssuedYear: number | null
@@ -6948,6 +6951,9 @@ export namespace Prisma {
     bookingFee: number | null
     serviceRadius: number | null
     serveEverywhere: boolean | null
+    visitStartHour: string | null
+    visitEndHour: string | null
+    visitDays: string | null
     walletBalance: number | null
     isWalletBlocked: boolean | null
     licenseIssuedYear: number | null
@@ -6986,6 +6992,9 @@ export namespace Prisma {
     bookingFee: number
     serviceRadius: number
     serveEverywhere: number
+    visitStartHour: number
+    visitEndHour: number
+    visitDays: number
     walletBalance: number
     isWalletBlocked: number
     licenseIssuedYear: number
@@ -7046,6 +7055,9 @@ export namespace Prisma {
     bookingFee?: true
     serviceRadius?: true
     serveEverywhere?: true
+    visitStartHour?: true
+    visitEndHour?: true
+    visitDays?: true
     walletBalance?: true
     isWalletBlocked?: true
     licenseIssuedYear?: true
@@ -7084,6 +7096,9 @@ export namespace Prisma {
     bookingFee?: true
     serviceRadius?: true
     serveEverywhere?: true
+    visitStartHour?: true
+    visitEndHour?: true
+    visitDays?: true
     walletBalance?: true
     isWalletBlocked?: true
     licenseIssuedYear?: true
@@ -7122,6 +7137,9 @@ export namespace Prisma {
     bookingFee?: true
     serviceRadius?: true
     serveEverywhere?: true
+    visitStartHour?: true
+    visitEndHour?: true
+    visitDays?: true
     walletBalance?: true
     isWalletBlocked?: true
     licenseIssuedYear?: true
@@ -7247,6 +7265,9 @@ export namespace Prisma {
     bookingFee: number
     serviceRadius: number
     serveEverywhere: boolean
+    visitStartHour: string | null
+    visitEndHour: string | null
+    visitDays: string | null
     walletBalance: number
     isWalletBlocked: boolean
     licenseIssuedYear: number | null
@@ -7304,6 +7325,9 @@ export namespace Prisma {
     bookingFee?: boolean
     serviceRadius?: boolean
     serveEverywhere?: boolean
+    visitStartHour?: boolean
+    visitEndHour?: boolean
+    visitDays?: boolean
     walletBalance?: boolean
     isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
@@ -7352,6 +7376,9 @@ export namespace Prisma {
     bookingFee?: boolean
     serviceRadius?: boolean
     serveEverywhere?: boolean
+    visitStartHour?: boolean
+    visitEndHour?: boolean
+    visitDays?: boolean
     walletBalance?: boolean
     isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
@@ -7391,6 +7418,9 @@ export namespace Prisma {
     bookingFee?: boolean
     serviceRadius?: boolean
     serveEverywhere?: boolean
+    visitStartHour?: boolean
+    visitEndHour?: boolean
+    visitDays?: boolean
     walletBalance?: boolean
     isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
@@ -7430,6 +7460,9 @@ export namespace Prisma {
     bookingFee?: boolean
     serviceRadius?: boolean
     serveEverywhere?: boolean
+    visitStartHour?: boolean
+    visitEndHour?: boolean
+    visitDays?: boolean
     walletBalance?: boolean
     isWalletBlocked?: boolean
     licenseIssuedYear?: boolean
@@ -7447,7 +7480,7 @@ export namespace Prisma {
     contactPhone?: boolean
   }
 
-  export type ProfessionalProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "specialization" | "qualifications" | "licenseFrontImage" | "licenseBackImage" | "address" | "idCardNumber" | "workingHospital" | "isCurrentlyWorking" | "ambulanceVehicleNumber" | "attachedHospital" | "availabilityStatus" | "rating" | "locationLat" | "locationLng" | "bookingFee" | "serviceRadius" | "serveEverywhere" | "walletBalance" | "isWalletBlocked" | "licenseIssuedYear" | "licenseNumber" | "idFrontImage" | "idBackImage" | "policies" | "facilities" | "coverImage" | "profileImage" | "socialFacebook" | "socialInstagram" | "socialWhatsapp" | "socialWebsite" | "contactPhone", ExtArgs["result"]["professionalProfile"]>
+  export type ProfessionalProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fullName" | "specialization" | "qualifications" | "licenseFrontImage" | "licenseBackImage" | "address" | "idCardNumber" | "workingHospital" | "isCurrentlyWorking" | "ambulanceVehicleNumber" | "attachedHospital" | "availabilityStatus" | "rating" | "locationLat" | "locationLng" | "bookingFee" | "serviceRadius" | "serveEverywhere" | "visitStartHour" | "visitEndHour" | "visitDays" | "walletBalance" | "isWalletBlocked" | "licenseIssuedYear" | "licenseNumber" | "idFrontImage" | "idBackImage" | "policies" | "facilities" | "coverImage" | "profileImage" | "socialFacebook" | "socialInstagram" | "socialWhatsapp" | "socialWebsite" | "contactPhone", ExtArgs["result"]["professionalProfile"]>
   export type ProfessionalProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     appointments?: boolean | ProfessionalProfile$appointmentsArgs<ExtArgs>
@@ -7501,6 +7534,9 @@ export namespace Prisma {
       bookingFee: number
       serviceRadius: number
       serveEverywhere: boolean
+      visitStartHour: string | null
+      visitEndHour: string | null
+      visitDays: string | null
       walletBalance: number
       isWalletBlocked: boolean
       licenseIssuedYear: number | null
@@ -7968,6 +8004,9 @@ export namespace Prisma {
     readonly bookingFee: FieldRef<"ProfessionalProfile", 'Float'>
     readonly serviceRadius: FieldRef<"ProfessionalProfile", 'Int'>
     readonly serveEverywhere: FieldRef<"ProfessionalProfile", 'Boolean'>
+    readonly visitStartHour: FieldRef<"ProfessionalProfile", 'String'>
+    readonly visitEndHour: FieldRef<"ProfessionalProfile", 'String'>
+    readonly visitDays: FieldRef<"ProfessionalProfile", 'String'>
     readonly walletBalance: FieldRef<"ProfessionalProfile", 'Float'>
     readonly isWalletBlocked: FieldRef<"ProfessionalProfile", 'Boolean'>
     readonly licenseIssuedYear: FieldRef<"ProfessionalProfile", 'Int'>
@@ -30161,6 +30200,9 @@ export namespace Prisma {
     bookingFee: 'bookingFee',
     serviceRadius: 'serviceRadius',
     serveEverywhere: 'serveEverywhere',
+    visitStartHour: 'visitStartHour',
+    visitEndHour: 'visitEndHour',
+    visitDays: 'visitDays',
     walletBalance: 'walletBalance',
     isWalletBlocked: 'isWalletBlocked',
     licenseIssuedYear: 'licenseIssuedYear',
@@ -30836,6 +30878,9 @@ export namespace Prisma {
     bookingFee?: FloatFilter<"ProfessionalProfile"> | number
     serviceRadius?: IntFilter<"ProfessionalProfile"> | number
     serveEverywhere?: BoolFilter<"ProfessionalProfile"> | boolean
+    visitStartHour?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    visitEndHour?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    visitDays?: StringNullableFilter<"ProfessionalProfile"> | string | null
     walletBalance?: FloatFilter<"ProfessionalProfile"> | number
     isWalletBlocked?: BoolFilter<"ProfessionalProfile"> | boolean
     licenseIssuedYear?: IntNullableFilter<"ProfessionalProfile"> | number | null
@@ -30883,6 +30928,9 @@ export namespace Prisma {
     bookingFee?: SortOrder
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
+    visitStartHour?: SortOrderInput | SortOrder
+    visitEndHour?: SortOrderInput | SortOrder
+    visitDays?: SortOrderInput | SortOrder
     walletBalance?: SortOrder
     isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrderInput | SortOrder
@@ -30933,6 +30981,9 @@ export namespace Prisma {
     bookingFee?: FloatFilter<"ProfessionalProfile"> | number
     serviceRadius?: IntFilter<"ProfessionalProfile"> | number
     serveEverywhere?: BoolFilter<"ProfessionalProfile"> | boolean
+    visitStartHour?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    visitEndHour?: StringNullableFilter<"ProfessionalProfile"> | string | null
+    visitDays?: StringNullableFilter<"ProfessionalProfile"> | string | null
     walletBalance?: FloatFilter<"ProfessionalProfile"> | number
     isWalletBlocked?: BoolFilter<"ProfessionalProfile"> | boolean
     licenseIssuedYear?: IntNullableFilter<"ProfessionalProfile"> | number | null
@@ -30980,6 +31031,9 @@ export namespace Prisma {
     bookingFee?: SortOrder
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
+    visitStartHour?: SortOrderInput | SortOrder
+    visitEndHour?: SortOrderInput | SortOrder
+    visitDays?: SortOrderInput | SortOrder
     walletBalance?: SortOrder
     isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrderInput | SortOrder
@@ -31026,6 +31080,9 @@ export namespace Prisma {
     bookingFee?: FloatWithAggregatesFilter<"ProfessionalProfile"> | number
     serviceRadius?: IntWithAggregatesFilter<"ProfessionalProfile"> | number
     serveEverywhere?: BoolWithAggregatesFilter<"ProfessionalProfile"> | boolean
+    visitStartHour?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    visitEndHour?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+    visitDays?: StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
     walletBalance?: FloatWithAggregatesFilter<"ProfessionalProfile"> | number
     isWalletBlocked?: BoolWithAggregatesFilter<"ProfessionalProfile"> | boolean
     licenseIssuedYear?: IntNullableWithAggregatesFilter<"ProfessionalProfile"> | number | null
@@ -32741,6 +32798,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -32788,6 +32848,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -32833,6 +32896,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -32880,6 +32946,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -32926,6 +32995,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -32963,6 +33035,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -33001,6 +33076,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -34973,6 +35051,9 @@ export namespace Prisma {
     bookingFee?: SortOrder
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
+    visitStartHour?: SortOrder
+    visitEndHour?: SortOrder
+    visitDays?: SortOrder
     walletBalance?: SortOrder
     isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrder
@@ -35021,6 +35102,9 @@ export namespace Prisma {
     bookingFee?: SortOrder
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
+    visitStartHour?: SortOrder
+    visitEndHour?: SortOrder
+    visitDays?: SortOrder
     walletBalance?: SortOrder
     isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrder
@@ -35059,6 +35143,9 @@ export namespace Prisma {
     bookingFee?: SortOrder
     serviceRadius?: SortOrder
     serveEverywhere?: SortOrder
+    visitStartHour?: SortOrder
+    visitEndHour?: SortOrder
+    visitDays?: SortOrder
     walletBalance?: SortOrder
     isWalletBlocked?: SortOrder
     licenseIssuedYear?: SortOrder
@@ -37889,6 +37976,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -37934,6 +38024,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -38156,6 +38249,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -38201,6 +38297,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -39765,6 +39864,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -39811,6 +39913,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -39966,6 +40071,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40012,6 +40120,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40234,6 +40345,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -40280,6 +40394,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -40490,6 +40607,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -40536,6 +40656,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -41461,6 +41584,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -41507,6 +41633,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -41606,6 +41735,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -41652,6 +41784,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -41813,6 +41948,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -41859,6 +41997,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -41958,6 +42099,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42004,6 +42148,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42048,6 +42195,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42094,6 +42244,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42154,6 +42307,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42200,6 +42356,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42244,6 +42403,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42290,6 +42452,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42350,6 +42515,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42396,6 +42564,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42440,6 +42611,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42486,6 +42660,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42546,6 +42723,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42592,6 +42772,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42636,6 +42819,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42682,6 +42868,9 @@ export namespace Prisma {
     bookingFee?: number
     serviceRadius?: number
     serveEverywhere?: boolean
+    visitStartHour?: string | null
+    visitEndHour?: string | null
+    visitDays?: string | null
     walletBalance?: number
     isWalletBlocked?: boolean
     licenseIssuedYear?: number | null
@@ -42742,6 +42931,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null
@@ -42788,6 +42980,9 @@ export namespace Prisma {
     bookingFee?: FloatFieldUpdateOperationsInput | number
     serviceRadius?: IntFieldUpdateOperationsInput | number
     serveEverywhere?: BoolFieldUpdateOperationsInput | boolean
+    visitStartHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitEndHour?: NullableStringFieldUpdateOperationsInput | string | null
+    visitDays?: NullableStringFieldUpdateOperationsInput | string | null
     walletBalance?: FloatFieldUpdateOperationsInput | number
     isWalletBlocked?: BoolFieldUpdateOperationsInput | boolean
     licenseIssuedYear?: NullableIntFieldUpdateOperationsInput | number | null

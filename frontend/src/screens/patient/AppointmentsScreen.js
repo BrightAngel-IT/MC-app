@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, Alert, Platform, TouchableOpacity, Modal, TextInput, ScrollView, RefreshControl, Linking } from 'react-native';
+import { WebView } from 'react-native-webview';
 import api from '../../api/axios';
 import { useTheme } from '../../context/themeContext';
 import { SIZES } from '../../styles/theme';
@@ -8,13 +9,14 @@ import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../../context/authContext';
 import CustomAlertModal from '../../components/CustomAlertModal';
 
-const AppointmentsScreen = ({ route }) => {
+const AppointmentsScreen = ({ route, navigation }) => {
   const { colors } = useTheme();
   const { user } = useContext(AuthContext);
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [statusFilter, setStatusFilter] = useState(route?.params?.statusFilter || 'ALL');
 
   // Reschedule State
   const [rescheduleModalVisible, setRescheduleModalVisible] = useState(false);
@@ -79,6 +81,184 @@ const AppointmentsScreen = ({ route }) => {
   const [isRescheduling, setIsRescheduling] = useState(false);
   const [alertConfig, setAlertConfig] = useState({ visible: false, type: 'success', title: '', message: '' });
   const [chatText, setChatText] = useState('');
+
+  // PayHere Payment States
+  const [paymentData, setPaymentData] = useState(null);
+  const [payModalVisible, setPayModalVisible] = useState(false);
+  const [payingAptId, setPayingAptId] = useState(null);
+  const [payingAppointment, setPayingAppointment] = useState(null);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
+  const handleInitiateCardPayment = async (apt) => {
+    if (!apt) return;
+    try {
+      setIsProcessingPayment(true);
+      setPayingAptId(apt.id);
+      setPayingAppointment(apt);
+
+      const res = await api.post('/patient/appointment/payhere-initiate', {
+        appointmentId: apt.id
+      });
+
+      if (res.data) {
+        setPaymentData(res.data);
+
+        // If Web browser (Chrome / Edge / Firefox)
+        if (Platform.OS === 'web') {
+          const loadPayHereScript = () => {
+            return new Promise((resolve, reject) => {
+              if (window.payhere) {
+                return resolve(window.payhere);
+              }
+              const script = document.createElement('script');
+              script.src = 'https://www.payhere.lk/lib/payhere.js';
+              script.type = 'text/javascript';
+              script.onload = () => resolve(window.payhere);
+              script.onerror = () => reject(new Error('Failed to load PayHere script'));
+              document.head.appendChild(script);
+            });
+          };
+
+          try {
+            const payhere = await loadPayHereScript();
+
+            payhere.onCompleted = function onCompleted(orderId) {
+              console.log("PayHere Appointment Payment completed. OrderID:" + orderId);
+              handlePaymentSuccess(orderId, apt.id);
+            };
+
+            payhere.onDismissed = function onDismissed() {
+              console.log("PayHere Appointment Payment dismissed");
+              setIsProcessingPayment(false);
+              setPayingAptId(null);
+            };
+
+            payhere.onError = function onError(error) {
+              console.log("PayHere Error:" + error);
+              setIsProcessingPayment(false);
+              setPayingAptId(null);
+              setAlertConfig({ visible: true, type: 'error', title: 'Payment Error', message: String(error) });
+            };
+
+            const paymentObject = {
+              sandbox: res.data.sandbox,
+              merchant_id: res.data.merchant_id,
+              return_url: window.location.origin,
+              cancel_url: window.location.origin,
+              notify_url: 'https://mcbackend.crescereluna.com/api/wallet/payhere-notify',
+              order_id: res.data.order_id,
+              items: res.data.items,
+              amount: res.data.amount,
+              currency: res.data.currency,
+              hash: res.data.hash,
+              first_name: res.data.first_name,
+              last_name: res.data.last_name,
+              email: res.data.email,
+              phone: res.data.phone,
+              address: res.data.address,
+              city: res.data.city,
+              country: res.data.country,
+              custom_1: res.data.custom_1,
+              custom_2: res.data.custom_2,
+            };
+
+            payhere.startPayment(paymentObject);
+          } catch (sdkError) {
+            console.error("PayHere SDK loading failed:", sdkError);
+            setAlertConfig({ visible: true, type: 'error', title: 'Error', message: 'Could not load PayHere popup. Please retry.' });
+            setIsProcessingPayment(false);
+            setPayingAptId(null);
+          }
+        } else {
+          // Mobile (Android / iOS) uses In-App WebView Modal
+          setPayModalVisible(true);
+        }
+      }
+    } catch (error) {
+      const msg = error.response?.data?.message || 'Failed to initiate payment gateway.';
+      setAlertConfig({ visible: true, type: 'error', title: 'Payment Initiation Error', message: msg });
+      setIsProcessingPayment(false);
+      setPayingAptId(null);
+    }
+  };
+
+  const handlePaymentSuccess = async (paymentRef, aptIdOverride) => {
+    const targetAptId = aptIdOverride || payingAppointment?.id;
+    try {
+      setIsProcessingPayment(true);
+      setPayModalVisible(false);
+
+      await api.post('/patient/appointment/payhere-verify', {
+        appointmentId: targetAptId,
+        order_id: paymentData?.order_id,
+        payment_id: paymentRef || 'PAYHERE-APP'
+      });
+
+      setAlertConfig({
+        visible: true,
+        type: 'success',
+        title: 'Payment Successful! 🎉',
+        message: 'Your consultation fee has been paid successfully. Thank you!'
+      });
+
+      fetchAppointments();
+    } catch (error) {
+      console.error("Error verifying appointment payment:", error);
+      fetchAppointments();
+    } finally {
+      setIsProcessingPayment(false);
+      setPayingAptId(null);
+      setPayingAppointment(null);
+    }
+  };
+
+  const getPayHereHtml = (data) => {
+    if (!data) return '';
+    const actionUrl = data.sandbox 
+      ? 'https://sandbox.payhere.lk/pay/checkout' 
+      : 'https://www.payhere.lk/pay/checkout';
+
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f8fafc; }
+            .loader { border: 4px solid #f3f3f3; border-top: 4px solid #10b981; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            h2 { color: #1e293b; font-size: 18px; margin: 0 0 8px 0; }
+            p { color: #64748b; font-size: 14px; margin: 0; }
+          </style>
+        </head>
+        <body onload="document.forms['payhere_form'].submit()">
+          <div class="loader"></div>
+          <h2>Connecting to PayHere Secure Gateway...</h2>
+          <p>Please wait, do not close or press back.</p>
+          <form id="payhere_form" method="post" action="${actionUrl}">
+            <input type="hidden" name="merchant_id" value="${data.merchant_id}">
+            <input type="hidden" name="return_url" value="https://mcbackend.crescereluna.com/api/payment/success">
+            <input type="hidden" name="cancel_url" value="https://mcbackend.crescereluna.com/api/payment/cancel">
+            <input type="hidden" name="notify_url" value="https://mcbackend.crescereluna.com/api/wallet/payhere-notify">
+            <input type="hidden" name="order_id" value="${data.order_id}">
+            <input type="hidden" name="items" value="${data.items}">
+            <input type="hidden" name="currency" value="${data.currency}">
+            <input type="hidden" name="amount" value="${data.amount}">
+            <input type="hidden" name="first_name" value="${data.first_name}">
+            <input type="hidden" name="last_name" value="${data.last_name}">
+            <input type="hidden" name="email" value="${data.email}">
+            <input type="hidden" name="phone" value="${data.phone}">
+            <input type="hidden" name="address" value="${data.address}">
+            <input type="hidden" name="city" value="${data.city}">
+            <input type="hidden" name="country" value="${data.country}">
+            <input type="hidden" name="hash" value="${data.hash}">
+            <input type="hidden" name="custom_1" value="${data.custom_1}">
+            <input type="hidden" name="custom_2" value="${data.custom_2}">
+          </form>
+        </body>
+      </html>
+    `;
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -363,26 +543,81 @@ const AppointmentsScreen = ({ route }) => {
         </View>
 
         {!item.status?.startsWith('CANCELED') && item.status !== 'COMPLETED' ? (
-          <View style={styles.actions}>
-            <TouchableOpacity style={[styles.btn, styles.btnChat]} onPress={() => openChatModal(item)}>
-              <Ionicons name="chatbubbles-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
-              <Text style={styles.btnChatText}>Chat</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.btn, styles.btnOutline]} onPress={() => openRescheduleModal(item)}>
-              <Ionicons name="calendar-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
-              <Text style={styles.btnOutlineText}>Reschedule</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.btn, styles.btnDanger, cancelingId === item.id && { opacity: 0.7 }]} 
-              onPress={() => handleCancel(item.id)}
-              disabled={cancelingId === item.id}
-            >
-              <Ionicons name="close-circle-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
-              <Text style={styles.btnDangerText}>{cancelingId === item.id ? 'Canceling...' : 'Cancel'}</Text>
-            </TouchableOpacity>
+          <View>
+            {/* If Patient selected CARD, show information banner that card payment unlocks upon completion */}
+            {fees.paymentMethod === 'CARD' && fees.paymentStatus !== 'PAID' && (
+              <View style={[styles.lockedCardNotice, { backgroundColor: colors.isDark ? '#1e293b' : '#f1f5f9', borderColor: colors.border }]}>
+                <Ionicons name="lock-closed" size={14} color={colors.textLight} style={{ marginRight: 6 }} />
+                <Text style={[styles.lockedCardNoticeText, { color: colors.textLight }]}>
+                  Card payment unlocks once the doctor completes the appointment.
+                </Text>
+              </View>
+            )}
+
+            <View style={styles.actions}>
+              <TouchableOpacity style={[styles.btn, styles.btnChat]} onPress={() => openChatModal(item)}>
+                <Ionicons name="chatbubbles-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
+                <Text style={styles.btnChatText}>Chat</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[
+                  styles.btn, 
+                  styles.btnOutline,
+                  item.status === 'CONFIRMED' && { backgroundColor: colors.isDark ? '#334155' : '#cbd5e1', opacity: 0.7 }
+                ]} 
+                onPress={() => {
+                  if (item.status === 'CONFIRMED') {
+                    setAlertConfig({
+                      visible: true,
+                      type: 'warning',
+                      title: 'Visit Confirmed',
+                      message: 'The doctor has already confirmed the home visit. Rescheduling is disabled. Please chat with the doctor directly if you need to change the visit time.'
+                    });
+                    return;
+                  }
+                  openRescheduleModal(item);
+                }}
+              >
+                {item.status === 'CONFIRMED' && (
+                  <Ionicons name="lock-closed" size={14} color={colors.isDark ? '#94a3b8' : '#64748b'} style={{ marginRight: 5 }} />
+                )}
+                <Ionicons name="calendar-outline" size={15} color={item.status === 'CONFIRMED' ? (colors.isDark ? '#94a3b8' : '#64748b') : '#fff'} style={{ marginRight: 6 }} />
+                <Text style={[styles.btnOutlineText, item.status === 'CONFIRMED' && { color: colors.isDark ? '#94a3b8' : '#475569' }]}>
+                  {item.status === 'CONFIRMED' ? 'Confirmed' : 'Reschedule'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[styles.btn, styles.btnDanger, cancelingId === item.id && { opacity: 0.7 }]} 
+                onPress={() => handleCancel(item.id)}
+                disabled={cancelingId === item.id}
+              >
+                <Ionicons name="close-circle-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
+                <Text style={styles.btnDangerText}>{cancelingId === item.id ? 'Canceling...' : 'Cancel'}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ) : (
           <View style={styles.completedActions}>
+            {/* CARD Payment Button - Only shown if appointment is CARD payment and not yet PAID */}
+            {item.status === 'COMPLETED' && fees.paymentMethod === 'CARD' && fees.paymentStatus !== 'PAID' && (
+              <TouchableOpacity 
+                style={[styles.btn, styles.btnPayNow, payingAptId === item.id && { opacity: 0.8 }]} 
+                onPress={() => handleInitiateCardPayment(item)}
+                disabled={payingAptId === item.id || isProcessingPayment}
+              >
+                {payingAptId === item.id ? (
+                  <ActivityIndicator size="small" color="#fff" style={{ marginRight: 6 }} />
+                ) : (
+                  <Ionicons name="card" size={16} color="#fff" style={{ marginRight: 6 }} />
+                )}
+                <Text style={styles.btnPayNowText}>
+                  {payingAptId === item.id ? 'Processing...' : `Pay with Card (Rs. ${Number(fees.totalFee).toLocaleString()})`}
+                </Text>
+              </TouchableOpacity>
+            )}
+
             {item.prescriptions && item.prescriptions.length > 0 && (
               <TouchableOpacity style={[styles.btn, styles.btnActionSecondary]} onPress={() => { setSelectedApt(item); setViewPrescriptionModalVisible(true); }}>
                 <Ionicons name="document-text-outline" size={15} color="#fff" style={{ marginRight: 6 }} />
@@ -407,17 +642,69 @@ const AppointmentsScreen = ({ route }) => {
 
   if (loading) return <ActivityIndicator size="large" color={colors.primary} style={{ flex: 1, backgroundColor: colors.background }} />;
 
+  const filteredAppointments = appointments.filter((apt) => {
+    if (!statusFilter || statusFilter === 'ALL') return true;
+    if (statusFilter === 'CANCELED') return apt.status?.startsWith('CANCELED');
+    return apt.status === statusFilter;
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContent}>
-        <Text style={styles.title}>My Appointments</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <Text style={[styles.title, { marginBottom: 0 }]}>My Appointments</Text>
+          <TouchableOpacity 
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: '#0f766e',
+              paddingHorizontal: 12,
+              paddingVertical: 7,
+              borderRadius: 8,
+              gap: 6
+            }}
+            onPress={() => navigation?.navigate('PatientFinance')}
+          >
+            <FontAwesome5 name="receipt" size={13} color="#fff" />
+            <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>Billing History</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Filter Tabs: ALL, PENDING, CONFIRMED, COMPLETED, CANCELED */}
+        <View style={styles.filterTabsWrapper}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.filterTabsContainer}
+          >
+            {['ALL', 'PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELED'].map((status) => {
+              const isActive = (status === 'ALL' && (!statusFilter || statusFilter === 'ALL')) || status === statusFilter;
+              return (
+                <TouchableOpacity 
+                  key={status} 
+                  style={[styles.filterTab, isActive && styles.filterTabActive]}
+                  onPress={() => setStatusFilter(status)}
+                >
+                  <Text style={[styles.filterTabText, isActive && styles.filterTabTextActive]}>
+                    {status}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+
         <FlatList 
-          data={appointments}
+          data={filteredAppointments}
           keyExtractor={item => item.id}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 20 }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />}
-          ListEmptyComponent={<Text style={{textAlign: 'center', color: colors.textLight, marginTop: 40}}>No appointments found.</Text>}
+          ListEmptyComponent={
+            <Text style={{textAlign: 'center', color: colors.textLight, marginTop: 40}}>
+              {statusFilter !== 'ALL' ? `No ${statusFilter.toLowerCase()} appointments found.` : 'No appointments found.'}
+            </Text>
+          }
         />
       </View>
 
@@ -568,6 +855,52 @@ const AppointmentsScreen = ({ route }) => {
         </View>
       </Modal>
 
+      {/* PayHere In-App WebView Modal for Mobile */}
+      <Modal visible={payModalVisible} animationType="slide">
+        <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
+          <View style={styles.payModalHeader}>
+            <TouchableOpacity 
+              onPress={() => {
+                setPayModalVisible(false);
+                setIsProcessingPayment(false);
+                setPayingAptId(null);
+              }}
+              style={styles.payModalCloseBtn}
+            >
+              <Ionicons name="close" size={24} color="#1e293b" />
+            </TouchableOpacity>
+            <Text style={styles.payModalHeaderTitle}>PayHere Secure Payment</Text>
+            <View style={{ width: 40 }} />
+          </View>
+
+          {paymentData && (
+            <WebView
+              source={{ html: getPayHereHtml(paymentData) }}
+              javaScriptEnabled={true}
+              domStorageEnabled={true}
+              startInLoadingState={true}
+              renderLoading={() => (
+                <View style={styles.webViewLoader}>
+                  <ActivityIndicator size="large" color="#10b981" />
+                  <Text style={{ marginTop: 12, color: '#475569', fontWeight: '500' }}>Loading PayHere Portal...</Text>
+                </View>
+              )}
+              onNavigationStateChange={(navState) => {
+                const url = navState.url;
+                if (url.includes('payment/success') || url.includes('payhere.lk/pay/success') || url.includes('status=2')) {
+                  handlePaymentSuccess(paymentData.order_id);
+                } else if (url.includes('payment/cancel') || url.includes('payhere.lk/pay/cancel')) {
+                  setPayModalVisible(false);
+                  setIsProcessingPayment(false);
+                  setPayingAptId(null);
+                  Alert.alert("Payment Cancelled", "Card payment transaction was cancelled.");
+                }
+              }}
+            />
+          )}
+        </View>
+      </Modal>
+
       <CustomAlertModal 
         visible={alertConfig.visible}
         type={alertConfig.type}
@@ -664,6 +997,82 @@ const getStyles = (colors) => StyleSheet.create({
   btnActionOutline: { backgroundColor: colors.surfaceLight, borderWidth: 1, borderColor: colors.border },
   btnTextWhite: { color: '#fff', fontWeight: 'bold', fontSize: 13, flexShrink: 0 },
   btnTextPrimary: { fontWeight: 'bold', fontSize: 13, flexShrink: 0 },
+  btnPayNow: {
+    backgroundColor: '#059669',
+    shadowColor: '#059669',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  btnPayNowText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 13,
+  },
+  lockedCardNotice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: SIZES.radius,
+    borderWidth: 1,
+    marginBottom: 10,
+  },
+  lockedCardNoticeText: {
+    fontSize: 12,
+    flex: 1,
+  },
+  payModalHeader: {
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0',
+    backgroundColor: '#ffffff',
+  },
+  payModalCloseBtn: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  payModalHeaderTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1e293b',
+  },
+  webViewLoader: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+
+  filterTabsWrapper: { marginBottom: 16 },
+  filterTabsContainer: { flexDirection: 'row', gap: 10, paddingVertical: 4 },
+  filterTab: { 
+    paddingHorizontal: 16, 
+    paddingVertical: 8, 
+    borderRadius: 20, 
+    backgroundColor: colors.surfaceLight || '#f1f5f9', 
+    borderWidth: 1, 
+    borderColor: colors.border 
+  },
+  filterTabActive: { 
+    backgroundColor: colors.primary, 
+    borderColor: colors.primary 
+  },
+  filterTabText: { 
+    fontSize: 13, 
+    fontWeight: 'bold', 
+    color: colors.textLight 
+  },
+  filterTabTextActive: { 
+    color: '#ffffff' 
+  },
 
   modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', padding: 20 },
   modalContent: { backgroundColor: colors.surface, borderRadius: SIZES.radiusLg, padding: 24 },

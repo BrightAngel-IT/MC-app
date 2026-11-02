@@ -35,6 +35,7 @@ const SERVICES = [
   { id: '7', title: 'Elder\nCare', icon: 'human-cane', type: 'mci', color: '#14b8a6', action: 'CaregiverSearch' },
   { id: '8', title: 'Equipment', icon: 'wheelchair-accessibility', type: 'mci', color: '#64748b', action: 'AllProductsScreen' },
   { id: '9', title: 'Elder\nHomes', icon: 'home-heart', type: 'mci', color: '#f97316', action: 'ElderHomeSearch' },
+  { id: '10', title: 'Billing &\nFinance', icon: 'file-invoice-dollar', type: 'fa5', color: '#0f766e', action: 'PatientFinance' },
 ];
 
 const PatientDashboard = ({ navigation }) => {
@@ -215,6 +216,9 @@ const PatientDashboard = ({ navigation }) => {
           <Text style={styles.welcomeText}>Hello, {user?.fullName || 'Guest'}</Text>
         </View>
         <View style={styles.headerRight}>
+          <TouchableOpacity onPress={() => navigation.navigate('PatientFinance')} style={styles.themeBtn} title="My Billing & Finance">
+            <FontAwesome5 name="receipt" size={20} color={colors.primary} />
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Calendar')} style={styles.themeBtn}>
             <MaterialCommunityIcons name="calendar-month" size={24} color={colors.primary} />
           </TouchableOpacity>

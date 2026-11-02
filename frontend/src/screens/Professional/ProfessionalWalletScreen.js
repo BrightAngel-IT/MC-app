@@ -29,6 +29,10 @@ const ProfessionalWalletScreen = ({ navigation }) => {
   const [accountHolderName, setAccountHolderName] = useState('');
   const [branchName, setBranchName] = useState('');
 
+  // Detailed Transaction Modal State
+  const [selectedTx, setSelectedTx] = useState(null);
+  const [txDetailModalVisible, setTxDetailModalVisible] = useState(false);
+
 
   const fetchWallet = async () => {
     try {
@@ -551,8 +555,13 @@ const ProfessionalWalletScreen = ({ navigation }) => {
           transactions.map((tx) => {
             const isCredit = tx.type === 'CREDIT';
             return (
-              <View 
+              <TouchableOpacity 
                 key={tx.id} 
+                activeOpacity={0.8}
+                onPress={() => {
+                  setSelectedTx(tx);
+                  setTxDetailModalVisible(true);
+                }}
                 style={[
                   styles.txCard, 
                   { backgroundColor: colors.surface, borderColor: colors.border }
@@ -602,8 +611,15 @@ const ProfessionalWalletScreen = ({ navigation }) => {
                   </View>
 
                   <View style={styles.breakdownCol}>
-                    <Text style={styles.breakdownLabel}>Platform Fee</Text>
+                    <Text style={styles.breakdownLabel}>Platform Fee (30%)</Text>
                     <Text style={[styles.breakdownVal, { color: '#ef4444' }]}>Rs. {tx.commissionAmount?.toFixed(2) || '0.00'}</Text>
+                  </View>
+
+                  <View style={styles.breakdownCol}>
+                    <Text style={styles.breakdownLabel}>Doctor Share (70%)</Text>
+                    <Text style={[styles.breakdownVal, { color: '#10b981' }]}>
+                      Rs. {((tx.totalFee || 0) - (tx.commissionAmount || 0)).toFixed(2)}
+                    </Text>
                   </View>
 
                   <View style={styles.breakdownCol}>
@@ -616,11 +632,224 @@ const ProfessionalWalletScreen = ({ navigation }) => {
                     </Text>
                   </View>
                 </View>
-              </View>
+
+                {/* Click hint footer */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', marginTop: 8 }}>
+                  <Text style={{ fontSize: 11, color: colors.primary, fontWeight: '600' }}>Tap to view full breakdown</Text>
+                  <Ionicons name="chevron-forward" size={12} color={colors.primary} style={{ marginLeft: 2 }} />
+                </View>
+              </TouchableOpacity>
             );
           })
         )}
       </ScrollView>
+
+      {/* Itemized Charge Breakdown Modal */}
+      <Modal
+        visible={txDetailModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setTxDetailModalVisible(false)}
+      >
+        <View style={styles.withdrawModalOverlay}>
+          <View style={[styles.withdrawModalContent, { backgroundColor: colors.surface }]}>
+            <View style={styles.withdrawModalHeader}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Ionicons name="receipt" size={22} color={colors.primary} />
+                <Text style={[styles.withdrawModalTitle, { color: colors.text }]}>Transaction Charge Breakdown</Text>
+              </View>
+              <TouchableOpacity onPress={() => setTxDetailModalVisible(false)} style={{ padding: 4 }}>
+                <Ionicons name="close" size={24} color={colors.textLight} />
+              </TouchableOpacity>
+            </View>
+
+            {selectedTx && (
+              <ScrollView style={{ padding: 18 }}>
+                {/* Method & Status Header */}
+                <View style={{ 
+                  flexDirection: 'row', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  backgroundColor: selectedTx.paymentMethod === 'CARD' ? '#eff6ff' : '#fffbeb',
+                  padding: 12,
+                  borderRadius: 10,
+                  marginBottom: 16
+                }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                    <Ionicons 
+                      name={selectedTx.paymentMethod === 'CARD' ? "card" : "cash"} 
+                      size={20} 
+                      color={selectedTx.paymentMethod === 'CARD' ? '#2563eb' : '#d97706'} 
+                    />
+                    <View>
+                      <Text style={{ fontWeight: 'bold', fontSize: 13, color: selectedTx.paymentMethod === 'CARD' ? '#1e40af' : '#92400e' }}>
+                        {selectedTx.paymentMethod === 'CARD' ? 'Online Card Payment' : 'Cash Collected by Doctor'}
+                      </Text>
+                      <Text style={{ fontSize: 11, color: '#64748b' }}>
+                        {formatDateTime(selectedTx.createdAt)}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={{
+                    backgroundColor: selectedTx.type === 'CREDIT' ? '#dcfce7' : '#fee2e2',
+                    paddingHorizontal: 8,
+                    paddingVertical: 4,
+                    borderRadius: 6
+                  }}>
+                    <Text style={{ 
+                      fontSize: 12, 
+                      fontWeight: 'bold', 
+                      color: selectedTx.type === 'CREDIT' ? '#15803d' : '#b91c1c' 
+                    }}>
+                      {selectedTx.type}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Patient / Appointment Context if available */}
+                {selectedTx.appointment && (
+                  <View style={{
+                    backgroundColor: colors.surfaceLight,
+                    padding: 12,
+                    borderRadius: 10,
+                    marginBottom: 16,
+                    borderWidth: 1,
+                    borderColor: colors.border
+                  }}>
+                    <Text style={{ fontSize: 12, fontWeight: 'bold', color: colors.textLight, textTransform: 'uppercase', marginBottom: 6 }}>
+                      Appointment Details
+                    </Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+                      <Text style={{ fontSize: 13, color: colors.textLight }}>Patient Name:</Text>
+                      <Text style={{ fontSize: 13, fontWeight: '600', color: colors.text }}>{selectedTx.appointment.patientName}</Text>
+                    </View>
+                    {selectedTx.appointment.patientPhone ? (
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+                        <Text style={{ fontSize: 13, color: colors.textLight }}>Contact:</Text>
+                        <Text style={{ fontSize: 13, fontWeight: '500', color: colors.text }}>{selectedTx.appointment.patientPhone}</Text>
+                      </View>
+                    ) : null}
+                    {selectedTx.appointment.serviceType ? (
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+                        <Text style={{ fontSize: 13, color: colors.textLight }}>Service Type:</Text>
+                        <Text style={{ fontSize: 13, fontWeight: '500', color: colors.text }}>{selectedTx.appointment.serviceType}</Text>
+                      </View>
+                    ) : null}
+                  </View>
+                )}
+
+                {/* Charges Itemized Table */}
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>
+                  Itemized Fee Breakdown
+                </Text>
+                
+                <View style={{
+                  borderWidth: 1,
+                  borderColor: colors.border,
+                  borderRadius: 10,
+                  overflow: 'hidden',
+                  marginBottom: 16
+                }}>
+                  {/* Total Collected */}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 12, borderBottomWidth: 1, borderBottomColor: colors.border }}>
+                    <Text style={{ fontSize: 13, color: colors.text }}>Total Patient Fee</Text>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.text }}>
+                      Rs. {(selectedTx.totalFee || Math.abs(selectedTx.amount)).toFixed(2)}
+                    </Text>
+                  </View>
+
+                  {/* Platform Commission */}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 12, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: 'rgba(239, 68, 68, 0.05)' }}>
+                    <View>
+                      <Text style={{ fontSize: 13, color: '#b91c1c', fontWeight: '500' }}>Platform Commission (30%)</Text>
+                      <Text style={{ fontSize: 11, color: '#64748b' }}>Company system maintenance fee</Text>
+                    </View>
+                    <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#b91c1c' }}>
+                      - Rs. {(selectedTx.commissionAmount || 0).toFixed(2)}
+                    </Text>
+                  </View>
+
+                  {/* Doctor Net Share */}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 12, borderBottomWidth: 1, borderBottomColor: colors.border, backgroundColor: 'rgba(16, 185, 129, 0.05)' }}>
+                    <View>
+                      <Text style={{ fontSize: 13, color: '#047857', fontWeight: 'bold' }}>Doctor Net Share (70%)</Text>
+                      <Text style={{ fontSize: 11, color: '#64748b' }}>Consultation & visit remuneration</Text>
+                    </View>
+                    <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#047857' }}>
+                      Rs. {((selectedTx.totalFee || Math.abs(selectedTx.amount)) - (selectedTx.commissionAmount || 0)).toFixed(2)}
+                    </Text>
+                  </View>
+
+                  {/* Wallet Impact */}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 12, backgroundColor: colors.surfaceLight }}>
+                    <View>
+                      <Text style={{ fontSize: 13, color: colors.text, fontWeight: 'bold' }}>Wallet Impact</Text>
+                      <Text style={{ fontSize: 11, color: colors.textLight }}>
+                        {selectedTx.paymentMethod === 'CASH' 
+                          ? 'Debited from wallet (collected in cash)' 
+                          : 'Credited to your wallet balance'}
+                      </Text>
+                    </View>
+                    <Text style={{ 
+                      fontSize: 15, 
+                      fontWeight: 'bold', 
+                      color: selectedTx.type === 'CREDIT' ? '#10b981' : '#ef4444' 
+                    }}>
+                      {selectedTx.type === 'CREDIT' ? `+Rs. ${Math.abs(selectedTx.amount).toFixed(2)}` : `-Rs. ${Math.abs(selectedTx.amount).toFixed(2)}`}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Balance After Transaction */}
+                <View style={{ 
+                  flexDirection: 'row', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  padding: 12,
+                  backgroundColor: colors.surfaceLight,
+                  borderRadius: 10,
+                  borderWidth: 1,
+                  borderColor: colors.border,
+                  marginBottom: 16
+                }}>
+                  <Text style={{ fontSize: 13, color: colors.text, fontWeight: '600' }}>Balance After Transaction</Text>
+                  <Text style={{ 
+                    fontSize: 14, 
+                    fontWeight: 'bold', 
+                    color: (selectedTx.balanceAfter || 0) >= 0 ? '#10b981' : '#ef4444' 
+                  }}>
+                    Rs. {(selectedTx.balanceAfter || 0).toFixed(2)}
+                  </Text>
+                </View>
+
+                {/* Description Box */}
+                {selectedTx.description ? (
+                  <View style={{ marginBottom: 16 }}>
+                    <Text style={{ fontSize: 12, color: colors.textLight, marginBottom: 4 }}>Description / Note</Text>
+                    <Text style={{ fontSize: 13, color: colors.text, fontStyle: 'italic', lineHeight: 18 }}>
+                      "{selectedTx.description}"
+                    </Text>
+                  </View>
+                ) : null}
+
+                {/* Close Button */}
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: colors.primary,
+                    paddingVertical: 12,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    marginBottom: 20
+                  }}
+                  onPress={() => setTxDetailModalVisible(false)}
+                >
+                  <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>Close Breakdown</Text>
+                </TouchableOpacity>
+              </ScrollView>
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
