@@ -254,18 +254,33 @@ const AdminAppointmentsScreen = () => {
       </View>
 
       {/* Filter Tabs */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll} contentContainerStyle={styles.filterContainer}>
-        {['ALL', 'PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'].map((st) => (
-          <TouchableOpacity
-            key={st}
-            style={[styles.filterChip, filterStatus === st && { backgroundColor: colors.primary, borderColor: colors.primary }]}
-            onPress={() => setFilterStatus(st)}
-          >
-            <Text style={[styles.filterChipText, filterStatus === st && { color: '#ffffff', fontWeight: 'bold' }]}>
-              {st}
-            </Text>
-          </TouchableOpacity>
-        ))}
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false} 
+        style={styles.filterScroll} 
+        contentContainerStyle={styles.filterContainer}
+      >
+        {['ALL', 'PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'].map((st) => {
+          const isActive = filterStatus === st;
+          return (
+            <TouchableOpacity
+              key={st}
+              activeOpacity={0.7}
+              style={[
+                styles.filterChip, 
+                isActive && styles.filterChipActive
+              ]}
+              onPress={() => setFilterStatus(st)}
+            >
+              <Text style={[
+                styles.filterChipText, 
+                isActive && { color: '#ffffff', fontWeight: 'bold' }
+              ]}>
+                {st}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
 
       {/* Appointments List */}
@@ -647,24 +662,32 @@ const getStyles = (colors) => StyleSheet.create({
     fontSize: 14,
   },
   filterScroll: {
-    maxHeight: 40,
     marginBottom: 16,
+    flexGrow: 0,
   },
   filterContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
+    paddingVertical: 4,
   },
   filterChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 7,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: colors.border,
     backgroundColor: colors.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filterChipActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   filterChipText: {
     fontSize: 12,
-    color: colors.textLight,
+    color: colors.text,
     fontWeight: '600',
   },
   card: {
