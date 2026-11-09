@@ -24,7 +24,12 @@ const searchNominatim = async (query) => {
   if (!response.ok) throw new Error('Nominatim HTTP ' + response.status);
   const data = await response.json();
   if (Array.isArray(data) && data.length > 0) {
-    return { latitude: parseFloat(data[0].lat), longitude: parseFloat(data[0].lon) };
+    const item = data[0];
+    return { 
+      latitude: parseFloat(item.lat), 
+      longitude: parseFloat(item.lon),
+      displayName: item.display_name || query
+    };
   }
   return null;
 };
@@ -34,14 +39,28 @@ const searchPhoton = async (query) => {
   const response = await fetchWithTimeout(url, { headers: { 'Accept': 'application/json' } });
   if (!response.ok) throw new Error('Photon HTTP ' + response.status);
   const data = await response.json();
-  const coords = data?.features?.[0]?.geometry?.coordinates;
+  const feat = data?.features?.[0];
+  const coords = feat?.geometry?.coordinates;
   if (coords && coords.length >= 2) {
-    return { latitude: parseFloat(coords[1]), longitude: parseFloat(coords[0]) };
+    const props = feat.properties || {};
+    const parts = [
+      props.name,
+      props.street,
+      props.city || props.district || props.county,
+      props.state
+    ].filter(Boolean);
+    const friendlyName = parts.length > 0 ? parts.join(', ') : query;
+
+    return { 
+      latitude: parseFloat(coords[1]), 
+      longitude: parseFloat(coords[0]),
+      displayName: friendlyName
+    };
   }
   return null;
 };
 
-// Returns { latitude, longitude } or null if not found. Throws only if every provider failed.
+// Returns { latitude, longitude, displayName } or null if not found. Throws only if every provider failed.
 export const searchLocationByName = async (query) => {
   let lastError = null;
   let reachedAProvider = false;
@@ -58,5 +77,27 @@ export const searchLocationByName = async (query) => {
   }
 
   if (!reachedAProvider && lastError) throw lastError;
+  return null;
+};
+
+export const reverseGeocodeCoords = async (latitude, longitude) => {
+  try {
+    const url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + latitude + '&lon=' + longitude;
+    const response = await fetchWithTimeout(url, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'MedicalCareApp/1.0 (admin@brightangle.com)',
+        'Referer': 'https://medicalapp-backend.sunmaayon.com'
+      }
+    }, 6000);
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.display_name) {
+        return data.display_name;
+      }
+    }
+  } catch (err) {
+    console.log('Reverse geocode error:', err.message);
+  }
   return null;
 };

@@ -234,7 +234,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
               </View>
             </View>
             <Text style={styles.email}>{u.email}</Text>
-            {u.phone && (
+            {Boolean(u.phone) && (
               <TouchableOpacity 
                 style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, gap: 5 }}
                 onPress={() => Linking.openURL(`tel:${u.phone}`)}
@@ -276,31 +276,31 @@ const AdminUsersScreen = ({ route, navigation }) => {
             
             {u.professionalProfile && (
               <View style={styles.detailsBox}>
-                {u.professionalProfile.address && (
+                {Boolean(u.professionalProfile.address) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Address: </Text>
                     {u.professionalProfile.address}
                   </Text>
                 )}
-                {u.professionalProfile.idCardNumber && (
+                {Boolean(u.professionalProfile.idCardNumber) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>ID Card Number: </Text>
                     {u.professionalProfile.idCardNumber}
                   </Text>
                 )}
-                {u.professionalProfile.workingHospital && (
+                {Boolean(u.professionalProfile.workingHospital) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Working Hospital: </Text>
                     {u.professionalProfile.workingHospital}
                   </Text>
                 )}
-                {u.professionalProfile.attachedHospital && (
+                {Boolean(u.professionalProfile.attachedHospital) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Attached Hospital / Service: </Text>
                     {u.professionalProfile.attachedHospital}
                   </Text>
                 )}
-                {u.professionalProfile.ambulanceVehicleNumber && (
+                {Boolean(u.professionalProfile.ambulanceVehicleNumber) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Ambulance Vehicle Number: </Text>
                     {u.professionalProfile.ambulanceVehicleNumber}
@@ -311,13 +311,13 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     * Not currently working at a hospital/service
                   </Text>
                 )}
-                {u.professionalProfile.specialization && (
+                {Boolean(u.professionalProfile.specialization) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Specializations: </Text>
                     {u.professionalProfile.specialization}
                   </Text>
                 )}
-                {u.professionalProfile.licenseNumber && (
+                {Boolean(u.professionalProfile.licenseNumber) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>License Number: </Text>
                     {u.professionalProfile.licenseNumber}
@@ -330,7 +330,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={[styles.detailLabel, {color: colors.primary, marginLeft: 10}]}>  (Exp: {new Date().getFullYear() - u.professionalProfile.licenseIssuedYear} Years)</Text>
                   </Text>
                 )}
-                {u.professionalProfile.qualifications && (
+                {Boolean(u.professionalProfile.qualifications) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Qualifications: </Text>
                     {u.professionalProfile.qualifications}
@@ -341,19 +341,19 @@ const AdminUsersScreen = ({ route, navigation }) => {
                 {/* Elder Home Specific Information */}
                 {u.role === 'ELDER_HOME' && (
                   <View style={{ marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.border }}>
-                    {u.professionalProfile.facilities && (
+                    {Boolean(u.professionalProfile.facilities) && (
                       <Text style={styles.detailText}>
                         <Text style={styles.detailLabel}>Facilities: </Text>
                         {u.professionalProfile.facilities}
                       </Text>
                     )}
-                    {u.professionalProfile.policies && (
+                    {Boolean(u.professionalProfile.policies) && (
                       <Text style={styles.detailText}>
                         <Text style={styles.detailLabel}>Policies: </Text>
                         {u.professionalProfile.policies}
                       </Text>
                     )}
-                    {u.professionalProfile.contactPhone && (
+                    {Boolean(u.professionalProfile.contactPhone) && (
                       <Text style={styles.detailText}>
                         <Text style={styles.detailLabel}>Contact Phone: </Text>
                         {u.professionalProfile.contactPhone}
@@ -362,7 +362,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     
                     {/* Social / Contact Links */}
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 6, marginBottom: 8 }}>
-                      {u.professionalProfile.socialWhatsapp && (
+                      {Boolean(u.professionalProfile.socialWhatsapp) && (
                         <TouchableOpacity 
                           style={[styles.smallActionBadge, { backgroundColor: '#25D36620' }]}
                           onPress={() => Linking.openURL(`https://wa.me/${u.professionalProfile.socialWhatsapp.replace(/[^0-9]/g, '')}`)}
@@ -371,7 +371,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                           <Text style={{ fontSize: 11, color: '#25D366', fontWeight: 'bold' }}>WhatsApp</Text>
                         </TouchableOpacity>
                       )}
-                      {u.professionalProfile.socialFacebook && (
+                      {Boolean(u.professionalProfile.socialFacebook) && (
                         <TouchableOpacity 
                           style={[styles.smallActionBadge, { backgroundColor: '#1877F220' }]}
                           onPress={() => Linking.openURL(u.professionalProfile.socialFacebook.startsWith('http') ? u.professionalProfile.socialFacebook : `https://${u.professionalProfile.socialFacebook}`)}
@@ -380,7 +380,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                           <Text style={{ fontSize: 11, color: '#1877F2', fontWeight: 'bold' }}>Facebook</Text>
                         </TouchableOpacity>
                       )}
-                      {u.professionalProfile.socialInstagram && (
+                      {Boolean(u.professionalProfile.socialInstagram) && (
                         <TouchableOpacity 
                           style={[styles.smallActionBadge, { backgroundColor: '#E1306C20' }]}
                           onPress={() => Linking.openURL(u.professionalProfile.socialInstagram.startsWith('http') ? u.professionalProfile.socialInstagram : `https://${u.professionalProfile.socialInstagram}`)}
@@ -389,7 +389,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                           <Text style={{ fontSize: 11, color: '#E1306C', fontWeight: 'bold' }}>Instagram</Text>
                         </TouchableOpacity>
                       )}
-                      {u.professionalProfile.socialWebsite && (
+                      {Boolean(u.professionalProfile.socialWebsite) && (
                         <TouchableOpacity 
                           style={[styles.smallActionBadge, { backgroundColor: colors.primary + '20' }]}
                           onPress={() => Linking.openURL(u.professionalProfile.socialWebsite.startsWith('http') ? u.professionalProfile.socialWebsite : `https://${u.professionalProfile.socialWebsite}`)}
@@ -500,13 +500,13 @@ const AdminUsersScreen = ({ route, navigation }) => {
 
             {u.pharmacistProfile && (
               <View style={styles.detailsBox}>
-                {u.pharmacistProfile.businessName && (
+                {Boolean(u.pharmacistProfile.businessName) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Business Name: </Text>
                     {u.pharmacistProfile.businessName}
                   </Text>
                 )}
-                {u.pharmacistProfile.licenseNumber && (
+                {Boolean(u.pharmacistProfile.licenseNumber) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>License Number: </Text>
                     {u.pharmacistProfile.licenseNumber}
@@ -519,7 +519,7 @@ const AdminUsersScreen = ({ route, navigation }) => {
                     <Text style={[styles.detailLabel, {color: colors.primary, marginLeft: 10}]}>  (Exp: {new Date().getFullYear() - u.pharmacistProfile.licenseIssuedYear} Years)</Text>
                   </Text>
                 )}
-                {u.pharmacistProfile.address && (
+                {Boolean(u.pharmacistProfile.address) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Address: </Text>
                     {u.pharmacistProfile.address}
@@ -589,13 +589,13 @@ const AdminUsersScreen = ({ route, navigation }) => {
 
             {u.patientProfile && (
               <View style={styles.detailsBox}>
-                {u.patientProfile.nicNumber && (
+                {Boolean(u.patientProfile.nicNumber) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>NIC Number: </Text>
                     {u.patientProfile.nicNumber}
                   </Text>
                 )}
-                {u.patientProfile.address && (
+                {Boolean(u.patientProfile.address) && (
                   <Text style={styles.detailText}>
                     <Text style={styles.detailLabel}>Address: </Text>
                     {u.patientProfile.address}

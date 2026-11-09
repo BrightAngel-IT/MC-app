@@ -3,6 +3,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Dimensions, Alert, Platform } from 'react-native';
 import { AuthContext } from '../../context/authContext';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitchButton } from '../../components/LanguageSelectorModal';
 import { SIZES } from '../../styles/theme';
 import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import api from '../../api/axios';
@@ -26,21 +28,22 @@ Notifications.setNotificationHandler({
 
 const { width } = Dimensions.get('window');
 
-const SERVICES = [
-  { id: '1', title: 'Consult\nDoctor', icon: 'stethoscope', type: 'fa5', color: '#0891b2', action: 'DoctorSearch' },
-  { id: '2', title: 'Home\nNurse', icon: 'user-nurse', type: 'fa5', color: '#059669', action: 'NurseScreen' },
-  { id: '3', title: 'Medical\nTests', icon: 'microscope', type: 'fa5', color: '#8b5cf6', action: 'LabTechSearch' },
-  { id: '4', title: 'Pharmacy', icon: 'pill', type: 'mci', color: '#f59e0b', action: 'PharmacyScreen' },
-  { id: '5', title: 'Ambulance', icon: 'ambulance', type: 'mci', color: '#e11d48', action: 'ParamedicSearch' },
-  { id: '7', title: 'Elder\nCare', icon: 'human-cane', type: 'mci', color: '#14b8a6', action: 'CaregiverSearch' },
-  { id: '8', title: 'Equipment', icon: 'wheelchair-accessibility', type: 'mci', color: '#64748b', action: 'AllProductsScreen' },
-  { id: '9', title: 'Elder\nHomes', icon: 'home-heart', type: 'mci', color: '#f97316', action: 'ElderHomeSearch' },
-  { id: '10', title: 'Billing &\nFinance', icon: 'file-invoice-dollar', type: 'fa5', color: '#0f766e', action: 'PatientFinance' },
+const getServicesList = (t) => [
+  { id: '1', title: t('srv_consult_doctor'), icon: 'stethoscope', type: 'fa5', color: '#0891b2', action: 'DoctorSearch' },
+  { id: '2', title: t('srv_home_nurse'), icon: 'user-nurse', type: 'fa5', color: '#059669', action: 'NurseScreen' },
+  { id: '3', title: t('srv_medical_tests'), icon: 'microscope', type: 'fa5', color: '#8b5cf6', action: 'LabTechSearch' },
+  { id: '4', title: t('srv_pharmacy'), icon: 'pill', type: 'mci', color: '#f59e0b', action: 'PharmacyScreen' },
+  { id: '5', title: t('srv_ambulance'), icon: 'ambulance', type: 'mci', color: '#e11d48', action: 'ParamedicSearch' },
+  { id: '7', title: t('srv_elder_care'), icon: 'human-cane', type: 'mci', color: '#14b8a6', action: 'CaregiverSearch' },
+  { id: '8', title: t('srv_equipment'), icon: 'wheelchair-accessibility', type: 'mci', color: '#64748b', action: 'AllProductsScreen' },
+  { id: '9', title: t('srv_elder_homes'), icon: 'home-heart', type: 'mci', color: '#f97316', action: 'ElderHomeSearch' },
+  { id: '10', title: t('srv_billing'), icon: 'file-invoice-dollar', type: 'fa5', color: '#0f766e', action: 'PatientFinance' },
 ];
 
 const PatientDashboard = ({ navigation }) => {
   const { user, logout } = useContext(AuthContext);
   const { colors, isDarkMode, toggleTheme } = useTheme();
+  const { t } = useLanguage();
   
   const [stats, setStats] = useState({ active: 0, completed: 0, canceled: 0 });
   const [recents, setRecents] = useState([]);
@@ -48,6 +51,7 @@ const PatientDashboard = ({ navigation }) => {
   const [todayAppointments, setTodayAppointments] = useState(0);
   
   const styles = getStyles(colors);
+  const SERVICES = getServicesList(t);
 
   useEffect(() => {
     (async () => {
@@ -212,22 +216,23 @@ const PatientDashboard = ({ navigation }) => {
       {/* Header Area */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Text style={styles.appName}>Health Care</Text>
-          <Text style={styles.welcomeText}>Hello, {user?.fullName || 'Guest'}</Text>
+          <Text style={styles.appName}>{t('app_name')}</Text>
+          <Text style={styles.welcomeText}>{t('hello')}, {user?.fullName || 'Guest'}</Text>
         </View>
         <View style={styles.headerRight}>
+          <LanguageSwitchButton compact={true} />
           <TouchableOpacity onPress={() => navigation.navigate('PatientFinance')} style={styles.themeBtn} title="My Billing & Finance">
-            <FontAwesome5 name="receipt" size={20} color={colors.primary} />
+            <FontAwesome5 name="receipt" size={18} color={colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Calendar')} style={styles.themeBtn}>
-            <MaterialCommunityIcons name="calendar-month" size={24} color={colors.primary} />
+            <MaterialCommunityIcons name="calendar-month" size={22} color={colors.primary} />
           </TouchableOpacity>
           <NotificationBell />
           <TouchableOpacity onPress={toggleTheme} style={styles.themeBtn}>
             <Text style={styles.themeBtnText}>{isDarkMode ? '☀️' : '🌙'}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={logout} style={styles.themeBtn}>
-            <Ionicons name="log-out-outline" size={24} color={colors.danger || '#ef4444'} />
+            <Ionicons name="log-out-outline" size={22} color={colors.danger || '#ef4444'} />
           </TouchableOpacity>
         </View>
       </View>
@@ -236,27 +241,27 @@ const PatientDashboard = ({ navigation }) => {
         
         {/* SOS Button */}
         <TouchableOpacity style={styles.sosButton} onPress={handleSOS} activeOpacity={0.8}>
-          <Text style={styles.sosText}>🚨 SOS EMERGENCY</Text>
-          <Text style={styles.sosSubtext}>Tap to dispatch ambulance</Text>
+          <Text style={styles.sosText}>{t('sos_emergency')}</Text>
+          <Text style={styles.sosSubtext}>{t('sos_subtext')}</Text>
         </TouchableOpacity>
 
         {/* Hero Banner */}
         <View style={styles.heroBanner}>
           <View style={styles.badgeContainer}>
-            <Text style={styles.badgeText}>24/7 Verified Home Care Network</Text>
+            <Text style={styles.badgeText}>{t('hero_badge')}</Text>
           </View>
-          <Text style={styles.heroTitle}>Book trusted healthcare professionals to your doorstep.</Text>
+          <Text style={styles.heroTitle}>{t('hero_title')}</Text>
           
           <View style={styles.heroActions}>
             <TouchableOpacity 
               style={[styles.primaryBtn, { backgroundColor: colors.roles.PATIENT.primary }]}
               onPress={() => navigation.navigate('DoctorSearch')}
             >
-              <Text style={styles.primaryBtnText}>Book Doctor Visit</Text>
+              <Text style={styles.primaryBtnText}>{t('book_doctor_visit')}</Text>
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.secondaryBtn} onPress={() => navigation.navigate('NurseScreen')}>
-              <Text style={styles.secondaryBtnText}>Home Nurse</Text>
+              <Text style={styles.secondaryBtnText}>{t('home_nurse_btn')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -267,8 +272,8 @@ const PatientDashboard = ({ navigation }) => {
           <TouchableOpacity style={styles.todayBanner} onPress={() => navigation.navigate('AppointmentsTab')}>
             <MaterialCommunityIcons name="calendar-alert" size={24} color="#fff" style={{marginRight: 10}} />
             <View style={{flex: 1}}>
-              <Text style={styles.todayBannerTitle}>Appointment Today!</Text>
-              <Text style={styles.todayBannerText}>You have {todayAppointments} appointment(s) scheduled for today.</Text>
+              <Text style={styles.todayBannerTitle}>{t('appointment_today')}</Text>
+              <Text style={styles.todayBannerText}>{t('appointment_today_desc', { count: todayAppointments })}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -278,8 +283,8 @@ const PatientDashboard = ({ navigation }) => {
           <TouchableOpacity style={styles.activeBanner} onPress={() => navigation.navigate('AppointmentsTab')}>
             <View style={styles.activeBannerIndicator} />
             <View style={styles.activeBannerTextCol}>
-              <Text style={styles.activeBannerTitle}>{stats.active} Active Appointment{stats.active !== 1 ? 's' : ''}</Text>
-              <Text style={styles.activeBannerSub}>Tap to view live status & GPS route tracking</Text>
+              <Text style={styles.activeBannerTitle}>{t('active_appointments', { count: stats.active })}</Text>
+              <Text style={styles.activeBannerSub}>{t('tap_view_gps')}</Text>
             </View>
             <FontAwesome5 name="chevron-right" size={16} color={colors.roles.PATIENT.accent} />
           </TouchableOpacity>
@@ -287,7 +292,7 @@ const PatientDashboard = ({ navigation }) => {
 
         {/* Service Grid */}
         <NearbyProfessionalsMap />
-          <Text style={styles.sectionTitle}>Our Services</Text>
+        <Text style={styles.sectionTitle}>{t('our_services')}</Text>
         <View style={styles.grid}>
           {SERVICES.map(service => (
             <TouchableOpacity 

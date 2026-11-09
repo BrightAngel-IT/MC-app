@@ -7,6 +7,7 @@ import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 import { AuthContext } from '../context/authContext';
 import { useTheme } from '../context/themeContext';
+import { useLanguage } from '../context/LanguageContext';
 import LoginScreen from '../screens/Auth/loginScreen';
 import RegisterScreen from '../screens/Auth/registerScreen';
 import PendingApprovalScreen from '../screens/Auth/PendingApprovalScreen';
@@ -56,20 +57,21 @@ const getCommonTabBarStyle = (colors) => ({
   shadowRadius: 6,
   ...(Platform.OS === 'web'
     ? {
-        height: 65,
-        paddingBottom: 10,
-        paddingTop: 8,
+        height: 56,
+        paddingBottom: 6,
+        paddingTop: 6,
       }
     : {
-        height: 60,
-        paddingBottom: 8,
-        paddingTop: 6,
+        height: 54,
+        paddingBottom: 5,
+        paddingTop: 4,
       }),
 });
 
 // Patient Bottom Tabs
 const PatientTabs = () => {
   const { colors } = useTheme();
+  const { t } = useLanguage();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -78,7 +80,7 @@ const PatientTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '600',
           marginTop: 2,
         },
@@ -88,7 +90,7 @@ const PatientTabs = () => {
         name="HomeTab" 
         component={PatientDashboard} 
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: t('nav_home'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="home" color={color} size={size} />
           )
@@ -98,7 +100,7 @@ const PatientTabs = () => {
         name="AppointmentsTab" 
         component={AppointmentsScreen} 
         options={{
-          tabBarLabel: 'Appointments',
+          tabBarLabel: t('nav_appointments'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="calendar-alt" color={color} size={size} />
           )
@@ -108,7 +110,7 @@ const PatientTabs = () => {
         name="PrescriptionsTab" 
         component={PharmacyScreen} 
         options={{
-          tabBarLabel: 'Prescriptions',
+          tabBarLabel: t('nav_prescriptions'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="file-medical" color={color} size={size} />
           )
@@ -118,7 +120,7 @@ const PatientTabs = () => {
         name="FinanceTab" 
         component={PatientFinanceScreen} 
         options={{
-          tabBarLabel: 'Billing',
+          tabBarLabel: t('nav_billing'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="file-invoice-dollar" color={color} size={size} />
           )
@@ -128,7 +130,7 @@ const PatientTabs = () => {
         name="ReportsTab" 
         component={ReportsScreen} 
         options={{
-          tabBarLabel: 'Reports',
+          tabBarLabel: t('nav_reports'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="chart-bar" color={color} size={size} />
           )
@@ -138,7 +140,7 @@ const PatientTabs = () => {
         name="ProfileTab" 
         component={ProfileScreen} 
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: t('nav_profile'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} />
           )
@@ -152,6 +154,7 @@ const PatientTabs = () => {
 const ProfessionalTabs = () => {
   const { colors } = useTheme();
   const { user } = useContext(AuthContext);
+  const { t } = useLanguage();
 
   return (
     <Tab.Navigator
@@ -161,7 +164,7 @@ const ProfessionalTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '600',
           marginTop: 2,
         },
@@ -171,7 +174,7 @@ const ProfessionalTabs = () => {
         name="ProfessionalHome" 
         component={ProfessionalDashboard} 
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: t('nav_home'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="home" color={color} size={size} />
           )
@@ -193,7 +196,7 @@ const ProfessionalTabs = () => {
           name="AppointmentsTab" 
           component={ProfessionalAppointments} 
           options={{
-            tabBarLabel: 'Appointments',
+            tabBarLabel: t('nav_appointments'),
             tabBarIcon: ({ color, size }) => (
               <FontAwesome5 name="calendar-check" color={color} size={size} />
             )
@@ -204,7 +207,7 @@ const ProfessionalTabs = () => {
         name="ReportsTab" 
         component={ReportsScreen} 
         options={{
-          tabBarLabel: 'Reports',
+          tabBarLabel: t('nav_reports'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="chart-bar" color={color} size={size} />
           )
@@ -214,7 +217,7 @@ const ProfessionalTabs = () => {
         name="ProfileTab" 
         component={ProfileScreen} 
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: t('nav_profile'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} />
           )
@@ -227,6 +230,7 @@ const ProfessionalTabs = () => {
 // Vendor Bottom Tabs
 const VendorTabs = () => {
   const { colors } = useTheme();
+  const { t } = useLanguage();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -235,7 +239,7 @@ const VendorTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '600',
           marginTop: 2,
         },
@@ -243,23 +247,23 @@ const VendorTabs = () => {
     >
       <Tab.Screen 
         name="VendorHome" component={VendorDashboard} 
-        options={{ tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="store" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_home'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="store" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="VendorOrders" component={VendorOrdersScreen} 
-        options={{ tabBarLabel: 'Orders', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="clipboard-list" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_orders'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="clipboard-list" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="VendorProducts" component={VendorProductsScreen} 
-        options={{ tabBarLabel: 'Products', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="box-open" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_products'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="box-open" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="ReportsTab" component={ReportsScreen} 
-        options={{ tabBarLabel: 'Reports', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="chart-bar" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_reports'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="chart-bar" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="ProfileTab" component={ProfileScreen} 
-        options={{ tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (<Ionicons name="person" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_profile'), tabBarIcon: ({ color, size }) => (<Ionicons name="person" color={color} size={size} />) }} 
       />
     </Tab.Navigator>
   );
@@ -268,6 +272,7 @@ const VendorTabs = () => {
 // Admin Bottom Tabs
 const AdminTabs = () => {
   const { colors } = useTheme();
+  const { t } = useLanguage();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -276,7 +281,7 @@ const AdminTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '600',
           marginTop: 2,
         },
@@ -284,15 +289,15 @@ const AdminTabs = () => {
     >
       <Tab.Screen 
         name="AdminHome" component={AdminDashboard} 
-        options={{ tabBarLabel: 'Dashboard', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="tachometer-alt" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_dashboard'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="tachometer-alt" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="AdminReports" component={AdminReportsScreen} 
-        options={{ tabBarLabel: 'Reports', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="chart-pie" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_reports'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="chart-pie" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="ProfileTab" component={AdminProfileScreen} 
-        options={{ tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (<Ionicons name="person" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_profile'), tabBarIcon: ({ color, size }) => (<Ionicons name="person" color={color} size={size} />) }} 
       />
     </Tab.Navigator>
   );
@@ -301,6 +306,7 @@ const AdminTabs = () => {
 // Elder Home Bottom Tabs
 const ElderHomeTabs = () => {
   const { colors } = useTheme();
+  const { t } = useLanguage();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -309,7 +315,7 @@ const ElderHomeTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '600',
           marginTop: 2,
         },
@@ -317,15 +323,15 @@ const ElderHomeTabs = () => {
     >
       <Tab.Screen 
         name="ElderHomeHome" component={ElderHomeDashboard} 
-        options={{ tabBarLabel: 'Dashboard', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="home" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_dashboard'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="home" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="ReportsTab" component={ReportsScreen} 
-        options={{ tabBarLabel: 'Reports', tabBarIcon: ({ color, size }) => (<FontAwesome5 name="chart-bar" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_reports'), tabBarIcon: ({ color, size }) => (<FontAwesome5 name="chart-bar" color={color} size={size} />) }} 
       />
       <Tab.Screen 
         name="ProfileTab" component={ProfileScreen} 
-        options={{ tabBarLabel: 'Profile', tabBarIcon: ({ color, size }) => (<Ionicons name="person" color={color} size={size} />) }} 
+        options={{ tabBarLabel: t('nav_profile'), tabBarIcon: ({ color, size }) => (<Ionicons name="person" color={color} size={size} />) }} 
       />
     </Tab.Navigator>
   );

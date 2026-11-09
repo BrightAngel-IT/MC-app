@@ -4,19 +4,24 @@ import { View, Text, StyleSheet, FlatList, ActivityIndicator, Alert, Platform, T
 import { WebView } from 'react-native-webview';
 import api from '../../api/axios';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitchButton } from '../../components/LanguageSelectorModal';
 import { SIZES } from '../../styles/theme';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../../context/authContext';
 import CustomAlertModal from '../../components/CustomAlertModal';
+import { reverseGeocodeCoords } from '../../utils/geocode';
 
 const AppointmentsScreen = ({ route, navigation }) => {
   const { colors } = useTheme();
   const { user } = useContext(AuthContext);
+  const { t } = useLanguage();
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [statusFilter, setStatusFilter] = useState(route?.params?.statusFilter || 'ALL');
+  const [resolvedAddressMap, setResolvedAddressMap] = useState({});
 
   // Reschedule State
   const [rescheduleModalVisible, setRescheduleModalVisible] = useState(false);
@@ -483,6 +488,46 @@ const AppointmentsScreen = ({ route, navigation }) => {
         )}
         <Text style={styles.reasonText}>Reason: {item.symptoms}</Text>
 
+        {/* Full Visit Destination & Booking Location Breakdown */}
+        <View style={{ marginVertical: 8, padding: 10, backgroundColor: colors.surfaceLight || '#F8FAFC', borderRadius: 10, borderWidth: 1.5, borderColor: colors.primary + '30' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons name="navigate-circle" size={18} color={colors.primary} />
+              <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary, marginLeft: 6 }}>
+                🎯 Doctor Visit Destination:
+              </Text>
+            </View>
+            {item.locationLat && item.locationLng && (
+              <TouchableOpacity
+                onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${item.locationLat},${item.locationLng}`)}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 3, backgroundColor: colors.primary + '15', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 }}
+              >
+                <Ionicons name="map" size={12} color={colors.primary} />
+                <Text style={{ fontSize: 11, fontWeight: 'bold', color: colors.primary }}>Map</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <Text style={{ fontSize: 13, color: colors.text, marginTop: 4, fontWeight: '600', lineHeight: 18 }}>
+            {item.visitAddress || resolvedAddressMap[`${item.locationLat},${item.locationLng}`] || item.patient?.address || 'Selected Location on Map'}
+          </Text>
+
+          {/* Booked At Location (Safety & Origin Check) */}
+          {((item.bookedAtLat && item.bookedAtLng) || item.bookedAtAddress) && (
+            <View style={{ marginTop: 8, paddingTop: 6, borderTopWidth: 1, borderTopColor: colors.border, flexDirection: 'row', alignItems: 'flex-start' }}>
+              <Ionicons name="business-outline" size={14} color={colors.textLight} style={{ marginTop: 1, marginRight: 5 }} />
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 11, fontWeight: 'bold', color: colors.textLight }}>
+                  📍 Booked From (Patient's Location when booking):
+                </Text>
+                <Text style={{ fontSize: 11, color: colors.textMuted, marginTop: 1 }}>
+                  {item.bookedAtAddress || (item.bookedAtLat && item.bookedAtLng ? 'Current Device Location' : 'Recorded at booking')}
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+
         {/* Charge & Fee Breakdown Banner */}
         <View style={[styles.feeBanner, { backgroundColor: colors.surfaceLight || '#F8FAFC', borderColor: colors.border }]}>
           <View style={styles.feeHeaderRow}>
@@ -652,22 +697,25 @@ const AppointmentsScreen = ({ route, navigation }) => {
     <View style={styles.container}>
       <View style={styles.innerContent}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <Text style={[styles.title, { marginBottom: 0 }]}>My Appointments</Text>
-          <TouchableOpacity 
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: '#0f766e',
-              paddingHorizontal: 12,
-              paddingVertical: 7,
-              borderRadius: 8,
-              gap: 6
-            }}
-            onPress={() => navigation?.navigate('PatientFinance')}
-          >
-            <FontAwesome5 name="receipt" size={13} color="#fff" />
-            <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>Billing History</Text>
-          </TouchableOpacity>
+          <Text style={[styles.title, { marginBottom: 0 }]}>{t('nav_appointments')}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <LanguageSwitchButton compact={true} />
+            <TouchableOpacity 
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#0f766e',
+                paddingHorizontal: 10,
+                paddingVertical: 6,
+                borderRadius: 8,
+                gap: 5
+              }}
+              onPress={() => navigation?.navigate('PatientFinance')}
+            >
+              <FontAwesome5 name="receipt" size={12} color="#fff" />
+              <Text style={{ color: '#fff', fontSize: 11, fontWeight: 'bold' }}>{t('billing_history')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* Filter Tabs: ALL, PENDING, CONFIRMED, COMPLETED, CANCELED */}

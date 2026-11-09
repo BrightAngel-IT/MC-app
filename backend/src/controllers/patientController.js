@@ -295,7 +295,7 @@ exports.getVerifiedCaregivers = async (req, res) => {
 
 exports.bookAppointment = async ( req, res) => {
     try {
-        const {professionalId,scheduledDate,symptoms,serviceType, locationLat, locationLng, totalAmount, paymentMethod} = req.body;
+        const {professionalId, scheduledDate, symptoms, serviceType, locationLat, locationLng, visitAddress, bookedAtLat, bookedAtLng, bookedAtAddress, totalAmount, paymentMethod} = req.body;
         const Patient = await prisma.patientProfile.findUnique({
             where: {userId:req.user.id},
             include: { user: true }
@@ -321,8 +321,12 @@ exports.bookAppointment = async ( req, res) => {
                 scheduledDate: appointmentTime,
                 symptoms,
                 serviceType,
-                locationLat,
-                locationLng,
+                locationLat: locationLat !== undefined ? locationLat : null,
+                locationLng: locationLng !== undefined ? locationLng : null,
+                visitAddress: visitAddress || null,
+                bookedAtLat: bookedAtLat !== undefined ? bookedAtLat : null,
+                bookedAtLng: bookedAtLng !== undefined ? bookedAtLng : null,
+                bookedAtAddress: bookedAtAddress || null,
                 totalAmount: totalAmount || 0.0,
                 paymentMethod: paymentMethod || 'CASH'
             }

@@ -11036,12 +11036,16 @@ export namespace Prisma {
   export type AppointmentAvgAggregateOutputType = {
     locationLat: number | null
     locationLng: number | null
+    bookedAtLat: number | null
+    bookedAtLng: number | null
     totalAmount: number | null
   }
 
   export type AppointmentSumAggregateOutputType = {
     locationLat: number | null
     locationLng: number | null
+    bookedAtLat: number | null
+    bookedAtLng: number | null
     totalAmount: number | null
   }
 
@@ -11054,6 +11058,10 @@ export namespace Prisma {
     status: string | null
     locationLat: number | null
     locationLng: number | null
+    visitAddress: string | null
+    bookedAtLat: number | null
+    bookedAtLng: number | null
+    bookedAtAddress: string | null
     symptoms: string | null
     vitalsSummary: string | null
     paymentMethod: string | null
@@ -11072,6 +11080,10 @@ export namespace Prisma {
     status: string | null
     locationLat: number | null
     locationLng: number | null
+    visitAddress: string | null
+    bookedAtLat: number | null
+    bookedAtLng: number | null
+    bookedAtAddress: string | null
     symptoms: string | null
     vitalsSummary: string | null
     paymentMethod: string | null
@@ -11090,6 +11102,10 @@ export namespace Prisma {
     status: number
     locationLat: number
     locationLng: number
+    visitAddress: number
+    bookedAtLat: number
+    bookedAtLng: number
+    bookedAtAddress: number
     symptoms: number
     vitalsSummary: number
     paymentMethod: number
@@ -11104,12 +11120,16 @@ export namespace Prisma {
   export type AppointmentAvgAggregateInputType = {
     locationLat?: true
     locationLng?: true
+    bookedAtLat?: true
+    bookedAtLng?: true
     totalAmount?: true
   }
 
   export type AppointmentSumAggregateInputType = {
     locationLat?: true
     locationLng?: true
+    bookedAtLat?: true
+    bookedAtLng?: true
     totalAmount?: true
   }
 
@@ -11122,6 +11142,10 @@ export namespace Prisma {
     status?: true
     locationLat?: true
     locationLng?: true
+    visitAddress?: true
+    bookedAtLat?: true
+    bookedAtLng?: true
+    bookedAtAddress?: true
     symptoms?: true
     vitalsSummary?: true
     paymentMethod?: true
@@ -11140,6 +11164,10 @@ export namespace Prisma {
     status?: true
     locationLat?: true
     locationLng?: true
+    visitAddress?: true
+    bookedAtLat?: true
+    bookedAtLng?: true
+    bookedAtAddress?: true
     symptoms?: true
     vitalsSummary?: true
     paymentMethod?: true
@@ -11158,6 +11186,10 @@ export namespace Prisma {
     status?: true
     locationLat?: true
     locationLng?: true
+    visitAddress?: true
+    bookedAtLat?: true
+    bookedAtLng?: true
+    bookedAtAddress?: true
     symptoms?: true
     vitalsSummary?: true
     paymentMethod?: true
@@ -11263,6 +11295,10 @@ export namespace Prisma {
     status: string
     locationLat: number | null
     locationLng: number | null
+    visitAddress: string | null
+    bookedAtLat: number | null
+    bookedAtLng: number | null
+    bookedAtAddress: string | null
     symptoms: string | null
     vitalsSummary: string | null
     paymentMethod: string | null
@@ -11300,6 +11336,10 @@ export namespace Prisma {
     status?: boolean
     locationLat?: boolean
     locationLng?: boolean
+    visitAddress?: boolean
+    bookedAtLat?: boolean
+    bookedAtLng?: boolean
+    bookedAtAddress?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
     paymentMethod?: boolean
@@ -11323,6 +11363,10 @@ export namespace Prisma {
     status?: boolean
     locationLat?: boolean
     locationLng?: boolean
+    visitAddress?: boolean
+    bookedAtLat?: boolean
+    bookedAtLng?: boolean
+    bookedAtAddress?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
     paymentMethod?: boolean
@@ -11343,6 +11387,10 @@ export namespace Prisma {
     status?: boolean
     locationLat?: boolean
     locationLng?: boolean
+    visitAddress?: boolean
+    bookedAtLat?: boolean
+    bookedAtLng?: boolean
+    bookedAtAddress?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
     paymentMethod?: boolean
@@ -11363,6 +11411,10 @@ export namespace Prisma {
     status?: boolean
     locationLat?: boolean
     locationLng?: boolean
+    visitAddress?: boolean
+    bookedAtLat?: boolean
+    bookedAtLng?: boolean
+    bookedAtAddress?: boolean
     symptoms?: boolean
     vitalsSummary?: boolean
     paymentMethod?: boolean
@@ -11372,7 +11424,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "professionalId" | "serviceType" | "scheduledDate" | "status" | "locationLat" | "locationLng" | "symptoms" | "vitalsSummary" | "paymentMethod" | "paymentStatus" | "totalAmount" | "completedAt" | "createdAt", ExtArgs["result"]["appointment"]>
+  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "professionalId" | "serviceType" | "scheduledDate" | "status" | "locationLat" | "locationLng" | "visitAddress" | "bookedAtLat" | "bookedAtLng" | "bookedAtAddress" | "symptoms" | "vitalsSummary" | "paymentMethod" | "paymentStatus" | "totalAmount" | "completedAt" | "createdAt", ExtArgs["result"]["appointment"]>
   export type AppointmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalProfileDefaultArgs<ExtArgs>
@@ -11406,6 +11458,10 @@ export namespace Prisma {
       status: string
       locationLat: number | null
       locationLng: number | null
+      visitAddress: string | null
+      bookedAtLat: number | null
+      bookedAtLng: number | null
+      bookedAtAddress: string | null
       symptoms: string | null
       vitalsSummary: string | null
       paymentMethod: string | null
@@ -11848,6 +11904,10 @@ export namespace Prisma {
     readonly status: FieldRef<"Appointment", 'String'>
     readonly locationLat: FieldRef<"Appointment", 'Float'>
     readonly locationLng: FieldRef<"Appointment", 'Float'>
+    readonly visitAddress: FieldRef<"Appointment", 'String'>
+    readonly bookedAtLat: FieldRef<"Appointment", 'Float'>
+    readonly bookedAtLng: FieldRef<"Appointment", 'Float'>
+    readonly bookedAtAddress: FieldRef<"Appointment", 'String'>
     readonly symptoms: FieldRef<"Appointment", 'String'>
     readonly vitalsSummary: FieldRef<"Appointment", 'String'>
     readonly paymentMethod: FieldRef<"Appointment", 'String'>
@@ -30267,6 +30327,10 @@ export namespace Prisma {
     status: 'status',
     locationLat: 'locationLat',
     locationLng: 'locationLng',
+    visitAddress: 'visitAddress',
+    bookedAtLat: 'bookedAtLat',
+    bookedAtLng: 'bookedAtLng',
+    bookedAtAddress: 'bookedAtAddress',
     symptoms: 'symptoms',
     vitalsSummary: 'vitalsSummary',
     paymentMethod: 'paymentMethod',
@@ -31295,6 +31359,10 @@ export namespace Prisma {
     status?: StringFilter<"Appointment"> | string
     locationLat?: FloatNullableFilter<"Appointment"> | number | null
     locationLng?: FloatNullableFilter<"Appointment"> | number | null
+    visitAddress?: StringNullableFilter<"Appointment"> | string | null
+    bookedAtLat?: FloatNullableFilter<"Appointment"> | number | null
+    bookedAtLng?: FloatNullableFilter<"Appointment"> | number | null
+    bookedAtAddress?: StringNullableFilter<"Appointment"> | string | null
     symptoms?: StringNullableFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableFilter<"Appointment"> | string | null
     paymentMethod?: StringNullableFilter<"Appointment"> | string | null
@@ -31317,6 +31385,10 @@ export namespace Prisma {
     status?: SortOrder
     locationLat?: SortOrderInput | SortOrder
     locationLng?: SortOrderInput | SortOrder
+    visitAddress?: SortOrderInput | SortOrder
+    bookedAtLat?: SortOrderInput | SortOrder
+    bookedAtLng?: SortOrderInput | SortOrder
+    bookedAtAddress?: SortOrderInput | SortOrder
     symptoms?: SortOrderInput | SortOrder
     vitalsSummary?: SortOrderInput | SortOrder
     paymentMethod?: SortOrderInput | SortOrder
@@ -31342,6 +31414,10 @@ export namespace Prisma {
     status?: StringFilter<"Appointment"> | string
     locationLat?: FloatNullableFilter<"Appointment"> | number | null
     locationLng?: FloatNullableFilter<"Appointment"> | number | null
+    visitAddress?: StringNullableFilter<"Appointment"> | string | null
+    bookedAtLat?: FloatNullableFilter<"Appointment"> | number | null
+    bookedAtLng?: FloatNullableFilter<"Appointment"> | number | null
+    bookedAtAddress?: StringNullableFilter<"Appointment"> | string | null
     symptoms?: StringNullableFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableFilter<"Appointment"> | string | null
     paymentMethod?: StringNullableFilter<"Appointment"> | string | null
@@ -31364,6 +31440,10 @@ export namespace Prisma {
     status?: SortOrder
     locationLat?: SortOrderInput | SortOrder
     locationLng?: SortOrderInput | SortOrder
+    visitAddress?: SortOrderInput | SortOrder
+    bookedAtLat?: SortOrderInput | SortOrder
+    bookedAtLng?: SortOrderInput | SortOrder
+    bookedAtAddress?: SortOrderInput | SortOrder
     symptoms?: SortOrderInput | SortOrder
     vitalsSummary?: SortOrderInput | SortOrder
     paymentMethod?: SortOrderInput | SortOrder
@@ -31390,6 +31470,10 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"Appointment"> | string
     locationLat?: FloatNullableWithAggregatesFilter<"Appointment"> | number | null
     locationLng?: FloatNullableWithAggregatesFilter<"Appointment"> | number | null
+    visitAddress?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
+    bookedAtLat?: FloatNullableWithAggregatesFilter<"Appointment"> | number | null
+    bookedAtLng?: FloatNullableWithAggregatesFilter<"Appointment"> | number | null
+    bookedAtAddress?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     symptoms?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     paymentMethod?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
@@ -33312,6 +33396,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -33334,6 +33422,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -33352,6 +33444,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33374,6 +33470,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33394,6 +33494,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -33410,6 +33514,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33428,6 +33536,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35379,6 +35491,10 @@ export namespace Prisma {
     status?: SortOrder
     locationLat?: SortOrder
     locationLng?: SortOrder
+    visitAddress?: SortOrder
+    bookedAtLat?: SortOrder
+    bookedAtLng?: SortOrder
+    bookedAtAddress?: SortOrder
     symptoms?: SortOrder
     vitalsSummary?: SortOrder
     paymentMethod?: SortOrder
@@ -35391,6 +35507,8 @@ export namespace Prisma {
   export type AppointmentAvgOrderByAggregateInput = {
     locationLat?: SortOrder
     locationLng?: SortOrder
+    bookedAtLat?: SortOrder
+    bookedAtLng?: SortOrder
     totalAmount?: SortOrder
   }
 
@@ -35403,6 +35521,10 @@ export namespace Prisma {
     status?: SortOrder
     locationLat?: SortOrder
     locationLng?: SortOrder
+    visitAddress?: SortOrder
+    bookedAtLat?: SortOrder
+    bookedAtLng?: SortOrder
+    bookedAtAddress?: SortOrder
     symptoms?: SortOrder
     vitalsSummary?: SortOrder
     paymentMethod?: SortOrder
@@ -35421,6 +35543,10 @@ export namespace Prisma {
     status?: SortOrder
     locationLat?: SortOrder
     locationLng?: SortOrder
+    visitAddress?: SortOrder
+    bookedAtLat?: SortOrder
+    bookedAtLng?: SortOrder
+    bookedAtAddress?: SortOrder
     symptoms?: SortOrder
     vitalsSummary?: SortOrder
     paymentMethod?: SortOrder
@@ -35433,6 +35559,8 @@ export namespace Prisma {
   export type AppointmentSumOrderByAggregateInput = {
     locationLat?: SortOrder
     locationLng?: SortOrder
+    bookedAtLat?: SortOrder
+    bookedAtLng?: SortOrder
     totalAmount?: SortOrder
   }
 
@@ -38592,6 +38720,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -38612,6 +38744,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -38836,6 +38972,10 @@ export namespace Prisma {
     status?: StringFilter<"Appointment"> | string
     locationLat?: FloatNullableFilter<"Appointment"> | number | null
     locationLng?: FloatNullableFilter<"Appointment"> | number | null
+    visitAddress?: StringNullableFilter<"Appointment"> | string | null
+    bookedAtLat?: FloatNullableFilter<"Appointment"> | number | null
+    bookedAtLng?: FloatNullableFilter<"Appointment"> | number | null
+    bookedAtAddress?: StringNullableFilter<"Appointment"> | string | null
     symptoms?: StringNullableFilter<"Appointment"> | string | null
     vitalsSummary?: StringNullableFilter<"Appointment"> | string | null
     paymentMethod?: StringNullableFilter<"Appointment"> | string | null
@@ -39012,6 +39152,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -39032,6 +39176,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -40197,6 +40345,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -40218,6 +40370,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -40251,6 +40407,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40272,6 +40432,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40289,6 +40453,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -40310,6 +40478,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -40545,6 +40717,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40566,6 +40742,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43083,6 +43263,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -43140,6 +43324,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43160,6 +43348,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43179,6 +43371,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43327,6 +43523,10 @@ export namespace Prisma {
     status?: string
     locationLat?: number | null
     locationLng?: number | null
+    visitAddress?: string | null
+    bookedAtLat?: number | null
+    bookedAtLng?: number | null
+    bookedAtAddress?: string | null
     symptoms?: string | null
     vitalsSummary?: string | null
     paymentMethod?: string | null
@@ -43417,6 +43617,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43437,6 +43641,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43456,6 +43664,10 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     locationLat?: NullableFloatFieldUpdateOperationsInput | number | null
     locationLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    visitAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    bookedAtLat?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtLng?: NullableFloatFieldUpdateOperationsInput | number | null
+    bookedAtAddress?: NullableStringFieldUpdateOperationsInput | string | null
     symptoms?: NullableStringFieldUpdateOperationsInput | string | null
     vitalsSummary?: NullableStringFieldUpdateOperationsInput | string | null
     paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null

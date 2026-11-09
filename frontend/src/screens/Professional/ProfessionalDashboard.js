@@ -3,6 +3,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, Alert, Modal, TextInput, Switch, Platform, ActivityIndicator } from 'react-native';
 import { useTheme } from '../../context/themeContext';
 import { AuthContext } from '../../context/authContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitchButton } from '../../components/LanguageSelectorModal';
 import api from '../../api/axios';
 import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { SIZES } from '../../styles/theme';
@@ -27,6 +29,7 @@ Notifications.setNotificationHandler({
 const ProfessionalDashboard = ({ navigation }) => {
   const { colors } = useTheme();
   const { user } = useContext(AuthContext);
+  const { t } = useLanguage();
   
   const [stats, setStats] = useState({ pending: 0, homeVisits: 0, completed: 0, canceled: 0 });
   const [recents, setRecents] = useState([]);
@@ -223,18 +226,19 @@ const ProfessionalDashboard = ({ navigation }) => {
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, backgroundColor: colors.primary + '20', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, alignSelf: 'flex-start' }}>
             <Ionicons name="location" size={12} color={colors.primary} />
             <Text style={{ fontSize: 12, color: colors.primary, marginLeft: 4, fontWeight: 'bold' }}>
-              {!locationLat ? 'Service area not set' : (!isAvailable ? 'Currently Unavailable' : `Serving: ${serviceRadius || 10}km Radius`)}
+              {!locationLat ? t('service_not_set') : (!isAvailable ? t('currently_unavailable') : t('service_radius', { radius: serviceRadius || 10 }))}
             </Text>
           </View>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity onPress={() => navigation.navigate('ProfessionalWallet')} style={{marginRight: 15}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+          <LanguageSwitchButton compact={true} />
+          <TouchableOpacity onPress={() => navigation.navigate('ProfessionalWallet')}>
             <Ionicons name="wallet-outline" size={24} color={colors.primary} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setMapModalVisible(true)} style={{marginRight: 15}}>
+          <TouchableOpacity onPress={() => setMapModalVisible(true)}>
             <Ionicons name='map-outline' size={24} color={colors.primary} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Calendar')} style={{marginRight: 15}}>
+          <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
             <Ionicons name="calendar-outline" size={24} color={colors.primary} />
           </TouchableOpacity>
           <NotificationBell />
@@ -268,7 +272,7 @@ const ProfessionalDashboard = ({ navigation }) => {
           </View>
           <View style={{ marginLeft: 12, flex: 1 }}>
             <Text style={{ fontSize: 11, color: colors.textLight, fontWeight: '700', letterSpacing: 0.5 }}>
-              MY WALLET & EARNINGS
+              {t('my_wallet_earnings')}
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2, flexWrap: 'wrap' }}>
               <Text style={{ 
@@ -290,7 +294,7 @@ const ProfessionalDashboard = ({ navigation }) => {
                   fontWeight: 'bold', 
                   color: walletBalance < 0 ? '#b91c1c' : '#15803d' 
                 }}>
-                  {walletBalance < 0 ? 'Due to Company' : 'Available Balance'}
+                  {walletBalance < 0 ? t('due_to_company') : t('available_balance')}
                 </Text>
               </View>
             </View>
@@ -298,7 +302,7 @@ const ProfessionalDashboard = ({ navigation }) => {
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
-          <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary, marginRight: 2 }}>Manage</Text>
+          <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary, marginRight: 2 }}>{t('common_manage')}</Text>
           <Ionicons name="chevron-forward" size={16} color={colors.primary} />
         </View>
       </TouchableOpacity>
@@ -307,8 +311,8 @@ const ProfessionalDashboard = ({ navigation }) => {
         <View style={styles.bannerContainer}>
           <Ionicons name="calendar" size={24} color="#fff" style={{marginRight: 10}} />
           <View style={{flex: 1}}>
-            <Text style={styles.bannerTitle}>Appointments Today!</Text>
-            <Text style={styles.bannerText}>You have {todayAppointments} appointment(s) scheduled for today.</Text>
+            <Text style={styles.bannerTitle}>{t('appointment_today')}</Text>
+            <Text style={styles.bannerText}>{t('appointment_today_desc', { count: todayAppointments })}</Text>
           </View>
         </View>
       )}
@@ -317,25 +321,25 @@ const ProfessionalDashboard = ({ navigation }) => {
 
       <View style={styles.statsGrid}>
         <TouchableOpacity style={styles.statCard} onPress={() => navigation.navigate('AppointmentsTab', {statusFilter: 'PENDING'})}>
-          <Text style={styles.statTitle}>Pending</Text>
+          <Text style={styles.statTitle}>{t('common_pending')}</Text>
           <Text style={[styles.statCount, {color: colors.warning}]}>{stats.pending}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statCard} onPress={() => navigation.navigate('AppointmentsTab', {statusFilter: 'CONFIRMED'})}>
-          <Text style={styles.statTitle}>Home Visits</Text>
+          <Text style={styles.statTitle}>{t('home_nurse_btn')}</Text>
           <Text style={[styles.statCount, {color: colors.primary}]}>{stats.homeVisits}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statCard} onPress={() => navigation.navigate('AppointmentsTab', {statusFilter: 'COMPLETED'})}>
-          <Text style={styles.statTitle}>Completed</Text>
+          <Text style={styles.statTitle}>{t('common_completed')}</Text>
           <Text style={[styles.statCount, {color: colors.success}]}>{stats.completed}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statCard} onPress={() => navigation.navigate('AppointmentsTab', {statusFilter: 'CANCELED'})}>
-          <Text style={styles.statTitle}>Canceled</Text>
+          <Text style={styles.statTitle}>{t('common_canceled')}</Text>
           <Text style={[styles.statCount, {color: colors.danger}]}>{stats.canceled}</Text>
         </TouchableOpacity>
       </View>
 
       <RecentsList 
-        title="Recent Appointments" 
+        title={t('recent_appointments')} 
         items={recents} 
         renderItem={renderRecentAppointment} 
         onSeeAll={() => navigation.navigate('AppointmentsTab')} 

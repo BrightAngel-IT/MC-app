@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, TextInput,
 import { useFocusEffect } from '@react-navigation/native';
 import { AuthContext } from '../../context/authContext';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import LanguageSelectorModal from '../../components/LanguageSelectorModal';
 import { SIZES } from '../../styles/theme';
 import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import api from '../../api/axios';
@@ -10,7 +12,10 @@ import api from '../../api/axios';
 const ProfileScreen = ({ navigation }) => {
   const { user, logout } = useContext(AuthContext);
   const { colors, isDarkMode, toggleTheme } = useTheme();
+  const { language, languages, t } = useLanguage();
+  const [langModalVisible, setLangModalVisible] = useState(false);
   
+  const currentLang = languages.find(l => l.code === language) || languages[0];
   const styles = getStyles(colors);
 
   const [distanceCharge, setDistanceCharge] = useState('50');
@@ -147,16 +152,30 @@ const ProfileScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('PatientFinance')}>
             <View style={styles.settingLeft}>
               <Ionicons name="receipt-outline" size={24} color={colors.primary} />
-              <Text style={styles.settingText}>Billing & Expense History</Text>
+              <Text style={styles.settingText}>{t('billing_history')}</Text>
             </View>
             <FontAwesome5 name="chevron-right" size={14} color={colors.textMuted} />
           </TouchableOpacity>
         )}
 
+        {/* Language Selection Setting */}
+        <TouchableOpacity style={styles.settingItem} onPress={() => setLangModalVisible(true)}>
+          <View style={styles.settingLeft}>
+            <Ionicons name="globe-outline" size={24} color={colors.primary} />
+            <Text style={styles.settingText}>{t('language')}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.primary }}>
+              {currentLang.flag} {currentLang.nativeLabel}
+            </Text>
+            <FontAwesome5 name="chevron-right" size={14} color={colors.textMuted} />
+          </View>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.settingItem} onPress={toggleTheme}>
           <View style={styles.settingLeft}>
             <Ionicons name={isDarkMode ? "moon" : "sunny"} size={24} color={colors.primary} />
-            <Text style={styles.settingText}>Dark Mode</Text>
+            <Text style={styles.settingText}>{t('dark_mode')}</Text>
           </View>
           <View style={styles.toggleTrack}>
             <View style={[styles.toggleThumb, isDarkMode ? styles.thumbDark : styles.thumbLight]} />
@@ -166,7 +185,7 @@ const ProfileScreen = ({ navigation }) => {
         <TouchableOpacity style={styles.settingItem}>
           <View style={styles.settingLeft}>
             <Ionicons name="notifications-outline" size={24} color={colors.primary} />
-            <Text style={styles.settingText}>Notifications</Text>
+            <Text style={styles.settingText}>{t('notifications')}</Text>
           </View>
           <FontAwesome5 name="chevron-right" size={14} color={colors.textMuted} />
         </TouchableOpacity>
@@ -276,8 +295,13 @@ const ProfileScreen = ({ navigation }) => {
       {/* Logout */}
       <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
         <Ionicons name="log-out-outline" size={24} color={colors.danger} />
-        <Text style={styles.logoutText}>Log Out</Text>
+        <Text style={styles.logoutText}>{t('logout')}</Text>
       </TouchableOpacity>
+
+      <LanguageSelectorModal
+        visible={langModalVisible}
+        onClose={() => setLangModalVisible(false)}
+      />
 
     </ScrollView>
   );

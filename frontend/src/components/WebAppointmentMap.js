@@ -17,7 +17,7 @@ const WebAppointmentMap = ({ docLocation, patientLocation, patientName }) => {
       document.head.appendChild(link);
     }
 
-    const initMap = () => {
+    const initMap = async () => {
       if (!window.L || !mapRef.current) return;
       const L = window.L;
 
@@ -57,7 +57,7 @@ const WebAppointmentMap = ({ docLocation, patientLocation, patientName }) => {
         });
         L.marker([docLocation.lat, docLocation.lng], { icon: docIcon })
           .addTo(leafletMap.current)
-          .bindPopup('<b>Your Location (Doctor)</b>');
+          .bindPopup('<b>Doctor Location</b>');
         bounds.push([docLocation.lat, docLocation.lng]);
       }
 
@@ -71,27 +71,60 @@ const WebAppointmentMap = ({ docLocation, patientLocation, patientName }) => {
         });
         L.marker([patientLocation.lat, patientLocation.lng], { icon: patIcon })
           .addTo(leafletMap.current)
-          .bindPopup(`<b>Patient: ${patientName || 'Patient'}</b><br/>Destination`)
+          .bindPopup(`<b>Patient Destination: ${patientName || 'Patient'}</b><br/>Visit Target`)
           .openPopup();
         bounds.push([patientLocation.lat, patientLocation.lng]);
       }
 
-      // Draw route connecting line if both exist
+      // Fetch Real Road Driving Geometry from OSRM
       if (hasDoc && hasPat) {
-        L.polyline([
-          [docLocation.lat, docLocation.lng],
-          [patientLocation.lat, patientLocation.lng]
-        ], {
-          color: '#2563EB',
-          weight: 4,
-          dashArray: '8, 8',
-          opacity: 0.8
-        }).addTo(leafletMap.current);
+        let routeDrawn = false;
+        try {
+          const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${docLocation.lng},${docLocation.lat};${patientLocation.lng},${patientLocation.lat}?overview=full&geometries=geojson`;
+          const response = await fetch(osrmUrl);
+          if (response.ok) {
+            const data = await response.json();
+            if (data.routes && data.routes.length > 0) {
+              const route = data.routes[0];
+              const coords = route.geometry.coordinates.map(([lon, lat]) => [lat, lon]);
+              
+              // Draw real road driving path
+              const roadPolyline = L.polyline(coords, {
+                color: '#2563EB',
+                weight: 5,
+                opacity: 0.9,
+                lineJoin: 'round'
+              }).addTo(leafletMap.current);
 
-        if (bounds.length === 2) {
-          try {
-            leafletMap.current.fitBounds(bounds, { padding: [40, 40] });
-          } catch (e) {}
+              const roadDistKm = (route.distance / 1000).toFixed(1);
+              const driveMins = Math.round(route.duration / 60);
+              roadPolyline.bindPopup(`<b>🚗 Driving Route via Road</b><br/>Distance: ${roadDistKm} km<br/>Est. Drive Time: ~${driveMins} mins`);
+
+              leafletMap.current.fitBounds(roadPolyline.getBounds(), { padding: [40, 40] });
+              routeDrawn = true;
+            }
+          }
+        } catch (err) {
+          console.log('OSRM road route fetch error:', err.message);
+        }
+
+        // Fallback to straight dashed line if OSRM is unreachable
+        if (!routeDrawn) {
+          const directLine = L.polyline([
+            [docLocation.lat, docLocation.lng],
+            [patientLocation.lat, patientLocation.lng]
+          ], {
+            color: '#2563EB',
+            weight: 4,
+            dashArray: '8, 8',
+            opacity: 0.8
+          }).addTo(leafletMap.current);
+
+          if (bounds.length === 2) {
+            try {
+              leafletMap.current.fitBounds(bounds, { padding: [40, 40] });
+            } catch (e) {}
+          }
         }
       }
     };
@@ -99,11 +132,18 @@ const WebAppointmentMap = ({ docLocation, patientLocation, patientName }) => {
     if (window.L) {
       setTimeout(initMap, 100);
     } else {
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-      script.async = true;
-      script.onload = () => setTimeout(initMap, 100);
-      document.body.appendChild(script);
+      const scriptId = 'leaflet-js';
+      let script = document.getElementById(scriptId);
+      if (!script) {
+        script = document.createElement('script');
+        script.id = scriptId;
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        script.async = true;
+        script.onload = () => setTimeout(initMap, 100);
+        document.body.appendChild(script);
+      } else {
+        script.addEventListener('load', () => setTimeout(initMap, 100));
+      }
     }
 
     return () => {
@@ -114,11 +154,14 @@ const WebAppointmentMap = ({ docLocation, patientLocation, patientName }) => {
         leafletMap.current = null;
       }
     };
-  }, [docLocation?.lat, docLocation?.lng, patientLocation?.lat, patientLocation?.lng, patientName]);
+  }, [docLocation, patientLocation, patientName]);
 
   return (
     <View style={styles.container}>
-      <div ref={mapRef} style={{ width: '100%', height: '100%', borderRadius: 12, outline: 'none' }} />
+      <div 
+        ref={mapRef} 
+        style={{ width: '100%', height: '100%', borderRadius: 12 }} 
+      />
     </View>
   );
 };
@@ -126,11 +169,10 @@ const WebAppointmentMap = ({ docLocation, patientLocation, patientName }) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 260,
+    height: '100%',
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#e2e8f0',
-  }
+  },
 });
 
 export default WebAppointmentMap;

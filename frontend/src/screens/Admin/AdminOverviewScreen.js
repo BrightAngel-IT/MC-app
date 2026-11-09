@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, RefreshControl, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitchButton } from '../../components/LanguageSelectorModal';
 import { SIZES } from '../../styles/theme';
 import api from '../../api/axios';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,6 +13,7 @@ import NotificationBell from '../../components/NotificationBell';
 
 const AdminOverviewScreen = () => {
   const { colors } = useTheme();
+  const { t } = useLanguage();
   const styles = getStyles(colors);
   const navigation = useNavigation();
   
@@ -112,10 +115,13 @@ const AdminOverviewScreen = () => {
     >
       <View style={[styles.header, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }]}>
         <View>
-          <Text style={styles.headerTitle}>Overview Dashboard</Text>
-          <Text style={styles.headerSub}>System statistics and summary</Text>
+          <Text style={styles.headerTitle}>{t('system_overview')}</Text>
+          <Text style={styles.headerSub}>{t('admin_portal')}</Text>
         </View>
-        <NotificationBell />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <LanguageSwitchButton compact={true} />
+          <NotificationBell />
+        </View>
       </View>
 
       <TimeFilter selectedFilter={timeFilter} onSelectFilter={setTimeFilter} />

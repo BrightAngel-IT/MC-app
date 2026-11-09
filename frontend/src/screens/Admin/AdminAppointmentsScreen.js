@@ -409,7 +409,46 @@ const AdminAppointmentsScreen = () => {
                       </View>
                     )}
 
-                    {selectedApt.locationLat && selectedApt.locationLng && (
+                    {/* Visit Destination (Where Doctor Visits) */}
+                    {(selectedApt.visitAddress || (selectedApt.locationLat && selectedApt.locationLng)) && (
+                      <View style={{ marginTop: 10, padding: 10, backgroundColor: colors.surfaceLight || '#F8FAFC', borderRadius: 8, borderWidth: 1, borderColor: colors.border }}>
+                        <Text style={{ fontSize: 12, fontWeight: 'bold', color: colors.primary }}>🎯 Visit Destination Address:</Text>
+                        <Text style={{ fontSize: 13, color: colors.text, marginTop: 2, fontWeight: '600' }}>
+                          {selectedApt.visitAddress || selectedApt.patient?.address || 'Pinned on map'}
+                        </Text>
+                        {selectedApt.locationLat && selectedApt.locationLng && (
+                          <TouchableOpacity
+                            onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${selectedApt.locationLat},${selectedApt.locationLng}`)}
+                            style={{ flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.primary + '18', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6, alignSelf: 'flex-start', marginTop: 8 }}
+                          >
+                            <Ionicons name="location" size={14} color={colors.primary} />
+                            <Text style={{ fontSize: 12, fontWeight: 'bold', color: colors.primary }}>Open Visit Destination in Google Maps</Text>
+                            <Ionicons name="open-outline" size={12} color={colors.primary} />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    )}
+
+                    {/* Booked From Device Location (Safety / Audit) */}
+                    {((selectedApt.bookedAtLat && selectedApt.bookedAtLng) || selectedApt.bookedAtAddress) && (
+                      <View style={{ marginTop: 8, padding: 8, backgroundColor: colors.background, borderRadius: 6, borderWidth: 1, borderColor: colors.border }}>
+                        <Text style={{ fontSize: 11, fontWeight: 'bold', color: colors.textLight }}>📍 Booked From (Patient's Device Location):</Text>
+                        <Text style={{ fontSize: 11, color: colors.textMuted, marginTop: 1 }}>
+                          {selectedApt.bookedAtAddress || `GPS: ${selectedApt.bookedAtLat?.toFixed(5)}, ${selectedApt.bookedAtLng?.toFixed(5)}`}
+                        </Text>
+                        {selectedApt.bookedAtLat && selectedApt.bookedAtLng && (
+                          <TouchableOpacity
+                            onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${selectedApt.bookedAtLat},${selectedApt.bookedAtLng}`)}
+                            style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 }}
+                          >
+                            <Text style={{ fontSize: 11, color: colors.primary, fontWeight: 'bold' }}>View Booking Device GPS</Text>
+                            <Ionicons name="open-outline" size={10} color={colors.primary} />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    )}
+
+                    {false && (
                       <View style={{ marginTop: 10 }}>
                         <TouchableOpacity
                           onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${selectedApt.locationLat},${selectedApt.locationLng}`)}

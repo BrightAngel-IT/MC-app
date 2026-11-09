@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, SectionList, TouchableOpacity, Alert, ActivityIndicator, Modal, TextInput } from 'react-native';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { SIZES } from '../../styles/theme';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import api from '../../api/axios';
 import CustomAlertModal from '../../components/CustomAlertModal';
+import BookingLocationModal from '../../components/BookingLocationModal';
+import { reverseGeocodeCoords } from '../../utils/geocode';
 
 const LabTechSearch = ({ route }) => {
   const { colors } = useTheme();
+  const { t } = useLanguage();
   const [labTechs, setLabTechs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [patientLocation, setPatientLocation] = useState(null);
+  const [visitLocation, setVisitLocation] = useState(null);
+  const [visitAddress, setVisitAddress] = useState('');
+  const [currentAddressLabel, setCurrentAddressLabel] = useState('');
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
+  const [patientProfileAddress, setPatientProfileAddress] = useState('');
   const [travelFeeRate, setTravelFeeRate] = useState(50);
   
   const [bookModalVisible, setBookModalVisible] = useState(false);
   const [selectedTech, setSelectedTech] = useState(null);
   const [bookDate, setBookDate] = useState('');
-  const [bookTime, setBookTime] = useState('10:00 AM');
+  const [bookTime, setBookTime] = useState('');
   const [symptoms, setSymptoms] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [isBooking, setIsBooking] = useState(false);
@@ -115,11 +124,33 @@ const LabTechSearch = ({ route }) => {
     setSymptoms('');
     setPaymentMethod('CASH');
     setBookModalVisible(true);
+    if (route?.params?.passedVisitLocation) {
+      setVisitLocation(route.params.passedVisitLocation);
+      if (route.params.passedVisitAddress) setVisitAddress(route.params.passedVisitAddress);
+    }
+    api.get('/patient/profile').then(res => {
+      if (res.data?.address) setPatientProfileAddress(res.data.address);
+    }).catch(e => console.log('Profile address fetch error:', e.message));
   };
 
   const handleBookSubmit = async () => {
-    if (!bookDate) {
-      setAlertConfig({ visible: true, type: 'error', title: 'Error', message: 'Please select a date' });
+    if (!bookDate || !bookDate.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Date', message: t('val_select_date_req') });
+      return;
+    }
+
+    if (!bookTime || !bookTime.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Time', message: t('val_select_time_req') });
+      return;
+    }
+
+    if (!visitAddress && !visitLocation?.lat && !patientLocation?.lat) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Destination Required 📍', message: t('val_select_destination_req') });
+      return;
+    }
+
+    if (!symptoms || !symptoms.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Symptoms Required', message: t('val_enter_symptoms_req') });
       return;
     }
     if (isBooking) return;
@@ -224,7 +255,7 @@ const LabTechSearch = ({ route }) => {
         <Ionicons name="search" size={20} color={colors.textMuted} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search by name or specialty..."
+          placeholder={t('search_placeholder_general')}
           placeholderTextColor={colors.textMuted}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -271,13 +302,13 @@ const LabTechSearch = ({ route }) => {
                 style={[styles.quickChip, bookDate === getTodayStr() && styles.quickChipActive]}
                 onPress={() => setQuickDate(0)}
               >
-                <Text style={[styles.quickChipText, bookDate === getTodayStr() && styles.quickChipTextActive]}>Today</Text>
+                <Text style={[styles.quickChipText, bookDate === getTodayStr() && styles.quickChipTextActive]}>{t('today')}</Text>
               </TouchableOpacity>
               <TouchableOpacity 
                 style={[styles.quickChip, bookDate === getTomorrowStr() && styles.quickChipActive]}
                 onPress={() => setQuickDate(1)}
               >
-                <Text style={[styles.quickChipText, bookDate === getTomorrowStr() && styles.quickChipTextActive]}>Tomorrow</Text>
+                <Text style={[styles.quickChipText, bookDate === getTomorrowStr() && styles.quickChipTextActive]}>{t('tomorrow')}</Text>
               </TouchableOpacity>
             </View>
             <TextInput 
@@ -306,7 +337,37 @@ const LabTechSearch = ({ route }) => {
               onChangeText={setBookTime} 
             />
 
-            <Text style={styles.label}>Select Payment Method</Text>
+            
+            {/* Visit Destination Selector */}
+            <Text style={styles.label}>{t('where_should_visit')}</Text>
+            <TouchableOpacity 
+              style={{
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                backgroundColor: colors.surfaceLight || '#F8FAFC',
+                borderWidth: 1.5,
+                borderColor: visitAddress ? colors.primary : colors.border,
+                borderRadius: 10,
+                padding: 12,
+                marginBottom: 10
+              }}
+              onPress={() => setLocationModalVisible(true)}
+            >
+              <Ionicons name="location" size={20} color={colors.primary} />
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.text }}>
+                  {visitAddress ? visitAddress : t('choose_visit_location')}
+                </Text>
+                {visitLocation?.lat ? (
+                  <Text style={{ fontSize: 11, color: colors.textLight, marginTop: 2 }}>
+                    Destination GPS: {visitLocation.lat.toFixed(4)}, {visitLocation.lng.toFixed(4)}
+                  </Text>
+                ) : null}
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={colors.textLight} />
+            </TouchableOpacity>
+
+            <Text style={styles.label}>{t('select_payment_method')}</Text>
             <View style={{flexDirection: 'row', gap: 10, marginBottom: 4}}>
               <TouchableOpacity
                 style={[
@@ -324,7 +385,7 @@ const LabTechSearch = ({ route }) => {
                   styles.paymentOptionText,
                   paymentMethod === 'CASH' && styles.paymentOptionTextActive
                 ]}>
-                  Cash Payment
+                  {t('cash_payment')}
                 </Text>
               </TouchableOpacity>
 
@@ -344,7 +405,7 @@ const LabTechSearch = ({ route }) => {
                   styles.paymentOptionText,
                   paymentMethod === 'CARD' && styles.paymentOptionTextActive
                 ]}>
-                  Card Payment
+                  {t('card_payment')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -360,15 +421,35 @@ const LabTechSearch = ({ route }) => {
 
             <View style={styles.modalActions}>
               <TouchableOpacity style={styles.cancelBtn} onPress={() => setBookModalVisible(false)}>
-                <Text style={styles.cancelText}>Cancel</Text>
+                <Text style={styles.cancelText}>{t('common_cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.submitBtn, isBooking && { opacity: 0.7 }]} onPress={handleBookSubmit} disabled={isBooking}>
-                <Text style={styles.submitText}>{isBooking ? 'Booking...' : 'Confirm Booking'}</Text>
+                <Text style={styles.submitText}>{isBooking ? t('booking_in_progress') : t('confirm_booking_btn')}</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
+
+      <BookingLocationModal
+        visible={locationModalVisible}
+        onClose={() => setLocationModalVisible(false)}
+        initialVisitLocation={visitLocation}
+        initialVisitAddress={visitAddress}
+        patientProfileAddress={patientProfileAddress}
+        onLocationSelected={(res) => {
+          setVisitLocation({ lat: res.lat, lng: res.lng });
+          setVisitAddress(res.address);
+          if (selectedLabTech?.locationLat && selectedLabTech?.locationLng) {
+            const rawDist = calculateDistance(res.lat, res.lng, selectedLabTech.locationLat, selectedLabTech.locationLng);
+            const distKm = Number(rawDist.toFixed(1));
+            setDistance(distKm);
+            const baseFee = selectedLabTech.bookingFee || 0;
+            const distFee = Math.round(distKm * travelFeeRate);
+            setFinalFee(baseFee + distFee);
+          }
+        }}
+      />
 
       <CustomAlertModal 
         visible={alertConfig.visible}

@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, SectionList, TouchableOpacity, Alert, ActivityIndicator, Modal, TextInput, Platform } from 'react-native';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { SIZES } from '../../styles/theme';
 import { FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import api from '../../api/axios';
 import CustomAlertModal from '../../components/CustomAlertModal';
+import BookingLocationModal from '../../components/BookingLocationModal';
+import { reverseGeocodeCoords } from '../../utils/geocode';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as Location from 'expo-location';
 
 const ParamedicSearch = ({ route }) => {
   const { colors } = useTheme();
+  const { t } = useLanguage();
   const [paramedics, setParamedics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [patientLocation, setPatientLocation] = useState(null);
+  const [visitLocation, setVisitLocation] = useState(null);
+  const [visitAddress, setVisitAddress] = useState('');
+  const [currentAddressLabel, setCurrentAddressLabel] = useState('');
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
+  const [patientProfileAddress, setPatientProfileAddress] = useState('');
   const [travelFeeRate, setTravelFeeRate] = useState(50);
   
   const [bookModalVisible, setBookModalVisible] = useState(false);
@@ -106,11 +115,33 @@ const ParamedicSearch = ({ route }) => {
   const handleOpenBook = (paramedic) => {
     setSelectedParamedic(paramedic);
     setBookModalVisible(true);
+    if (route?.params?.passedVisitLocation) {
+      setVisitLocation(route.params.passedVisitLocation);
+      if (route.params.passedVisitAddress) setVisitAddress(route.params.passedVisitAddress);
+    }
+    api.get('/patient/profile').then(res => {
+      if (res.data?.address) setPatientProfileAddress(res.data.address);
+    }).catch(e => console.log('Profile address fetch error:', e.message));
   };
 
   const handleBookSubmit = async () => {
-    if (!bookDate) {
-      setAlertConfig({ visible: true, type: 'error', title: 'Error', message: 'Please select a date' });
+    if (!bookDate || !bookDate.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Date', message: t('val_select_date_req') });
+      return;
+    }
+
+    if (!bookTime || !bookTime.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Time', message: t('val_select_time_req') });
+      return;
+    }
+
+    if (!visitAddress && !visitLocation?.lat && !patientLocation?.lat) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Destination Required 📍', message: t('val_select_destination_req') });
+      return;
+    }
+
+    if (!symptoms || !symptoms.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Symptoms Required', message: t('val_enter_symptoms_req') });
       return;
     }
     if (!reason.trim()) {
@@ -211,7 +242,7 @@ const ParamedicSearch = ({ route }) => {
         <Ionicons name="search" size={20} color={colors.textMuted} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search by name or region..."
+          placeholder={t('search_placeholder_general')}
           placeholderTextColor={colors.textMuted}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -313,7 +344,7 @@ const ParamedicSearch = ({ route }) => {
 
             <View style={styles.modalActions}>
               <TouchableOpacity style={styles.cancelBtn} onPress={() => setBookModalVisible(false)}>
-                <Text style={styles.cancelText}>Cancel</Text>
+                <Text style={styles.cancelText}>{t('common_cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.submitBtn, isBooking && { opacity: 0.7 }]} onPress={handleBookSubmit} disabled={isBooking}>
                 <Text style={styles.submitText}>{isBooking ? 'Dispatching...' : 'Confirm Dispatch'}</Text>
@@ -322,6 +353,26 @@ const ParamedicSearch = ({ route }) => {
           </View>
         </View>
       </Modal>
+
+      <BookingLocationModal
+        visible={locationModalVisible}
+        onClose={() => setLocationModalVisible(false)}
+        initialVisitLocation={visitLocation}
+        initialVisitAddress={visitAddress}
+        patientProfileAddress={patientProfileAddress}
+        onLocationSelected={(res) => {
+          setVisitLocation({ lat: res.lat, lng: res.lng });
+          setVisitAddress(res.address);
+          if (selectedParamedic?.locationLat && selectedParamedic?.locationLng) {
+            const rawDist = calculateDistance(res.lat, res.lng, selectedParamedic.locationLat, selectedParamedic.locationLng);
+            const distKm = Number(rawDist.toFixed(1));
+            setDistance(distKm);
+            const baseFee = selectedParamedic.bookingFee || 0;
+            const distFee = Math.round(distKm * travelFeeRate);
+            setFinalFee(baseFee + distFee);
+          }
+        }}
+      />
 
       <CustomAlertModal 
         visible={alertConfig.visible}

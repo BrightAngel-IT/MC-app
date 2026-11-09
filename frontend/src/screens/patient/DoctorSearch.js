@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, SectionList, TouchableOpacity, ActivityIndicator, Alert, Modal, TextInput, Linking, Platform, Image } from 'react-native';
 import api from '../../api/axios';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
 import { SIZES } from '../../styles/theme';
 import { Ionicons } from '@expo/vector-icons';
 import CustomAlertModal from '../../components/CustomAlertModal';
+import BookingLocationModal from '../../components/BookingLocationModal';
+import { reverseGeocodeCoords } from '../../utils/geocode';
 import * as Location from 'expo-location';
 
 const DoctorSearch = ({ navigation, route }) => {
@@ -12,14 +15,20 @@ const DoctorSearch = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
   const [travelFeeRate, setTravelFeeRate] = useState(50);
   const { colors } = useTheme();
+  const { t } = useLanguage();
   
   const styles = getStyles(colors);
   const [bookModalVisible, setBookModalVisible] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState(null);
   const [bookDate, setBookDate] = useState('');
-  const [bookTime, setBookTime] = useState('10:00 AM');
+  const [bookTime, setBookTime] = useState('');
   const [symptoms, setSymptoms] = useState('');
   const [patientLocation, setPatientLocation] = useState(null);
+  const [visitLocation, setVisitLocation] = useState(null);
+  const [visitAddress, setVisitAddress] = useState('');
+  const [currentAddressLabel, setCurrentAddressLabel] = useState('');
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
+  const [patientProfileAddress, setPatientProfileAddress] = useState('');
   const [distance, setDistance] = useState(null);
   const [finalFee, setFinalFee] = useState(0);
   const [isCalculating, setIsCalculating] = useState(false);
@@ -201,7 +210,24 @@ const DoctorSearch = ({ navigation, route }) => {
     return R * c;
   };
 
+  
+  useEffect(() => {
+    if (route?.params?.passedVisitLocation) {
+      setVisitLocation(route.params.passedVisitLocation);
+      if (route.params.passedVisitAddress) {
+        setVisitAddress(route.params.passedVisitAddress);
+      }
+    }
+  }, [route?.params?.passedVisitLocation, route?.params?.passedVisitAddress]);
+
   const handleOpenBook = async (doctor) => {
+    // If route passed a visit destination, set it immediately
+    if (route?.params?.passedVisitAddress) {
+      setVisitAddress(route.params.passedVisitAddress);
+    }
+    if (route?.params?.passedVisitLocation) {
+      setVisitLocation(route.params.passedVisitLocation);
+    }
     setSelectedDoc(doctor);
     const today = getTodayStr();
     setBookDate(today);
@@ -223,12 +249,15 @@ const DoctorSearch = ({ navigation, route }) => {
       }
     }
 
-    setBookTime(initialSlot);
+    setBookTime('');
     setSymptoms('');
     setDistance(null);
     setPaymentMethod('CASH');
     setFinalFee(doctor.bookingFee || 0);
     setBookModalVisible(true);
+    api.get('/patient/profile').then(res => {
+      if (res.data?.address) setPatientProfileAddress(res.data.address);
+    }).catch(e => console.log('Profile address fetch error:', e.message));
     
     if (doctor.locationLat && doctor.locationLng) {
       setIsCalculating(true);
@@ -253,7 +282,9 @@ const DoctorSearch = ({ navigation, route }) => {
       }
       
       if (locLat && locLng) {
-         const rawDist = calculateDistance(locLat, locLng, doctor.locationLat, doctor.locationLng); 
+         const targetCalcLat = (route?.params?.passedVisitLocation?.lat) || (visitLocation?.lat) || locLat;
+         const targetCalcLng = (route?.params?.passedVisitLocation?.lng) || (visitLocation?.lng) || locLng;
+         const rawDist = calculateDistance(targetCalcLat, targetCalcLng, doctor.locationLat, doctor.locationLng); 
          const distKm = Number(rawDist.toFixed(1));
          setDistance(distKm);
          const baseFee = doctor.bookingFee || 0;
@@ -265,8 +296,23 @@ const DoctorSearch = ({ navigation, route }) => {
   };
 
   const handleBookSubmit = async () => {
-    if (!bookDate) {
-      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Date', message: 'Please select or enter an appointment date.' });
+    if (!bookDate || !bookDate.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Date', message: t('val_select_date_req') });
+      return;
+    }
+
+    if (!bookTime || !bookTime.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Invalid Time', message: t('val_select_time_req') });
+      return;
+    }
+
+    if (!visitAddress && !visitLocation?.lat && !patientLocation?.lat) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Destination Required 📍', message: t('val_select_destination_req') });
+      return;
+    }
+
+    if (!symptoms || !symptoms.trim()) {
+      setAlertConfig({ visible: true, type: 'error', title: 'Symptoms Required', message: t('val_enter_symptoms_req') });
       return;
     }
 
@@ -318,10 +364,14 @@ const DoctorSearch = ({ navigation, route }) => {
       await api.post('/patient/appointment', {
         professionalId: selectedDoc.id,
         scheduledDate: scheduledDateISO, 
-        symptoms: symptoms || 'General Checkup',
+        symptoms: symptoms.trim(),
         serviceType: 'Consultation',
-        locationLat: patientLocation ? patientLocation.lat : null,
-        locationLng: patientLocation ? patientLocation.lng : null,
+        locationLat: (visitLocation && visitLocation.lat) ? visitLocation.lat : (patientLocation ? patientLocation.lat : null),
+        locationLng: (visitLocation && visitLocation.lng) ? visitLocation.lng : (patientLocation ? patientLocation.lng : null),
+        visitAddress: visitAddress || null,
+        bookedAtLat: patientLocation ? patientLocation.lat : null,
+        bookedAtLng: patientLocation ? patientLocation.lng : null,
+        bookedAtAddress: currentAddressLabel || null,
         totalAmount: finalFee,
         paymentMethod: paymentMethod
       });
@@ -431,14 +481,14 @@ const DoctorSearch = ({ navigation, route }) => {
           onPress={() => handleSeeOnMap(item)}
         >
           <Ionicons name="map-outline" size={16} color={colors.primary} />
-          <Text style={styles.seeOnMapText}>See on Map</Text>
+          <Text style={styles.seeOnMapText}>{t('see_on_map')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.bookButton} 
           onPress={() => handleOpenBook(item)}
         >
-          <Text style={styles.bookButtonText}>Book Appointment</Text>
+          <Text style={styles.bookButtonText}>{t('book_appointment_btn')}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -465,13 +515,13 @@ const DoctorSearch = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
 
-      <Text style={styles.headerTitle}>Find a Doctor</Text>
+      <Text style={styles.headerTitle}>{t('find_a_doctor')}</Text>
       
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color={colors.textMuted} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search by name or specialty..."
+          placeholder={t('search_placeholder_doc')}
           placeholderTextColor={colors.textMuted}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -481,7 +531,7 @@ const DoctorSearch = ({ navigation, route }) => {
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} style={{marginTop: 50}} />
       ) : filteredDoctors.length === 0 ? (
-        <Text style={styles.noData}>No doctors found.</Text>
+        <Text style={styles.noData}>{t('no_professionals_found')}</Text>
       ) : (
         <SectionList
           sections={[
@@ -510,21 +560,21 @@ const DoctorSearch = ({ navigation, route }) => {
       <Modal visible={bookModalVisible} animationType="slide" transparent>
         <View style={styles.modalBg}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Book with Dr. {selectedDoc?.user?.fullName}</Text>
+            <Text style={styles.modalTitle}>{t('book_with_professional', { name: `Dr. ${selectedDoc?.user?.fullName || ''}` })}</Text>
             
-            <Text style={styles.label}>Select Date</Text>
+            <Text style={styles.label}>{t('select_date')}</Text>
             <View style={{flexDirection: 'row', gap: 8, marginBottom: 8}}>
               <TouchableOpacity 
                 style={[styles.quickChip, bookDate === getTodayStr() && styles.quickChipActive]}
                 onPress={() => setQuickDate(0)}
               >
-                <Text style={[styles.quickChipText, bookDate === getTodayStr() && styles.quickChipTextActive]}>Today</Text>
+                <Text style={[styles.quickChipText, bookDate === getTodayStr() && styles.quickChipTextActive]}>{t('today')}</Text>
               </TouchableOpacity>
               <TouchableOpacity 
                 style={[styles.quickChip, bookDate === getTomorrowStr() && styles.quickChipActive]}
                 onPress={() => setQuickDate(1)}
               >
-                <Text style={[styles.quickChipText, bookDate === getTomorrowStr() && styles.quickChipTextActive]}>Tomorrow</Text>
+                <Text style={[styles.quickChipText, bookDate === getTomorrowStr() && styles.quickChipTextActive]}>{t('tomorrow')}</Text>
               </TouchableOpacity>
             </View>
             <TextInput 
@@ -535,12 +585,12 @@ const DoctorSearch = ({ navigation, route }) => {
             />
 
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8}}>
-              <Text style={styles.label}>Select Time</Text>
+              <Text style={styles.label}>{t('select_time')}</Text>
               {selectedDoc?.visitStartHour && selectedDoc?.visitEndHour ? (
                 <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
                   <Ionicons name="time-outline" size={13} color={colors.primary} />
                   <Text style={{fontSize: 11, color: colors.primary, fontWeight: 'bold'}}>
-                    Visiting Hours: {selectedDoc.visitStartHour} - {selectedDoc.visitEndHour}
+                    {t('visiting_hours', { start: selectedDoc.visitStartHour, end: selectedDoc.visitEndHour })}
                   </Text>
                 </View>
               ) : null}
@@ -586,17 +636,47 @@ const DoctorSearch = ({ navigation, route }) => {
             />
 
             {isCalculating ? (
-              <Text style={{color: colors.primary, marginTop: 10, fontWeight: 'bold'}}>Calculating Distance & Fee...</Text>
+              <Text style={{color: colors.primary, marginTop: 10, fontWeight: 'bold'}}>{t('calculating_distance_fee')}</Text>
             ) : (
               <View style={{backgroundColor: colors.surfaceLight, padding: 10, borderRadius: 8, marginTop: 15, borderWidth: 1, borderColor: colors.border}}>
-                <Text style={{color: colors.text, fontWeight: 'bold', marginBottom: 5}}>Fee Breakdown:</Text>
-                <Text style={{color: colors.textLight, fontSize: 13}}>Base Booking Fee: Rs. {selectedDoc?.bookingFee || 0}</Text>
-                {distance && <Text style={{color: colors.textLight, fontSize: 13}}>Distance Charge ({distance} km @ Rs. {travelFeeRate}/km): Rs. {Math.round(distance * travelFeeRate)}</Text>}
-                <Text style={{color: colors.success, fontWeight: 'bold', fontSize: 16, marginTop: 5}}>Total: Rs. {finalFee}</Text>
+                <Text style={{color: colors.text, fontWeight: 'bold', marginBottom: 5}}>{t('fee_breakdown_title')}</Text>
+                <Text style={{color: colors.textLight, fontSize: 13}}>{t('base_booking_fee', { fee: selectedDoc?.bookingFee || 0 })}</Text>
+                {distance ? <Text style={{color: colors.textLight, fontSize: 13}}>{t('distance_charge_calc', { dist: distance, rate: travelFeeRate, fee: Math.round(distance * travelFeeRate) })}</Text> : null}
+                <Text style={{color: colors.success, fontWeight: 'bold', fontSize: 16, marginTop: 5}}>{t('total_display', { total: finalFee })}</Text>
               </View>
             )}
 
-            <Text style={styles.label}>Select Payment Method</Text>
+            
+            {/* Visit Destination Selector */}
+            <Text style={styles.label}>{t('where_should_visit')}</Text>
+            <TouchableOpacity 
+              style={{
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                backgroundColor: colors.surfaceLight || '#F8FAFC',
+                borderWidth: 1.5,
+                borderColor: visitAddress ? colors.primary : colors.border,
+                borderRadius: 10,
+                padding: 12,
+                marginBottom: 10
+              }}
+              onPress={() => setLocationModalVisible(true)}
+            >
+              <Ionicons name="location" size={20} color={colors.primary} />
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.text }}>
+                  {visitAddress ? visitAddress : t('choose_visit_location')}
+                </Text>
+                {visitLocation?.lat ? (
+                  <Text style={{ fontSize: 11, color: colors.textLight, marginTop: 2 }}>
+                    Destination GPS: {visitLocation.lat.toFixed(4)}, {visitLocation.lng.toFixed(4)}
+                  </Text>
+                ) : null}
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={colors.textLight} />
+            </TouchableOpacity>
+
+            <Text style={styles.label}>{t('select_payment_method')}</Text>
             <View style={{flexDirection: 'row', gap: 10, marginBottom: 4}}>
               <TouchableOpacity
                 style={[
@@ -639,10 +719,10 @@ const DoctorSearch = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
             
-            <Text style={styles.label}>Symptoms</Text>
+            <Text style={styles.label}>{t('symptoms_label')}</Text>
             <TextInput 
               style={[styles.input, {height: 80}]} 
-              placeholder="e.g. Fever, Cough" 
+              placeholder={t('symptoms_placeholder')} 
               multiline 
               value={symptoms} 
               onChangeText={setSymptoms} 
@@ -650,15 +730,35 @@ const DoctorSearch = ({ navigation, route }) => {
 
             <View style={styles.modalActions}>
               <TouchableOpacity style={styles.cancelBtn} onPress={() => setBookModalVisible(false)}>
-                <Text style={styles.cancelText}>Cancel</Text>
+                <Text style={styles.cancelText}>{t('common_cancel')}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={[styles.submitBtn, isBooking && { opacity: 0.7 }]} onPress={handleBookSubmit} disabled={isBooking}>
-                <Text style={styles.submitText}>{isBooking ? 'Booking...' : 'Confirm Booking'}</Text>
+                <Text style={styles.submitText}>{isBooking ? t('booking_in_progress') : t('confirm_booking_btn')}</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </Modal>
+
+      <BookingLocationModal
+        visible={locationModalVisible}
+        onClose={() => setLocationModalVisible(false)}
+        initialVisitLocation={visitLocation}
+        initialVisitAddress={visitAddress}
+        patientProfileAddress={patientProfileAddress}
+        onLocationSelected={(res) => {
+          setVisitLocation({ lat: res.lat, lng: res.lng });
+          setVisitAddress(res.address);
+          if (selectedDoc?.locationLat && selectedDoc?.locationLng) {
+            const rawDist = calculateDistance(res.lat, res.lng, selectedDoc.locationLat, selectedDoc.locationLng);
+            const distKm = Number(rawDist.toFixed(1));
+            setDistance(distKm);
+            const baseFee = selectedDoc.bookingFee || 0;
+            const distFee = Math.round(distKm * travelFeeRate);
+            setFinalFee(baseFee + distFee);
+          }
+        }}
+      />
 
       <CustomAlertModal 
         visible={alertConfig.visible}

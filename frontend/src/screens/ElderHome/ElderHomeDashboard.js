@@ -17,6 +17,8 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from '../../context/themeContext';
 import { AuthContext } from '../../context/authContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitchButton } from '../../components/LanguageSelectorModal';
 import { SIZES } from '../../styles/theme';
 import { FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -37,6 +39,7 @@ const CATEGORIES = [
 const ElderHomeDashboard = ({ navigation }) => {
   const { colors } = useTheme();
   const { user } = useContext(AuthContext);
+  const { t } = useLanguage();
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -508,7 +511,7 @@ const ElderHomeDashboard = ({ navigation }) => {
       {/* Top Bar */}
       <View style={styles.topBar}>
         <View style={{ flex: 1, marginRight: 8 }}>
-          <Text style={styles.topBarWelcome}>Elder Home Management</Text>
+          <Text style={styles.topBarWelcome}>{t('elder_home_management')}</Text>
           <Text style={styles.topBarTitle} numberOfLines={1}>{profile?.fullName || 'My Elder Home'}</Text>
           <TouchableOpacity 
             onPress={() => setMapModalVisible(true)}
@@ -530,6 +533,7 @@ const ElderHomeDashboard = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <LanguageSwitchButton compact={true} />
           <TouchableOpacity 
             onPress={() => setMapModalVisible(true)}
             style={{ backgroundColor: colors.surface, padding: 8, borderRadius: 20, borderWidth: 1, borderColor: colors.border }}

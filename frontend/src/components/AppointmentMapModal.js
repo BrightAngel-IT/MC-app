@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Platform, Linking, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/themeContext';
 import WebAppointmentMap from './WebAppointmentMap';
-
 import { WebView } from 'react-native-webview';
 
 const buildNativeHtml = (doc, pat, name) => `
@@ -20,10 +19,25 @@ const buildNativeHtml = (doc, pat, name) => `
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
   function dot(c) { return L.divIcon({ className: '', html: '<div style="background:' + c + ';width:18px;height:18px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)"></div>', iconAnchor: [9, 9] }); }
   L.marker(pat, { icon: dot('#EF4444') }).addTo(map).bindPopup(${JSON.stringify(name)});
+  
   if (doc) {
     L.marker(doc, { icon: dot('#2563EB') }).addTo(map).bindPopup('Doctor Location');
-    L.polyline([doc, pat], { color: '#2563EB', weight: 4, dashArray: '8,8' }).addTo(map);
-    map.fitBounds([doc, pat], { padding: [30, 30] });
+    
+    // Fetch road driving route via OSRM
+    var osrmUrl = 'https://router.project-osrm.org/route/v1/driving/' + doc[1] + ',' + doc[0] + ';' + pat[1] + ',' + pat[0] + '?overview=full&geometries=geojson';
+    fetch(osrmUrl).then(function(res) { return res.json(); }).then(function(data) {
+      if (data.routes && data.routes.length > 0) {
+        var coords = data.routes[0].geometry.coordinates.map(function(c) { return [c[1], c[0]]; });
+        var poly = L.polyline(coords, { color: '#2563EB', weight: 5, opacity: 0.9 }).addTo(map);
+        map.fitBounds(poly.getBounds(), { padding: [30, 30] });
+      } else {
+        var direct = L.polyline([doc, pat], { color: '#2563EB', weight: 4, dashArray: '8,8' }).addTo(map);
+        map.fitBounds([doc, pat], { padding: [30, 30] });
+      }
+    }).catch(function() {
+      var direct = L.polyline([doc, pat], { color: '#2563EB', weight: 4, dashArray: '8,8' }).addTo(map);
+      map.fitBounds([doc, pat], { padding: [30, 30] });
+    });
   }
 </script></body></html>`;
 
@@ -38,6 +52,8 @@ const AppointmentMapModal = ({
 }) => {
   const { colors } = useTheme();
 
+  const [roadInfo, setRoadInfo] = useState({ distanceKm: null, durationMins: null });
+
   if (!appointment) return null;
 
   const docLat = doctorProfile?.locationLat;
@@ -47,6 +63,31 @@ const AppointmentMapModal = ({
   const patientName = appointment.patient?.user?.fullName || 'Patient';
   const patientAddress = appointment.patient?.address;
 
+  // Real Road Driving Distance calculation via OSRM
+  useEffect(() => {
+    if (visible && docLat && docLng && patLat && patLng) {
+      const fetchDrivingRoute = async () => {
+        try {
+          const osrmUrl = `https://router.project-osrm.org/route/v1/driving/${docLng},${docLat};${patLng},${patLat}?overview=false`;
+          const res = await fetch(osrmUrl);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.routes && data.routes.length > 0) {
+              const r = data.routes[0];
+              setRoadInfo({
+                distanceKm: (r.distance / 1000).toFixed(1),
+                durationMins: Math.round(r.duration / 60)
+              });
+            }
+          }
+        } catch (e) {
+          console.log('OSRM modal fetch error:', e.message);
+        }
+      };
+      fetchDrivingRoute();
+    }
+  }, [visible, docLat, docLng, patLat, patLng]);
+
   const handleOpenGoogleMaps = () => {
     let url = '';
     if (patLat && patLng) {
@@ -55,8 +96,8 @@ const AppointmentMapModal = ({
       } else {
         url = `https://www.google.com/maps/dir/?api=1&destination=${patLat},${patLng}`;
       }
-    } else if (patientAddress) {
-      url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(patientAddress)}`;
+    } else if (appointment.visitAddress || patientAddress) {
+      url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(appointment.visitAddress || patientAddress)}`;
     }
 
     if (url) {
@@ -65,6 +106,7 @@ const AppointmentMapModal = ({
   };
 
   const hasCoordinates = !!(patLat && patLng);
+  const displayDistance = roadInfo.distanceKm != null ? `${roadInfo.distanceKm} km (Road)` : (distanceInKm != null ? `${distanceInKm} km` : 'N/A');
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
@@ -73,7 +115,7 @@ const AppointmentMapModal = ({
           {/* Header */}
           <View style={styles.headerRow}>
             <View style={{ flex: 1 }}>
-              <Text style={[styles.modalTitle, { color: colors.text }]}>Patient Location & Route</Text>
+              <Text style={[styles.modalTitle, { color: colors.text }]}>Patient Location & Driving Route</Text>
               <Text style={[styles.modalSub, { color: colors.textLight }]}>
                 {patientName} • {appointment.symptoms || 'Consultation'}
               </Text>
@@ -89,12 +131,24 @@ const AppointmentMapModal = ({
               <View style={[styles.metricBox, { backgroundColor: colors.primaryLight || '#EFF6FF', borderColor: colors.primary }]}>
                 <Ionicons name="navigate-circle" size={22} color={colors.primary} />
                 <View style={{ marginLeft: 8 }}>
-                  <Text style={[styles.metricLabel, { color: colors.primary }]}>Distance</Text>
+                  <Text style={[styles.metricLabel, { color: colors.primary }]}>Driving Distance</Text>
                   <Text style={[styles.metricValue, { color: colors.text }]}>
-                    {distanceInKm != null ? `${distanceInKm} km` : 'N/A'}
+                    {displayDistance}
                   </Text>
                 </View>
               </View>
+
+              {roadInfo.durationMins != null ? (
+                <View style={[styles.metricBox, { backgroundColor: '#F0FDF4', borderColor: '#22C55E' }]}>
+                  <Ionicons name="car-outline" size={22} color="#15803D" />
+                  <View style={{ marginLeft: 8 }}>
+                    <Text style={[styles.metricLabel, { color: '#15803D' }]}>Driving Time</Text>
+                    <Text style={[styles.metricValue, { color: '#166534' }]}>
+                      ~{roadInfo.durationMins} mins
+                    </Text>
+                  </View>
+                </View>
+              ) : null}
 
               <View style={[styles.metricBox, { backgroundColor: '#ECFDF5', borderColor: '#10B981' }]}>
                 <Ionicons name="cash" size={22} color="#10B981" />
@@ -107,13 +161,15 @@ const AppointmentMapModal = ({
               </View>
             </View>
 
-            {/* Address Row */}
-            <View style={[styles.addressCard, { backgroundColor: colors.surfaceLight || '#F8FAFC', borderColor: colors.border }]}>
-              <Ionicons name="location" size={20} color={colors.primary} style={{ marginTop: 2 }} />
+            {/* Target Visit Destination (Where Doctor Visits) */}
+            <View style={[styles.addressCard, { backgroundColor: colors.surfaceLight || '#F8FAFC', borderColor: colors.primary }]}>
+              <Ionicons name="navigate-circle" size={24} color={colors.primary} style={{ marginTop: 2 }} />
               <View style={{ marginLeft: 10, flex: 1 }}>
-                <Text style={[styles.addressTitle, { color: colors.text }]}>Patient Address / Pinned Location</Text>
-                <Text style={[styles.addressText, { color: colors.textLight }]}>
-                  {patientAddress || (hasCoordinates ? `GPS: ${patLat.toFixed(5)}, ${patLng.toFixed(5)}` : 'Address not registered')}
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={[styles.addressTitle, { color: colors.primary, fontWeight: 'bold' }]}>🎯 Visit Destination (Doctor Visits Here)</Text>
+                </View>
+                <Text style={[styles.addressText, { color: colors.text, fontWeight: '600', fontSize: 13, marginTop: 2 }]}>
+                  {appointment.visitAddress || patientAddress || (hasCoordinates ? `GPS: ${patLat.toFixed(5)}, ${patLng.toFixed(5)}` : 'Address not registered')}
                 </Text>
                 {appointment.patient?.user?.phone && (
                   <TouchableOpacity
@@ -129,7 +185,20 @@ const AppointmentMapModal = ({
               </View>
             </View>
 
-            {/* Map Container */}
+            {/* Booked From Device Location (Safety / Audit) */}
+            {((appointment.bookedAtLat && appointment.bookedAtLng) || appointment.bookedAtAddress) ? (
+              <View style={[styles.addressCard, { backgroundColor: colors.surfaceLight || '#F8FAFC', borderColor: colors.border, marginTop: 8 }]}>
+                <Ionicons name="business-outline" size={18} color={colors.textLight} style={{ marginTop: 2 }} />
+                <View style={{ marginLeft: 10, flex: 1 }}>
+                  <Text style={[styles.addressTitle, { color: colors.textLight, fontSize: 12 }]}>📍 Booked From (Patient's location when booking)</Text>
+                  <Text style={[styles.addressText, { color: colors.textLight, fontSize: 12 }]}>
+                    {appointment.bookedAtAddress || `GPS: ${appointment.bookedAtLat?.toFixed(5)}, ${appointment.bookedAtLng?.toFixed(5)}`}
+                  </Text>
+                </View>
+              </View>
+            ) : null}
+
+            {/* Map Container with Real Road Driving Path */}
             {hasCoordinates ? (
               <View style={styles.mapWrapper}>
                 {Platform.OS === 'web' ? (
@@ -163,6 +232,10 @@ const AppointmentMapModal = ({
                     <View style={[styles.legendDot, { backgroundColor: '#EF4444' }]} />
                     <Text style={[styles.legendText, { color: colors.textLight }]}>Patient Destination</Text>
                   </View>
+                  <View style={styles.legendItem}>
+                    <View style={[styles.legendDot, { backgroundColor: '#2563EB', width: 14, height: 4, borderRadius: 2 }]} />
+                    <Text style={[styles.legendText, { color: '#2563EB', fontWeight: 'bold' }]}>Road Driving Path</Text>
+                  </View>
                 </View>
               </View>
             ) : (
@@ -185,7 +258,7 @@ const AppointmentMapModal = ({
               </View>
               <View style={styles.feeRow}>
                 <Text style={{ color: colors.textLight }}>
-                  Travel Mileage Fee ({distanceInKm != null ? `${distanceInKm} km` : 'Est.'}):
+                  Travel Mileage Fee ({displayDistance}):
                 </Text>
                 <Text style={{ fontWeight: '600', color: colors.text }}>
                   Rs. {Number(travelFee || 0).toLocaleString()}
@@ -227,27 +300,27 @@ const styles = StyleSheet.create({
   },
   modalCard: {
     width: '100%',
-    maxWidth: 520,
-    maxHeight: '90%',
-    borderRadius: 20,
-    padding: 20,
-    elevation: 8,
+    maxWidth: 580,
+    maxHeight: '92%',
+    borderRadius: 16,
+    padding: 18,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.15,
     shadowRadius: 10,
+    elevation: 8,
   },
   headerRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 15,
+    marginBottom: 12,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
   },
   modalSub: {
-    fontSize: 13,
+    fontSize: 12,
     marginTop: 2,
   },
   closeBtn: {
@@ -255,107 +328,113 @@ const styles = StyleSheet.create({
   },
   metricsContainer: {
     flexDirection: 'row',
-    gap: 12,
-    marginBottom: 14,
+    gap: 8,
+    marginBottom: 12,
+    flexWrap: 'wrap',
   },
   metricBox: {
     flex: 1,
+    minWidth: 120,
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderRadius: 12,
+    borderRadius: 10,
     borderWidth: 1,
   },
   metricLabel: {
     fontSize: 11,
     fontWeight: '600',
-    textTransform: 'uppercase',
   },
   metricValue: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
+    marginTop: 1,
   },
   addressCard: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
     padding: 12,
-    borderRadius: 12,
+    borderRadius: 10,
     borderWidth: 1,
-    marginBottom: 14,
+    marginBottom: 12,
   },
   addressTitle: {
-    fontSize: 13,
-    fontWeight: '700',
-    marginBottom: 2,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   addressText: {
-    fontSize: 13,
-    lineHeight: 18,
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 16,
   },
   mapWrapper: {
+    height: 280,
     borderRadius: 12,
     overflow: 'hidden',
+    marginBottom: 12,
     position: 'relative',
-    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
   },
   nativeMap: {
-    width: '100%',
-    height: 260,
-    borderRadius: 12,
+    flex: 1,
   },
   mapLegend: {
     position: 'absolute',
     bottom: 8,
     left: 8,
+    right: 8,
     flexDirection: 'row',
-    gap: 12,
+    justifyContent: 'space-around',
+    paddingVertical: 6,
     paddingHorizontal: 10,
-    paddingVertical: 5,
     borderRadius: 8,
     opacity: 0.95,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
   },
   legendDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
+    marginRight: 6,
   },
   legendText: {
     fontSize: 11,
-    fontWeight: '600',
   },
   noCoordsBox: {
-    padding: 24,
-    borderRadius: 12,
+    padding: 30,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 14,
+    borderRadius: 12,
+    marginBottom: 12,
   },
   noCoordsText: {
     fontSize: 13,
     textAlign: 'center',
     marginTop: 8,
-    lineHeight: 18,
   },
   feeCard: {
     padding: 12,
-    borderRadius: 12,
+    borderRadius: 10,
     borderWidth: 1,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   feeCardTitle: {
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: 'bold',
     marginBottom: 8,
   },
   feeRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 3,
+    marginBottom: 5,
   },
   divider: {
     height: 1,
@@ -363,20 +442,19 @@ const styles = StyleSheet.create({
   },
   actionRow: {
     marginTop: 4,
-    marginBottom: 6,
   },
   navBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 14,
-    borderRadius: 12,
+    paddingVertical: 12,
+    borderRadius: 10,
     gap: 8,
   },
   navBtnText: {
     color: '#fff',
-    fontSize: 15,
     fontWeight: 'bold',
+    fontSize: 14,
   },
 });
 

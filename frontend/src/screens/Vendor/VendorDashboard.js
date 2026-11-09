@@ -3,6 +3,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Alert, ActivityIndicator, Switch } from 'react-native';
 import { AuthContext } from '../../context/authContext';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitchButton } from '../../components/LanguageSelectorModal';
 import { SIZES } from '../../styles/theme';
 import api from '../../api/axios';
 import TimeFilter from '../../components/TimeFilter';
@@ -16,6 +18,7 @@ import * as Location from 'expo-location';
 const VendorDashboard = ({ navigation }) => {
   const { user, logout } = useContext(AuthContext);
   const { colors } = useTheme();
+  const { t } = useLanguage();
   
   const [stats, setStats] = useState({ prescriptions: {}, orders: {}, total: 0 });
   const [prescriptionOrders, setPrescriptionOrders] = useState([]);
@@ -214,7 +217,7 @@ const VendorDashboard = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Pharmacy Dashboard </Text>
+          <Text style={styles.greeting}>{t('pharmacy_dashboard')}</Text>
           <Text style={styles.userName}>{user?.fullName}</Text>
           <TouchableOpacity 
             style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8, backgroundColor: colors.primary + '20', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, alignSelf: 'flex-start' }}
@@ -229,11 +232,12 @@ const VendorDashboard = ({ navigation }) => {
           >
             <Ionicons name="location" size={12} color={colors.primary} />
             <Text style={{ fontSize: 12, color: colors.primary, marginLeft: 4, fontWeight: 'bold' }}>
-              {!locationLat ? 'Service area not set' : (!isAvailable ? 'Currently Unavailable' : `Serving: ${serviceRadius || 10}km Radius`)}
+              {!locationLat ? t('service_not_set') : (!isAvailable ? t('currently_unavailable') : t('service_radius', { radius: serviceRadius || 10 }))}
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+          <LanguageSwitchButton compact={true} />
           <TouchableOpacity onPress={() => {
             if (locationLat && locationLng) {
               setSelectedRegion({ latitude: locationLat, longitude: locationLng, latitudeDelta: 0.05, longitudeDelta: 0.05 });
@@ -241,10 +245,10 @@ const VendorDashboard = ({ navigation }) => {
               requestLocation();
             }
             setMapModalVisible(true);
-          }} style={{ marginRight: 15, padding: 4, borderRadius: 20, backgroundColor: locationLat ? colors.primary + '20' : '#fee2e2' }}>
+          }} style={{ padding: 4, borderRadius: 20, backgroundColor: locationLat ? colors.primary + '20' : '#fee2e2' }}>
             <Ionicons name="location" size={24} color={locationLat ? colors.primary : '#ef4444'} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Calendar')} style={{marginRight: 15}}>
+          <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
             <MaterialCommunityIcons name="calendar-month" size={24} color={colors.primary} />
           </TouchableOpacity>
           <NotificationBell />

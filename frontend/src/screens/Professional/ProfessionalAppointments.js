@@ -51,9 +51,11 @@ const ProfessionalAppointments = ({ route }) => {
     }
   }, [route?.params?.statusFilter]);
 
+  // Keep doctor's registered clinic/practice location as primary
+  // Only fallback to live GPS if doctor profile has no location saved in DB
   useEffect(() => {
     (async () => {
-      if (!doctorProfile?.locationLat) {
+      if (doctorProfile && !doctorProfile.locationLat) {
         try {
           const { status } = await Location.getForegroundPermissionsAsync();
           if (status === 'granted') {
@@ -69,7 +71,7 @@ const ProfessionalAppointments = ({ route }) => {
         } catch (e) {}
       }
     })();
-  }, [doctorProfile?.locationLat]);
+  }, [doctorProfile?.id]);
 
   useEffect(() => {
     if (route?.params?.appointmentId && appointments.length > 0) {
@@ -364,7 +366,7 @@ const ProfessionalAppointments = ({ route }) => {
               <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginRight: 6 }}>
                 <Ionicons name="location-sharp" size={16} color={colors.primary} />
                 <Text style={[styles.locationText, { color: colors.text }]} numberOfLines={1}>
-                  {apt.patient?.address || (hasCoordinates ? `GPS: ${apt.locationLat.toFixed(3)}, ${apt.locationLng.toFixed(3)}` : 'Location not specified')}
+                  {apt.visitAddress || apt.patient?.address || (hasCoordinates ? 'Pinned Location on Map' : 'Location not specified')}
                 </Text>
               </View>
               {dist != null ? (
@@ -487,7 +489,7 @@ const ProfessionalAppointments = ({ route }) => {
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
                     <Ionicons name="location-sharp" size={16} color={colors.primary} />
                     <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.text, marginLeft: 4, flex: 1 }} numberOfLines={1}>
-                      {selectedApt.patient?.address || (selectedApt.locationLat ? `GPS: ${selectedApt.locationLat.toFixed(4)}, ${selectedApt.locationLng.toFixed(4)}` : 'Address not registered')}
+                      {selectedApt.visitAddress || selectedApt.patient?.address || (selectedApt.locationLat ? 'Pinned Destination on Map' : 'Address not registered')}
                     </Text>
                     {dist != null && (
                       <Text style={{ fontSize: 12, color: colors.primary, fontWeight: 'bold', marginLeft: 6 }}>

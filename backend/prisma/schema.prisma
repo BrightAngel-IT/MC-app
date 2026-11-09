@@ -180,6 +180,10 @@ model Appointment {
   status         String    @default("PENDING")
   locationLat    Float?
   locationLng    Float?
+  visitAddress   String?   @db.Text
+  bookedAtLat    Float?
+  bookedAtLng    Float?
+  bookedAtAddress String?  @db.Text
   symptoms       String?   @db.Text
   vitalsSummary  String?   @db.Text
   paymentMethod  String?

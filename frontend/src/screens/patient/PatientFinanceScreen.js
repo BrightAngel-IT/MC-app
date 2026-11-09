@@ -191,7 +191,12 @@ const PatientFinanceScreen = ({ navigation }) => {
         </View>
 
         {/* Filter Chips Bar */}
-        <View style={styles.filterBar}>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false} 
+          contentContainerStyle={{ gap: 8, paddingRight: 20 }}
+          style={{ marginBottom: 16, flexGrow: 0 }}
+        >
           <TouchableOpacity 
             style={[styles.filterChip, selectedFilter === 'ALL' && { backgroundColor: colors.primary }]}
             onPress={() => setSelectedFilter('ALL')}
@@ -218,7 +223,7 @@ const PatientFinanceScreen = ({ navigation }) => {
               Medicine Orders ({summary.pharmacy?.count || 0})
             </Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
 
         {/* Transactions List */}
         <Text style={[styles.sectionHeading, { color: colors.text }]}>Itemized Statements</Text>

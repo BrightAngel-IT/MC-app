@@ -601,7 +601,12 @@ const PharmacyScreen = ({ navigation, route }) => {
         />
       </View>
 
-      <View style={{ flexDirection: 'row', gap: 8, marginBottom: 16 }}>
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false} 
+        contentContainerStyle={{ gap: 8, paddingRight: 20 }}
+        style={{ marginBottom: 16, flexGrow: 0 }}
+      >
         {['ALL', 'PENDING', 'SENT', 'BIN'].map((filter) => (
           <TouchableOpacity
             key={filter}
@@ -613,7 +618,7 @@ const PharmacyScreen = ({ navigation, route }) => {
             </Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 40 }} />

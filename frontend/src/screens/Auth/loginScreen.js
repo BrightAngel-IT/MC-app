@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
 import { AuthContext } from '../../context/authContext';
 import { useTheme } from '../../context/themeContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { LanguageSwitchButton } from '../../components/LanguageSelectorModal';
 import { SIZES } from '../../styles/theme';
 
 const LoginScreen = ({ navigation }) => {
@@ -13,12 +15,13 @@ const LoginScreen = ({ navigation }) => {
   
   const { login } = useContext(AuthContext);
   const { colors, toggleTheme, isDarkMode } = useTheme();
+  const { t } = useLanguage();
 
   const styles = getStyles(colors);
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setErrorMsg('Please fill in all fields');
+      setErrorMsg(t('fill_all_fields'));
       return;
     }
     
@@ -38,21 +41,22 @@ const LoginScreen = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.header}>
+        <LanguageSwitchButton />
         <TouchableOpacity onPress={toggleTheme} style={styles.themeBtn}>
           <Text style={styles.themeBtnText}>{isDarkMode ? '☀️' : '🌙'}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.content}>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>Sign in to Healthcare Super App</Text>
+        <Text style={styles.title}>{t('welcome_back')}</Text>
+        <Text style={styles.subtitle}>{t('sign_in_sub')}</Text>
 
         {errorMsg ? <Text style={styles.errorText}>{errorMsg}</Text> : null}
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email Address</Text>
+          <Text style={styles.label}>{t('email_address')}</Text>
           <TextInput
             style={[styles.input, focusedInput === 'email' && styles.inputFocused]}
-            placeholder="Enter your email"
+            placeholder={t('enter_email')}
             placeholderTextColor={colors.textMuted}
             value={email}
             onChangeText={setEmail}
@@ -64,10 +68,10 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label}>{t('password')}</Text>
           <TextInput
             style={[styles.input, focusedInput === 'password' && styles.inputFocused]}
-            placeholder="Enter your password"
+            placeholder={t('enter_password')}
             placeholderTextColor={colors.textMuted}
             value={password}
             onChangeText={setPassword}
@@ -85,14 +89,14 @@ const LoginScreen = ({ navigation }) => {
           {loading ? (
             <ActivityIndicator color={colors.surface} />
           ) : (
-            <Text style={styles.loginButtonText}>Sign In</Text>
+            <Text style={styles.loginButtonText}>{t('sign_in')}</Text>
           )}
         </TouchableOpacity>
 
         <View style={styles.registerContainer}>
-          <Text style={styles.registerText}>Don't have an account? </Text>
+          <Text style={styles.registerText}>{t('dont_have_account')} </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.registerLink}>Register</Text>
+            <Text style={styles.registerLink}>{t('sign_up')}</Text>
           </TouchableOpacity>
         </View>
       </View>

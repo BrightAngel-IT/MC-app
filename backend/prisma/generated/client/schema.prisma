@@ -171,21 +171,25 @@ model AdminProfile {
 }
 
 model Appointment {
-  id             String    @id @default(uuid())
-  patientId      String
-  professionalId String
-  serviceType    String
-  scheduledDate  DateTime
-  status         String    @default("PENDING")
-  locationLat    Float?
-  locationLng    Float?
-  symptoms       String?   @db.Text
-  vitalsSummary  String?   @db.Text
-  paymentMethod  String?
-  paymentStatus  String    @default("PENDING")
-  totalAmount    Float     @default(0.0)
-  completedAt    DateTime?
-  createdAt      DateTime  @default(now())
+  id              String    @id @default(uuid())
+  patientId       String
+  professionalId  String
+  serviceType     String
+  scheduledDate   DateTime
+  status          String    @default("PENDING")
+  locationLat     Float?
+  locationLng     Float?
+  visitAddress    String?   @db.Text
+  bookedAtLat     Float?
+  bookedAtLng     Float?
+  bookedAtAddress String?   @db.Text
+  symptoms        String?   @db.Text
+  vitalsSummary   String?   @db.Text
+  paymentMethod   String?
+  paymentStatus   String    @default("PENDING")
+  totalAmount     Float     @default(0.0)
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
 
   patient       PatientProfile       @relation(fields: [patientId], references: [id])
   professional  ProfessionalProfile  @relation(fields: [professionalId], references: [id])
