@@ -172,46 +172,35 @@ const NearbyProfessionalsMap = () => {
 
       {/* Prominent High-Visibility Location Selector Box */}
       <View style={[styles.locationCard, { backgroundColor: colors.surface, borderColor: isUsingCurrentLocation ? colors.border : colors.primary }]}>
+        {/* Status & Quick Switch Tabs */}
         <View style={styles.locationHeaderRow}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-            <View style={[styles.badgeIndicator, { backgroundColor: isUsingCurrentLocation ? '#10B981' : colors.primary }]}>
-              <Ionicons name={isUsingCurrentLocation ? 'navigate' : 'location'} size={13} color="#fff" />
-              <Text style={styles.badgeIndicatorText}>
-                {isUsingCurrentLocation ? 'CURRENT LOCATION' : 'CUSTOM DESTINATION'}
-              </Text>
-            </View>
-          </View>
+          <TouchableOpacity 
+            style={[
+              styles.switchTabBtn, 
+              isUsingCurrentLocation ? { backgroundColor: '#10B981', borderColor: '#10B981' } : { backgroundColor: colors.surface, borderColor: colors.border }
+            ]} 
+            onPress={handleSetCurrentLocation}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="navigate" size={13} color={isUsingCurrentLocation ? '#fff' : colors.textLight} />
+            <Text style={[styles.switchTabText, isUsingCurrentLocation ? { color: '#fff', fontWeight: 'bold' } : { color: colors.textLight }]}>
+              Current Location
+            </Text>
+          </TouchableOpacity>
 
-          {/* Quick Buttons: Set Current Location vs Set Other Location */}
-          <View style={styles.btnActionGroup}>
-            <TouchableOpacity 
-              style={[
-                styles.switchPillBtn, 
-                isUsingCurrentLocation && { backgroundColor: '#10B981', borderColor: '#10B981' }
-              ]} 
-              onPress={handleSetCurrentLocation}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="navigate" size={12} color={isUsingCurrentLocation ? '#fff' : colors.textLight} />
-              <Text style={[styles.switchPillText, isUsingCurrentLocation ? { color: '#fff', fontWeight: 'bold' } : { color: colors.textLight }]}>
-                Set Current Location
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={[
-                styles.switchPillBtn, 
-                !isUsingCurrentLocation && { backgroundColor: colors.primary, borderColor: colors.primary }
-              ]} 
-              onPress={() => setLocationModalVisible(true)}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="search" size={12} color={!isUsingCurrentLocation ? '#fff' : colors.primary} />
-              <Text style={[styles.switchPillText, !isUsingCurrentLocation ? { color: '#fff', fontWeight: 'bold' } : { color: colors.primary, fontWeight: 'bold' }]}>
-                Set Other Location
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity 
+            style={[
+              styles.switchTabBtn, 
+              !isUsingCurrentLocation ? { backgroundColor: colors.primary, borderColor: colors.primary } : { backgroundColor: colors.surface, borderColor: colors.border }
+            ]} 
+            onPress={() => setLocationModalVisible(true)}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="location" size={13} color={!isUsingCurrentLocation ? '#fff' : colors.textLight} />
+            <Text style={[styles.switchTabText, !isUsingCurrentLocation ? { color: '#fff', fontWeight: 'bold' } : { color: colors.textLight }]}>
+              Other Location
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Address Display Clickable Bar */}
@@ -303,43 +292,23 @@ const styles = StyleSheet.create({
   },
   locationHeaderRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
-    flexWrap: 'wrap',
-    gap: 6,
+    gap: 8,
   },
-  badgeIndicator: {
+  switchTabBtn: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 7,
     paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-  },
-  badgeIndicatorText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: 'bold',
-    letterSpacing: 0.4,
-  },
-  btnActionGroup: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  switchPillBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 16,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#cbd5e1',
-    backgroundColor: '#fff',
   },
-  switchPillText: {
-    fontSize: 11,
+  switchTabText: {
+    fontSize: 12,
   },
   addressDisplayRow: {
     flexDirection: 'row',

@@ -177,18 +177,19 @@ const styles = StyleSheet.create({
   switchBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  compactBtn: {
+    gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 4,
+    borderRadius: 20,
+    borderWidth: 1,
+    maxWidth: 100,
+  },
+  compactBtn: {
+    paddingHorizontal: 6,
+    paddingVertical: 3,
   },
   btnText: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
   },
 });

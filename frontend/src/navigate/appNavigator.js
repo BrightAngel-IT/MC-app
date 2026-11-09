@@ -80,9 +80,9 @@ const PatientTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 9.5,
           fontWeight: '600',
-          marginTop: 2,
+          marginTop: 1,
         },
       }}
     >
@@ -164,9 +164,9 @@ const ProfessionalTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 9.5,
           fontWeight: '600',
-          marginTop: 2,
+          marginTop: 1,
         },
       }}
     >
@@ -239,9 +239,9 @@ const VendorTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 9.5,
           fontWeight: '600',
-          marginTop: 2,
+          marginTop: 1,
         },
       }}
     >
@@ -281,9 +281,9 @@ const AdminTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 9.5,
           fontWeight: '600',
-          marginTop: 2,
+          marginTop: 1,
         },
       }}
     >
@@ -315,9 +315,9 @@ const ElderHomeTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 9.5,
           fontWeight: '600',
-          marginTop: 2,
+          marginTop: 1,
         },
       }}
     >

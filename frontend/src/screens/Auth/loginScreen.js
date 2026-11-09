@@ -41,7 +41,9 @@ const LoginScreen = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.header}>
-        <LanguageSwitchButton />
+        <View style={{ zIndex: 9999 }}>
+          <LanguageSwitchButton />
+        </View>
         <TouchableOpacity onPress={toggleTheme} style={styles.themeBtn}>
           <Text style={styles.themeBtnText}>{isDarkMode ? '☀️' : '🌙'}</Text>
         </TouchableOpacity>
@@ -110,9 +112,14 @@ const getStyles = (colors) => StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    padding: SIZES.padding,
-    paddingTop: 50,
-    alignItems: 'flex-end',
+    paddingHorizontal: SIZES.padding,
+    paddingTop: Platform.OS === 'android' ? 40 : 50,
+    paddingBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 10,
+    zIndex: 100,
   },
   themeBtn: {
     padding: 8,

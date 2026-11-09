@@ -2,7 +2,7 @@ export const ta = {
   // Navigation & Tabs
   nav_home: 'முகப்பு',
   nav_appointments: 'சந்திப்புகள்',
-  nav_prescriptions: 'மருந்து சீட்டுகள்',
+  nav_prescriptions: 'மருந்து',
   nav_billing: 'கட்டணங்கள்',
   nav_reports: 'அறிக்கைகள்',
   nav_profile: 'சுயவிவரம்',
