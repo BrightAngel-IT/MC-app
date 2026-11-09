@@ -295,10 +295,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
     gap: 8,
-    maxWidth: 500,
   },
   switchTabBtn: {
     flex: 1,
+    maxWidth: 200,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

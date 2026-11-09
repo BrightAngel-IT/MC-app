@@ -340,9 +340,6 @@ const getStyles = (colors) => StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     minHeight: 56,
-    width: '100%',
-    maxWidth: 900,
-    alignSelf: 'center',
   },
   headerLeft: {
     flexShrink: 1,
@@ -401,9 +398,6 @@ const getStyles = (colors) => StyleSheet.create({
   scrollContent: {
     padding: SIZES.padding,
     paddingBottom: 40,
-    width: '100%',
-    maxWidth: 900,
-    alignSelf: 'center',
   },
   sosButton: {
     backgroundColor: colors.danger,
@@ -470,12 +464,13 @@ const getStyles = (colors) => StyleSheet.create({
   },
   primaryBtn: {
     flex: 1,
+    maxWidth: 220,
     paddingVertical: 12,
     paddingHorizontal: 8,
     borderRadius: SIZES.radius,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
+    minHeight: 46,
     shadowColor: colors.roles.PATIENT.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -490,12 +485,13 @@ const getStyles = (colors) => StyleSheet.create({
   },
   secondaryBtn: {
     flex: 1,
+    maxWidth: 220,
     paddingVertical: 12,
     paddingHorizontal: 8,
     borderRadius: SIZES.radius,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
+    minHeight: 46,
     backgroundColor: colors.surfaceLight,
   },
   secondaryBtnText: {
