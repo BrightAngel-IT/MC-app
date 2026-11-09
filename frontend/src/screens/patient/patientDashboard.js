@@ -334,12 +334,15 @@ const getStyles = (colors) => StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     paddingVertical: 10,
     backgroundColor: colors.surface,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
     minHeight: 56,
+    width: '100%',
+    maxWidth: 900,
+    alignSelf: 'center',
   },
   headerLeft: {
     flexShrink: 1,
@@ -398,6 +401,9 @@ const getStyles = (colors) => StyleSheet.create({
   scrollContent: {
     padding: SIZES.padding,
     paddingBottom: 40,
+    width: '100%',
+    maxWidth: 900,
+    alignSelf: 'center',
   },
   sosButton: {
     backgroundColor: colors.danger,

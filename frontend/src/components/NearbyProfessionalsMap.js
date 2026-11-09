@@ -295,6 +295,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
     gap: 8,
+    maxWidth: 500,
   },
   switchTabBtn: {
     flex: 1,
