@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, SectionList, TouchableOpacity, ActivityIndicator, Alert, Modal, TextInput, Linking, Platform, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, SectionList, TouchableOpacity, ActivityIndicator, Alert, Modal, TextInput, Linking, Platform, Image, ScrollView } from 'react-native';
 import api from '../../api/axios';
 import { useTheme } from '../../context/themeContext';
 import { useLanguage } from '../../context/LanguageContext';
