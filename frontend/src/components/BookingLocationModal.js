@@ -1,5 +1,5 @@
  import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, ActivityIndicator, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, ActivityIndicator, Alert, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useTheme } from '../context/themeContext';
@@ -145,7 +145,15 @@ const BookingLocationModal = ({
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.modalOverlay}>
+      <KeyboardAvoidingView
+        style={styles.modalOverlay}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <TouchableOpacity
+          style={StyleSheet.absoluteFill}
+          activeOpacity={1}
+          onPress={onClose}
+        />
         <View style={styles.modalContainer}>
           {/* Header */}
           <View style={styles.header}>
@@ -158,7 +166,10 @@ const BookingLocationModal = ({
             </TouchableOpacity>
           </View>
 
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView 
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             {/* Quick Choice Buttons */}
             <View style={styles.optionsContainer}>
               <TouchableOpacity
@@ -202,6 +213,9 @@ const BookingLocationModal = ({
                   placeholderTextColor={colors.textLight}
                   value={addressInput}
                   onChangeText={setAddressInput}
+                  returnKeyType="search"
+                  onSubmitEditing={handleSearchCustomAddress}
+                  autoCapitalize="words"
                 />
                 <TouchableOpacity
                   style={[styles.searchBtn, isSearching && { opacity: 0.6 }]}
@@ -242,7 +256,7 @@ const BookingLocationModal = ({
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
