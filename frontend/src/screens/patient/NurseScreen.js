@@ -325,6 +325,7 @@ const NurseScreen = ({ route }) => {
       <Modal visible={bookModalVisible} animationType="slide" transparent>
         <View style={styles.modalBg}>
           <View style={styles.modalContent}>
+            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 16 }}>
             <Text style={styles.modalTitle}>Request {selectedNurse?.fullName}</Text>
             
             <Text style={styles.label}>{t('select_date')}</Text>
@@ -458,6 +459,7 @@ const NurseScreen = ({ route }) => {
                 <Text style={styles.submitText}>{isBooking ? t('booking_in_progress') : t('confirm_booking_btn')}</Text>
               </TouchableOpacity>
             </View>
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -587,13 +589,14 @@ const getStyles = (colors) => StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
   },
-  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
-  modalContent: { 
-    backgroundColor: colors.surface, 
-    borderRadius: SIZES.radiusLg, 
-    padding: 24,
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 12 },
+  modalContent: {
+    backgroundColor: colors.surface,
+    borderRadius: SIZES.radiusLg,
+    padding: 16,
     width: '100%',
     maxWidth: 550,
+    maxHeight: '94%',
   },
   modalTitle: { fontSize: 20, fontWeight: 'bold', color: colors.text, marginBottom: 20 },
   label: { fontSize: 14, color: colors.textLight, marginBottom: 8, marginTop: 10 },

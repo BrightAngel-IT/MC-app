@@ -281,6 +281,7 @@ const ParamedicSearch = ({ route }) => {
       <Modal visible={bookModalVisible} animationType="slide" transparent>
         <View style={styles.modalBg}>
           <View style={styles.modalContent}>
+            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 16 }}>
             <Text style={styles.modalTitle}>Dispatch {selectedParamedic?.fullName}</Text>
             
             <Text style={styles.label}>Date (YYYY-MM-DD)</Text>
@@ -350,6 +351,7 @@ const ParamedicSearch = ({ route }) => {
                 <Text style={styles.submitText}>{isBooking ? 'Dispatching...' : 'Confirm Dispatch'}</Text>
               </TouchableOpacity>
             </View>
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -426,7 +428,7 @@ const getStyles = (colors) => StyleSheet.create({
   bookBtn: { backgroundColor: colors.roles.PARAMEDIC.primary, paddingVertical: 12, borderRadius: SIZES.radius, alignItems: 'center' },
   bookBtnText: { color: '#fff', fontSize: 14, fontWeight: 'bold' },
   
-  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 12 },
   modalContent: { backgroundColor: colors.surface, width: '100%', borderRadius: SIZES.radiusLg, padding: 20 },
   modalTitle: { fontSize: 20, fontWeight: 'bold', color: colors.text, marginBottom: 20 },
   label: { fontSize: 13, color: colors.text, fontWeight: '600', marginBottom: 8, marginTop: 10 },

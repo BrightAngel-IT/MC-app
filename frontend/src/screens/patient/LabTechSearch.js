@@ -294,6 +294,7 @@ const LabTechSearch = ({ route }) => {
       <Modal visible={bookModalVisible} animationType="slide" transparent>
         <View style={styles.modalBg}>
           <View style={styles.modalContent}>
+            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 16 }}>
             <Text style={styles.modalTitle}>Book {selectedTech?.fullName}</Text>
             
             <Text style={styles.label}>Appointment Date</Text>
@@ -427,6 +428,7 @@ const LabTechSearch = ({ route }) => {
                 <Text style={styles.submitText}>{isBooking ? t('booking_in_progress') : t('confirm_booking_btn')}</Text>
               </TouchableOpacity>
             </View>
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -521,7 +523,7 @@ const getStyles = (colors) => StyleSheet.create({
   },
   bookBtnText: { color: '#fff', fontSize: 14, fontWeight: 'bold' },
   
-  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  modalBg: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 12 },
   modalContent: { 
     backgroundColor: colors.surface, 
     width: '100%', 

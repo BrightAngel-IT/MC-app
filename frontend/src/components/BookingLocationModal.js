@@ -147,13 +147,16 @@ const BookingLocationModal = ({
     <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
       <KeyboardAvoidingView
         style={styles.modalOverlay}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : (Platform.OS === 'android' ? 'height' : undefined)}
+        keyboardVerticalOffset={Platform.OS === 'android' ? 24 : 0}
       >
-        <TouchableOpacity
-          style={StyleSheet.absoluteFill}
-          activeOpacity={1}
-          onPress={onClose}
-        />
+        {Platform.OS !== 'web' ? (
+          <TouchableOpacity
+            style={StyleSheet.absoluteFill}
+            activeOpacity={1}
+            onPress={onClose}
+          />
+        ) : null}
         <View style={styles.modalContainer}>
           {/* Header */}
           <View style={styles.header}>
@@ -169,7 +172,39 @@ const BookingLocationModal = ({
           <ScrollView 
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ paddingBottom: 20 }}
           >
+            {/* Custom Search Form (Placed first so it's always above keyboard) */}
+            <View style={styles.customSection}>
+              <Text style={styles.sectionLabel}>{t('search_custom_destination')}:</Text>
+              <View style={styles.searchRow}>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t('search_location_placeholder')}
+                  placeholderTextColor={colors.textLight}
+                  value={addressInput}
+                  onChangeText={setAddressInput}
+                  returnKeyType="search"
+                  onSubmitEditing={handleSearchCustomAddress}
+                  autoCapitalize="words"
+                />
+                <TouchableOpacity
+                  style={[styles.searchBtn, isSearching && { opacity: 0.6 }]}
+                  onPress={handleSearchCustomAddress}
+                  disabled={isSearching}
+                >
+                  {isSearching ? (
+                    <ActivityIndicator size="small" color="#fff" />
+                  ) : (
+                    <Ionicons name="search" size={20} color="#fff" />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.helperText}>
+                💡 You can book while you are at your office and have the doctor visit your home or parents.
+              </Text>
+            </View>
+
             {/* Quick Choice Buttons */}
             <View style={styles.optionsContainer}>
               <TouchableOpacity
@@ -201,37 +236,6 @@ const BookingLocationModal = ({
                   </View>
                 </TouchableOpacity>
               ) : null}
-            </View>
-
-            {/* Custom Search Form */}
-            <View style={styles.customSection}>
-              <Text style={styles.sectionLabel}>{t('search_custom_destination')}:</Text>
-              <View style={styles.searchRow}>
-                <TextInput
-                  style={styles.input}
-                  placeholder={t('search_location_placeholder')}
-                  placeholderTextColor={colors.textLight}
-                  value={addressInput}
-                  onChangeText={setAddressInput}
-                  returnKeyType="search"
-                  onSubmitEditing={handleSearchCustomAddress}
-                  autoCapitalize="words"
-                />
-                <TouchableOpacity
-                  style={[styles.searchBtn, isSearching && { opacity: 0.6 }]}
-                  onPress={handleSearchCustomAddress}
-                  disabled={isSearching}
-                >
-                  {isSearching ? (
-                    <ActivityIndicator size="small" color="#fff" />
-                  ) : (
-                    <Ionicons name="search" size={20} color="#fff" />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.helperText}>
-                💡 You can book while you are at your office and have the doctor visit your home or parents.
-              </Text>
             </View>
 
             {/* Current Selected Preview */}
