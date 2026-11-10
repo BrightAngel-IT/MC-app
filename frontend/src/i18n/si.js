@@ -94,6 +94,7 @@ export const si = {
   srv_equipment: 'වෛද්‍ය\nඋපකරණ',
   srv_elder_homes: 'වැඩිහිටි\nනිවාස',
   srv_billing: 'ගෙවීම් සහ\nමූල්‍ය',
+  srv_ai_assistant: 'AI සෞඛ්‍ය\nසහායකයා',
 
   // Map & Booking Destination
   nearby_healthcare_providers: 'ළඟම ඇති සෞඛ්‍ය සේවා සපයන්නන්',
@@ -236,5 +237,10 @@ export const si = {
   val_select_time_req: 'කරුණාකර හමුවීම සඳහා වේලාවක් තෝරන්න.',
   val_select_destination_req: 'කරුණාකර වෛද්‍යවරයා පැමිණිය යුතු ස්ථානය (ගමනාන්තය) තෝරන්න.',
   val_enter_symptoms_req: 'කරුණාකර රෝග ලක්ෂණ හෝ පැමිණීමට හේතුව ඇතුළත් කරන්න.',
+  searching_near: 'සොයන ප්‍රදේශය:',
+  change_location: 'ස්ථානය වෙනස් කරන්න',
+  available_nearby: 'ළඟම ඇති වෘත්තිකයන්',
+  other_professionals: 'වෙනත් ප්‍රදේශ වල (ඇමතුමක් ගෙන තහවුරු කරගන්න)',
+  others_desc: 'මෙම වෘත්තිකයන් ඔබ තෝරාගත් ප්‍රදේශයෙන් පිටත හෝ offline වේ. පැමිණීම තහවුරු කරගැනීමට සෘජුවම අමතන්න.',
 };
 

@@ -94,6 +94,7 @@ export const en = {
   srv_equipment: 'Equipment',
   srv_elder_homes: 'Elder\nHomes',
   srv_billing: 'Billing &\nFinance',
+  srv_ai_assistant: 'AI Health\nAssistant',
 
   // Map & Booking Destination
   nearby_healthcare_providers: 'Nearby Healthcare Providers',
@@ -236,5 +237,10 @@ export const en = {
   val_select_time_req: 'Please select an appointment time slot.',
   val_select_destination_req: 'Please select where the professional should visit (Destination location).',
   val_enter_symptoms_req: 'Please enter patient symptoms or reason for visit.',
+  searching_near: 'Searching near:',
+  change_location: 'Change Location',
+  available_nearby: 'Available Nearby',
+  other_professionals: 'Others (Call to confirm)',
+  others_desc: 'These professionals are outside your selected area or offline. Appointments may not be guaranteed, so please contact them directly.',
 };
 

@@ -41,6 +41,7 @@ import CalendarScreen from '../screens/CalendarScreen';
 import EditProfessionalProfileScreen from '../screens/Professional/EditProfessionalProfileScreen';
 import ProfessionalWalletScreen from '../screens/Professional/ProfessionalWalletScreen';
 import AdminProfileScreen from '../screens/Admin/AdminProfileScreen';
+import ChatbotScreen from '../screens/ChatbotScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -446,6 +447,13 @@ const PatientStack = () => {
       <Stack.Screen 
         name="PatientFinance" 
         component={PatientFinanceScreen} 
+        options={{ 
+          headerShown: false,
+        }} 
+      />
+      <Stack.Screen 
+        name="Chatbot" 
+        component={ChatbotScreen} 
         options={{ 
           headerShown: false,
         }} 

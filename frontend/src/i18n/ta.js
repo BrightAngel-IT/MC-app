@@ -94,6 +94,7 @@ export const ta = {
   srv_equipment: 'மருத்துவ\nஉபகரணங்கள்',
   srv_elder_homes: 'முதியோர்\nஇல்லங்கள்',
   srv_billing: 'கட்டணம் மற்றும்\nநிதி',
+  srv_ai_assistant: 'AI மருத்துவ\nஉதவியாளர்',
 
   // Map & Booking Destination
   nearby_healthcare_providers: 'அருகிலுள்ள சுகாதார வழங்குநர்கள்',
@@ -236,5 +237,10 @@ export const ta = {
   val_select_time_req: 'சந்திப்புக்கான நேரத்தைத் தேர்ந்தெடுக்கவும்.',
   val_select_destination_req: 'மருத்துவர் செல்ல வேண்டிய இடத்தை (சேருமிடம்) தேர்ந்தெடுக்கவும்.',
   val_enter_symptoms_req: 'அறிகுறிகள் அல்லது சந்திப்பிற்கான காரணத்தை உள்ளிடவும்.',
+  searching_near: 'தேடும் பகுதி:',
+  change_location: 'இருப்பிடத்தை மாற்றவும்',
+  available_nearby: 'அருகிலுள்ள வல்லுநர்கள்',
+  other_professionals: 'மற்றவர்கள் (உறுதிப்படுத்த அழைக்கவும்)',
+  others_desc: 'இந்த வல்லுநர்கள் நீங்கள் தேர்ந்தெடுத்த பகுதிக்கு வெளியே அல்லது ஆஃப்லைனில் உள்ளனர்.',
 };
 

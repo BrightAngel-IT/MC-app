@@ -181,6 +181,12 @@ const DoctorSearch = ({ navigation, route }) => {
           let loc = await Location.getCurrentPositionAsync({});
           currentPatientLoc = { lat: loc.coords.latitude, lng: loc.coords.longitude };
           setPatientLocation(currentPatientLoc);
+          if (!visitLocation) {
+            setVisitLocation(currentPatientLoc);
+            reverseGeocodeCoords(loc.coords.latitude, loc.coords.longitude).then(addr => {
+              if (addr && !visitAddress) setVisitAddress(addr);
+            });
+          }
         }
       } catch (err) {
         console.log("Location fetch on mount failed", err);
@@ -495,13 +501,15 @@ const DoctorSearch = ({ navigation, route }) => {
   );
   const nearbyData = [];
   const othersData = [];
+  const activeLocation = visitLocation || patientLocation;
 
   filteredDoctors.forEach(doc => {
     let isNearby = false;
-    if (patientLocation && doc.locationLat && doc.locationLng && doc.serviceRadius) {
-      const dist = calculateDistance(patientLocation.lat, patientLocation.lng, doc.locationLat, doc.locationLng);
+    if (activeLocation && doc.locationLat && doc.locationLng) {
+      const dist = calculateDistance(activeLocation.lat, activeLocation.lng, doc.locationLat, doc.locationLng);
       doc._distance = !isNaN(dist) ? Number(dist.toFixed(1)) : undefined;
-      if (dist <= doc.serviceRadius) {
+      const radius = doc.serviceRadius || 25;
+      if (dist <= radius) {
         isNearby = true;
       }
     }
@@ -511,6 +519,8 @@ const DoctorSearch = ({ navigation, route }) => {
       othersData.push(doc);
     }
   });
+  nearbyData.sort((a, b) => ((a._distance ?? 9999) - (b._distance ?? 9999)));
+  othersData.sort((a, b) => ((a._distance ?? 9999) - (b._distance ?? 9999)));
 
   return (
     <View style={styles.container}>
@@ -528,6 +538,27 @@ const DoctorSearch = ({ navigation, route }) => {
         />
       </View>
 
+      {/* Target Location Filter Banner */}
+      <TouchableOpacity 
+        style={styles.targetLocationBanner}
+        onPress={() => setLocationModalVisible(true)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.targetLocationLeft}>
+          <Ionicons name="location-sharp" size={18} color={colors.primary} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.targetLocationSubText}>{t('searching_near')}</Text>
+            <Text style={styles.targetLocationMainText} numberOfLines={1}>
+              {visitAddress || 'Current Location'}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.changeLocationPill}>
+          <Text style={styles.changeLocationText}>{t('change_location')}</Text>
+          <Ionicons name="chevron-forward" size={14} color={colors.primary} />
+        </View>
+      </TouchableOpacity>
+
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} style={{marginTop: 50}} />
       ) : filteredDoctors.length === 0 ? (
@@ -535,8 +566,8 @@ const DoctorSearch = ({ navigation, route }) => {
       ) : (
         <SectionList
           sections={[
-            { title: 'Available Nearby', data: nearbyData },
-            { title: 'Others (Call to confirm)', data: othersData }
+            { title: t('available_nearby'), data: nearbyData, isNearby: true },
+            { title: t('other_professionals'), data: othersData, isNearby: false }
           ].filter(s => s.data.length > 0)}
           keyExtractor={item => item.id.toString()}
           renderItem={renderDoctor}
@@ -774,6 +805,50 @@ const DoctorSearch = ({ navigation, route }) => {
 };
 
 const getStyles = (colors) => StyleSheet.create({
+  targetLocationBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.surface,
+    borderWidth: 1.5,
+    borderColor: colors.primary + '40',
+    borderRadius: SIZES.radius,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 16,
+    gap: 8,
+  },
+  targetLocationLeft: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  targetLocationSubText: {
+    fontSize: 10,
+    color: colors.textMuted,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+  targetLocationMainText: {
+    fontSize: 13,
+    color: colors.text,
+    fontWeight: '700',
+  },
+  changeLocationPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: colors.primary + '15',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 14,
+  },
+  changeLocationText: {
+    fontSize: 11,
+    color: colors.primary,
+    fontWeight: 'bold',
+  },
   container: { 
     flex: 1, 
     backgroundColor: colors.background, 

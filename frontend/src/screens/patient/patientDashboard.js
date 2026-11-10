@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState , useCallback } from 'react';
+import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Dimensions, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Dimensions, Alert, Platform, Animated } from 'react-native';
 import { AuthContext } from '../../context/authContext';
 import { useTheme } from '../../context/themeContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -38,6 +38,7 @@ const getServicesList = (t) => [
   { id: '8', title: t('srv_equipment'), icon: 'wheelchair-accessibility', type: 'mci', color: '#64748b', action: 'AllProductsScreen' },
   { id: '9', title: t('srv_elder_homes'), icon: 'home-heart', type: 'mci', color: '#f97316', action: 'ElderHomeSearch' },
   { id: '10', title: t('srv_billing'), icon: 'file-invoice-dollar', type: 'fa5', color: '#0f766e', action: 'PatientFinance' },
+  { id: '11', title: t('srv_ai_assistant'), icon: 'robot', type: 'mci', color: '#6366f1', action: 'Chatbot' },
 ];
 
 const PatientDashboard = ({ navigation }) => {
@@ -52,6 +53,42 @@ const PatientDashboard = ({ navigation }) => {
   
   const styles = getStyles(colors);
   const SERVICES = getServicesList(t);
+
+  // Floating Chatbot Bouncing / Jumping Animation
+  const jumpAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        // Jump Up
+        Animated.timing(jumpAnim, {
+          toValue: -14,
+          duration: 350,
+          useNativeDriver: true,
+        }),
+        // Land Down
+        Animated.timing(jumpAnim, {
+          toValue: 0,
+          duration: 350,
+          useNativeDriver: true,
+        }),
+        // Small Bounce Up
+        Animated.timing(jumpAnim, {
+          toValue: -6,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        // Land Back Down
+        Animated.timing(jumpAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        // Rest Pause between jumps
+        Animated.delay(1800),
+      ])
+    ).start();
+  }, [jumpAnim]);
 
   useEffect(() => {
     (async () => {
@@ -321,6 +358,26 @@ const PatientDashboard = ({ navigation }) => {
         />
 
       </ScrollView>
+
+      {/* Floating AI Chatbot Button with Playful Jump Animation */}
+      <Animated.View 
+        style={[
+          styles.floatingContainer, 
+          { transform: [{ translateY: jumpAnim }] }
+        ]} 
+        pointerEvents="box-none"
+      >
+        <TouchableOpacity
+          style={styles.floatingChatBtn}
+          onPress={() => navigation.navigate('Chatbot')}
+          activeOpacity={0.85}
+        >
+          <MaterialCommunityIcons name="robot" size={26} color="#fff" />
+          <View style={styles.chatBadge}>
+            <Text style={styles.chatBadgeText}>AI</Text>
+          </View>
+        </TouchableOpacity>
+      </Animated.View>
     </SafeAreaView>
   );
 };
@@ -613,6 +670,55 @@ const getStyles = (colors) => StyleSheet.create({
   bgSuccess: { backgroundColor: colors.success + '20' },
   bgDanger: { backgroundColor: colors.danger + '20' },
   statusText: { fontSize: 12, fontWeight: 'bold', color: colors.text },
+  floatingContainer: {
+    position: 'absolute',
+    bottom: 24,
+    right: 20,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+  },
+  glowRing: {
+    position: 'absolute',
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#818cf8',
+  },
+  floatingChatBtn: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#6366f1',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 8,
+    shadowColor: '#4f46e5',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.45,
+    shadowRadius: 8,
+    borderWidth: 2,
+    borderColor: '#a5b4fc',
+  },
+  chatBadge: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    backgroundColor: '#10b981',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 10,
+    borderWidth: 1.5,
+    borderColor: '#fff',
+  },
+  chatBadgeText: {
+    color: '#fff',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
 });
 
 export default PatientDashboard;
