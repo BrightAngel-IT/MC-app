@@ -274,14 +274,38 @@ exports.issuePrescription = async (req, res) => {
 
 exports.getActiveSOS = async (req, res) => {
     try {
+        const profile = await prisma.professionalProfile.findUnique({
+            where: { userId: req.user.id },
+        });
+
+        // Fetch unassigned SOS requests (waiting for a paramedic)
         const activeSOS = await prisma.emergencySOS.findMany({
             where: { status: { in: ["TRIGGERED", "TRIGGERED_EMERGENCY", "TRIGGERED_TRANSPORT"] } },
             include: {
                 patient: { include: { user: true } }
-            }
+            },
+            orderBy: { triggeredAt: 'desc' }
         });
 
-        return res.status(200).json({ message: 'Active SOS fetched successfully', activeSOS })
+        // Also fetch any SOS currently accepted by THIS paramedic (in-progress)
+        let myAcceptedSOS = null;
+        if (profile) {
+            myAcceptedSOS = await prisma.emergencySOS.findFirst({
+                where: {
+                    paramedicId: profile.id,
+                    status: "ACCEPTED"
+                },
+                include: {
+                    patient: { include: { user: true } }
+                }
+            });
+        }
+
+        return res.status(200).json({ 
+            message: 'Active SOS fetched successfully', 
+            activeSOS,
+            myAcceptedSOS
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Internal server error" });
@@ -293,22 +317,57 @@ exports.acceptSOS = async (req, res) => {
         const { id: sosId } = req.params;
         const profile = await prisma.professionalProfile.findUnique({
             where: { userId: req.user.id },
+            include: { user: true }
         });
 
         if (!profile) return res.status(404).json({ message: "Profile not found" });
 
+        // 1. Check if the SOS exists and is still unassigned
+        const existingSOS = await prisma.emergencySOS.findUnique({
+            where: { id: sosId },
+            include: { paramedic: { include: { user: true } } }
+        });
+
+        if (!existingSOS) {
+            return res.status(404).json({ message: "SOS request not found or has been cancelled." });
+        }
+
+        if (existingSOS.status !== "TRIGGERED" && 
+            existingSOS.status !== "TRIGGERED_EMERGENCY" && 
+            existingSOS.status !== "TRIGGERED_TRANSPORT") {
+            const acceptedByName = existingSOS.paramedic?.fullName || existingSOS.paramedic?.user?.fullName || "another paramedic";
+            return res.status(409).json({ 
+                alreadyAccepted: true,
+                message: `This SOS has already been accepted by ${acceptedByName}.` 
+            });
+        }
+
+        // 2. Atomically assign to this paramedic
         const updatedSOS = await prisma.emergencySOS.update({
             where: { id: sosId },
             data: {
-                status: "ACCEPTED", paramedicId: profile.id
+                status: "ACCEPTED", 
+                paramedicId: profile.id
             },
-            include: { patient: { include: { user: true } } }
+            include: { 
+                patient: { include: { user: true } },
+                paramedic: { include: { user: true } }
+            }
         });
 
+        // 3. Mark paramedic as BUSY/ON_DUTY
+        await prisma.professionalProfile.update({
+            where: { id: profile.id },
+            data: { availabilityStatus: 'ON_DUTY' }
+        });
+
+        // 4. Notify patient that this specific paramedic is rushing to their location
+        const driverName = profile.user?.fullName || profile.fullName || "Ambulance Paramedic";
+        const vehicleNumber = profile.ambulanceVehicleNumber ? ` (${profile.ambulanceVehicleNumber})` : '';
         await notificationService.sendNotification(
             updatedSOS.patient.userId,
-            "SOS Accepted",
-            `A paramedic is on the way to your location!`,
+            "Ambulance Dispatched! 🚑",
+            `${driverName}${vehicleNumber} has accepted your emergency request and is rushing to your location!`,
             "SOS",
             updatedSOS.id
         );
@@ -380,41 +439,141 @@ exports.deleteAppointment = async(req, res) => {
 exports.completeSOS = async (req, res) => {
     try {
         const { id } = req.params;
+        const { paymentMethod, totalAmount } = req.body;
+
+        const existing = await prisma.emergencySOS.findUnique({
+            where: { id },
+            include: {
+                patient: { include: { user: true } },
+                paramedic: { include: { user: true } }
+            }
+        });
+
+        if (!existing) {
+            return res.status(404).json({ message: "SOS record not found" });
+        }
+
+        const fee = Number(totalAmount) || Number(existing.paramedic?.bookingFee) || 0;
+        const method = (paymentMethod || 'CASH').toUpperCase();
+        const paymentStatus = method === 'CASH' ? 'PAID' : 'PAID'; // Marked as paid on ride completion
+
+        // Update SOS Record
         const sos = await prisma.emergencySOS.update({
             where: { id },
-            data: { status: 'COMPLETED' },
+            data: { 
+                status: 'COMPLETED',
+                totalAmount: fee,
+                paymentMethod: method,
+                paymentStatus: paymentStatus,
+                completedAt: new Date()
+            },
             include: { patient: { include: { user: true } }, paramedic: { include: { user: true } } }
         });
         
-        // Auto-rate the paramedic for SOS
+        // Auto-rate the paramedic for SOS (5 stars)
         if (sos.paramedicId && sos.patientId) {
-            await prisma.review.create({
-                data: {
-                    patientId: sos.patientId,
-                    professionalId: sos.paramedicId,
-                    rating: 5,
-                    comment: "Auto-generated 5-Star rating for SOS Emergency Transport."
-                }
-            });
-            
-            // Recalculate rating
-            const allReviews = await prisma.review.findMany({ where: { professionalId: sos.paramedicId }});
-            const avgRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
-            await prisma.professionalProfile.update({
-                where: { id: sos.paramedicId },
-                data: { rating: avgRating, availabilityStatus: 'AVAILABLE' }
-            });
+            try {
+                await prisma.review.create({
+                    data: {
+                        patientId: sos.patientId,
+                        professionalId: sos.paramedicId,
+                        rating: 5,
+                        comment: `Auto-generated 5-Star rating for Emergency Transport (Payment: ${method}).`
+                    }
+                });
+                
+                // Recalculate average rating
+                const allReviews = await prisma.review.findMany({ where: { professionalId: sos.paramedicId }});
+                const avgRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / (allReviews.length || 1);
+                await prisma.professionalProfile.update({
+                    where: { id: sos.paramedicId },
+                    data: { rating: avgRating, availabilityStatus: 'AVAILABLE' }
+                });
+            } catch (revErr) {
+                console.error("Auto rating error:", revErr.message);
+            }
         }
 
+        // Wallet Accounting & Platform Commission (Similar to appointments)
+        if (sos.paramedicId && fee > 0) {
+            try {
+                let commissionPercent = 15; // default 15% platform commission on emergency transport
+                try {
+                    const setting = await prisma.systemSetting.findUnique({
+                        where: { key: "COMMISSION_PERCENTAGE" }
+                    });
+                    if (setting && setting.value) {
+                        commissionPercent = parseFloat(setting.value);
+                    }
+                } catch (setErr) {}
+
+                const commissionAmount = fee * (commissionPercent / 100);
+                const paramedicIncome = fee - commissionAmount;
+
+                const prof = await prisma.professionalProfile.findUnique({
+                    where: { id: sos.paramedicId }
+                });
+
+                if (prof) {
+                    let walletChange = 0;
+                    let transactionType = 'CREDIT';
+                    let description = '';
+
+                    if (method === 'CARD') {
+                        // Card: Full payment went to platform, credit driver's net share
+                        walletChange = paramedicIncome;
+                        transactionType = 'CREDIT';
+                        description = `Emergency SOS Card Payment (Total: Rs. ${fee.toFixed(2)}, Platform Fee: Rs. ${commissionAmount.toFixed(2)}, Earned: +Rs. ${paramedicIncome.toFixed(2)})`;
+                    } else {
+                        // Cash: Patient paid driver full cash in hand, debit platform commission from driver's wallet
+                        walletChange = -commissionAmount;
+                        transactionType = 'DEBIT';
+                        description = `Emergency SOS Cash Payment Commission (Total Collected: Rs. ${fee.toFixed(2)}, Platform Fee Deducted: -Rs. ${commissionAmount.toFixed(2)})`;
+                    }
+
+                    const newBalance = (prof.walletBalance || 0) + walletChange;
+
+                    await prisma.professionalProfile.update({
+                        where: { id: prof.id },
+                        data: { walletBalance: newBalance }
+                    });
+
+                    await prisma.walletTransaction.create({
+                        data: {
+                            professionalId: prof.id,
+                            amount: walletChange,
+                            type: transactionType,
+                            paymentMethod: method,
+                            totalFee: fee,
+                            commissionAmount: commissionAmount,
+                            description: description,
+                            balanceAfter: newBalance
+                        }
+                    });
+                }
+            } catch (walletErr) {
+                console.error("SOS Wallet transaction error:", walletErr.message);
+            }
+        }
+
+        // Notify Patient with Ride & Payment Summary
         await notificationService.sendNotification(
             sos.patient.userId,
-            "SOS Emergency Completed",
-            "The emergency transport has been successfully completed. Hope you are well!",
+            "Emergency Ride Completed 🚑",
+            `Transport complete! Total: Rs. ${fee.toFixed(2)} (${method} Payment). Thank you for using our emergency response!`,
             "SOS_COMPLETED",
             sos.id
         );
 
-        res.status(200).json({ message: "SOS completed successfully" });
+        res.status(200).json({ 
+            message: "SOS completed successfully", 
+            sos,
+            paymentSummary: {
+                totalAmount: fee,
+                paymentMethod: method,
+                paymentStatus: paymentStatus
+            }
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error completing SOS" });

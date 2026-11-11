@@ -10,6 +10,7 @@ import TimeFilter from '../../components/TimeFilter';
 import RecentsList from '../../components/RecentsList';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import NotificationBell from '../../components/NotificationBell';
+import FloatingChatbotButton from '../../components/FloatingChatbotButton';
 
 const AdminOverviewScreen = () => {
   const { colors } = useTheme();
@@ -149,6 +150,8 @@ const AdminOverviewScreen = () => {
         onSeeAll={() => navigation.navigate('Users')} 
       />
 
+      {/* Floating AI Assistant */}
+      <FloatingChatbotButton bottomOffset={24} />
     </ScrollView>
   );
 };

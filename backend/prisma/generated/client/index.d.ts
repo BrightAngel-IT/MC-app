@@ -20321,11 +20321,13 @@ export namespace Prisma {
   export type EmergencySOSAvgAggregateOutputType = {
     locationLat: number | null
     locationLng: number | null
+    totalAmount: number | null
   }
 
   export type EmergencySOSSumAggregateOutputType = {
     locationLat: number | null
     locationLng: number | null
+    totalAmount: number | null
   }
 
   export type EmergencySOSMinAggregateOutputType = {
@@ -20335,6 +20337,10 @@ export namespace Prisma {
     locationLat: number | null
     locationLng: number | null
     status: string | null
+    totalAmount: number | null
+    paymentMethod: string | null
+    paymentStatus: string | null
+    completedAt: Date | null
     triggeredAt: Date | null
   }
 
@@ -20345,6 +20351,10 @@ export namespace Prisma {
     locationLat: number | null
     locationLng: number | null
     status: string | null
+    totalAmount: number | null
+    paymentMethod: string | null
+    paymentStatus: string | null
+    completedAt: Date | null
     triggeredAt: Date | null
   }
 
@@ -20355,6 +20365,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status: number
+    totalAmount: number
+    paymentMethod: number
+    paymentStatus: number
+    completedAt: number
     triggeredAt: number
     _all: number
   }
@@ -20363,11 +20377,13 @@ export namespace Prisma {
   export type EmergencySOSAvgAggregateInputType = {
     locationLat?: true
     locationLng?: true
+    totalAmount?: true
   }
 
   export type EmergencySOSSumAggregateInputType = {
     locationLat?: true
     locationLng?: true
+    totalAmount?: true
   }
 
   export type EmergencySOSMinAggregateInputType = {
@@ -20377,6 +20393,10 @@ export namespace Prisma {
     locationLat?: true
     locationLng?: true
     status?: true
+    totalAmount?: true
+    paymentMethod?: true
+    paymentStatus?: true
+    completedAt?: true
     triggeredAt?: true
   }
 
@@ -20387,6 +20407,10 @@ export namespace Prisma {
     locationLat?: true
     locationLng?: true
     status?: true
+    totalAmount?: true
+    paymentMethod?: true
+    paymentStatus?: true
+    completedAt?: true
     triggeredAt?: true
   }
 
@@ -20397,6 +20421,10 @@ export namespace Prisma {
     locationLat?: true
     locationLng?: true
     status?: true
+    totalAmount?: true
+    paymentMethod?: true
+    paymentStatus?: true
+    completedAt?: true
     triggeredAt?: true
     _all?: true
   }
@@ -20494,6 +20522,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status: string
+    totalAmount: number
+    paymentMethod: string | null
+    paymentStatus: string
+    completedAt: Date | null
     triggeredAt: Date
     _count: EmergencySOSCountAggregateOutputType | null
     _avg: EmergencySOSAvgAggregateOutputType | null
@@ -20523,6 +20555,10 @@ export namespace Prisma {
     locationLat?: boolean
     locationLng?: boolean
     status?: boolean
+    totalAmount?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    completedAt?: boolean
     triggeredAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     paramedic?: boolean | EmergencySOS$paramedicArgs<ExtArgs>
@@ -20535,6 +20571,10 @@ export namespace Prisma {
     locationLat?: boolean
     locationLng?: boolean
     status?: boolean
+    totalAmount?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    completedAt?: boolean
     triggeredAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     paramedic?: boolean | EmergencySOS$paramedicArgs<ExtArgs>
@@ -20547,6 +20587,10 @@ export namespace Prisma {
     locationLat?: boolean
     locationLng?: boolean
     status?: boolean
+    totalAmount?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    completedAt?: boolean
     triggeredAt?: boolean
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     paramedic?: boolean | EmergencySOS$paramedicArgs<ExtArgs>
@@ -20559,10 +20603,14 @@ export namespace Prisma {
     locationLat?: boolean
     locationLng?: boolean
     status?: boolean
+    totalAmount?: boolean
+    paymentMethod?: boolean
+    paymentStatus?: boolean
+    completedAt?: boolean
     triggeredAt?: boolean
   }
 
-  export type EmergencySOSOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "paramedicId" | "locationLat" | "locationLng" | "status" | "triggeredAt", ExtArgs["result"]["emergencySOS"]>
+  export type EmergencySOSOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patientId" | "paramedicId" | "locationLat" | "locationLng" | "status" | "totalAmount" | "paymentMethod" | "paymentStatus" | "completedAt" | "triggeredAt", ExtArgs["result"]["emergencySOS"]>
   export type EmergencySOSInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patient?: boolean | PatientProfileDefaultArgs<ExtArgs>
     paramedic?: boolean | EmergencySOS$paramedicArgs<ExtArgs>
@@ -20589,6 +20637,10 @@ export namespace Prisma {
       locationLat: number
       locationLng: number
       status: string
+      totalAmount: number
+      paymentMethod: string | null
+      paymentStatus: string
+      completedAt: Date | null
       triggeredAt: Date
     }, ExtArgs["result"]["emergencySOS"]>
     composites: {}
@@ -21021,6 +21073,10 @@ export namespace Prisma {
     readonly locationLat: FieldRef<"EmergencySOS", 'Float'>
     readonly locationLng: FieldRef<"EmergencySOS", 'Float'>
     readonly status: FieldRef<"EmergencySOS", 'String'>
+    readonly totalAmount: FieldRef<"EmergencySOS", 'Float'>
+    readonly paymentMethod: FieldRef<"EmergencySOS", 'String'>
+    readonly paymentStatus: FieldRef<"EmergencySOS", 'String'>
+    readonly completedAt: FieldRef<"EmergencySOS", 'DateTime'>
     readonly triggeredAt: FieldRef<"EmergencySOS", 'DateTime'>
   }
     
@@ -30443,6 +30499,10 @@ export namespace Prisma {
     locationLat: 'locationLat',
     locationLng: 'locationLng',
     status: 'status',
+    totalAmount: 'totalAmount',
+    paymentMethod: 'paymentMethod',
+    paymentStatus: 'paymentStatus',
+    completedAt: 'completedAt',
     triggeredAt: 'triggeredAt'
   };
 
@@ -31994,6 +32054,10 @@ export namespace Prisma {
     locationLat?: FloatFilter<"EmergencySOS"> | number
     locationLng?: FloatFilter<"EmergencySOS"> | number
     status?: StringFilter<"EmergencySOS"> | string
+    totalAmount?: FloatFilter<"EmergencySOS"> | number
+    paymentMethod?: StringNullableFilter<"EmergencySOS"> | string | null
+    paymentStatus?: StringFilter<"EmergencySOS"> | string
+    completedAt?: DateTimeNullableFilter<"EmergencySOS"> | Date | string | null
     triggeredAt?: DateTimeFilter<"EmergencySOS"> | Date | string
     patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
     paramedic?: XOR<ProfessionalProfileNullableScalarRelationFilter, ProfessionalProfileWhereInput> | null
@@ -32006,6 +32070,10 @@ export namespace Prisma {
     locationLat?: SortOrder
     locationLng?: SortOrder
     status?: SortOrder
+    totalAmount?: SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
     triggeredAt?: SortOrder
     patient?: PatientProfileOrderByWithRelationInput
     paramedic?: ProfessionalProfileOrderByWithRelationInput
@@ -32021,6 +32089,10 @@ export namespace Prisma {
     locationLat?: FloatFilter<"EmergencySOS"> | number
     locationLng?: FloatFilter<"EmergencySOS"> | number
     status?: StringFilter<"EmergencySOS"> | string
+    totalAmount?: FloatFilter<"EmergencySOS"> | number
+    paymentMethod?: StringNullableFilter<"EmergencySOS"> | string | null
+    paymentStatus?: StringFilter<"EmergencySOS"> | string
+    completedAt?: DateTimeNullableFilter<"EmergencySOS"> | Date | string | null
     triggeredAt?: DateTimeFilter<"EmergencySOS"> | Date | string
     patient?: XOR<PatientProfileScalarRelationFilter, PatientProfileWhereInput>
     paramedic?: XOR<ProfessionalProfileNullableScalarRelationFilter, ProfessionalProfileWhereInput> | null
@@ -32033,6 +32105,10 @@ export namespace Prisma {
     locationLat?: SortOrder
     locationLng?: SortOrder
     status?: SortOrder
+    totalAmount?: SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    paymentStatus?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
     triggeredAt?: SortOrder
     _count?: EmergencySOSCountOrderByAggregateInput
     _avg?: EmergencySOSAvgOrderByAggregateInput
@@ -32051,6 +32127,10 @@ export namespace Prisma {
     locationLat?: FloatWithAggregatesFilter<"EmergencySOS"> | number
     locationLng?: FloatWithAggregatesFilter<"EmergencySOS"> | number
     status?: StringWithAggregatesFilter<"EmergencySOS"> | string
+    totalAmount?: FloatWithAggregatesFilter<"EmergencySOS"> | number
+    paymentMethod?: StringNullableWithAggregatesFilter<"EmergencySOS"> | string | null
+    paymentStatus?: StringWithAggregatesFilter<"EmergencySOS"> | string
+    completedAt?: DateTimeNullableWithAggregatesFilter<"EmergencySOS"> | Date | string | null
     triggeredAt?: DateTimeWithAggregatesFilter<"EmergencySOS"> | Date | string
   }
 
@@ -34066,6 +34146,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutEmergencySOSsInput
     paramedic?: ProfessionalProfileCreateNestedOneWithoutEmergencySOSsInput
@@ -34078,6 +34162,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
   }
 
@@ -34086,6 +34174,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutEmergencySOSsNestedInput
     paramedic?: ProfessionalProfileUpdateOneWithoutEmergencySOSsNestedInput
@@ -34098,6 +34190,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34108,6 +34204,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
   }
 
@@ -34116,6 +34216,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -34126,6 +34230,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -35875,12 +35983,17 @@ export namespace Prisma {
     locationLat?: SortOrder
     locationLng?: SortOrder
     status?: SortOrder
+    totalAmount?: SortOrder
+    paymentMethod?: SortOrder
+    paymentStatus?: SortOrder
+    completedAt?: SortOrder
     triggeredAt?: SortOrder
   }
 
   export type EmergencySOSAvgOrderByAggregateInput = {
     locationLat?: SortOrder
     locationLng?: SortOrder
+    totalAmount?: SortOrder
   }
 
   export type EmergencySOSMaxOrderByAggregateInput = {
@@ -35890,6 +36003,10 @@ export namespace Prisma {
     locationLat?: SortOrder
     locationLng?: SortOrder
     status?: SortOrder
+    totalAmount?: SortOrder
+    paymentMethod?: SortOrder
+    paymentStatus?: SortOrder
+    completedAt?: SortOrder
     triggeredAt?: SortOrder
   }
 
@@ -35900,12 +36017,17 @@ export namespace Prisma {
     locationLat?: SortOrder
     locationLng?: SortOrder
     status?: SortOrder
+    totalAmount?: SortOrder
+    paymentMethod?: SortOrder
+    paymentStatus?: SortOrder
+    completedAt?: SortOrder
     triggeredAt?: SortOrder
   }
 
   export type EmergencySOSSumOrderByAggregateInput = {
     locationLat?: SortOrder
     locationLng?: SortOrder
+    totalAmount?: SortOrder
   }
 
   export type ActivityLogCountOrderByAggregateInput = {
@@ -38850,6 +38972,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
     paramedic?: ProfessionalProfileCreateNestedOneWithoutEmergencySOSsInput
   }
@@ -38860,6 +38986,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
   }
 
@@ -39075,6 +39205,10 @@ export namespace Prisma {
     locationLat?: FloatFilter<"EmergencySOS"> | number
     locationLng?: FloatFilter<"EmergencySOS"> | number
     status?: StringFilter<"EmergencySOS"> | string
+    totalAmount?: FloatFilter<"EmergencySOS"> | number
+    paymentMethod?: StringNullableFilter<"EmergencySOS"> | string | null
+    paymentStatus?: StringFilter<"EmergencySOS"> | string
+    completedAt?: DateTimeNullableFilter<"EmergencySOS"> | Date | string | null
     triggeredAt?: DateTimeFilter<"EmergencySOS"> | Date | string
   }
 
@@ -39238,6 +39372,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
     patient: PatientProfileCreateNestedOneWithoutEmergencySOSsInput
   }
@@ -39248,6 +39386,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
   }
 
@@ -43306,6 +43448,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
   }
 
@@ -43469,6 +43615,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paramedic?: ProfessionalProfileUpdateOneWithoutEmergencySOSsNestedInput
   }
@@ -43479,6 +43629,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -43488,6 +43642,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -43551,6 +43709,10 @@ export namespace Prisma {
     locationLat: number
     locationLng: number
     status?: string
+    totalAmount?: number
+    paymentMethod?: string | null
+    paymentStatus?: string
+    completedAt?: Date | string | null
     triggeredAt?: Date | string
   }
 
@@ -43713,6 +43875,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patient?: PatientProfileUpdateOneRequiredWithoutEmergencySOSsNestedInput
   }
@@ -43723,6 +43889,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -43732,6 +43902,10 @@ export namespace Prisma {
     locationLat?: FloatFieldUpdateOperationsInput | number
     locationLng?: FloatFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     triggeredAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

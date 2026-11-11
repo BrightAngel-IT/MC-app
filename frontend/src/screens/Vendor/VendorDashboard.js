@@ -13,6 +13,7 @@ import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-ic
 import NotificationBell from '../../components/NotificationBell';
 import { searchLocationByName } from '../../utils/geocode';
 import MapComponent from '../../components/MapComponent';
+import FloatingChatbotButton from '../../components/FloatingChatbotButton';
 import * as Location from 'expo-location';
 
 const VendorDashboard = ({ navigation }) => {
@@ -624,6 +625,9 @@ const VendorDashboard = ({ navigation }) => {
           </View>
         </View>
       </Modal>
+
+      {/* Floating AI Assistant */}
+      <FloatingChatbotButton bottomOffset={24} />
     </ScrollView>
   );
 };

@@ -28,6 +28,7 @@ import NotificationBell from '../../components/NotificationBell';
 import CustomAlertModal from '../../components/CustomAlertModal';
 import MapComponent from '../../components/MapComponent';
 import { searchLocationByName } from '../../utils/geocode';
+import FloatingChatbotButton from '../../components/FloatingChatbotButton';
 
 const CATEGORIES = [
   { id: 'UPDATE', label: 'General Update', icon: 'bullhorn' },
@@ -1314,6 +1315,9 @@ const ElderHomeDashboard = ({ navigation }) => {
           </View>
         </View>
       </Modal>
+
+      {/* Floating AI Assistant */}
+      <FloatingChatbotButton bottomOffset={24} />
     </View>
   );
 };

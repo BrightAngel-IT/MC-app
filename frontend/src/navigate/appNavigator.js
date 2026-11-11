@@ -585,6 +585,13 @@ const AppNavigator = () => {
             headerShown: false,
           }} 
         />
+        <Stack.Screen 
+          name="Chatbot" 
+          component={ChatbotScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
       </>
     );
   };

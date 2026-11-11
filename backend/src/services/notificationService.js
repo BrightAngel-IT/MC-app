@@ -6,7 +6,7 @@ const expo = new Expo();
  * Send a notification to a specific user.
  * It saves the notification to the DB and sends a Push Notification if the user has an Expo Push Token.
  */
-const sendNotification = async (userId, title, message, type, relatedId = null) => {
+const sendNotification = async (userId, title, message, type, relatedId = null, isEmergency = false) => {
     try {
         // 1. Save to Database (In-App Notification)
         const notification = await prisma.notification.create({
@@ -26,13 +26,15 @@ const sendNotification = async (userId, title, message, type, relatedId = null) 
         });
 
         if (user && user.expoPushToken && Expo.isExpoPushToken(user.expoPushToken)) {
-            // 3. Send Push Notification
+            // 3. Send Push Notification with High Priority & Sound
             const messages = [{
                 to: user.expoPushToken,
                 sound: 'default',
                 title: title,
                 body: message,
-                data: { notificationId: notification.id, type, relatedId },
+                priority: isEmergency ? 'high' : 'normal',
+                channelId: isEmergency ? 'emergency-sos' : 'default',
+                data: { notificationId: notification.id, type, relatedId, isEmergency },
             }];
 
             const chunks = expo.chunkPushNotifications(messages);

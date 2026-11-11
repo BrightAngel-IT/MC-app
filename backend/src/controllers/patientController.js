@@ -376,15 +376,25 @@ exports.triggerSOS = async (req,res)=>{
         });
         
         if (paramedics.length > 0) {
-            await prisma.notification.createMany({
-                data: paramedics.map(p => ({
-                    userId: p.id,
-                    title: `🚨 EMERGENCY SOS!`,
-                    message: `A patient has triggered an emergency SOS. Location: Lat ${locationLat}, Lng ${locationLng}. Tap to view.`,
-                    type: 'EMERGENCY_SOS',
-                    relatedId: newSOS.id
-                }))
-            });
+            const patientName = patient.user?.fullName || req.user.fullName || 'A patient';
+            const alertTitle = `🚨 URGENT: EMERGENCY SOS!`;
+            const alertMessage = `${patientName} triggered an emergency SOS! Location: (${Number(locationLat).toFixed(4)}, ${Number(locationLng).toFixed(4)}). Open app to accept dispatch.`;
+
+            // Broadcast high-priority siren push notification to each approved paramedic
+            for (const paramedic of paramedics) {
+                try {
+                    await notificationService.sendNotification(
+                        paramedic.id,
+                        alertTitle,
+                        alertMessage,
+                        'EMERGENCY_SOS',
+                        newSOS.id,
+                        true // isEmergency = true (triggers siren/emergency channel)
+                    );
+                } catch (pushErr) {
+                    console.error(`Failed to push SOS to paramedic ${paramedic.id}:`, pushErr.message);
+                }
+            }
         }
         
         return res.status(201).json({message: 'SOS triggered successfully', newSOS});

@@ -296,13 +296,17 @@ model OrderItem {
 }
 
 model EmergencySOS {
-  id          String   @id @default(uuid())
-  patientId   String
-  paramedicId String?
-  locationLat Float
-  locationLng Float
-  status      String   @default("TRIGGERED")
-  triggeredAt DateTime @default(now())
+  id            String    @id @default(uuid())
+  patientId     String
+  paramedicId   String?
+  locationLat   Float
+  locationLng   Float
+  status        String    @default("TRIGGERED")
+  totalAmount   Float     @default(0.0)
+  paymentMethod String?   // 'CASH' or 'CARD'
+  paymentStatus String    @default("PENDING") // 'PENDING' or 'PAID'
+  completedAt   DateTime?
+  triggeredAt   DateTime  @default(now())
 
   patient   PatientProfile       @relation(fields: [patientId], references: [id])
   paramedic ProfessionalProfile? @relation(fields: [paramedicId], references: [id])

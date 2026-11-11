@@ -15,6 +15,7 @@ import { searchLocationByName } from '../../utils/geocode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import MapComponent from '../../components/MapComponent';
+import FloatingChatbotButton from '../../components/FloatingChatbotButton';
 
 /* Notifications disabled for localhost
 Notifications.setNotificationHandler({
@@ -436,6 +437,9 @@ const ProfessionalDashboard = ({ navigation }) => {
           </View>
         </View>
       </Modal>
+
+      {/* Floating AI Assistant */}
+      <FloatingChatbotButton bottomOffset={30} />
     </ScrollView>
   );
 };

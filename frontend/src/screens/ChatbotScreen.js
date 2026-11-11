@@ -9,28 +9,144 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
+  Modal,
+  Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/themeContext';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../api/axios';
+
+const STORAGE_KEY = '@medical_care_chat_sessions';
+
+const INITIAL_GREETING = {
+  id: '1',
+  sender: 'ai',
+  text: "Hello! I am your AI Health Assistant. How can I assist you with your health or app services today? (You can chat in English, සිංහල, or தமிழ்)",
+  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+};
 
 const ChatbotScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const { t } = useLanguage();
   const flatListRef = useRef();
 
-  const [messages, setMessages] = useState([
-    {
-      id: '1',
-      sender: 'ai',
-      text: "Hello! I am your AI Health Assistant. How can I assist you with your health or app services today? (You can chat in English, සිංහල, or தமிழ்)",
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
-  ]);
+  const [sessions, setSessions] = useState([]);
+  const [currentSessionId, setCurrentSessionId] = useState(null);
+  const [messages, setMessages] = useState([INITIAL_GREETING]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [historyModalVisible, setHistoryModalVisible] = useState(false);
+
+  // Load saved sessions on mount
+  useEffect(() => {
+    loadSessions();
+  }, []);
+
+  const loadSessions = async () => {
+    try {
+      const stored = await AsyncStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSessions(parsed);
+          // Load the latest session
+          const latest = parsed[0];
+          setCurrentSessionId(latest.id);
+          setMessages(latest.messages || [INITIAL_GREETING]);
+          return;
+        }
+      }
+      // If no stored sessions, create first session
+      createNewChatSession();
+    } catch (err) {
+      console.log('Error loading chat history:', err);
+      createNewChatSession();
+    }
+  };
+
+  const saveSessionsToStorage = async (updatedSessions) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedSessions));
+    } catch (err) {
+      console.log('Error saving sessions:', err);
+    }
+  };
+
+  const createNewChatSession = () => {
+    const newSession = {
+      id: Date.now().toString(),
+      title: 'New Health Query',
+      date: new Date().toLocaleDateString(),
+      messages: [INITIAL_GREETING]
+    };
+
+    setSessions(prev => {
+      // Don't keep empty default sessions
+      const filtered = prev.filter(s => s.messages && s.messages.length > 1);
+      const updated = [newSession, ...filtered];
+      saveSessionsToStorage(updated);
+      return updated;
+    });
+
+    setCurrentSessionId(newSession.id);
+    setMessages([INITIAL_GREETING]);
+    setHistoryModalVisible(false);
+  };
+
+  const selectSession = (session) => {
+    setCurrentSessionId(session.id);
+    setMessages(session.messages || [INITIAL_GREETING]);
+    setHistoryModalVisible(false);
+  };
+
+  const deleteSession = (sessionId) => {
+    Alert.alert(
+      "Delete Chat",
+      "Are you sure you want to delete this chat history?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            const updated = sessions.filter(s => s.id !== sessionId);
+            setSessions(updated);
+            saveSessionsToStorage(updated);
+
+            if (currentSessionId === sessionId) {
+              if (updated.length > 0) {
+                selectSession(updated[0]);
+              } else {
+                createNewChatSession();
+              }
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  const clearAllHistory = () => {
+    Alert.alert(
+      "Clear All History",
+      "This will remove all your previous medical chats.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Clear All",
+          style: "destructive",
+          onPress: async () => {
+            await AsyncStorage.removeItem(STORAGE_KEY);
+            setSessions([]);
+            createNewChatSession();
+          }
+        }
+      ]
+    );
+  };
 
   const sendMessage = async () => {
     if (!inputText.trim() || loading) return;
@@ -43,9 +159,13 @@ const ChatbotScreen = ({ navigation }) => {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    setMessages(prev => [...prev, userMsg]);
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
     setInputText('');
     setLoading(true);
+
+    // Update session title with user query if it was first message
+    const sessionTitle = messages.length <= 1 ? (userText.slice(0, 32) + (userText.length > 32 ? '...' : '')) : undefined;
 
     try {
       const res = await api.post('/chatbot/message', {
@@ -59,18 +179,36 @@ const ChatbotScreen = ({ navigation }) => {
         text: res.data?.reply || "I didn't quite catch that. Could you please rephrase?",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
-      setMessages(prev => [...prev, aiMsg]);
+
+      const finalMessages = [...newMessages, aiMsg];
+      setMessages(finalMessages);
+
+      // Persist session
+      setSessions(prev => {
+        const updated = prev.map(s => {
+          if (s.id === currentSessionId) {
+            return {
+              ...s,
+              title: sessionTitle || s.title,
+              messages: finalMessages,
+              date: new Date().toLocaleDateString()
+            };
+          }
+          return s;
+        });
+        saveSessionsToStorage(updated);
+        return updated;
+      });
+
     } catch (err) {
       console.error('Chatbot API error:', err);
-      setMessages(prev => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          sender: 'ai',
-          text: "Connection issue. Please make sure your internet is stable and try again.",
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }
-      ]);
+      const errorMsg = {
+        id: (Date.now() + 1).toString(),
+        sender: 'ai',
+        text: "Connection issue. Please make sure your internet is stable and try again.",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setMessages([...newMessages, errorMsg]);
     } finally {
       setLoading(false);
     }
@@ -112,16 +250,37 @@ const ChatbotScreen = ({ navigation }) => {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconBtn}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
-        <View style={{ flex: 1, marginLeft: 12 }}>
+        
+        <View style={{ flex: 1, marginLeft: 10 }}>
           <Text style={[styles.headerTitle, { color: colors.text }]}>Medical AI Assistant</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
             <View style={styles.onlineDot} />
             <Text style={{ fontSize: 11, color: '#10B981', fontWeight: 'bold' }}>Online 24/7</Text>
           </View>
         </View>
+
+        {/* History Button */}
+        <TouchableOpacity 
+          onPress={() => setHistoryModalVisible(true)} 
+          style={[styles.actionPillBtn, { backgroundColor: colors.surfaceLight, borderColor: colors.border }]}
+          title="Chat History"
+        >
+          <Ionicons name="time-outline" size={16} color={colors.text} />
+          <Text style={[styles.actionPillText, { color: colors.text }]}>History</Text>
+        </TouchableOpacity>
+
+        {/* New Chat Button */}
+        <TouchableOpacity 
+          onPress={createNewChatSession} 
+          style={[styles.actionPillBtn, { backgroundColor: colors.primary + '15', borderColor: colors.primary + '30', marginLeft: 6 }]}
+          title="Start New Chat"
+        >
+          <Ionicons name="add" size={18} color={colors.primary} />
+          <Text style={[styles.actionPillText, { color: colors.primary, fontWeight: 'bold' }]}>New</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Message List */}
@@ -174,6 +333,94 @@ const ChatbotScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+
+      {/* Chat History Sidebar / Modal */}
+      <Modal
+        visible={historyModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setHistoryModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.historyModalContent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            {/* Modal Header */}
+            <View style={[styles.modalHeader, { borderBottomColor: colors.border }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <Ionicons name="time" size={20} color={colors.primary} />
+                <Text style={[styles.modalHeaderTitle, { color: colors.text }]}>Chat History</Text>
+              </View>
+              <TouchableOpacity onPress={() => setHistoryModalVisible(false)} style={styles.iconBtn}>
+                <Ionicons name="close" size={22} color={colors.textLight} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Action Bar inside modal */}
+            <View style={styles.historyActionRow}>
+              <TouchableOpacity 
+                style={[styles.newChatModalBtn, { backgroundColor: colors.primary }]}
+                onPress={createNewChatSession}
+              >
+                <Ionicons name="add" size={18} color="#fff" />
+                <Text style={styles.newChatModalBtnText}>Start New Chat</Text>
+              </TouchableOpacity>
+
+              {sessions.length > 0 && (
+                <TouchableOpacity 
+                  style={styles.clearAllBtn}
+                  onPress={clearAllHistory}
+                >
+                  <Text style={{ fontSize: 12, color: colors.danger || '#ef4444', fontWeight: '600' }}>Clear All</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {/* Sessions List */}
+            {sessions.length === 0 ? (
+              <View style={styles.emptyHistoryBox}>
+                <Ionicons name="chatbubbles-outline" size={40} color={colors.textLight} />
+                <Text style={{ color: colors.textLight, marginTop: 10, fontSize: 13 }}>No previous chats yet.</Text>
+              </View>
+            ) : (
+              <FlatList
+                data={sessions}
+                keyExtractor={s => s.id}
+                contentContainerStyle={{ paddingVertical: 8 }}
+                renderItem={({ item }) => {
+                  const isActive = item.id === currentSessionId;
+                  return (
+                    <TouchableOpacity
+                      style={[
+                        styles.sessionItem,
+                        { borderColor: isActive ? colors.primary : colors.border },
+                        isActive && { backgroundColor: colors.primary + '12' }
+                      ]}
+                      onPress={() => selectSession(item)}
+                      activeOpacity={0.7}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Text style={[styles.sessionTitle, { color: colors.text }]} numberOfLines={1}>
+                          {item.title || 'Previous Query'}
+                        </Text>
+                        <Text style={[styles.sessionDate, { color: colors.textLight }]}>
+                          {item.date} • {item.messages ? item.messages.length - 1 : 0} messages
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        onPress={() => deleteSession(item.id)}
+                        style={styles.deleteBtn}
+                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                      >
+                        <Ionicons name="trash-outline" size={18} color={colors.danger || '#ef4444'} />
+                      </TouchableOpacity>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            )}
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -189,9 +436,19 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomWidth: 1,
   },
-  backBtn: { padding: 4 },
+  iconBtn: { padding: 4 },
   headerTitle: { fontSize: 16, fontWeight: 'bold' },
   onlineDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981', marginRight: 5 },
+  actionPillBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 16,
+    borderWidth: 1,
+    gap: 4
+  },
+  actionPillText: { fontSize: 12 },
   listContent: { padding: 16, paddingBottom: 20 },
   msgRow: { flexDirection: 'row', marginBottom: 14, alignItems: 'flex-end' },
   userRow: { justifyContent: 'flex-end' },
@@ -239,6 +496,58 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end'
+  },
+  historyModalContent: {
+    maxHeight: '80%',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    borderWidth: 1,
+    padding: 18
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: 14,
+    borderBottomWidth: 1
+  },
+  modalHeaderTitle: { fontSize: 17, fontWeight: 'bold' },
+  historyActionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 12
+  },
+  newChatModalBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 16,
+    gap: 6
+  },
+  newChatModalBtnText: { color: '#fff', fontSize: 13, fontWeight: 'bold' },
+  clearAllBtn: { padding: 6 },
+  sessionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginVertical: 4
+  },
+  sessionTitle: { fontSize: 14, fontWeight: 'bold', marginBottom: 2 },
+  sessionDate: { fontSize: 11 },
+  deleteBtn: { padding: 6 },
+  emptyHistoryBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 40
   }
 });
-

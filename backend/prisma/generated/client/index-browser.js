@@ -325,6 +325,10 @@ exports.Prisma.EmergencySOSScalarFieldEnum = {
   locationLat: 'locationLat',
   locationLng: 'locationLng',
   status: 'status',
+  totalAmount: 'totalAmount',
+  paymentMethod: 'paymentMethod',
+  paymentStatus: 'paymentStatus',
+  completedAt: 'completedAt',
   triggeredAt: 'triggeredAt'
 };
 
