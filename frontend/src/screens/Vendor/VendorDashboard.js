@@ -215,7 +215,11 @@ const VendorDashboard = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+      style={styles.container} 
+      contentContainerStyle={{ paddingBottom: 110 }}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>{t('pharmacy_dashboard')}</Text>

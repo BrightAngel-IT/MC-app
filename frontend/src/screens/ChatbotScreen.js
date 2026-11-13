@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -17,25 +17,153 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/themeContext';
 import { useLanguage } from '../context/LanguageContext';
+import { AuthContext } from '../context/authContext';
 import api from '../api/axios';
 
 const STORAGE_KEY = '@medical_care_chat_sessions';
 
-const INITIAL_GREETING = {
-  id: '1',
-  sender: 'ai',
-  text: "Hello! I am your AI Health Assistant. How can I assist you with your health or app services today? (You can chat in English, සිංහල, or தமிழ்)",
-  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+const getInitialGreetingForRole = (role, fullName) => {
+  const name = fullName ? ` ${fullName}` : '';
+  const r = (role || 'PATIENT').toUpperCase();
+
+  switch (r) {
+    case 'DOCTOR':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Dr.${name}! 👨‍⚕️ I am your Practice AI Assistant. I can help guide you with appointments, working area & visiting fees, patient consultations, prescriptions, and your wallet earnings. (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    case 'NURSE':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Nurse${name}! 👩‍⚕️ I am your Professional Assistant. Ask me anything about home nursing visits, patient care logs, managing your availability, and earnings. (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    case 'PARAMEDIC':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Officer${name}! 🚑 I am your Emergency Operations Assistant. I can guide you through active SOS ambulance dispatches, turn-by-turn navigation, patient contact, and ride billing. (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    case 'LAB_TECH':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Lab Specialist${name}! 🧪 I am here to help you manage home sample collections, lab test appointments, test reports, and service radius. (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    case 'CAREGIVER':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Caregiver${name}! 🤝 I am your Care Assistant. I can guide you on patient home care requests, working hours, and payment settlements. (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    case 'PHARMACY':
+    case 'VENDOR':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Pharmacy Partner${name}! 💊 I can help you process prescription orders, quote prices, manage products & stock, and update your pharmacy location. (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    case 'ELDER_HOME':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Elder Care Partner${name}! 🏡 I can guide you on publishing facility photos, advertising room packages, managing visitor guidelines, and inquiries. (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    case 'ADMIN':
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello Administrator${name}! 🛡️ I am your Platform Management Guide. I can help with platform analytics, approving doctors/nurses, system commission, and distance rates.`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+    default:
+      return {
+        id: '1',
+        sender: 'ai',
+        text: `Hello${name}! 🩺 I am your Personal Health Assistant. How can I assist you with booking doctors, ambulance SOS, home care, or finding services today? (English, සිංහල, or தமிழ்)`,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+  }
+};
+
+const getSuggestionsForRole = (role) => {
+  const r = (role || 'PATIENT').toUpperCase();
+  switch (r) {
+    case 'DOCTOR':
+      return [
+        { label: '📍 Set Working Area & Fee', query: 'How do I set my visiting fees and service radius on the map?' },
+        { label: '📅 View Appointments', query: 'Where can I see upcoming patient booking requests and confirm them?' },
+        { label: '💳 Wallet & Dues', query: 'How does the doctor wallet, cash deductions, and card payouts work?' },
+        { label: '💊 Issue Prescription', query: 'How do I issue an electronic prescription to a patient?' }
+      ];
+    case 'NURSE':
+      return [
+        { label: '📍 Change Service Area', query: 'How do I set my home visiting radius and location?' },
+        { label: '🟢 Toggle Availability', query: 'How do I turn my availability status ON or OFF?' },
+        { label: '📅 Accept Nurse Bookings', query: 'How do I accept patient home nursing visit requests?' },
+        { label: '💰 Check My Earnings', query: 'How do I check my completed visits and wallet balance?' }
+      ];
+    case 'PARAMEDIC':
+      return [
+        { label: '🚨 SOS Dispatch Flow', query: 'How does receiving and accepting an emergency ambulance SOS alert work?' },
+        { label: '🗺️ GPS Route to Patient', query: 'How do I open Google Maps navigation to reach the patient?' },
+        { label: '💳 Ride Fare & Payment', query: 'How do I bill the patient with cash or card after completing the emergency ride?' },
+        { label: '📞 Contact Patient', query: 'How do I call the patient who triggered the emergency SOS?' }
+      ];
+    case 'PHARMACY':
+    case 'VENDOR':
+      return [
+        { label: '📋 Process Prescriptions', query: 'How do I view uploaded patient prescriptions and attach medicine prices?' },
+        { label: '💊 Add New Products', query: 'How do I add medical items, medicine, and prices to my store catalogue?' },
+        { label: '📍 Set Store Location', query: 'How do I update my pharmacy GPS location so nearby patients can order?' },
+        { label: '🚚 Dispatch Orders', query: 'How do I mark an order as dispatched or ready for pickup?' }
+      ];
+    case 'ELDER_HOME':
+      return [
+        { label: '📸 Publish Ads / Photos', query: 'How do I publish facility photos and updates to attract new residents?' },
+        { label: '🛏️ Add Room Packages', query: 'How do I add AC and Non-AC monthly pricing packages?' },
+        { label: '⏰ Visiting Hours & Rules', query: 'Where do I edit visiting hours, WhatsApp number, and elder care rules?' },
+        { label: '📞 Inquiries & Residents', query: 'How do families contact our elder home through the app?' }
+      ];
+    case 'ADMIN':
+      return [
+        { label: '👥 Approve Professionals', query: 'Where do I review and approve pending doctor and nurse licenses?' },
+        { label: '📊 System Revenue', query: 'How can I view platform commission earnings and transactions?' },
+        { label: '⚙️ Distance Rate Settings', query: 'How do I change the per-km travel rate and company commission %?' },
+        { label: '🚨 SOS Activity Log', query: 'Where can I monitor all emergency SOS dispatches across the platform?' }
+      ];
+    default:
+      return [
+        { label: '🩺 Book a Doctor', query: 'How do I search and book a nearby doctor for a home visit?' },
+        { label: '🚨 Emergency SOS', query: 'How does the Emergency Ambulance SOS button work?' },
+        { label: '💊 Order Medicines', query: 'How do I upload a doctor prescription to buy medicines?' },
+        { label: '👩‍⚕️ Hire a Home Nurse', query: 'How can I find a qualified nurse or caregiver for an elderly patient?' }
+      ];
+  }
 };
 
 const ChatbotScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const { t } = useLanguage();
+  const { user } = useContext(AuthContext);
   const flatListRef = useRef();
+
+  const userRole = user?.role || 'PATIENT';
+  const userName = user?.fullName || user?.fullname || '';
+  const initialGreeting = getInitialGreetingForRole(userRole, userName);
+  const suggestions = getSuggestionsForRole(userRole);
 
   const [sessions, setSessions] = useState([]);
   const [currentSessionId, setCurrentSessionId] = useState(null);
-  const [messages, setMessages] = useState([INITIAL_GREETING]);
+  const [messages, setMessages] = useState([initialGreeting]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
   const [historyModalVisible, setHistoryModalVisible] = useState(false);
@@ -55,7 +183,7 @@ const ChatbotScreen = ({ navigation }) => {
           // Load the latest session
           const latest = parsed[0];
           setCurrentSessionId(latest.id);
-          setMessages(latest.messages || [INITIAL_GREETING]);
+          setMessages(latest.messages || [initialGreeting]);
           return;
         }
       }
@@ -78,9 +206,9 @@ const ChatbotScreen = ({ navigation }) => {
   const createNewChatSession = () => {
     const newSession = {
       id: Date.now().toString(),
-      title: 'New Health Query',
+      title: `${userRole} Query`,
       date: new Date().toLocaleDateString(),
-      messages: [INITIAL_GREETING]
+      messages: [initialGreeting]
     };
 
     setSessions(prev => {
@@ -92,17 +220,41 @@ const ChatbotScreen = ({ navigation }) => {
     });
 
     setCurrentSessionId(newSession.id);
-    setMessages([INITIAL_GREETING]);
+    setMessages([initialGreeting]);
     setHistoryModalVisible(false);
   };
 
   const selectSession = (session) => {
     setCurrentSessionId(session.id);
-    setMessages(session.messages || [INITIAL_GREETING]);
+    setMessages(session.messages || [initialGreeting]);
     setHistoryModalVisible(false);
   };
 
+  const performDeleteSession = (sessionId) => {
+    setSessions(prev => {
+      const updated = prev.filter(s => s.id !== sessionId);
+      saveSessionsToStorage(updated);
+
+      if (currentSessionId === sessionId) {
+        if (updated.length > 0) {
+          selectSession(updated[0]);
+        } else {
+          createNewChatSession();
+        }
+      }
+      return updated;
+    });
+  };
+
   const deleteSession = (sessionId) => {
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm("Are you sure you want to delete this chat history?");
+      if (confirmed) {
+        performDeleteSession(sessionId);
+      }
+      return;
+    }
+
     Alert.alert(
       "Delete Chat",
       "Are you sure you want to delete this chat history?",
@@ -111,25 +263,31 @@ const ChatbotScreen = ({ navigation }) => {
         {
           text: "Delete",
           style: "destructive",
-          onPress: () => {
-            const updated = sessions.filter(s => s.id !== sessionId);
-            setSessions(updated);
-            saveSessionsToStorage(updated);
-
-            if (currentSessionId === sessionId) {
-              if (updated.length > 0) {
-                selectSession(updated[0]);
-              } else {
-                createNewChatSession();
-              }
-            }
-          }
+          onPress: () => performDeleteSession(sessionId)
         }
       ]
     );
   };
 
+  const performClearAll = async () => {
+    try {
+      await AsyncStorage.removeItem(STORAGE_KEY);
+      setSessions([]);
+      createNewChatSession();
+    } catch (e) {
+      console.log('Error clearing history:', e);
+    }
+  };
+
   const clearAllHistory = () => {
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm("This will permanently remove all your previous chats. Are you sure?");
+      if (confirmed) {
+        performClearAll();
+      }
+      return;
+    }
+
     Alert.alert(
       "Clear All History",
       "This will remove all your previous medical chats.",
@@ -138,11 +296,7 @@ const ChatbotScreen = ({ navigation }) => {
         {
           text: "Clear All",
           style: "destructive",
-          onPress: async () => {
-            await AsyncStorage.removeItem(STORAGE_KEY);
-            setSessions([]);
-            createNewChatSession();
-          }
+          onPress: performClearAll
         }
       ]
     );
@@ -305,6 +459,31 @@ const ChatbotScreen = ({ navigation }) => {
         }
       />
 
+      {/* Suggestions Pills (Role-Adaptive) */}
+      {suggestions && suggestions.length > 0 && messages.length <= 2 && (
+        <View style={styles.suggestionsWrapper}>
+          <Text style={[styles.suggestionsHeader, { color: colors.textLight }]}>Quick Suggestions:</Text>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={suggestions}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={styles.suggestionsList}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[styles.suggestionChip, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => {
+                  setInputText(item.query);
+                }}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.suggestionChipText, { color: colors.primary }]}>{item.label}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      )}
+
       {/* Input Bar */}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -313,7 +492,15 @@ const ChatbotScreen = ({ navigation }) => {
         <View style={[styles.inputContainer, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
           <TextInput
             style={[styles.input, { backgroundColor: colors.background, color: colors.text, borderColor: colors.border }]}
-            placeholder="Ask about symptoms, doctors, advice..."
+            placeholder={
+              userRole === 'DOCTOR' ? "Ask about appointments, visiting fees, wallet..." :
+              userRole === 'NURSE' ? "Ask about nursing requests, schedule, earnings..." :
+              userRole === 'PARAMEDIC' ? "Ask about ambulance SOS dispatches, routes..." :
+              userRole === 'PHARMACY' || userRole === 'VENDOR' ? "Ask about orders, products, store location..." :
+              userRole === 'ELDER_HOME' ? "Ask about publishing ads, packages, inquiries..." :
+              userRole === 'ADMIN' ? "Ask about system revenue, approvals, settings..." :
+              "Ask about symptoms, doctors, SOS advice..."
+            }
             placeholderTextColor={colors.textLight}
             value={inputText}
             onChangeText={setInputText}
@@ -549,5 +736,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 40
+  },
+  suggestionsWrapper: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  suggestionsHeader: {
+    fontSize: 12,
+    fontWeight: '600',
+    marginBottom: 6,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  suggestionsList: {
+    gap: 8,
+    paddingRight: 16,
+  },
+  suggestionChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 16,
+    borderWidth: 1,
+  },
+  suggestionChipText: {
+    fontSize: 12,
+    fontWeight: '600',
   }
 });

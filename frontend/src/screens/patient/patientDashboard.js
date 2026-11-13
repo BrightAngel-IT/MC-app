@@ -454,7 +454,7 @@ const getStyles = (colors) => StyleSheet.create({
   },
   scrollContent: {
     padding: SIZES.padding,
-    paddingBottom: 40,
+    paddingBottom: 110,
   },
   sosButton: {
     backgroundColor: colors.danger,

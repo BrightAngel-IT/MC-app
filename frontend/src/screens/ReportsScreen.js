@@ -400,7 +400,11 @@ const ReportsScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 110 }}
+      showsVerticalScrollIndicator={false}
+    >
       {/* Modern Header with Print/Share Button */}
       <View style={styles.header}>
         <View style={{ flex: 1, marginRight: 12 }}>

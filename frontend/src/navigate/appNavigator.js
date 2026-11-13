@@ -58,14 +58,14 @@ const getCommonTabBarStyle = (colors) => ({
   shadowRadius: 6,
   ...(Platform.OS === 'web'
     ? {
-        height: 56,
-        paddingBottom: 6,
-        paddingTop: 6,
+        height: 64,
+        paddingBottom: 8,
+        paddingTop: 8,
       }
     : {
-        height: 54,
-        paddingBottom: 5,
-        paddingTop: 4,
+        height: 60,
+        paddingBottom: 8,
+        paddingTop: 6,
       }),
 });
 
@@ -81,9 +81,10 @@ const PatientTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 9.5,
+          fontSize: 10,
           fontWeight: '600',
-          marginTop: 1,
+          marginTop: 2,
+          paddingBottom: 2,
         },
       }}
     >
@@ -165,9 +166,10 @@ const ProfessionalTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 9.5,
+          fontSize: 10,
           fontWeight: '600',
-          marginTop: 1,
+          marginTop: 2,
+          paddingBottom: 2,
         },
       }}
     >
@@ -240,9 +242,10 @@ const VendorTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 9.5,
+          fontSize: 10,
           fontWeight: '600',
-          marginTop: 1,
+          marginTop: 2,
+          paddingBottom: 2,
         },
       }}
     >
@@ -282,9 +285,10 @@ const AdminTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 9.5,
+          fontSize: 10,
           fontWeight: '600',
-          marginTop: 1,
+          marginTop: 2,
+          paddingBottom: 2,
         },
       }}
     >
@@ -316,9 +320,10 @@ const ElderHomeTabs = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 9.5,
+          fontSize: 10,
           fontWeight: '600',
-          marginTop: 1,
+          marginTop: 2,
+          paddingBottom: 2,
         },
       }}
     >

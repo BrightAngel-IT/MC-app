@@ -219,7 +219,12 @@ const ProfessionalDashboard = ({ navigation }) => {
   const styles = getStyles(colors);
 
   return (
-    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />}>
+    <ScrollView 
+      style={styles.container} 
+      contentContainerStyle={{ paddingBottom: 110 }}
+      showsVerticalScrollIndicator={false}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />}
+    >
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>Dr. {user?.fullName}</Text>

@@ -464,6 +464,8 @@ const ProfessionalAppointments = ({ route }) => {
 
       <ScrollView 
         style={styles.scrollContainer}
+        contentContainerStyle={{ paddingBottom: 110 }}
+        showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />}
       >
         {filteredAppointments.length === 0 ? (

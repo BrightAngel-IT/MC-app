@@ -746,7 +746,7 @@ const AppointmentsScreen = ({ route, navigation }) => {
           data={filteredAppointments}
           keyExtractor={item => item.id}
           renderItem={renderItem}
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: 110 }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[colors.primary]} />}
           ListEmptyComponent={
             <Text style={{textAlign: 'center', color: colors.textLight, marginTop: 40}}>

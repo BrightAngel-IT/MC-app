@@ -39,17 +39,18 @@ const AdminDashboard = () => {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 10,
           fontWeight: '600',
-          marginTop: -2,
+          marginTop: 2,
+          paddingBottom: 2,
         },
         tabBarStyle: {
           backgroundColor: colors.surface,
           borderTopColor: colors.border,
           borderTopWidth: 1,
-          paddingBottom: 4,
-          paddingTop: 4,
-          height: 52,
+          paddingBottom: 8,
+          paddingTop: 6,
+          height: 60,
         },
       })}
     >
