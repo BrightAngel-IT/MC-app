@@ -56,17 +56,9 @@ const getCommonTabBarStyle = (colors) => ({
   shadowOffset: { width: 0, height: -2 },
   shadowOpacity: 0.08,
   shadowRadius: 6,
-  ...(Platform.OS === 'web'
-    ? {
-        height: 64,
-        paddingBottom: 8,
-        paddingTop: 8,
-      }
-    : {
-        height: 60,
-        paddingBottom: 8,
-        paddingTop: 6,
-      }),
+  height: 68,
+  paddingBottom: 10,
+  paddingTop: 8,
 });
 
 // Patient Bottom Tabs
@@ -80,11 +72,15 @@ const PatientTabs = () => {
         tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarItemStyle: {
+          paddingVertical: 4,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
         tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: '600',
           marginTop: 2,
-          paddingBottom: 2,
         },
       }}
     >
@@ -165,11 +161,15 @@ const ProfessionalTabs = () => {
         tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarItemStyle: {
+          paddingVertical: 4,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
         tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: '600',
           marginTop: 2,
-          paddingBottom: 2,
         },
       }}
     >
@@ -241,11 +241,15 @@ const VendorTabs = () => {
         tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarItemStyle: {
+          paddingVertical: 4,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
         tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: '600',
           marginTop: 2,
-          paddingBottom: 2,
         },
       }}
     >
@@ -284,11 +288,15 @@ const AdminTabs = () => {
         tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarItemStyle: {
+          paddingVertical: 4,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
         tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: '600',
           marginTop: 2,
-          paddingBottom: 2,
         },
       }}
     >
@@ -319,11 +327,15 @@ const ElderHomeTabs = () => {
         tabBarStyle: getCommonTabBarStyle(colors),
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarItemStyle: {
+          paddingVertical: 4,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
         tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: '600',
           marginTop: 2,
-          paddingBottom: 2,
         },
       }}
     >
