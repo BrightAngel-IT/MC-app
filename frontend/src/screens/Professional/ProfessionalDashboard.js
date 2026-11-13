@@ -331,7 +331,7 @@ const ProfessionalDashboard = ({ navigation }) => {
           <Text style={[styles.statCount, {color: colors.warning}]}>{stats.pending}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statCard} onPress={() => navigation.navigate('AppointmentsTab', {statusFilter: 'CONFIRMED'})}>
-          <Text style={styles.statTitle}>{t('home_nurse_btn')}</Text>
+          <Text style={styles.statTitle}>{t('common_confirmed')}</Text>
           <Text style={[styles.statCount, {color: colors.primary}]}>{stats.homeVisits}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statCard} onPress={() => navigation.navigate('AppointmentsTab', {statusFilter: 'COMPLETED'})}>
