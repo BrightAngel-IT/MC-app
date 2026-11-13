@@ -54,7 +54,17 @@ const LanguageSelectorModal = ({ visible, onClose }) => {
                   }}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-                    <Text style={{ fontSize: 24 }}>{langItem.flag}</Text>
+                    <View style={[
+                      styles.flagBadge,
+                      { backgroundColor: isSelected ? colors.primary : (colors.surfaceLight || '#f1f5f9') }
+                    ]}>
+                      <Text style={[
+                        styles.flagBadgeText,
+                        { color: isSelected ? '#fff' : colors.primary }
+                      ]}>
+                        {langItem.code.toUpperCase()}
+                      </Text>
+                    </View>
                     <View>
                       <Text style={[styles.langNative, { color: isSelected ? colors.primary : colors.text }]}>
                         {langItem.nativeLabel}
@@ -173,6 +183,20 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  flagBadge: {
+    width: 38,
+    height: 28,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)',
+  },
+  flagBadgeText: {
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.5,
   },
   switchBtn: {
     flexDirection: 'row',
